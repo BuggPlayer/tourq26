@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { blogPosts } from "@/data/blog";
+import { readBlogPosts } from "@/lib/content";
 
 const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
 
@@ -28,7 +28,8 @@ function formatDate(dateStr: string) {
   });
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const blogPosts = await readBlogPosts();
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <Header />

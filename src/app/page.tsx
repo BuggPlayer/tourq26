@@ -7,8 +7,10 @@ import CaseStudies from "@/components/CaseStudies";
 import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import { readTestimonials } from "@/lib/content";
 
-export default function Home() {
+export default async function Home() {
+  const testimonials = await readTestimonials();
   return (
     <>
       <Header />
@@ -18,7 +20,7 @@ export default function Home() {
         <Services />
         <WhyChooseUs />
         <CaseStudies />
-        <Testimonials />
+        <Testimonials items={testimonials} />
         <CTA />
         <Footer />
       </main>

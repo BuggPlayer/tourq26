@@ -1,9 +1,18 @@
 import Image from "next/image";
 
-const testimonials = [
+export type TestimonialItem = {
+  id?: string;
+  quote: string;
+  result: string;
+  name: string;
+  role: string;
+  company: string;
+  rating: number;
+};
+
+const defaultTestimonials: TestimonialItem[] = [
   {
-    quote:
-      "Torq Studio delivered our mobile app on time and under budget. The team understood our vision from day one and the quality exceeded our expectations.",
+    quote: "Torq Studio delivered our mobile app on time and under budget. The team understood our vision from day one and the quality exceeded our expectations.",
     result: "On time, under budget",
     name: "Sarah Al-Rashid",
     role: "Product Director",
@@ -11,8 +20,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    quote:
-      "We needed a partner who could scale with us. Their remote developers integrated seamlessly and we cut our development costs significantly without compromising on delivery.",
+    quote: "We needed a partner who could scale with us. Their remote developers integrated seamlessly and we cut our development costs significantly without compromising on delivery.",
     result: "Costs cut, delivery intact",
     name: "Marcus Weber",
     role: "CTO",
@@ -20,8 +28,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    quote:
-      "From concept to launch, Torq Studio was professional and responsive. The AI solution they built has transformed how we handle customer support.",
+    quote: "From concept to launch, Torq Studio was professional and responsive. The AI solution they built has transformed how we handle customer support.",
     result: "Transformed our operations",
     name: "Layla Hassan",
     role: "Operations Lead",
@@ -42,7 +49,10 @@ function Stars({ count }: { count: number }) {
   );
 }
 
-export default function Testimonials() {
+type Props = { items?: TestimonialItem[] };
+
+export default function Testimonials({ items }: Props) {
+  const testimonials = items?.length ? items : defaultTestimonials;
   return (
     <section
       id="testimonials"
@@ -64,7 +74,7 @@ export default function Testimonials() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
           {testimonials.map((t) => (
             <div
-              key={t.name}
+              key={t.id ?? t.name}
               className="card-hover flex flex-col rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface-elevated)] p-6 sm:p-8"
             >
               <span

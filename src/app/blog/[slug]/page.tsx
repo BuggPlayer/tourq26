@@ -3,17 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { blogPosts, type BlogPost } from "@/data/blog";
-import { getPostContent } from "@/data/blog-content";
+import { readBlogPosts } from "@/lib/content";
 
 const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
 
-function getPost(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug);
-}
-
 export async function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  const posts = await readBlogPosts();
+  return posts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -22,7 +18,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const posts = await readBlogPosts();
+  const post = posts.find((p) => p.slug === slug);
   if (!post) return { title: "Post not found" };
   return {
     title: post.title,
@@ -53,9 +50,9 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const posts = await readBlogPosts();
+  const post = posts.find((p) => p.slug === slug);
   if (!post) notFound();
-  const Content = getPostContent(slug);
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -79,9 +76,10 @@ export default async function BlogPostPage({
               {post.description}
             </p>
           </header>
-          <div className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-10 [&_p]:text-[var(--color-muted)] [&_p]:leading-relaxed [&_ul]:text-[var(--color-muted)] [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1">
-            {Content && <Content />}
-          </div>
+          <div
+            className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-10 [&_p]:text-[var(--color-muted)] [&_p]:leading-relaxed [&_ul]:text-[var(--color-muted)] [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1"
+            dangerouslySetInnerHTML={{ __html: post.body || "" }}
+          />
           <div className="mt-14 border-t border-[var(--color-border)]/50 pt-8">
             <Link
               href="/contact"

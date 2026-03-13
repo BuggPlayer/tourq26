@@ -1,0 +1,22 @@
+{
+  "siteUrl": "https://torqstudio.com",
+  "defaultTitle": "Torq Studio | Your Trusted Technology Partner | Global",
+  "defaultDescription": "We help businesses worldwide scale smarter and faster. Mobile & web development, AI solutions, remote IT resources. Reduce costs by up to 40%. On-time delivery, quality assurance.",
+  "titleTemplate": "%s | Torq Studio",
+  "keywords": [
+    "software development",
+    "mobile app development",
+    "web development",
+    "AI solutions",
+    "global",
+    "worldwide",
+    "remote IT",
+    "Torq Studio",
+    "technology partner"
+  ],
+  "ogTitle": "Torq Studio | Technology Partner for Growth",
+  "ogDescription": "Crafting solutions that inspire growth & innovation. Serving clients globally.",
+  "twitterTitle": "Torq Studio | Technology Partner for Growth",
+  "twitterDescription": "Crafting solutions that inspire growth & innovation.",
+  "siteName": "Torq Studio"
+}
