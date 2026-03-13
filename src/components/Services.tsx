@@ -1,31 +1,33 @@
+import Image from "next/image";
+
 const services = [
   {
     title: "Mobile App Development",
     description:
       "Native and cross-platform apps that users love. iOS, Android, and React Native—built for performance and scale.",
     result: "Faster time-to-market, lower total cost",
-    icon: "📱",
+    icon: "/images/icons/mobile.svg",
   },
   {
     title: "Web Development",
     description:
       "Fast, scalable web applications and sites. From landing pages to full-stack platforms with modern frameworks.",
     result: "Sites that convert and scale with you",
-    icon: "🌐",
+    icon: "/images/icons/web.svg",
   },
   {
     title: "AI Solutions",
     description:
       "Intelligent automation, chatbots, and data-driven insights. Leverage AI to streamline operations and delight users.",
     result: "Higher efficiency, better customer experience",
-    icon: "🤖",
+    icon: "/images/icons/ai.svg",
   },
   {
     title: "Remote IT Resources",
     description:
       "Dedicated developers and teams that integrate seamlessly. Scale your capacity without the overhead.",
     result: "Elastic capacity, no hiring delays",
-    icon: "👥",
+    icon: "/images/icons/team.svg",
   },
 ];
 
@@ -51,10 +53,10 @@ export default function Services() {
               className="card-hover group rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface-elevated)] p-6"
             >
               <span
-                className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/20 text-2xl transition-transform group-hover:scale-110"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/20 text-[var(--color-primary)] transition-transform group-hover:scale-110"
                 aria-hidden
               >
-                {service.icon}
+                <Image src={service.icon} alt="" width={28} height={28} className="opacity-90" unoptimized />
               </span>
               <h3 className="mt-4 font-display text-lg font-semibold text-white">
                 {service.title}

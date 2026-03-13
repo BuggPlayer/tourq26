@@ -1,8 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata = {
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com";
+
+export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Torq Studio privacy policy. How we collect, use, and protect your data.",
+  description:
+    "Torq Studio privacy policy. How we collect, use, and protect your data. GDPR-friendly, transparent practices.",
+  alternates: { canonical: `${baseUrl}/privacy` },
+  openGraph: {
+    title: "Privacy Policy | Torq Studio",
+    description:
+      "How we collect, use, and protect your data. Transparent privacy practices for our website and services.",
+    url: `${baseUrl}/privacy`,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function PrivacyPage() {

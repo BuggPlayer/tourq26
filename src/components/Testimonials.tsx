@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const testimonials = [
   {
     quote:
@@ -78,11 +80,21 @@ export default function Testimonials() {
                 {t.result}
               </p>
               <Stars count={t.rating} />
-              <div className="mt-4 border-t border-[var(--color-border)]/50 pt-4">
-                <p className="font-display font-semibold text-white">{t.name}</p>
-                <p className="text-sm text-[var(--color-muted)]">
-                  {t.role}, {t.company}
-                </p>
+              <div className="mt-4 flex items-center gap-4 border-t border-[var(--color-border)]/50 pt-4">
+                <Image
+                  src="/images/avatar-placeholder.svg"
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 shrink-0 rounded-full text-[var(--color-primary)]"
+                  unoptimized
+                />
+                <div>
+                  <p className="font-display font-semibold text-white">{t.name}</p>
+                  <p className="text-sm text-[var(--color-muted)]">
+                    {t.role}, {t.company}
+                  </p>
+                </div>
               </div>
             </div>
           ))}

@@ -1,8 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata = {
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com";
+
+export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Torq Studio terms of service. Terms governing use of our website and services.",
+  description:
+    "Torq Studio terms of service. Terms governing use of our website and services. Intellectual property and contact.",
+  alternates: { canonical: `${baseUrl}/terms` },
+  openGraph: {
+    title: "Terms of Service | Torq Studio",
+    description:
+      "Terms governing use of our website and services. Use of website, services, and intellectual property.",
+    url: `${baseUrl}/terms`,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function TermsPage() {

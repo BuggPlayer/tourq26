@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const caseStudies = [
   {
     title: "Unified banking app for a regional fintech",
@@ -7,7 +9,7 @@ const caseStudies = [
     outcome: "Launched on iOS and Android in 6 months. 40% cost savings vs. in-house build.",
     metric: "6 months",
     metricLabel: "Launch time",
-    icon: "📱",
+    icon: "/images/icons/mobile.svg",
   },
   {
     title: "AI-powered customer support platform",
@@ -17,7 +19,7 @@ const caseStudies = [
     outcome: "Custom AI chatbot and workflow automation. 60% faster resolution, 35% cost reduction.",
     metric: "60% faster",
     metricLabel: "Resolution",
-    icon: "🤖",
+    icon: "/images/icons/ai.svg",
   },
   {
     title: "E-commerce platform and team scaling",
@@ -27,7 +29,7 @@ const caseStudies = [
     outcome: "New web platform plus dedicated remote team. Launched in 4 months, ongoing scaling.",
     metric: "4 months",
     metricLabel: "To launch",
-    icon: "🌐",
+    icon: "/images/icons/web.svg",
   },
 ];
 
@@ -56,8 +58,8 @@ export default function CaseStudies() {
               key={study.title}
               className="card-hover group flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)]"
             >
-              <div className="flex h-28 items-center justify-center bg-gradient-to-br from-[var(--color-primary-muted)] to-[var(--color-accent)]/10 text-4xl transition-transform group-hover:scale-105">
-                {study.icon}
+              <div className="flex h-28 items-center justify-center bg-gradient-to-br from-[var(--color-primary-muted)] to-[var(--color-accent)]/10 text-[var(--color-primary)] transition-transform group-hover:scale-105">
+                <Image src={study.icon} alt="" width={48} height={48} className="opacity-90" unoptimized />
               </div>
               <div className="flex flex-1 flex-col p-6 sm:p-8">
                 <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-primary)]">

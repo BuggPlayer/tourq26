@@ -4,11 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 
 const navLinks = [
-  { href: "#services", label: "Services" },
-  { href: "#why-us", label: "Why Us" },
-  { href: "#case-studies", label: "Case Studies" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/#services", label: "Services" },
+  { href: "/#why-us", label: "Why Us" },
+  { href: "/#case-studies", label: "Case Studies" },
+  { href: "/blog", label: "Blog" },
+  { href: "/#testimonials", label: "Testimonials" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -35,7 +37,7 @@ export default function Header() {
             </Link>
           ))}
           <Link
-            href="#contact"
+            href="/contact"
             className="rounded-full bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--background)] transition-colors hover:bg-[var(--color-primary-hover)]"
           >
             Get in touch
@@ -74,7 +76,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="#contact"
+              href="/contact"
               className="mx-4 mt-2 block rounded-full bg-[var(--color-primary)] py-3 text-center font-semibold text-[var(--background)]"
               onClick={() => setOpen(false)}
             >

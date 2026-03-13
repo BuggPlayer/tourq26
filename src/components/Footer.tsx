@@ -1,11 +1,13 @@
 import Link from "next/link";
 
 const footerLinks = [
-  { href: "#services", label: "Services" },
-  { href: "#why-us", label: "Why Us" },
-  { href: "#case-studies", label: "Case Studies" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/#services", label: "Services" },
+  { href: "/#why-us", label: "Why Us" },
+  { href: "/#case-studies", label: "Case Studies" },
+  { href: "/blog", label: "Blog" },
+  { href: "/#testimonials", label: "Testimonials" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Footer() {
@@ -48,12 +50,12 @@ export default function Footer() {
             >
               Terms
             </Link>
-            <a
-              href="mailto:hello@torqstudio.com"
+            <Link
+              href="/contact"
               className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
             >
               Contact
-            </a>
+            </Link>
           </nav>
         </div>
         <p className="mt-6 text-center text-xs text-[var(--color-muted)]">

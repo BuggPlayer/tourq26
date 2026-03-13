@@ -49,12 +49,13 @@ export const metadata: Metadata = {
     siteName: "Torq Studio",
     title: "Torq Studio | Technology Partner for Growth",
     description: "Crafting solutions that inspire growth & innovation. Serving clients globally.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Torq Studio" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Torq Studio | Your Trusted Technology Partner" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Torq Studio | Technology Partner for Growth",
     description: "Crafting solutions that inspire growth & innovation.",
+    images: ["/opengraph-image"],
   },
   alternates: { canonical: siteUrl },
 };
@@ -76,6 +77,22 @@ const organizationJsonLd = {
   sameAs: [],
 };
 
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Torq Studio",
+  url: siteUrl,
+  description:
+    "We help businesses worldwide scale smarter and faster. Mobile & web development, AI solutions, remote IT resources. Reduce costs by up to 40%.",
+  publisher: { "@type": "Organization", name: "Torq Studio", url: siteUrl },
+  inLanguage: "en-US",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: { "@type": "EntryPoint", urlTemplate: `${siteUrl}/?q={search_term_string}` },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -89,6 +106,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         {children}
       </body>
