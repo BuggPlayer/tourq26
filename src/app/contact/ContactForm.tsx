@@ -4,11 +4,13 @@ import { useState } from "react";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
+    setErrorMessage("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -23,12 +25,14 @@ export default function ContactForm() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         setStatus("error");
+        setErrorMessage(typeof data.error === "string" ? data.error : "Something went wrong. Please try again or email hello@torqstudio.com.");
         return;
       }
       setStatus("sent");
       setFormData({ name: "", email: "", company: "", message: "" });
     } catch {
       setStatus("error");
+      setErrorMessage("Something went wrong. Please try again or email hello@torqstudio.com.");
     }
   };
 
@@ -95,7 +99,7 @@ export default function ContactForm() {
         </p>
       )}
       {status === "error" && (
-        <p className="text-sm text-red-400">Something went wrong. Please try again or email hello@torqstudio.com.</p>
+        <p className="text-sm text-red-400">{errorMessage}</p>
       )}
       <button
         type="submit"

@@ -28,7 +28,10 @@ export async function POST(request: NextRequest) {
   } catch (e) {
     console.error("Contact submission error:", e);
     return NextResponse.json(
-      { error: "Something went wrong. Please try again or email us directly." },
+      {
+        error:
+          "Something went wrong. Please try again or email us at contact@torqstudio.com.",
+      },
       { status: 500 }
     );
   }
