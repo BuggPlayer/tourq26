@@ -56,47 +56,43 @@ export default function Testimonials({ items }: Props) {
   return (
     <section
       id="testimonials"
-      className="relative border-t border-[var(--color-border)]/50 bg-[var(--surface)] py-20 sm:py-24 lg:py-28"
+      className="relative border-t border-[var(--color-border)]/40 bg-[var(--surface)] py-20 sm:py-24 lg:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
+        <div className="text-center max-w-2xl mx-auto">
           <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
             What clients say
           </p>
           <h2 className="mt-3 font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
             Results our clients see
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-[var(--color-muted)]">
-            Trusted by businesses around the world to deliver
-            real outcomes.
+          <p className="mt-4 text-[var(--color-muted)]">
+            Trusted globally to deliver real outcomes.
           </p>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
           {testimonials.map((t) => (
             <div
               key={t.id ?? t.name}
-              className="card-hover flex flex-col rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface-elevated)] p-6 sm:p-8"
+              className="card-hover flex flex-col rounded-2xl border border-[var(--color-border)]/40 bg-[var(--surface-elevated)] p-6 sm:p-8"
             >
-              <span
-                className="text-4xl leading-none text-[var(--color-primary)]/30"
-                aria-hidden
-              >
+              <span className="text-4xl leading-none text-[var(--color-primary)]/25" aria-hidden>
                 &ldquo;
               </span>
-              <p className="mt-2 flex-1 text-[var(--color-muted)] leading-relaxed">
+              <p className="mt-2 flex-1 text-[var(--color-muted)] leading-relaxed text-sm">
                 {t.quote}
               </p>
-              <p className="mt-3 inline-flex w-fit rounded-full bg-[var(--color-primary-muted)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)]">
+              <p className="mt-3 inline-flex w-fit rounded-full bg-[var(--color-primary-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--color-primary)]">
                 {t.result}
               </p>
               <Stars count={t.rating} />
-              <div className="mt-4 flex items-center gap-4 border-t border-[var(--color-border)]/50 pt-4">
+              <div className="mt-5 flex items-center gap-4 border-t border-[var(--color-border)]/40 pt-4">
                 <Image
                   src="/images/avatar-placeholder.svg"
                   alt=""
                   width={48}
                   height={48}
-                  className="h-12 w-12 shrink-0 rounded-full text-[var(--color-primary)]"
+                  className="h-12 w-12 shrink-0 rounded-full ring-2 ring-[var(--color-border)]/50 text-[var(--color-primary)]"
                   unoptimized
                 />
                 <div>

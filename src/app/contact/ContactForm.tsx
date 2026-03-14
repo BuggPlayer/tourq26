@@ -32,7 +32,7 @@ export default function ContactForm() {
           required
           value={formData.name}
           onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-[var(--color-border)] bg-[var(--surface)] px-4 py-3 text-white placeholder:text-[var(--color-muted)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+          className="mt-2 w-full rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           placeholder="Your name"
         />
       </div>
@@ -46,7 +46,7 @@ export default function ContactForm() {
           required
           value={formData.email}
           onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-[var(--color-border)] bg-[var(--surface)] px-4 py-3 text-white placeholder:text-[var(--color-muted)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+          className="mt-2 w-full rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           placeholder="you@company.com"
         />
       </div>
@@ -59,7 +59,7 @@ export default function ContactForm() {
           type="text"
           value={formData.company}
           onChange={(e) => setFormData((p) => ({ ...p, company: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-[var(--color-border)] bg-[var(--surface)] px-4 py-3 text-white placeholder:text-[var(--color-muted)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+          className="mt-2 w-full rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           placeholder="Your company (optional)"
         />
       </div>
@@ -73,7 +73,7 @@ export default function ContactForm() {
           rows={5}
           value={formData.message}
           onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
-          className="mt-2 w-full resize-y rounded-xl border border-[var(--color-border)] bg-[var(--surface)] px-4 py-3 text-white placeholder:text-[var(--color-muted)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+          className="mt-2 w-full resize-y rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           placeholder="Tell us about your project, timeline, and what you need..."
         />
       </div>

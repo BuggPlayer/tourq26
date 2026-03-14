@@ -15,18 +15,18 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--color-border)]/50 bg-[var(--surface)]">
-      <div id="contact" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
+    <footer className="border-t border-[var(--color-border)]/40 bg-[var(--surface)]">
+      <div id="contact" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
           <div className="text-center md:text-left">
             <Link
               href="/"
-              className="font-display text-xl font-bold tracking-tight text-white"
+              className="font-display text-xl font-bold tracking-tight text-white transition-opacity hover:opacity-90"
             >
               torq <span className="text-[var(--color-primary)]">studio</span>
             </Link>
             <p className="mt-2 max-w-xs text-sm text-[var(--color-muted)]">
-              Your trusted technology partner. Serving clients globally.
+              Your trusted technology partner. Global reach.
             </p>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 md:gap-8">
@@ -39,31 +39,18 @@ export default function Footer() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/privacy"
-              className="text-sm text-[var(--color-muted)] transition-colors hover:text-white"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-sm text-[var(--color-muted)] transition-colors hover:text-white"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/contact"
-              className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
-            >
-              Contact
-            </Link>
+            <Link href="/privacy" className="text-sm text-[var(--color-muted)] transition-colors hover:text-white">Privacy</Link>
+            <Link href="/terms" className="text-sm text-[var(--color-muted)] transition-colors hover:text-white">Terms</Link>
+            <Link href="/contact" className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]">Contact</Link>
           </nav>
         </div>
-        <p className="mt-6 text-center text-xs text-[var(--color-muted)]">
-          Secure delivery · Your data is handled with care
-        </p>
-        <div className="mt-6 border-t border-[var(--color-border)]/50 pt-8 text-center text-sm text-[var(--color-muted)]">
-          © {year} Torq Studio. All rights reserved.
+        <div className="mt-10 border-t border-[var(--color-border)]/40 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <p className="text-xs text-[var(--color-muted)]">
+            Secure delivery · Your data handled with care
+          </p>
+          <p className="text-sm text-[var(--color-muted)]">
+            © {year} Torq Studio. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

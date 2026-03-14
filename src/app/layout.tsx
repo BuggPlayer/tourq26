@@ -18,7 +18,7 @@ const outfit = Outfit({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0c0f17",
+  themeColor: "#07090e",
 };
 
 export async function generateMetadata(): Promise<Metadata> {

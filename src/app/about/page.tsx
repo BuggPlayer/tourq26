@@ -40,28 +40,28 @@ export default function AboutPage() {
     <div className="min-h-screen bg-[var(--background)]">
       <Header />
       <main>
-        <section className="gradient-mesh relative border-b border-[var(--color-border)]/50 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
+        <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
             <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
               Who we are
             </p>
             <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-              Your trusted technology partner for growth
+              Your trusted technology partner
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-[var(--color-muted)]">
-              Torq Studio helps businesses worldwide scale smarter and faster. We build mobile apps, web platforms, AI solutions, and provide remote IT resources—so you can focus on what matters while we deliver on time, every time.
+            <p className="mx-auto mt-6 max-w-xl text-[var(--color-muted)]">
+              We build mobile apps, web platforms, AI, and remote IT—so you can focus on growth while we deliver on time.
             </p>
           </div>
         </section>
 
         <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="flex justify-center py-6 text-[var(--color-primary)] opacity-60">
+          <div className="flex justify-center py-4">
             <Image
               src="/images/about-illustration.svg"
               alt=""
               width={320}
               height={200}
-              className="h-40 w-auto"
+              className="h-44 w-auto opacity-80"
               unoptimized
             />
           </div>
@@ -69,23 +69,23 @@ export default function AboutPage() {
             Our mission
           </h2>
           <p className="mt-4 text-[var(--color-muted)] leading-relaxed">
-            We exist to turn your ideas into results. Whether you need a mobile app, a modern web product, AI integration, or a dedicated remote team, we bring senior engineering and design talent so you can ship with confidence and reduce development costs by up to 40%.
+            We turn ideas into results. Mobile apps, web products, AI, or dedicated remote teams—we bring senior talent so you ship with confidence and cut development costs by up to 40%.
           </p>
           <p className="mt-4 text-[var(--color-muted)] leading-relaxed">
-            We believe in transparent partnerships: clear timelines, honest communication, and no surprises. Our clients range from startups to enterprises, and we serve them globally with the same commitment to quality and on-time delivery.
+            Transparent partnerships: clear timelines, honest communication, no surprises. From startups to enterprises, we serve clients globally with the same commitment to quality and on-time delivery.
           </p>
         </section>
 
-        <section className="border-t border-[var(--color-border)]/50 bg-[var(--surface)] py-16">
+        <section className="border-t border-[var(--color-border)]/40 bg-[var(--surface)] py-16">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
               What we stand for
             </h2>
-            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {values.map((item, i) => (
                 <div
                   key={item.title}
-                  className="card-hover rounded-2xl border border-[var(--color-border)]/50 bg-[var(--background)] p-6"
+                  className="card-hover rounded-2xl border border-[var(--color-border)]/40 bg-[var(--background)] p-6"
                 >
                   <span className="text-sm font-semibold text-[var(--color-primary)]">
                     0{i + 1}
@@ -102,13 +102,13 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="border-t border-[var(--color-border)]/50 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
+        <section className="border-t border-[var(--color-border)]/40 px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
             <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-              Ready to build something great?
+              Ready to build?
             </h2>
             <p className="mt-4 text-[var(--color-muted)]">
-              Get a free 30-minute consultation. We’ll listen to your goals and outline how we can help.
+              Free 30-min consultation. We’ll listen and outline how we can help.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
@@ -119,7 +119,7 @@ export default function AboutPage() {
               </Link>
               <Link
                 href="/#case-studies"
-                className="rounded-full border border-[var(--color-border)] px-8 py-4 text-base font-semibold text-white transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-muted)]"
+                className="rounded-full border border-[var(--color-border)] px-8 py-4 text-base font-semibold text-white transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-muted)]"
               >
                 See case studies
               </Link>

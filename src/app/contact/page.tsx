@@ -24,7 +24,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-[var(--background)]">
       <Header />
       <main>
-        <section className="gradient-mesh relative border-b border-[var(--color-border)]/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
+        <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
               Get in touch
@@ -32,17 +32,17 @@ export default function ContactPage() {
             <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
               Let’s talk about your project
             </h1>
-            <p className="mt-6 text-lg text-[var(--color-muted)]">
-              Tell us your goals and we’ll outline how we can help—mobile apps, web, AI, or a dedicated remote team. Free 30-min consultation, no commitment.
+            <p className="mt-6 text-[var(--color-muted)]">
+              Tell us your goals—mobile, web, AI, or remote team. Free 30-min consultation, no commitment.
             </p>
           </div>
         </section>
 
         <section className="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:px-8">
           <ContactForm />
-          <div className="mt-12 border-t border-[var(--color-border)]/50 pt-12 text-center">
+          <div className="mt-12 border-t border-[var(--color-border)]/40 pt-12 text-center">
             <p className="text-sm text-[var(--color-muted)]">
-              Prefer email? Write to us at{" "}
+              Prefer email?{" "}
               <a
                 href="mailto:hello@torqstudio.com"
                 className="font-medium text-[var(--color-primary)] hover:underline"
@@ -51,7 +51,7 @@ export default function ContactPage() {
               </a>
             </p>
             <p className="mt-2 text-sm text-[var(--color-muted)]">
-              We typically respond within 24 hours.
+              We respond within 24 hours.
             </p>
           </div>
         </section>
