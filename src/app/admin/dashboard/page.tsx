@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { isAdmin } from "@/lib/auth";
-import { readBlogPosts, readTestimonials } from "@/lib/content";
+import { readBlogPosts, readTestimonials, readContactSubmissions } from "@/lib/content";
 import { SeedKvButton } from "./SeedKvButton";
 
 const kvConfigured = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
@@ -10,13 +10,25 @@ export default async function AdminDashboardPage() {
   const ok = await isAdmin();
   if (!ok) redirect("/admin");
 
-  const [posts, testimonials] = await Promise.all([readBlogPosts(), readTestimonials()]);
+  const [posts, testimonials, contactSubmissions] = await Promise.all([
+    readBlogPosts(),
+    readTestimonials(),
+    readContactSubmissions(),
+  ]);
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-white">Dashboard</h1>
       <p className="mt-1 text-slate-400">Manage your site content.</p>
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <Link
+          href="/admin/contact"
+          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+        >
+          <h2 className="font-semibold text-white">Contact</h2>
+          <p className="mt-1 text-2xl font-bold text-cyan-400">{contactSubmissions.length}</p>
+          <p className="mt-1 text-sm text-slate-400">submissions</p>
+        </Link>
         <Link
           href="/admin/blog"
           className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"

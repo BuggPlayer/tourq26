@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { readSiteContent } from "@/lib/content";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -112,6 +113,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         {children}
+        <FloatingWhatsApp />
       </body>
     </html>
   );

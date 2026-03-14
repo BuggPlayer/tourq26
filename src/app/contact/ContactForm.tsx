@@ -10,11 +10,23 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus("sending");
     try {
-      const mailto = `mailto:hello@torqstudio.com?subject=Contact from ${encodeURIComponent(formData.name)} (${formData.company || "—"})&body=${encodeURIComponent(
-        formData.message + "\n\n—\n" + formData.name + "\n" + formData.email + (formData.company ? "\n" + formData.company : "")
-      )}`;
-      window.location.href = mailto;
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company || undefined,
+          message: formData.message,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setStatus("error");
+        return;
+      }
       setStatus("sent");
+      setFormData({ name: "", email: "", company: "", message: "" });
     } catch {
       setStatus("error");
     }
@@ -79,18 +91,18 @@ export default function ContactForm() {
       </div>
       {status === "sent" && (
         <p className="text-sm text-[var(--color-primary)]">
-          Your email client will open. Send the email to reach us.
+          Thanks! We’ve received your message and will get back to you soon.
         </p>
       )}
       {status === "error" && (
-        <p className="text-sm text-red-400">Something went wrong. Please email hello@torqstudio.com directly.</p>
+        <p className="text-sm text-red-400">Something went wrong. Please try again or email hello@torqstudio.com.</p>
       )}
       <button
         type="submit"
         disabled={status === "sending"}
         className="btn-primary w-full rounded-full bg-[var(--color-primary)] py-4 text-base font-semibold text-[var(--background)] disabled:opacity-60 sm:w-auto sm:px-10"
       >
-        {status === "sending" ? "Opening..." : "Send message"}
+        {status === "sending" ? "Sending…" : "Send message"}
       </button>
     </form>
   );

@@ -28,6 +28,7 @@ export default async function AdminLayout({
           <div className="mx-auto flex max-w-6xl gap-8 px-4 py-6">
             <aside className="w-48 shrink-0 space-y-1">
               <NavLink href="/admin/dashboard">Dashboard</NavLink>
+              <NavLink href="/admin/contact">Contact</NavLink>
               <NavLink href="/admin/blog">Blog</NavLink>
               <NavLink href="/admin/testimonials">Testimonials</NavLink>
               <NavLink href="/admin/site">Site & SEO</NavLink>

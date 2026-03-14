@@ -33,10 +33,20 @@ export type SiteContent = {
   siteName: string;
 };
 
+export type ContactSubmission = {
+  id: string;
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+  createdAt: string; // ISO
+};
+
 const KV_KEYS = {
   blog: "content:blog",
   testimonials: "content:testimonials",
   site: "content:site",
+  contact: "content:contact",
 } as const;
 
 function useKv(): boolean {
@@ -174,4 +184,57 @@ export async function writeSiteContent(data: SiteContent): Promise<void> {
   }
   const filePath = await getContentPath("site.json");
   await writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
+}
+
+// --- Contact form submissions (append-only, admin view only) ---
+
+export async function readContactSubmissionsFromFile(): Promise<ContactSubmission[]> {
+  try {
+    const filePath = await getContentPath("contact.json");
+    const raw = await readFile(filePath, "utf-8");
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? (data as ContactSubmission[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function readContactSubmissions(): Promise<ContactSubmission[]> {
+  const kv = await getKv();
+  if (kv) {
+    const data = await kv.get(KV_KEYS.contact);
+    if (Array.isArray(data)) return data as ContactSubmission[];
+    return [];
+  }
+  return readContactSubmissionsFromFile();
+}
+
+export async function writeContactSubmissions(submissions: ContactSubmission[]): Promise<void> {
+  const kv = await getKv();
+  if (kv) {
+    await kv.set(KV_KEYS.contact, submissions);
+    return;
+  }
+  const filePath = await getContentPath("contact.json");
+  await writeFile(filePath, JSON.stringify(submissions, null, 2), "utf-8");
+}
+
+export async function addContactSubmission(input: {
+  name: string;
+  email: string;
+  company?: string;
+  message: string;
+}): Promise<ContactSubmission> {
+  const list = await readContactSubmissions();
+  const submission: ContactSubmission = {
+    id: crypto.randomUUID(),
+    name: input.name.trim(),
+    email: input.email.trim(),
+    company: (input.company ?? "").trim(),
+    message: input.message.trim(),
+    createdAt: new Date().toISOString(),
+  };
+  list.unshift(submission); // newest first
+  await writeContactSubmissions(list);
+  return submission;
 }
