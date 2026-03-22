@@ -79,3 +79,39 @@ export function servicesItemListJsonLd(siteUrl: string, services: { name: string
     })),
   };
 }
+
+export function caseStudyArticleJsonLd(params: {
+  siteUrl: string;
+  slug: string;
+  headline: string;
+  description: string;
+  datePublished: string;
+  siteName: string;
+}) {
+  const url = `${params.siteUrl}/case-studies/${params.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: params.headline,
+    description: params.description,
+    datePublished: params.datePublished,
+    dateModified: params.datePublished,
+    author: { "@type": "Organization", name: params.siteName, url: params.siteUrl },
+    publisher: { "@type": "Organization", name: params.siteName, url: params.siteUrl },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+    about: params.description,
+  };
+}
+
+export function faqPageJsonLd(faqs: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}

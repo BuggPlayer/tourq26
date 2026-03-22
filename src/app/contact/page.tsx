@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Contact Us",
     description:
-      "Get in touch with Torq Studio for mobile app development, web development, AI solutions, or remote IT resources. Free 30-min consultation. We respond within 24 hours.",
+      "Contact Torq Studio: senior software engineers for mobile apps, websites, AI, technical consulting, and remote delivery. Free 30-min consultation.",
     alternates: { canonical: `${baseUrl}/contact` },
     openGraph: {
       title: "Contact Torq Studio | Get a Free Consultation",

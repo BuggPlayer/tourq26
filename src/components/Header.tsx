@@ -5,9 +5,9 @@ import Link from "next/link";
 
 const navLinks = [
   { href: "/about", label: "About" },
-  { href: "/#services", label: "Services" },
+  { href: "/services", label: "Services" },
   { href: "/#why-us", label: "Why Us" },
-  { href: "/#case-studies", label: "Case Studies" },
+  { href: "/case-studies", label: "Case Studies" },
   { href: "/blog", label: "Blog" },
   { href: "/freebies", label: "Freebies" },
   { href: "/#testimonials", label: "Testimonials" },

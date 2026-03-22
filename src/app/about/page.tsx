@@ -12,12 +12,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "About Us",
     description:
-      "Torq Studio is your trusted technology partner. Learn about our mission, values, and how we help businesses scale with mobile apps, web, AI, and remote IT teams worldwide.",
+      "Torq Studio is led by senior software engineers who build and advise: mobile apps, websites, AI, and technical consulting for teams worldwide.",
     alternates: { canonical: `${baseUrl}/about` },
     openGraph: {
-      title: "About Torq Studio | Your Technology Partner",
+      title: "About Torq Studio | Senior Engineers, Build & Consulting",
       description:
-        "We help businesses scale smarter with mobile apps, web development, AI solutions, and remote IT. Learn our story and what drives us.",
+        "Mobile, web, AI, and hands-on technical consulting—direct access to engineers who still ship production code.",
       url: `${baseUrl}/about`,
     },
     robots: { index: true, follow: true },
@@ -31,7 +31,7 @@ const values = [
   },
   {
     title: "Transparent partnership",
-    description: "Clear communication, honest timelines, and no hidden costs. You get a dedicated team that feels like an extension of yours.",
+    description: "Clear communication, honest timelines, and no hidden costs. You work with senior engineers who own outcomes—not endless account layers.",
   },
   {
     title: "Global reach, local impact",
@@ -56,10 +56,11 @@ export default async function AboutPage() {
               Who we are
             </p>
             <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-              Your trusted technology partner
+              Senior engineers you can actually talk to
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-[var(--color-muted)]">
-              We build mobile apps, web platforms, AI, and remote IT—so you can focus on growth while we deliver on time.
+              Torq Studio combines <strong className="text-white/90 font-semibold">delivery and consulting</strong>: mobile apps,
+              websites and web apps, AI integrations, and technical advice—architecture, estimates, reviews, and execution when you are ready.
             </p>
           </div>
         </section>
@@ -79,10 +80,10 @@ export default async function AboutPage() {
             Our mission
           </h2>
           <p className="mt-4 text-[var(--color-muted)] leading-relaxed">
-            We turn ideas into results. Mobile apps, web products, AI, or dedicated remote teams—we bring senior talent so you ship with confidence and cut development costs by up to 40%.
+            Help you make the <strong className="text-white/90 font-semibold">right technical bets</strong>—then implement them. Whether you need a senior engineer to own delivery, a second opinion before you hire or outsource, or a partner for mobile, web, and AI, we keep the conversation honest and the work production-grade.
           </p>
           <p className="mt-4 text-[var(--color-muted)] leading-relaxed">
-            Transparent partnerships: clear timelines, honest communication, no surprises. From startups to enterprises, we serve clients globally with the same commitment to quality and on-time delivery.
+            Many clients save significantly versus hiring only in high-cost markets, without giving up senior quality. Clear scopes, direct communication, and no bait-and-switch: you know who is doing the work.
           </p>
         </section>
 

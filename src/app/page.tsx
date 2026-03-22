@@ -10,7 +10,7 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { readTestimonials, readSiteContent } from "@/lib/content";
-import { servicesItemListJsonLd, webPageJsonLd } from "@/lib/seo";
+import { webPageJsonLd } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await readSiteContent();
@@ -24,12 +24,19 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   const [testimonials, site] = await Promise.all([readTestimonials(), readSiteContent()]);
   const siteUrl = site.siteUrl.replace(/\/$/, "");
-  const servicesLd = servicesItemListJsonLd(siteUrl, [
-    { name: "Mobile Apps", description: "Native and cross-platform mobile development." },
-    { name: "Web & APIs", description: "Scalable web applications and APIs." },
-    { name: "AI Solutions", description: "Automation, chatbots, and data-driven features." },
-    { name: "Remote IT", description: "Dedicated developers and integrated teams." },
-  ]);
+  const servicesLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Services",
+    numberOfItems: 5,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Mobile Apps", url: `${siteUrl}/services/mobile-app-development` },
+      { "@type": "ListItem", position: 2, name: "Web & APIs", url: `${siteUrl}/services/web-development` },
+      { "@type": "ListItem", position: 3, name: "AI Solutions", url: `${siteUrl}/services/ai-solutions` },
+      { "@type": "ListItem", position: 4, name: "Remote IT", url: `${siteUrl}/services/remote-it` },
+      { "@type": "ListItem", position: 5, name: "Technical consulting", url: `${siteUrl}/services/technical-consulting` },
+    ],
+  };
   const webPageLd = webPageJsonLd({
     siteUrl,
     path: "/",

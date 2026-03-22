@@ -1,7 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const solutions = ["Mobile apps", "Web & APIs", "AI & automation", "Integrations", "Custom software"];
+const solutions = [
+  "Mobile apps",
+  "Websites & web apps",
+  "AI & automation",
+  "Technical consulting",
+  "Integrations",
+  "Custom software",
+];
 
 export default function Hero() {
   return (
@@ -33,14 +40,13 @@ export default function Hero() {
         </div>
 
         <h1 className="animate-fade-up mt-6 font-display text-4xl font-bold leading-[1.08] tracking-tight text-white opacity-0 sm:text-5xl md:text-6xl lg:text-7xl animate-delay-2">
-          Build what’s next.{" "}
+          Senior engineers for{" "}
           <span className="bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-hover)] to-[var(--color-accent)] bg-clip-text text-transparent">
-            Ship on time.
+            your product & stack.
           </span>
         </h1>
         <p className="animate-fade-up mx-auto mt-5 max-w-xl text-base text-[var(--color-muted)] opacity-0 sm:text-lg animate-delay-3">
-          Mobile apps, web platforms, AI—we deliver. Save up to{" "}
-          <span className="font-semibold text-white">40%</span> on development with a free consultation.
+          Mobile apps, websites, AI, and technical consulting—<span className="text-white/90">you work with experienced engineers</span>, not a black box. Book a free call to scope what you need.
         </p>
 
         <div className="animate-fade-up mt-6 flex flex-wrap items-center justify-center gap-2 opacity-0 sm:gap-3 animate-delay-3">
@@ -71,7 +77,7 @@ export default function Hero() {
         </div>
 
         <p className="animate-fade-up mt-5 text-center text-sm text-[var(--color-muted)] opacity-0 animate-delay-4">
-          No pitch, no pressure
+          Straight talk · Build, advise, or both
         </p>
       </div>
     </section>

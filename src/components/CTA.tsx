@@ -17,10 +17,10 @@ export default function CTA() {
       </div>
       <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
         <h2 className="font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-          Ready for results?
+          Need build, advice, or both?
         </h2>
         <p className="mt-4 text-[var(--color-muted)]">
-          Free 30-min consultation. We’ll show how we cut costs and deliver on time.
+          Free 30-min call—React Native, Node, MVP scope, or architecture review. Based in Mumbai; overlap with India, EU & MENA.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
