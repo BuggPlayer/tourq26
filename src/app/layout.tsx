@@ -61,6 +61,9 @@ export async function generateMetadata(): Promise<Metadata> {
       title: site.twitterTitle,
       description: site.twitterDescription,
       images: ["/opengraph-image"],
+      ...(site.twitterSite
+        ? { site: `@${site.twitterSite}`, creator: `@${site.twitterSite}` }
+        : {}),
     },
     alternates: { canonical: siteUrl },
   };
@@ -81,7 +84,7 @@ export default async function RootLayout({
     url: siteUrl,
     description: site.defaultDescription,
     areaServed: "Worldwide",
-    sameAs: [],
+    ...(site.sameAs?.length ? { sameAs: site.sameAs } : {}),
   };
 
   const websiteJsonLd = {
@@ -92,11 +95,6 @@ export default async function RootLayout({
     description: site.defaultDescription,
     publisher: { "@type": "Organization", name: site.siteName, url: siteUrl },
     inLanguage: "en-US",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: { "@type": "EntryPoint", urlTemplate: `${siteUrl}/?q={search_term_string}` },
-      "query-input": "required name=search_term_string",
-    },
   };
 
   return (

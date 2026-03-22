@@ -1,25 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
+import { getSiteUrl } from "@/lib/site-url";
+import { breadcrumbListJsonLd } from "@/lib/seo";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com";
-
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description:
-    "Torq Studio terms of service. Terms governing use of our website and services. Intellectual property and contact.",
-  alternates: { canonical: `${baseUrl}/terms` },
-  openGraph: {
-    title: "Terms of Service | Torq Studio",
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getSiteUrl();
+  return {
+    title: "Terms of Service",
     description:
-      "Terms governing use of our website and services. Use of website, services, and intellectual property.",
-    url: `${baseUrl}/terms`,
-  },
-  robots: { index: true, follow: true },
-};
+      "Torq Studio terms of service. Terms governing use of our website and services. Intellectual property and contact.",
+    alternates: { canonical: `${baseUrl}/terms` },
+    openGraph: {
+      title: "Terms of Service | Torq Studio",
+      description:
+        "Terms governing use of our website and services. Use of website, services, and intellectual property.",
+      url: `${baseUrl}/terms`,
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const siteUrl = await getSiteUrl();
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "Terms", path: "/terms" },
+  ]);
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={breadcrumbLd} />
       <header className="border-b border-[var(--color-border)]/50 bg-[var(--surface)]">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-6 sm:px-6">
           <Link

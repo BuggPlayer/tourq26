@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { readBlogPosts } from "@/lib/content";
-
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
+import JsonLd from "@/components/JsonLd";
+import { readBlogPosts, readSiteContent } from "@/lib/content";
+import { getSiteUrl } from "@/lib/site-url";
+import { blogPostingJsonLd, breadcrumbListJsonLd } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const posts = await readBlogPosts();
@@ -18,9 +19,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const posts = await readBlogPosts();
+  const [posts, site] = await Promise.all([readBlogPosts(), readSiteContent()]);
   const post = posts.find((p) => p.slug === slug);
-  if (!post) return { title: "Post not found" };
+  if (!post) return { title: "Post not found", robots: { index: false, follow: false } };
+  const baseUrl = site.siteUrl.replace(/\/$/, "");
+  const ogImage = `/blog/${post.slug}/opengraph-image`;
   return {
     title: post.title,
     description: post.description,
@@ -31,6 +34,16 @@ export async function generateMetadata({
       url: `${baseUrl}/blog/${post.slug}`,
       type: "article",
       publishedTime: post.date,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | Torq Studio Blog`,
+      description: post.description,
+      images: [ogImage],
+      ...(site.twitterSite
+        ? { site: `@${site.twitterSite}`, creator: `@${site.twitterSite}` }
+        : {}),
     },
     robots: { index: true, follow: true },
   };
@@ -50,12 +63,34 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const posts = await readBlogPosts();
+  const [posts, site, siteUrl] = await Promise.all([
+    readBlogPosts(),
+    readSiteContent(),
+    getSiteUrl(),
+  ]);
   const post = posts.find((p) => p.slug === slug);
   if (!post) notFound();
 
+  const authorLabel = post.authorName?.trim() || site.siteName;
+  const articleLd = blogPostingJsonLd({
+    siteUrl,
+    slug: post.slug,
+    title: post.title,
+    description: post.description,
+    datePublished: post.date,
+    siteName: site.siteName,
+    authorName: post.authorName,
+  });
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: post.title, path: `/blog/${post.slug}` },
+  ]);
+
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={articleLd} />
+      <JsonLd data={breadcrumbLd} />
       <Header />
       <main>
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
@@ -72,6 +107,9 @@ export default async function BlogPostPage({
             <h1 className="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">
               {post.title}
             </h1>
+            <p className="mt-3 text-sm text-[var(--color-muted)]">
+              By <span className="text-white/90">{authorLabel}</span>
+            </p>
             <p className="mt-4 text-lg text-[var(--color-muted)] leading-relaxed">
               {post.description}
             </p>

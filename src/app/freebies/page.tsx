@@ -2,22 +2,26 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { freebies } from "@/data/freebies";
+import { getSiteUrl } from "@/lib/site-url";
+import { breadcrumbListJsonLd } from "@/lib/seo";
 
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
-
-export const metadata: Metadata = {
-  title: "Free Resources",
-  description:
-    "Free checklists, templates, and guides for product teams and founders: mobile app partner checklist, project brief template, pre-launch checklist, build vs buy guide.",
-  alternates: { canonical: `${baseUrl}/freebies` },
-  openGraph: {
-    title: "Free Resources | Torq Studio",
-    description: "Checklists, templates, and guides to help you choose partners, brief projects, and launch apps.",
-    url: `${baseUrl}/freebies`,
-  },
-  robots: { index: true, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getSiteUrl();
+  return {
+    title: "Free Resources",
+    description:
+      "Free checklists, templates, and guides for product teams and founders: mobile app partner checklist, project brief template, pre-launch checklist, build vs buy guide.",
+    alternates: { canonical: `${baseUrl}/freebies` },
+    openGraph: {
+      title: "Free Resources | Torq Studio",
+      description: "Checklists, templates, and guides to help you choose partners, brief projects, and launch apps.",
+      url: `${baseUrl}/freebies`,
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
 const typeLabel: Record<string, string> = {
   checklist: "Checklist",
@@ -25,9 +29,15 @@ const typeLabel: Record<string, string> = {
   guide: "Guide",
 };
 
-export default function FreebiesPage() {
+export default async function FreebiesPage() {
+  const siteUrl = await getSiteUrl();
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "Free resources", path: "/freebies" },
+  ]);
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={breadcrumbLd} />
       <Header />
       <main>
         <section className="gradient-mesh relative border-b border-[var(--color-border)]/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">

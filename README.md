@@ -27,16 +27,22 @@ npm start
 
 ### Before going live
 
-1. **Domain** — Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://torqstudio.com`) so `robots.txt` and `sitemap.xml` use the correct base URL. In `src/app/layout.tsx`, update the `siteUrl` constant if needed.
-2. **Social preview** — Add `public/og.png` (1200×630 px) for link previews on social and messaging apps.
-3. **Contact** — Replace `hello@torqstudio.com` in footer, CTA, and legal pages with your real email.
-4. **Legal** — Review and tailor `/privacy` and `/terms` content for your jurisdiction and practices.
+1. **Domain (canonical)** — In **Admin → Site & SEO**, set **Site URL** to your production origin (e.g. `https://torqstudio.com`). That value drives **canonical URLs**, **sitemap**, **robots.txt host**, and **metadataBase**. Optional: set `NEXT_PUBLIC_SITE_URL` to the same value for any client-only code.
+2. **Social profiles** — In Site & SEO, add **X/Twitter handle** (without `@`) and **Social profile URLs** (LinkedIn, etc.) for Organization `sameAs` and Twitter meta tags.
+3. **Social preview** — Default OG image: `src/app/opengraph-image.tsx`. Blog posts and freebies each have a **dynamic OG image** route.
+4. **Contact** — Replace `hello@torqstudio.com` where needed; ensure **Vercel KV** (or writable `content/`) so the contact form saves submissions.
+5. **Legal** — Review `/privacy` and `/terms` for your jurisdiction.
 
 ### Trust & SEO
 
-- Security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) are set in `next.config.ts`.
-- Schema.org Organization JSON-LD is in the layout for search engines.
-- `robots.txt` and `sitemap.xml` are generated automatically.
+- Security headers in `next.config.ts` where configured.
+- **Organization** + **WebSite** JSON-LD (no fake site search).
+- **Home:** WebPage + ItemList (services).
+- **Blog posts:** BlogPosting + BreadcrumbList; optional **author** per post in admin.
+- **Breadcrumbs** on about, contact, blog, freebies, privacy, terms.
+- **`robots.txt`:** allows public pages; **disallows `/admin` and `/api/`**.
+- **`sitemap.xml`** built from Site URL + blog + freebies.
+- **404** uses `noindex`.
 
 ## Structure
 

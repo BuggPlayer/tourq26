@@ -1,27 +1,37 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import ContactForm from "./ContactForm";
+import { getSiteUrl } from "@/lib/site-url";
+import { breadcrumbListJsonLd } from "@/lib/seo";
 
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
-
-export const metadata: Metadata = {
-  title: "Contact Us",
-  description:
-    "Get in touch with Torq Studio for mobile app development, web development, AI solutions, or remote IT resources. Free 30-min consultation. We respond within 24 hours.",
-  alternates: { canonical: `${baseUrl}/contact` },
-  openGraph: {
-    title: "Contact Torq Studio | Get a Free Consultation",
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getSiteUrl();
+  return {
+    title: "Contact Us",
     description:
-      "Discuss your project with our team. Mobile apps, web, AI, remote IT—we're here to help you scale smarter.",
-    url: `${baseUrl}/contact`,
-  },
-  robots: { index: true, follow: true },
-};
+      "Get in touch with Torq Studio for mobile app development, web development, AI solutions, or remote IT resources. Free 30-min consultation. We respond within 24 hours.",
+    alternates: { canonical: `${baseUrl}/contact` },
+    openGraph: {
+      title: "Contact Torq Studio | Get a Free Consultation",
+      description:
+        "Discuss your project with our team. Mobile apps, web, AI, remote IT—we're here to help you scale smarter.",
+      url: `${baseUrl}/contact`,
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const siteUrl = await getSiteUrl();
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "Contact", path: "/contact" },
+  ]);
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={breadcrumbLd} />
       <Header />
       <main>
         <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-16 sm:px-6 lg:px-8">

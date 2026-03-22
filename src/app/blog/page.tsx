@@ -2,23 +2,27 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { readBlogPosts } from "@/lib/content";
+import { getSiteUrl } from "@/lib/site-url";
+import { breadcrumbListJsonLd } from "@/lib/seo";
 
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
-
-export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Insights on mobile app development, web development, AI solutions, and remote IT teams. Tips and guides from Torq Studio to help you scale smarter.",
-  alternates: { canonical: `${baseUrl}/blog` },
-  openGraph: {
-    title: "Blog | Torq Studio – Mobile, Web, AI & Remote IT",
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getSiteUrl();
+  return {
+    title: "Blog",
     description:
-      "Guides and insights on choosing development partners, AI for business, and building with remote teams.",
-    url: `${baseUrl}/blog`,
-  },
-  robots: { index: true, follow: true },
-};
+      "Insights on mobile app development, web development, AI solutions, and remote IT teams. Tips and guides from Torq Studio to help you scale smarter.",
+    alternates: { canonical: `${baseUrl}/blog` },
+    openGraph: {
+      title: "Blog | Torq Studio – Mobile, Web, AI & Remote IT",
+      description:
+        "Guides and insights on choosing development partners, AI for business, and building with remote teams.",
+      url: `${baseUrl}/blog`,
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-GB", {
@@ -29,9 +33,14 @@ function formatDate(dateStr: string) {
 }
 
 export default async function BlogPage() {
-  const blogPosts = await readBlogPosts();
+  const [blogPosts, siteUrl] = await Promise.all([readBlogPosts(), getSiteUrl()]);
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+  ]);
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={breadcrumbLd} />
       <Header />
       <main>
         <section className="gradient-mesh relative border-b border-[var(--color-border)]/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">

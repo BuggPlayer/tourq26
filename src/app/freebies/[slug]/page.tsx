@@ -3,10 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { freebies } from "@/data/freebies";
 import { getFreebieContent } from "@/data/freebie-content";
-
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
+import { readSiteContent } from "@/lib/content";
+import { getSiteUrl } from "@/lib/site-url";
+import { breadcrumbListJsonLd } from "@/lib/seo";
 
 export async function generateStaticParams() {
   return freebies.map((f) => ({ slug: f.slug }));
@@ -19,7 +21,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const freebie = freebies.find((f) => f.slug === slug);
-  if (!freebie) return { title: "Freebie not found" };
+  if (!freebie) return { title: "Freebie not found", robots: { index: false, follow: false } };
+  const site = await readSiteContent();
+  const baseUrl = site.siteUrl.replace(/\/$/, "");
+  const ogImage = `/freebies/${freebie.slug}/opengraph-image`;
   return {
     title: freebie.title,
     description: freebie.description,
@@ -28,6 +33,16 @@ export async function generateMetadata({
       title: `${freebie.title} | Torq Studio Free Resources`,
       description: freebie.description,
       url: `${baseUrl}/freebies/${freebie.slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: freebie.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${freebie.title} | Torq Studio`,
+      description: freebie.description,
+      images: [ogImage],
+      ...(site.twitterSite
+        ? { site: `@${site.twitterSite}`, creator: `@${site.twitterSite}` }
+        : {}),
     },
     robots: { index: true, follow: true },
   };
@@ -43,9 +58,16 @@ export default async function FreebiePage({
   if (!freebie) notFound();
 
   const Content = getFreebieContent(slug);
+  const siteUrl = await getSiteUrl();
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "Free resources", path: "/freebies" },
+    { name: freebie.title, path: `/freebies/${freebie.slug}` },
+  ]);
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={breadcrumbLd} />
       <Header />
       <main>
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">

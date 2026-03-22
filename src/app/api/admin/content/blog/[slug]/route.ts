@@ -36,6 +36,10 @@ export async function PUT(
     date: body.date ?? posts[index].date,
     readTime: body.readTime ?? posts[index].readTime,
     body: body.body ?? posts[index].body,
+    authorName:
+      typeof body.authorName === "string"
+        ? body.authorName.trim() || undefined
+        : posts[index].authorName,
   };
   posts[index] = updated;
   await writeBlogPosts(posts);

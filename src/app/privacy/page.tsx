@@ -1,25 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
+import { getSiteUrl } from "@/lib/site-url";
+import { breadcrumbListJsonLd } from "@/lib/seo";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "Torq Studio privacy policy. How we collect, use, and protect your data. GDPR-friendly, transparent practices.",
-  alternates: { canonical: `${baseUrl}/privacy` },
-  openGraph: {
-    title: "Privacy Policy | Torq Studio",
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getSiteUrl();
+  return {
+    title: "Privacy Policy",
     description:
-      "How we collect, use, and protect your data. Transparent privacy practices for our website and services.",
-    url: `${baseUrl}/privacy`,
-  },
-  robots: { index: true, follow: true },
-};
+      "Torq Studio privacy policy. How we collect, use, and protect your data. GDPR-friendly, transparent practices.",
+    alternates: { canonical: `${baseUrl}/privacy` },
+    openGraph: {
+      title: "Privacy Policy | Torq Studio",
+      description:
+        "How we collect, use, and protect your data. Transparent privacy practices for our website and services.",
+      url: `${baseUrl}/privacy`,
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const siteUrl = await getSiteUrl();
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "Privacy", path: "/privacy" },
+  ]);
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={breadcrumbLd} />
       <header className="border-b border-[var(--color-border)]/50 bg-[var(--surface)]">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-6 sm:px-6">
           <Link

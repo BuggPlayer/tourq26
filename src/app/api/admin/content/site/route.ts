@@ -19,6 +19,13 @@ export async function PUT(request: NextRequest) {
     ...current,
     ...body,
     keywords: Array.isArray(body.keywords) ? body.keywords : current.keywords,
+    sameAs: Array.isArray(body.sameAs)
+      ? (body.sameAs as unknown[]).filter((u): u is string => typeof u === "string")
+      : current.sameAs,
+    twitterSite:
+      typeof body.twitterSite === "string"
+        ? body.twitterSite.replace(/^@/, "").trim()
+        : current.twitterSite,
   };
   await writeSiteContent(data);
   revalidatePath("/");

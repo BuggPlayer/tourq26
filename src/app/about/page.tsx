@@ -3,22 +3,26 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
+import { getSiteUrl } from "@/lib/site-url";
+import { breadcrumbListJsonLd } from "@/lib/seo";
 
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
-
-export const metadata: Metadata = {
-  title: "About Us",
-  description:
-    "Torq Studio is your trusted technology partner. Learn about our mission, values, and how we help businesses scale with mobile apps, web, AI, and remote IT teams worldwide.",
-  alternates: { canonical: `${baseUrl}/about` },
-  openGraph: {
-    title: "About Torq Studio | Your Technology Partner",
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getSiteUrl();
+  return {
+    title: "About Us",
     description:
-      "We help businesses scale smarter with mobile apps, web development, AI solutions, and remote IT. Learn our story and what drives us.",
-    url: `${baseUrl}/about`,
-  },
-  robots: { index: true, follow: true },
-};
+      "Torq Studio is your trusted technology partner. Learn about our mission, values, and how we help businesses scale with mobile apps, web, AI, and remote IT teams worldwide.",
+    alternates: { canonical: `${baseUrl}/about` },
+    openGraph: {
+      title: "About Torq Studio | Your Technology Partner",
+      description:
+        "We help businesses scale smarter with mobile apps, web development, AI solutions, and remote IT. Learn our story and what drives us.",
+      url: `${baseUrl}/about`,
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
 const values = [
   {
@@ -35,9 +39,15 @@ const values = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const siteUrl = await getSiteUrl();
+  const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+  ]);
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <JsonLd data={breadcrumbLd} />
       <Header />
       <main>
         <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-20 sm:px-6 lg:px-8">

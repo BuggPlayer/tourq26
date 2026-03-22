@@ -113,6 +113,38 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
           className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
         />
       </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-300">
+          X (Twitter) handle — without @ (for meta tags)
+        </label>
+        <input
+          type="text"
+          value={data.twitterSite ?? ""}
+          onChange={(e) => update("twitterSite", e.target.value.replace(/^@/, ""))}
+          placeholder="yourbrand"
+          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white placeholder:text-slate-500"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-300">
+          Social profile URLs (Organization sameAs) — one per line
+        </label>
+        <textarea
+          value={Array.isArray(data.sameAs) ? data.sameAs.join("\n") : ""}
+          onChange={(e) =>
+            update(
+              "sameAs",
+              e.target.value
+                .split("\n")
+                .map((u) => u.trim())
+                .filter(Boolean)
+            )
+          }
+          rows={4}
+          placeholder="https://www.linkedin.com/company/…&#10;https://x.com/…"
+          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white placeholder:text-slate-500"
+        />
+      </div>
       {error && <p className="text-sm text-red-400">{error}</p>}
       <button
         type="submit"

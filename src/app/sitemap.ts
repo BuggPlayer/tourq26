@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { readBlogPosts } from "@/lib/content";
 import { freebies } from "@/data/freebies";
-
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://torqstudio.com").replace(/\/$/, "");
+import { getSiteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = await getSiteUrl();
   const blogPosts = await readBlogPosts();
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },

@@ -14,6 +14,7 @@ export function BlogPostForm({ post }: Props) {
   const [description, setDescription] = useState(post?.description ?? "");
   const [date, setDate] = useState(post?.date ?? new Date().toISOString().slice(0, 10));
   const [readTime, setReadTime] = useState(post?.readTime ?? "5 min read");
+  const [authorName, setAuthorName] = useState(post?.authorName ?? "");
   const [body, setBody] = useState(post?.body ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -27,8 +28,8 @@ export function BlogPostForm({ post }: Props) {
       : "/api/admin/content/blog";
     const method = post ? "PUT" : "POST";
     const payload = post
-      ? { slug, title, description, date, readTime, body }
-      : { slug: slug || undefined, title, description, date, readTime, body };
+      ? { slug, title, description, date, readTime, body, authorName: authorName.trim() }
+      : { slug: slug || undefined, title, description, date, readTime, body, authorName: authorName.trim() || undefined };
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
@@ -95,6 +96,16 @@ export function BlogPostForm({ post }: Props) {
             className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
           />
         </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-300">Author name (optional, for SEO)</label>
+        <input
+          type="text"
+          value={authorName}
+          onChange={(e) => setAuthorName(e.target.value)}
+          placeholder="Defaults to site name if empty"
+          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white placeholder:text-slate-500"
+        />
       </div>
       <div>
         <label className="block text-sm font-medium text-slate-300">Body</label>

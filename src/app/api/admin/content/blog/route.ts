@@ -29,6 +29,9 @@ export async function POST(request: NextRequest) {
     date: body.date ?? new Date().toISOString().slice(0, 10),
     readTime: body.readTime ?? "5 min read",
     body: body.body ?? "",
+    ...(typeof body.authorName === "string" && body.authorName.trim()
+      ? { authorName: body.authorName.trim() }
+      : {}),
   };
   posts.push(newPost);
   await writeBlogPosts(posts);
