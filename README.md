@@ -33,6 +33,7 @@ npm start
 4. **Contact** — Replace `hello@torqstudio.com` where needed; ensure **Vercel KV** (or writable `content/`) so the contact form saves submissions.
 5. **Legal** — Review `/privacy` and `/terms` for your jurisdiction.
 6. **WhatsApp (floating button)** — Set **`NEXT_PUBLIC_WHATSAPP_NUMBER`** to your WhatsApp Business / mobile number in **international format, digits only, no `+`** (example India: `919876543210`). If you use a **10-digit local** number, the app prepends **`NEXT_PUBLIC_WHATSAPP_PREFIX`** (defaults to **`91`**). Use `1` for US/Canada, `44` for UK, etc. Links use **`https://api.whatsapp.com/send`** (more reliable than `wa.me` with bad numbers). **`NEXT_PUBLIC_*` is applied at build time** — after changing env on Vercel, **redeploy**.
+7. **AI tools (`/tools`)** — Set **`OPENAI_API_KEY`** for generation (budget estimator, vendor evaluation, pitch & founder one-pager, RFP drafter, tech stack trade-offs, interview prep, job posts). Without it, the API returns 503. Optional: **Vercel KV** enables per-IP daily rate limiting (`src/lib/tools-rate-limit.ts`). See `docs/TOOLS-STRATEGY.md`.
 
 ### Trust & SEO
 
@@ -42,10 +43,10 @@ npm start
 - **Blog posts:** BlogPosting + BreadcrumbList; optional **author** per post in admin.
 - **Breadcrumbs** on about, contact, blog, freebies, privacy, terms.
 - **`robots.txt`:** allows public pages; **disallows `/admin` and `/api/`**.
-- **`sitemap.xml`** built from Site URL + blog + freebies.
+- **`sitemap.xml`** built from Site URL + blog + freebies + **tools** (`/tools` and each tool slug).
 - **404** uses `noindex`.
 
 ## Structure
 
-- `src/app/` — Layout, metadata, home, privacy, terms, 404, robots, sitemap
+- `src/app/` — Layout, metadata, home, privacy, terms, **tools** (`/tools`, `/tools/[slug]`), 404, robots, sitemap
 - `src/components/` — Header, Hero, TrustBar, Services, WhyChooseUs, CaseStudies, Testimonials, CTA, Footer

@@ -70,6 +70,12 @@ export default async function PrivacyPage() {
             We use your information to respond to enquiries, deliver services, improve our website, and comply with legal obligations. We do not sell your data to third parties.
           </p>
           <h2 className="mt-8 font-display text-lg font-semibold text-white">
+            Free AI tools on this website
+          </h2>
+          <p className="mt-2 text-[var(--color-muted)] leading-relaxed">
+            When you use our free tools at <Link href="/tools" className="text-[var(--color-primary)] hover:underline">/tools</Link>, the text you submit is sent to our servers and then to an AI model provider (e.g. OpenAI) to generate a response. We do not use that content to train public models. Do not submit secrets, credentials, personal data you are not allowed to share, or confidential third-party information. Outputs are automated drafts — verify before relying on them. Provider terms and privacy policies apply to their processing of requests we forward on your behalf.
+          </p>
+          <h2 className="mt-8 font-display text-lg font-semibold text-white">
             Security & your rights
           </h2>
           <p className="mt-2 text-[var(--color-muted)] leading-relaxed">

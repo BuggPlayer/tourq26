@@ -115,3 +115,26 @@ export function faqPageJsonLd(faqs: { question: string; answer: string }[]) {
     })),
   };
 }
+
+export function webApplicationJsonLd(params: {
+  siteUrl: string;
+  path: string;
+  name: string;
+  description: string;
+}) {
+  const url = `${params.siteUrl}${params.path.startsWith("/") ? params.path : `/${params.path}`}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: params.name,
+    description: params.description,
+    url,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Any",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+}
