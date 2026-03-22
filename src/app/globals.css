@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
 @theme inline {
   --color-background: #07090e;
@@ -125,4 +126,92 @@ button:focus-visible {
   .animate-fade-up, .animate-fade-in, .animate-scale-in, .animate-float { animation: none; }
   .card-hover:hover { transform: none; }
   .btn-primary:hover { transform: none; }
+}
+
+/* Hub Q&A: theme-aware inline code + links (#hub-root[data-hub-theme] set in ThemeSync) */
+#hub-root[data-hub-theme="dark"] .hub-qa-inline-code {
+  background-color: rgba(244, 63, 94, 0.22);
+  color: #fecdd3;
+}
+#hub-root[data-hub-theme="light"] .hub-qa-inline-code {
+  background-color: #ffe4e6;
+  color: #881337;
+}
+#hub-root[data-hub-theme="dark"] .hub-qa-link {
+  color: #22d3ee;
+}
+#hub-root[data-hub-theme="dark"] .hub-qa-link:hover {
+  color: #67e8f9;
+}
+#hub-root[data-hub-theme="light"] .hub-qa-link {
+  color: #0e7490;
+}
+#hub-root[data-hub-theme="light"] .hub-qa-link:hover {
+  color: #155e75;
+}
+
+/* Hub accent — driven by ThemeSync (--hub-primary*) */
+.hub-btn-primary {
+  background-color: var(--hub-primary, #0891b2);
+  color: var(--hub-primary-foreground, #fff);
+  transition: background-color 0.15s ease, transform 0.2s ease;
+}
+.hub-btn-primary:hover {
+  background-color: var(--hub-primary-hover, #06b6d4);
+}
+.hub-text-accent {
+  color: var(--hub-primary, #0891b2);
+}
+.hub-text-accent:hover {
+  color: var(--hub-primary-hover, #06b6d4);
+}
+
+/* Hub /hub landing — hero highlight + list hovers + tag swatches */
+#hub-root[data-hub-theme="dark"] .hub-hero-highlight {
+  background-color: rgba(250, 204, 21, 0.22);
+  color: #fef08a;
+}
+#hub-root[data-hub-theme="light"] .hub-hero-highlight {
+  background-color: rgba(254, 240, 138, 0.95);
+  color: #1c1917;
+}
+#hub-root[data-hub-theme="dark"] .hub-fs-row:hover {
+  background-color: rgba(255, 255, 255, 0.045);
+}
+#hub-root[data-hub-theme="light"] .hub-fs-row:hover {
+  background-color: rgba(0, 0, 0, 0.035);
+}
+
+#hub-root[data-hub-theme="dark"] .hub-swatch-amber {
+  background-color: rgba(245, 158, 11, 0.22);
+  color: #fcd34d;
+}
+#hub-root[data-hub-theme="dark"] .hub-swatch-sky {
+  background-color: rgba(14, 165, 233, 0.2);
+  color: #7dd3fc;
+}
+#hub-root[data-hub-theme="dark"] .hub-swatch-emerald {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+#hub-root[data-hub-theme="dark"] .hub-swatch-purple {
+  background-color: rgba(168, 85, 247, 0.2);
+  color: #d8b4fe;
+}
+
+#hub-root[data-hub-theme="light"] .hub-swatch-amber {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+#hub-root[data-hub-theme="light"] .hub-swatch-sky {
+  background-color: #e0f2fe;
+  color: #075985;
+}
+#hub-root[data-hub-theme="light"] .hub-swatch-emerald {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+#hub-root[data-hub-theme="light"] .hub-swatch-purple {
+  background-color: #f3e8ff;
+  color: #6b21a8;
 }

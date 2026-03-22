@@ -46,7 +46,84 @@ npm start
 - **`sitemap.xml`** built from Site URL + blog + freebies + **tools** (`/tools` and each tool slug).
 - **404** uses `noindex`.
 
+## TorqStudio Interview Hub (`/hub`)
+
+Full-stack interview preparation and hiring surface (candidates + companies), co-located with the marketing site.
+
+### Features (high level)
+
+- **Landing & navigation** — Hero, candidate vs hiring CTAs, sidebar with TorqStudio agency CTA + modal.
+- **Candidate** — Filterable question bank (DSA / UI / quiz / frontend system design), Monaco editor, **Piston** runs (`/api/run`), graded submit (`/api/submit`) with optional **OpenAI** feedback, UI **iframe `srcDoc` preview**, **React Flow** system-design canvas, quizzes, preparation plans, progress stats.
+- **Hiring** — Rule-based interview set generator + **PDF export** (`@react-pdf/renderer`).
+- **Jobs & talent** — Job board API, talent pool opt-in with filters.
+- **Mock interviews** — Complimentary Calendly embed during launch; paid checkout code path kept for later.
+- **Community** — Per-question forums, static live-session copy (MVP).
+- **Pricing / access** — **Launch: full hub is free** (`HUB_ALL_FREE_LAUNCH = true` in `src/lib/hub/usage.ts`). Stripe + tier checks are disabled until you flip that flag.
+- **Auth** — **NextAuth.js** (credentials + optional Google/GitHub via env).
+
+### Hub setup
+
+1. **Environment** — Copy `.env.example` to `.env` and set at least:
+   - `DATABASE_URL` — demo: `file:./prisma/dev.db` (SQLite). For production, use PostgreSQL (see below).
+   - `AUTH_SECRET` — `openssl rand -base64 32`
+   - Optional: `OPENAI_API_KEY`, OAuth client IDs/secrets, Stripe keys (see `.env.example`).
+2. **Database & seed**
+   ```bash
+   npx prisma db push
+   npm run db:seed
+   ```
+3. **Run**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000/hub](http://localhost:3000/hub). Register at `/hub/register`, then sign in at `/hub/signin`.
+
+### PostgreSQL (production shape)
+
+The Prisma schema is modeled for relational data; for Postgres:
+
+1. In `prisma/schema.prisma`, set `provider = "postgresql"` on `datasource db`.
+2. Set `DATABASE_URL` to your Postgres connection string.
+3. Run `npx prisma migrate dev` (or `migrate deploy` in CI) instead of `db push` when you want versioned migrations.
+
+### Stripe (INR) — optional (when not all-free)
+
+While `HUB_ALL_FREE_LAUNCH` is `true`, users are not charged; you can skip Stripe in `.env`.
+
+1. Create **Products / Prices** in [Stripe Dashboard](https://dashboard.stripe.com) in **INR** (recurring for Premium, one-time for mock interview).
+2. Put Price IDs in `STRIPE_PRICE_MONTHLY_INR`, `STRIPE_PRICE_YEARLY_INR`, `STRIPE_PRICE_MOCK_INR`.
+3. Add webhook endpoint pointing to `https://your-domain.com/api/webhooks/stripe` for `checkout.session.completed`; use signing secret as `STRIPE_WEBHOOK_SECRET`.
+4. Successful subscription checkout sets `subscriptionTier` to `premium` on the user (see `src/app/api/webhooks/stripe/route.ts`).
+
+### Vercel deployment (Interview Hub)
+
+1. **Project** — Import the repo; **Framework Preset**: Next.js.
+2. **Env vars** — Add all variables from `.env.example` in Vercel **Settings → Environment Variables** (Production + Preview as needed). Set `AUTH_URL` to `https://your-domain.com` if redirects misbehave.
+3. **Database** — Use [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres) or any hosted Postgres; set `DATABASE_URL`. Run `prisma migrate deploy` in a **build command** or a one-off script (e.g. `prisma migrate deploy && prisma generate && next build`), or run migrations from your machine against the production URL before/after deploy.
+4. **Build** — Default `npm run build` runs `prisma generate` via the `build` script.
+5. **Stripe webhook** — In Stripe, add the production webhook URL; redeploy after adding `STRIPE_WEBHOOK_SECRET`.
+6. **OAuth** — Add production callback URLs in Google/GitHub consoles: `https://your-domain.com/api/auth/callback/google` (and `/github`).
+
+### API routes (hub)
+
+| Route | Purpose |
+|--------|---------|
+| `POST /api/auth/[...nextauth]` | NextAuth |
+| `POST /api/register` | Email/password signup |
+| `GET /api/questions` | Filtered question list |
+| `GET /api/questions/[id]` | Question detail + starters |
+| `POST /api/submit` | Grade code / UI / diagram |
+| `POST /api/run` | Piston-only run |
+| `GET /api/quiz/random`, `GET /api/quiz/[id]`, `POST /api/quiz/answer` | Quizzes |
+| `GET /api/plans`, `POST /api/plans/enroll` | Preparation plans |
+| `GET,POST /api/jobs` | Job board |
+| `GET,POST /api/talent` | Talent pool |
+| `POST /api/checkout` | Stripe Checkout session |
+| `POST /api/webhooks/stripe` | Stripe events |
+| `GET,POST /api/forum`, `POST /api/forum/reply` | Discussions |
+
 ## Structure
 
-- `src/app/` — Layout, metadata, home, privacy, terms, **tools** (`/tools`, `/tools/[slug]`), 404, robots, sitemap
-- `src/components/` — Header, Hero, TrustBar, Services, WhyChooseUs, CaseStudies, Testimonials, CTA, Footer
+- `src/app/` — Layout, metadata, home, privacy, terms, **tools** (`/tools`, `/tools/[slug]`), **hub** (`/hub/**`), 404, robots, sitemap
+- `src/components/` — Header, Hero, …, **`hub/*`** (Interview Hub UI)
+- `prisma/` — Schema + seed data for the hub
