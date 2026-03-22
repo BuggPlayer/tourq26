@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import WorkGalleryStrip from "@/components/WorkGalleryStrip";
 import TrustBar from "@/components/TrustBar";
 import Services from "@/components/Services";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import CaseStudies from "@/components/CaseStudies";
 import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
+import HomePageContent from "@/components/HomePageContent";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { readTestimonials, readSiteContent } from "@/lib/content";
@@ -51,11 +53,13 @@ export default async function Home() {
       <Header />
       <main>
         <Hero />
+        <WorkGalleryStrip />
         <TrustBar />
         <Services />
         <WhyChooseUs />
         <CaseStudies />
         <Testimonials items={testimonials} />
+        <HomePageContent />
         <CTA />
         <Footer />
       </main>

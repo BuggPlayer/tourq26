@@ -137,9 +137,9 @@ export async function writeTestimonials(items: Testimonial[]): Promise<void> {
 function getDefaultSiteContent(): SiteContent {
   return {
     siteUrl: "https://torqstudio.com",
-    defaultTitle: "Torq Studio | Senior Software Engineers | Mobile, Web, AI & Consulting",
+    defaultTitle: "Torq Studio | Senior engineers · Mobile, web & AI",
     defaultDescription:
-      "Senior software engineers for hire: mobile apps, websites, AI solutions, and technical consulting. Direct collaboration, production-quality delivery, and honest scoping—worldwide.",
+      "Senior software engineers for mobile apps, websites, and AI. Direct collaboration, production-quality delivery, and honest scoping for teams worldwide.",
     titleTemplate: "%s | Torq Studio",
     keywords: [
       "senior software engineer",
@@ -153,12 +153,12 @@ function getDefaultSiteContent(): SiteContent {
       "remote developer",
       "Torq Studio",
     ],
-    ogTitle: "Torq Studio | Senior Engineers for Mobile, Web & AI",
+    ogTitle: "Torq Studio | Senior engineers · Mobile, web & AI",
     ogDescription:
-      "Build products or get technical advice—mobile apps, web, AI, and consulting from engineers who still ship.",
-    twitterTitle: "Torq Studio | Senior Engineers for Mobile, Web & AI",
+      "Mobile apps, web, AI, and consulting from senior engineers who ship. Clear scope and direct collaboration.",
+    twitterTitle: "Torq Studio | Senior engineers · Mobile, web & AI",
     twitterDescription:
-      "Mobile, web, AI & technical consulting. Work directly with senior software engineers.",
+      "Senior engineers for mobile, web & AI. Direct collaboration and production-quality delivery.",
     siteName: "Torq Studio",
     sameAs: [],
     twitterSite: "",

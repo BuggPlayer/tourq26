@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -94,7 +95,23 @@ export default async function CaseStudyDetailPage({
           >
             ← All case studies
           </Link>
-          <header className="mt-6">
+          <div className="relative mt-6 overflow-hidden rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)] ring-1 ring-white/5">
+            <div className="relative aspect-[2/1] w-full min-h-[200px] sm:min-h-[260px]">
+              <Image
+                src={study.coverImage}
+                alt={study.coverAlt}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 720px"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent"
+                aria-hidden
+              />
+            </div>
+          </div>
+          <header className="mt-8">
             <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-primary)]">
               {study.industry} · {study.client}
             </p>

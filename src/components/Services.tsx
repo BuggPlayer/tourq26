@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { sitePhotos } from "@/data/site-photos";
 
 const services: {
   slug: string;
@@ -49,7 +50,14 @@ export default function Services() {
   return (
     <section id="services" className="relative border-t border-[var(--color-border)]/40 bg-[var(--surface)] py-20 sm:py-24 lg:py-28 overflow-hidden">
       <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-72 opacity-20 xl:opacity-25" aria-hidden>
-        <Image src="/images/section-services.svg" alt="" width={400} height={280} className="h-auto w-full" unoptimized />
+        <Image
+          src="/images/section-services.svg"
+          alt="Abstract illustration representing software services, APIs, and product delivery"
+          width={400}
+          height={280}
+          className="h-auto w-full"
+          unoptimized
+        />
       </div>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto">
@@ -69,6 +77,26 @@ export default function Services() {
             Full service overviews & FAQs →
           </Link>
         </div>
+
+        <div className="relative mt-12 overflow-hidden rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)] shadow-xl ring-1 ring-white/5 sm:mt-14">
+          <div className="relative aspect-[21/9] min-h-[160px] sm:min-h-[220px]">
+            <Image
+              src={sitePhotos.servicesBanner.src}
+              alt={sitePhotos.servicesBanner.alt}
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1152px) 100vw, 1152px"
+            />
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent"
+              aria-hidden
+            />
+            <p className="absolute bottom-4 left-4 right-4 max-w-md text-sm font-medium text-white drop-shadow-md sm:bottom-6 sm:left-8 sm:text-base">
+              From discovery to production—same senior engineers throughout.
+            </p>
+          </div>
+        </div>
+
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 xl:grid-cols-5">
           {services.map((service) => (
             <div
@@ -79,7 +107,14 @@ export default function Services() {
                 className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/15 text-[var(--color-primary)] transition-transform duration-300 group-hover:scale-110"
                 aria-hidden
               >
-                <Image src={service.icon} alt="" width={28} height={28} className="opacity-90" unoptimized />
+                <Image
+                  src={service.icon}
+                  alt={`${service.title} icon`}
+                  width={28}
+                  height={28}
+                  className="opacity-90"
+                  unoptimized
+                />
               </span>
               <h3 className="mt-4 font-display text-lg font-semibold text-white">
                 {service.title}

@@ -32,8 +32,18 @@ export default function CaseStudies() {
               key={study.slug}
               className="card-hover group flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)]/40 bg-[var(--surface-elevated)]"
             >
-              <div className="relative flex h-36 items-center justify-center bg-gradient-to-br from-[var(--color-primary-muted)] via-[var(--color-surface-elevated)] to-[var(--color-accent-muted)] text-[var(--color-primary)] transition-transform duration-300 group-hover:scale-[1.02]">
-                <Image src={study.icon} alt="" width={56} height={56} className="opacity-90" unoptimized />
+              <div className="relative h-44 overflow-hidden transition-transform duration-300 group-hover:scale-[1.02] sm:h-48">
+                <Image
+                  src={study.coverImage}
+                  alt={study.coverAlt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--surface-elevated)] via-transparent to-transparent"
+                  aria-hidden
+                />
               </div>
               <div className="flex flex-1 flex-col p-6 sm:p-7">
                 <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-primary)]">

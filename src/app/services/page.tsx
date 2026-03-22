@@ -78,7 +78,7 @@ export default async function ServicesIndexPage() {
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/15 text-[var(--color-primary)]">
                   <Image
                     src={iconMap[p.slug] ?? "/images/icons/web.svg"}
-                    alt=""
+                    alt={`${p.title} service icon`}
                     width={28}
                     height={28}
                     className="opacity-90"

@@ -25,8 +25,10 @@ export default function Footer() {
             >
               torq <span className="text-[var(--color-primary)]">studio</span>
             </Link>
-            <p className="mt-2 max-w-xs text-sm text-[var(--color-muted)]">
-              Senior software engineers: mobile, web, AI and consulting. Work directly with people who ship.
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--color-muted)]">
+              Senior software engineers for mobile apps, websites, APIs, and practical AI. We focus on clear scope,
+              production-quality delivery, and direct communication—so you always know who is building and advising on
+              your product.
             </p>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 md:gap-8">

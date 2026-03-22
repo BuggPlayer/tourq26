@@ -23,7 +23,14 @@ export default function WhyChooseUs() {
     <section id="why-us" className="relative border-t border-[var(--color-border)]/40 py-20 sm:py-24 lg:py-28 overflow-hidden">
       {/* Section visual */}
       <div className="pointer-events-none absolute left-0 bottom-0 w-64 opacity-15 xl:w-80" aria-hidden>
-        <Image src="/images/why-choose-visual.svg" alt="" width={320} height={200} className="h-auto w-full" unoptimized />
+        <Image
+          src="/images/why-choose-visual.svg"
+          alt="Illustration highlighting quality, transparency, and engineering partnership"
+          width={320}
+          height={200}
+          className="h-auto w-full"
+          unoptimized
+        />
       </div>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto">

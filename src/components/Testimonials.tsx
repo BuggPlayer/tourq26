@@ -89,7 +89,7 @@ export default function Testimonials({ items }: Props) {
               <div className="mt-5 flex items-center gap-4 border-t border-[var(--color-border)]/40 pt-4">
                 <Image
                   src="/images/avatar-placeholder.svg"
-                  alt=""
+                  alt={`Client testimonial avatar for ${t.name}`}
                   width={48}
                   height={48}
                   className="h-12 w-12 shrink-0 rounded-full ring-2 ring-[var(--color-border)]/50 text-[var(--color-primary)]"

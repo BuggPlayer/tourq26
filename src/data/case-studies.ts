@@ -8,6 +8,9 @@ export type CaseStudy = {
   metric: string;
   metricLabel: string;
   icon: string;
+  /** Cover photo for cards and article header (Unsplash or /public path). */
+  coverImage: string;
+  coverAlt: string;
   description: string;
   date: string;
   readTime: string;
@@ -26,6 +29,9 @@ export const caseStudies: CaseStudy[] = [
     metric: "6 months",
     metricLabel: "Time to store launch",
     icon: "/images/icons/mobile.svg",
+    coverImage:
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&q=85&auto=format&fit=crop",
+    coverAlt: "Person using a banking or finance app on a smartphone",
     description:
       "How we delivered a compliant, secure mobile banking experience across regions—architecture, security practices, and delivery model.",
     date: "2025-01-15",
@@ -56,6 +62,9 @@ export const caseStudies: CaseStudy[] = [
     metric: "60% faster",
     metricLabel: "Median first response",
     icon: "/images/icons/ai.svg",
+    coverImage:
+      "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&q=85&auto=format&fit=crop",
+    coverAlt: "Team collaborating on customer support and operations",
     description:
       "Practical AI integration: when to automate, how to measure quality, and how we integrated with existing tools without a rip-and-replace.",
     date: "2024-11-20",
@@ -84,6 +93,9 @@ export const caseStudies: CaseStudy[] = [
     metric: "4 months",
     metricLabel: "MVP to production",
     icon: "/images/icons/web.svg",
+    coverImage:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=85&auto=format&fit=crop",
+    coverAlt: "E-commerce shopping experience on a tablet",
     description:
       "How we combined a focused platform rebuild with a dedicated team model—ways of working, ownership, and metrics that matter for scale-ups.",
     date: "2024-09-08",
@@ -111,6 +123,9 @@ export const caseStudies: CaseStudy[] = [
     metric: "12 weeks",
     metricLabel: "Core migration program",
     icon: "/images/icons/web.svg",
+    coverImage:
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=85&auto=format&fit=crop",
+    coverAlt: "Developer working on software at a laptop",
     description:
       "A playbook for evolving public APIs: versioning strategy, sunset policy, and how we helped a SaaS vendor reassure enterprise buyers.",
     date: "2024-07-22",
