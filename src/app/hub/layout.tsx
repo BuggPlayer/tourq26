@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     "TorqStudio Interview Hub — DSA, UI challenges, system design, mock interviews, and hiring tools.",
 };
 
+/** Hub uses NextAuth `auth()` (reads cookies / headers); must not be statically prerendered. */
+export const dynamic = "force-dynamic";
+
 export default async function HubLayout({
   children,
 }: {
