@@ -5,8 +5,10 @@
  * - **Today:** Static TypeScript. Each item can include optional `source: { name, url? }`
  *   for attribution when an answer is summarized from public docs, a blog, or a book.
  * - **TorqStudio originals:** Omit `source` or set `name: "TorqStudio editorial"`.
- * - **Later / production:** Replace this file with CMS (Sanity, Contentful) or your DB;
- *   keep the same fields (`source`, `difficulty`, `codeExample`, etc.) on each record.
+ * - **Production:** Candidate UI reads from **MongoDB** (`InterviewBankItem` in the `nodejs` bank) when the
+ *   hub DB is on and rows exist; otherwise this bundle is the fallback for that bank. Manage banks at
+ *   **Admin → Interview Q&A banks** (`/admin/hub/interview-banks`). Run `npm run db:seed` to import this
+ *   file into the `nodejs` bank.
  *   Editors paste content; your app **does not auto-scrape** third-party sites unless you
  *   build an ETL with explicit licensing — always store attribution in `source`.
  */

@@ -215,3 +215,84 @@ button:focus-visible {
   background-color: #f3e8ff;
   color: #6b21a8;
 }
+
+/* —— Admin: React Quill (snow) dark theme —— */
+.admin-quill-editor .ql-toolbar.ql-snow {
+  border-color: rgb(71 85 105);
+  background: rgb(15 23 42 / 0.85);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.admin-quill-editor .ql-container.ql-snow {
+  border-color: rgb(71 85 105);
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.9375rem;
+}
+.admin-quill-editor .ql-editor {
+  min-height: 11rem;
+  color: #f1f5f9;
+  line-height: 1.6;
+}
+.admin-quill-editor .ql-editor.ql-blank::before {
+  color: rgb(100 116 139);
+  font-style: normal;
+}
+.admin-quill-editor .ql-snow .ql-stroke {
+  stroke: #94a3b8;
+}
+.admin-quill-editor .ql-snow .ql-fill {
+  fill: #94a3b8;
+}
+.admin-quill-editor .ql-snow .ql-picker {
+  color: #cbd5e1;
+}
+.admin-quill-editor .ql-snow .ql-picker-options {
+  background: #0f172a;
+  border-color: #475569;
+}
+.admin-quill-editor .ql-snow .ql-picker-item:hover,
+.admin-quill-editor .ql-snow .ql-picker-item.ql-selected {
+  color: #22d3ee;
+}
+.admin-quill-editor .ql-snow button:hover .ql-stroke,
+.admin-quill-editor .ql-snow .ql-picker-label:hover .ql-stroke {
+  stroke: #e2e8f0;
+}
+.admin-quill-editor .ql-snow button.ql-active .ql-stroke,
+.admin-quill-editor .ql-snow .ql-picker-label.ql-active .ql-stroke {
+  stroke: #22d3ee;
+}
+.admin-quill-editor .ql-editor h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.75rem 0 0.5rem;
+  line-height: 1.25;
+}
+.admin-quill-editor .ql-editor h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0.75rem 0 0.5rem;
+}
+.admin-quill-editor .ql-editor h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.35rem;
+}
+.admin-quill-editor .ql-editor blockquote {
+  border-left: 3px solid #06b6d4;
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  color: #cbd5e1;
+}
+.admin-quill-editor .ql-editor pre.ql-syntax {
+  background: #020617;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: #e2e8f0;
+  overflow-x: auto;
+}
+.admin-quill-editor .ql-editor a {
+  color: #22d3ee;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

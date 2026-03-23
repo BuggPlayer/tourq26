@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
+import MarketingHeader from "@/components/MarketingHeader";
+import { requireMarketingFeature } from "@/lib/require-marketing-feature";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { readBlogPosts, readSiteContent } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
+import { sanitizeBlogHtml } from "@/lib/blog-sanitize";
 import { blogPostingJsonLd, breadcrumbListJsonLd } from "@/lib/seo";
 
 export async function generateStaticParams() {
@@ -62,6 +64,7 @@ export default async function BlogPostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  await requireMarketingFeature("marketing_blog", "marketing_blog");
   const { slug } = await params;
   const [posts, site, siteUrl] = await Promise.all([
     readBlogPosts(),
@@ -91,7 +94,7 @@ export default async function BlogPostPage({
     <div className="min-h-screen bg-[var(--background)]">
       <JsonLd data={articleLd} />
       <JsonLd data={breadcrumbLd} />
-      <Header />
+      <MarketingHeader />
       <main>
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
           <Link
@@ -115,8 +118,8 @@ export default async function BlogPostPage({
             </p>
           </header>
           <div
-            className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-10 [&_p]:text-[var(--color-muted)] [&_p]:leading-relaxed [&_ul]:text-[var(--color-muted)] [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1"
-            dangerouslySetInnerHTML={{ __html: post.body || "" }}
+            className="prose prose-invert mt-10 max-w-none [&_h1]:font-display [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-white [&_h1]:mt-12 [&_h1]:mb-4 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-10 [&_h3]:font-semibold [&_h3]:text-white [&_p]:text-[var(--color-muted)] [&_p]:leading-relaxed [&_ul]:text-[var(--color-muted)] [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_a]:text-[var(--color-primary)] [&_a]:underline-offset-2 [&_pre]:rounded-lg [&_pre]:bg-[var(--surface)] [&_pre]:p-4 [&_code]:text-sm"
+            dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.body || "") }}
           />
           <div className="mt-14 border-t border-[var(--color-border)]/50 pt-8">
             <Link

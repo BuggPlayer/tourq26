@@ -1,11 +1,15 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   const key = process.env.STRIPE_SECRET_KEY;
   if (!secret || !key) {

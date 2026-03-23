@@ -61,17 +61,19 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
       "color-mix(in srgb, var(--hub-elevated, #0f172a) 88%, transparent)",
   };
 
+  const nodeInterviewHref = "/hub/candidate/interview/nodejs";
+
   const fullstackTags: Tag[] = [
     {
       label: "Node.js",
       count: stats.nodejsQaBank,
-      href: "/hub/candidate/nodejs-interview",
+      href: nodeInterviewHref,
       icon: "⬢",
     },
     {
       label: "JavaScript",
       count: stats.quizJs + stats.uiVanilla,
-      href: "/hub/candidate/nodejs-interview",
+      href: nodeInterviewHref,
       icon: "JS",
     },
     {
@@ -196,6 +198,43 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
       : tab === "algorithms"
         ? algoTags
         : systemTags;
+
+  const swatchCycle: Swatch[] = ["amber", "sky", "emerald", "purple"];
+  const qaBankRows = stats.interviewBanks.map((b, i) => ({
+    title: `${b.label} interview Q&A`,
+    snippet:
+      "Theory-only prep — expandable answers and full-page reading with a local scratch editor.",
+    href: `/hub/candidate/interview/${b.slug}`,
+    tag: `Q&A ${b.itemCount}`,
+    swatch: swatchCycle[i % swatchCycle.length]!,
+  }));
+
+  const popularTracks = [
+    ...qaBankRows,
+    {
+      title: "Candidate dashboard — filter full question bank",
+      snippet:
+        "Topic, difficulty, company tags, and framework filters for coding, UI, and quizzes.",
+      href: "/hub/candidate",
+      tag: `Bank ${stats.total}`,
+      swatch: "sky" as Swatch,
+    },
+    {
+      title: "Preparation plans (1 week → 3 months)",
+      snippet:
+        "Structured milestones to pace your study alongside the hub problems.",
+      href: "/hub/candidate/plans",
+      tag: "Plans",
+      swatch: "emerald" as Swatch,
+    },
+    {
+      title: "Community & per-question discussions",
+      snippet: "Threads tied to each problem — ask and share approaches.",
+      href: "/hub/community",
+      tag: "Forum",
+      swatch: "purple" as Swatch,
+    },
+  ];
 
   return (
     <div
@@ -331,10 +370,10 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
               See all questions
             </Link>
             <Link
-              href="/hub/candidate/nodejs-interview"
+              href="/hub/candidate/interview"
               className="hub-text-accent text-base font-semibold underline-offset-2 hover:underline"
             >
-              JavaScript &amp; Node.js Q&amp;A bank →
+              Interview Q&amp;A banks →
             </Link>
           </div>
         </div>
@@ -441,10 +480,10 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
           >
             Want theory-only prep? Open the{" "}
             <Link
-              href="/hub/candidate/nodejs-interview"
+              href="/hub/candidate/interview"
               className="hub-text-accent font-semibold underline-offset-2 hover:underline"
             >
-              Node.js &amp; JavaScript Q&amp;A
+              Interview Q&amp;A banks
             </Link>{" "}
             — expandable answers, FullStack.Cafe-style.
           </div>
@@ -533,41 +572,9 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
             Popular tracks
           </h2>
           <ul role="list">
-            {[
-              {
-                title: "JavaScript & Node.js interview Q&A (answered)",
-                snippet:
-                  "Hoisting, closures, event loop, streams, modules — expand each answer in place.",
-                href: "/hub/candidate/nodejs-interview",
-                tag: `Q&A ${stats.nodejsQaBank}`,
-                swatch: "amber" as Swatch,
-              },
-              {
-                title: "Candidate dashboard — filter full question bank",
-                snippet:
-                  "Topic, difficulty, company tags, and framework filters for coding, UI, and quizzes.",
-                href: "/hub/candidate",
-                tag: `Bank ${stats.total}`,
-                swatch: "sky" as Swatch,
-              },
-              {
-                title: "Preparation plans (1 week → 3 months)",
-                snippet:
-                  "Structured milestones to pace your study alongside the hub problems.",
-                href: "/hub/candidate/plans",
-                tag: "Plans",
-                swatch: "emerald" as Swatch,
-              },
-              {
-                title: "Community & per-question discussions",
-                snippet: "Threads tied to each problem — ask and share approaches.",
-                href: "/hub/community",
-                tag: "Forum",
-                swatch: "purple" as Swatch,
-              },
-            ].map((row) => (
+            {popularTracks.map((row) => (
               <li
-                key={row.title}
+                key={row.href}
                 className="border-b last:border-b-0"
                 style={{ borderColor: "var(--hub-border, #334155)" }}
               >

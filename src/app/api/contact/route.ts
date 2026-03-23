@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { addContactSubmission } from "@/lib/content";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 
 export async function POST(request: NextRequest) {
+  if (!(await isFeatureEnabled("marketing_contact_form"))) {
+    return NextResponse.json(
+      { error: "Contact form is temporarily disabled." },
+      { status: 503 },
+    );
+  }
   try {
     const body = await request.json();
     const name = typeof body.name === "string" ? body.name.trim() : "";

@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 
 export async function GET() {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const plans = await prisma.preparationPlan.findMany({
     orderBy: { sortOrder: "asc" },
   });

@@ -1,5 +1,13 @@
-import { prisma } from "@/lib/hub/prisma";
 import { nodeJsInterviewQA } from "@/data/nodejs-interview-qa";
+import { getInterviewBanksWithCounts } from "@/lib/hub/interview-bank-data";
+import { isHubBackendFull } from "@/lib/hub/hub-backend-flag";
+import { prisma } from "@/lib/hub/prisma";
+
+export type HubInterviewBankStat = {
+  slug: string;
+  label: string;
+  itemCount: number;
+};
 
 /** Used when Prisma/DB is unreachable (missing DATABASE_URL, SQLite on serverless, etc.). */
 export function hubLandingStatsFallback(): HubLandingStats {
@@ -11,6 +19,9 @@ export function hubLandingStatsFallback(): HubLandingStats {
     fsd: 0,
     quiz: 0,
     nodejsQaBank: n,
+    interviewBanks: [
+      { slug: "nodejs", label: "JavaScript & Node.js", itemCount: n },
+    ],
     uiVanilla: 0,
     uiReact: 0,
     uiVue: 0,
@@ -30,7 +41,9 @@ export type HubLandingStats = {
   ui: number;
   fsd: number;
   quiz: number;
+  /** Item count for the `nodejs` bank (0 if that bank was removed). */
   nodejsQaBank: number;
+  interviewBanks: HubInterviewBankStat[];
   uiVanilla: number;
   uiReact: number;
   uiVue: number;
@@ -44,6 +57,10 @@ export type HubLandingStats = {
 };
 
 export async function getHubLandingStats(): Promise<HubLandingStats> {
+  if (!(await isHubBackendFull())) {
+    return hubLandingStatsFallback();
+  }
+
   try {
     const [
       total,
@@ -61,6 +78,7 @@ export async function getHubLandingStats(): Promise<HubLandingStats> {
       topicArrays,
       topicGraphs,
       topicDp,
+      interviewBanks,
     ] = await Promise.all([
       prisma.question.count(),
       prisma.question.count({ where: { type: "DSA" } }),
@@ -77,7 +95,10 @@ export async function getHubLandingStats(): Promise<HubLandingStats> {
       prisma.question.count({ where: { type: "DSA", topic: "arrays" } }),
       prisma.question.count({ where: { type: "DSA", topic: "graphs" } }),
       prisma.question.count({ where: { type: "DSA", topic: "dp" } }),
+      getInterviewBanksWithCounts(),
     ]);
+
+    const nodeBank = interviewBanks.find((b) => b.slug === "nodejs");
 
     return {
       total,
@@ -85,7 +106,8 @@ export async function getHubLandingStats(): Promise<HubLandingStats> {
       ui,
       fsd,
       quiz,
-      nodejsQaBank: nodeJsInterviewQA.length,
+      nodejsQaBank: nodeBank?.itemCount ?? 0,
+      interviewBanks,
       uiVanilla,
       uiReact,
       uiVue,
@@ -98,7 +120,6 @@ export async function getHubLandingStats(): Promise<HubLandingStats> {
       topicDp,
     };
   } catch (err) {
-    // Avoid 500 on /hub when DB is misconfigured (common: SQLite on Vercel, missing DATABASE_URL).
     console.error("[getHubLandingStats] database unavailable:", err);
     return hubLandingStatsFallback();
   }

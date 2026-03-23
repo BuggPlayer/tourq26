@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/hub/auth";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 import { HUB_ALL_FREE_LAUNCH } from "@/lib/hub/usage";
 
@@ -16,6 +17,9 @@ const postSchema = z.object({
 });
 
 export async function GET(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const { searchParams } = new URL(req.url);
   const skill = searchParams.get("skill") ?? undefined;
   const location = searchParams.get("location") ?? undefined;
@@ -61,6 +65,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -6,17 +6,25 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { NodeJsInterviewAnswer } from "@/components/hub/NodeJsInterviewAnswer";
 import {
   NODEJS_QA_CATEGORIES,
-  globalQuestionNumber,
   searchableTextForItem,
   type NodeJsQAItem,
 } from "@/data/nodejs-interview-qa";
 
 type Props = {
   items: NodeJsQAItem[];
+  /** When omitted, uses bundled default categories (must match item.categoryId values). */
+  categories?: readonly { id: string; label: string }[];
+  /** Public list URL base, e.g. `/hub/candidate/interview/nodejs` */
+  basePath?: string;
+  hubTitle?: string;
+  /** Intro under the title; defaults to the legacy Node.js marketing blurb. */
+  hubTagline?: ReactNode;
+  /** Shown in answer CTAs, e.g. “JavaScript & Node.js” */
+  ctaBankLabel?: string;
 };
 
 const DIFF_BADGE: Record<string, string> = {
@@ -25,9 +33,41 @@ const DIFF_BADGE: Record<string, string> = {
   Hard: "bg-rose-500/15 text-rose-200",
 };
 
-export function CafeStyleInterviewQA({ items }: Props) {
+export function CafeStyleInterviewQA({
+  items,
+  categories = NODEJS_QA_CATEGORIES,
+  basePath = "/hub/candidate/interview/nodejs",
+  hubTitle = "JavaScript & Node.js interview questions",
+  hubTagline = (
+    <>
+      Browse by topic, search, and expand answers — similar in spirit to banks like{" "}
+      <a
+        href="https://www.fullstack.cafe/interview-questions/nodejs"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hub-qa-link font-medium underline-offset-2 hover:underline"
+      >
+        FullStack.Cafe (Node.js)
+      </a>
+      , with{" "}
+      <strong style={{ color: "var(--hub-page-fg, #e2e8f0)" }}>TorqStudio-written</strong>{" "}
+      answers. Open a question for the full-page view. Pair with the{" "}
+      <Link href="/hub/candidate" className="hub-qa-link font-medium underline-offset-2 hover:underline">
+        coding tracks
+      </Link>{" "}
+      to practice in the editor.
+    </>
+  ),
+  ctaBankLabel = "JavaScript & Node.js",
+}: Props) {
   const [categoryId, setCategoryId] = useState<string>("all");
   const [query, setQuery] = useState("");
+
+  const globalNumById = useMemo(() => {
+    const m = new Map<string, number>();
+    items.forEach((it, i) => m.set(it.id, i + 1));
+    return m;
+  }, [items]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -63,34 +103,13 @@ export function CafeStyleInterviewQA({ items }: Props) {
           className="mt-4 font-display text-3xl font-bold tracking-tight md:text-4xl"
           style={{ color: "var(--hub-page-fg, #f8fafc)" }}
         >
-          JavaScript &amp; Node.js interview questions
+          {hubTitle}
         </h1>
         <p
           className="mt-3 max-w-3xl text-sm leading-relaxed"
           style={{ color: "var(--hub-muted, #94a3b8)" }}
         >
-          Browse by topic, search, and expand answers — similar in spirit to banks
-          like{" "}
-          <a
-            href="https://www.fullstack.cafe/interview-questions/nodejs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hub-qa-link font-medium underline-offset-2 hover:underline"
-          >
-            FullStack.Cafe (Node.js)
-          </a>
-          , with{" "}
-          <strong style={{ color: "var(--hub-page-fg, #e2e8f0)" }}>
-            TorqStudio-written
-          </strong>{" "}
-          answers. Open a question for the full-page view. Pair with the{" "}
-          <Link
-            href="/hub/candidate"
-            className="hub-qa-link font-medium underline-offset-2 hover:underline"
-          >
-            coding tracks
-          </Link>{" "}
-          to practice in the editor.
+          {hubTagline}
         </p>
       </header>
 
@@ -110,7 +129,7 @@ export function CafeStyleInterviewQA({ items }: Props) {
                 "color-mix(in srgb, var(--hub-elevated, #0f172a) 88%, transparent)",
             }}
           >
-            {NODEJS_QA_CATEGORIES.map((c) => {
+            {categories.map((c) => {
               const count =
                 c.id === "all" ? items.length : (countByCategory.get(c.id) ?? 0);
               const active = categoryId === c.id;
@@ -181,10 +200,10 @@ export function CafeStyleInterviewQA({ items }: Props) {
 
           <ol className="space-y-2" role="list">
             {filtered.map((item) => {
-              const qNum = globalQuestionNumber(item.id);
+              const qNum = globalNumById.get(item.id) ?? 0;
               const categoryLabel =
-                NODEJS_QA_CATEGORIES.find((c) => c.id === item.categoryId)
-                  ?.label ?? item.categoryId;
+                categories.find((c) => c.id === item.categoryId)?.label ??
+                item.categoryId;
               const badgeLabel = item.categoryBadge ?? categoryLabel;
               return (
                 <li key={item.id}>
@@ -244,7 +263,7 @@ export function CafeStyleInterviewQA({ items }: Props) {
                               {badgeLabel} {total}
                             </span>
                             <Link
-                              href={`/hub/candidate/nodejs-interview/${item.id}`}
+                              href={`${basePath.replace(/\/$/, "")}/${encodeURIComponent(item.id)}`}
                               className="rounded-md border border-slate-600 px-2 py-0.5 text-[11px] font-medium text-slate-200 hover:border-cyan-600 hover:text-cyan-300"
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -262,6 +281,8 @@ export function CafeStyleInterviewQA({ items }: Props) {
                                 item={item}
                                 totalBankCount={total}
                                 showCta={false}
+                                listHref={basePath}
+                                ctaBankLabel={ctaBankLabel}
                               />
                             </div>
                           </div>

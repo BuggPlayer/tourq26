@@ -1,5 +1,11 @@
 import { prisma } from "./prisma";
 
+export {
+  guardHubBackend,
+  hubBackendDisabledResponse,
+  isHubBackendFull,
+} from "./hub-backend-flag";
+
 /**
  * Launch mode: every hub feature is open with no payment or tier checks.
  * Set to `false` when you re-enable Stripe, submission caps, and premium-only labs.

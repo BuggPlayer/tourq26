@@ -52,6 +52,20 @@ export default async function AdminDashboardPage() {
           <h2 className="font-semibold text-white">Site & SEO</h2>
           <p className="mt-1 text-sm text-slate-400">Default title, description, OG</p>
         </Link>
+        <Link
+          href="/admin/feature-flags"
+          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+        >
+          <h2 className="font-semibold text-white">Feature flags</h2>
+          <p className="mt-1 text-sm text-slate-400">Maintenance, tools, blog, hub APIs</p>
+        </Link>
+        <Link
+          href="/admin/hub"
+          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+        >
+          <h2 className="font-semibold text-white">Interview hub CMS</h2>
+          <p className="mt-1 text-sm text-slate-400">Node Q&amp;A, plans, tags, questions (MongoDB)</p>
+        </Link>
       </div>
       <div className="mt-8 rounded-xl border border-slate-700/50 bg-slate-800/30 p-6">
         <h2 className="font-semibold text-white">Storage</h2>

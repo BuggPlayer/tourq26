@@ -5,11 +5,11 @@ import { useEffect, useMemo, useState } from "react";
 import { CandidateExplorer } from "@/components/hub/CandidateExplorer";
 import { CandidateInterviewTracks } from "@/components/hub/CandidateInterviewTracks";
 import { QuizWidget } from "@/components/hub/QuizWidget";
-import { getNodeJsQAById } from "@/data/nodejs-interview-qa";
 import {
   type CandidateBehaviorV1,
   recordCandidatePath,
 } from "@/lib/hub/candidate-behavior";
+import type { InterviewBankSummary } from "@/lib/hub/interview-bank-data";
 
 type Stats = {
   solved: number;
@@ -17,48 +17,106 @@ type Stats = {
   streak: number;
 };
 
-export function CandidateDashboardShell({ stats }: { stats: Stats }) {
+type ResolvedRow = { bankSlug: string; id: string; question: string };
+
+export function CandidateDashboardShell({
+  stats,
+  interviewBanks,
+}: {
+  stats: Stats;
+  interviewBanks: InterviewBankSummary[];
+}) {
   const [behavior, setBehavior] = useState<CandidateBehaviorV1 | null>(null);
+  const [resolvedTitles, setResolvedTitles] = useState<ResolvedRow[]>([]);
 
   useEffect(() => {
     setBehavior(recordCandidatePath("/hub/candidate"));
   }, []);
 
+  useEffect(() => {
+    const entries = behavior?.recentInterviewQa ?? [];
+    if (!entries.length) {
+      setResolvedTitles([]);
+      return;
+    }
+    const byBank = new Map<string, string[]>();
+    for (const e of entries) {
+      if (!byBank.has(e.bankSlug)) byBank.set(e.bankSlug, []);
+      const arr = byBank.get(e.bankSlug)!;
+      if (!arr.includes(e.id)) arr.push(e.id);
+    }
+    let cancelled = false;
+    Promise.all(
+      [...byBank.entries()].map(async ([bank, ids]) => {
+        const res = await fetch(
+          `/api/hub/interview/resolve?bank=${encodeURIComponent(bank)}&ids=${encodeURIComponent(ids.join(","))}`,
+        );
+        const d = (await res.json()) as { items?: { id: string; question: string }[] };
+        return (d.items ?? []).map((it) => ({ ...it, bankSlug: bank }));
+      }),
+    )
+      .then((chunks) => {
+        if (!cancelled) setResolvedTitles(chunks.flat());
+      })
+      .catch(() => {
+        if (!cancelled) setResolvedTitles([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [behavior]);
+
   const continueItems = useMemo(() => {
-    if (!behavior?.recentNodeQaIds?.length) return [];
-    const out: { id: string; question: string; href: string }[] = [];
-    for (const { id } of behavior.recentNodeQaIds.slice(0, 4)) {
-      const q = getNodeJsQAById(id);
-      if (q) {
+    const recent = behavior?.recentInterviewQa ?? [];
+    if (!recent.length) return [];
+    const byKey = new Map(
+      resolvedTitles.map((r) => [`${r.bankSlug}:${r.id}`, r.question]),
+    );
+    const out: { bankSlug: string; id: string; question: string; href: string }[] = [];
+    for (const { bankSlug, id } of recent.slice(0, 4)) {
+      const question = byKey.get(`${bankSlug}:${id}`);
+      if (question) {
         out.push({
+          bankSlug,
           id,
-          question: q.question,
-          href: `/hub/candidate/nodejs-interview/${id}`,
+          question,
+          href: `/hub/candidate/interview/${bankSlug}/${encodeURIComponent(id)}`,
         });
       }
     }
     return out;
-  }, [behavior]);
+  }, [behavior, resolvedTitles]);
 
   return (
     <div className="space-y-10">
       <header>
         <h1 className="font-display text-3xl font-bold text-white">Candidate hub</h1>
         <p className="mt-2 max-w-2xl text-sm text-slate-400">
-          Open a JS / Node question via <strong className="font-medium text-slate-300">Full page</strong>{" "}
+          Open an interview Q&amp;A via <strong className="font-medium text-slate-300">Full page</strong>{" "}
           for split view: reading on the left, Monaco on the right. After that,
           your recent questions show up in <strong className="font-medium text-slate-300">Continue reading</strong>{" "}
           below (saved on this device).
         </p>
-        <Link
-          href="/hub/candidate/nodejs-interview"
-          className="mt-4 inline-flex items-center gap-2 rounded-xl border border-cyan-900/50 bg-cyan-950/30 px-4 py-3 text-sm font-medium text-cyan-200 transition-colors hover:border-cyan-700/50 hover:bg-cyan-950/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
-        >
-          JavaScript &amp; Node.js interview Q&amp;A
-          <span className="text-cyan-500/80" aria-hidden>
-            →
-          </span>
-        </Link>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link
+            href="/hub/candidate/interview"
+            className="inline-flex items-center gap-2 rounded-xl border border-cyan-900/50 bg-cyan-950/30 px-4 py-3 text-sm font-medium text-cyan-200 transition-colors hover:border-cyan-700/50 hover:bg-cyan-950/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+          >
+            All interview Q&amp;A banks
+            <span className="text-cyan-500/80" aria-hidden>
+              →
+            </span>
+          </Link>
+          {interviewBanks.map((b) => (
+            <Link
+              key={b.slug}
+              href={`/hub/candidate/interview/${b.slug}`}
+              className="inline-flex items-center rounded-xl border border-slate-700/80 bg-slate-900/40 px-3 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-900/40 hover:text-cyan-200"
+            >
+              {b.label}
+            </Link>
+          ))}
+        </div>
       </header>
 
       {continueItems.length > 0 ? (
@@ -74,7 +132,7 @@ export function CandidateDashboardShell({ stats }: { stats: Stats }) {
           </p>
           <ul className="mt-3 space-y-2">
             {continueItems.map((row) => (
-              <li key={row.id}>
+              <li key={`${row.bankSlug}:${row.id}`}>
                 <Link
                   href={row.href}
                   className="block rounded-lg border border-transparent px-3 py-2 text-sm text-slate-200 transition-colors hover:border-cyan-900/50 hover:bg-slate-950/50 hover:text-cyan-200"

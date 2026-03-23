@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
+import MarketingHeader from "@/components/MarketingHeader";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { getServicePage, servicePages } from "@/data/services-content";
@@ -69,7 +69,7 @@ export default async function ServiceDetailPage({
       <JsonLd data={faqLd} />
       <JsonLd data={breadcrumbLd} />
       <JsonLd data={webLd} />
-      <Header />
+      <MarketingHeader />
       <main>
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
           <Link

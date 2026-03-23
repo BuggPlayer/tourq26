@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import Header from "@/components/Header";
+import MarketingHeader from "@/components/MarketingHeader";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { servicePages } from "@/data/services-content";
@@ -50,7 +50,7 @@ export default async function ServicesIndexPage() {
     <div className="min-h-screen bg-[var(--background)]">
       <JsonLd data={breadcrumbLd} />
       <JsonLd data={webLd} />
-      <Header />
+      <MarketingHeader />
       <main>
         <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">

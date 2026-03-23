@@ -4,6 +4,7 @@ import { auth } from "@/lib/hub/auth";
 import { evaluateSubmission } from "@/lib/hub/evaluate-submission";
 import type { PistonLanguage } from "@/lib/hub/piston";
 import { prisma } from "@/lib/hub/prisma";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import {
   assertCanSubmit,
   HUB_ALL_FREE_LAUNCH,
@@ -19,6 +20,9 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const session = await auth();
   const userId = session?.user?.id;
   const tier = session?.user?.subscriptionTier ?? "free";

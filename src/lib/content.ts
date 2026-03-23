@@ -1,5 +1,6 @@
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { FEATURE_FLAGS_KV_KEY } from "@/lib/feature-flags-constants";
 
 export type BlogPost = {
   slug: string;
@@ -53,7 +54,13 @@ const KV_KEYS = {
   testimonials: "content:testimonials",
   site: "content:site",
   contact: "content:contact",
+  featureFlags: FEATURE_FLAGS_KV_KEY,
 } as const;
+
+export type FeatureFlagsDocument = {
+  values: Record<string, boolean>;
+  updatedAt: string;
+};
 
 function useKv(): boolean {
   return !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
@@ -74,6 +81,34 @@ const CONTENT_DIR = path.join(process.cwd(), "content");
 async function getContentPath(filename: string): Promise<string> {
   await mkdir(CONTENT_DIR, { recursive: true });
   return path.join(CONTENT_DIR, filename);
+}
+
+export async function readFeatureFlagsDocument(): Promise<FeatureFlagsDocument | null> {
+  const kv = await getKv();
+  if (kv) {
+    const data = await kv.get(KV_KEYS.featureFlags);
+    if (data && typeof data === "object" && data !== null && "values" in data) {
+      return data as FeatureFlagsDocument;
+    }
+    return null;
+  }
+  try {
+    const filePath = await getContentPath("feature-flags.json");
+    const raw = await readFile(filePath, "utf-8");
+    return JSON.parse(raw) as FeatureFlagsDocument;
+  } catch {
+    return null;
+  }
+}
+
+export async function writeFeatureFlagsDocument(doc: FeatureFlagsDocument): Promise<void> {
+  const kv = await getKv();
+  if (kv) {
+    await kv.set(KV_KEYS.featureFlags, doc);
+    return;
+  }
+  const filePath = await getContentPath("feature-flags.json");
+  await writeFile(filePath, JSON.stringify(doc, null, 2), "utf-8");
 }
 
 export async function readBlogPostsFromFile(): Promise<BlogPost[]> {

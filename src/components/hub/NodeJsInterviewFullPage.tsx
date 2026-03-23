@@ -4,11 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { MonacoCodeEditor } from "@/components/hub/MonacoCodeEditor";
 import { NodeJsInterviewAnswer } from "@/components/hub/NodeJsInterviewAnswer";
-import {
-  NODEJS_QA_CATEGORIES,
-  type NodeJsQAItem,
-} from "@/data/nodejs-interview-qa";
-import { recordNodeQaFullPageView } from "@/lib/hub/candidate-behavior";
+import type { NodeJsQAItem } from "@/data/nodejs-interview-qa";
+import { recordInterviewQaFullPageView } from "@/lib/hub/candidate-behavior";
 
 const DIFF_BADGE: Record<string, string> = {
   Easy: "bg-emerald-500/15 text-emerald-300",
@@ -28,12 +25,23 @@ type Props = {
   item: NodeJsQAItem;
   qNum: number;
   total: number;
+  bankSlug: string;
+  basePath: string;
+  categories: readonly { id: string; label: string }[];
+  ctaBankLabel: string;
 };
 
-export function NodeJsInterviewFullPage({ item, qNum, total }: Props) {
+export function NodeJsInterviewFullPage({
+  item,
+  qNum,
+  total,
+  bankSlug,
+  basePath,
+  categories,
+  ctaBankLabel,
+}: Props) {
   const categoryLabel =
-    NODEJS_QA_CATEGORIES.find((c) => c.id === item.categoryId)?.label ??
-    item.categoryId;
+    categories.find((c) => c.id === item.categoryId)?.label ?? item.categoryId;
   const badgeLabel = item.categoryBadge ?? categoryLabel;
 
   const initialCode = useMemo(
@@ -48,8 +56,8 @@ export function NodeJsInterviewFullPage({ item, qNum, total }: Props) {
   }, [initialCode]);
 
   useEffect(() => {
-    recordNodeQaFullPageView(item.id);
-  }, [item.id]);
+    recordInterviewQaFullPageView(bankSlug, item.id);
+  }, [bankSlug, item.id]);
 
   const [editorH, setEditorH] = useState(400);
   useEffect(() => {
@@ -73,7 +81,7 @@ export function NodeJsInterviewFullPage({ item, qNum, total }: Props) {
         style={{ borderColor: "var(--hub-border, #1e293b)" }}
       >
         <Link
-          href="/hub/candidate/nodejs-interview"
+          href={basePath}
           className="hub-qa-link font-medium underline-offset-2 hover:underline"
         >
           ← All questions
@@ -128,7 +136,13 @@ export function NodeJsInterviewFullPage({ item, qNum, total }: Props) {
                   "color-mix(in srgb, var(--hub-elevated, #0f172a) 80%, transparent)",
               }}
             >
-              <NodeJsInterviewAnswer item={item} totalBankCount={total} showCta />
+              <NodeJsInterviewAnswer
+                item={item}
+                totalBankCount={total}
+                showCta
+                listHref={basePath}
+                ctaBankLabel={ctaBankLabel}
+              />
             </div>
           </div>
         </section>

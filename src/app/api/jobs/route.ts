@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/hub/auth";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 
 const postSchema = z.object({
@@ -12,6 +13,9 @@ const postSchema = z.object({
 });
 
 export async function GET() {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const jobs = await prisma.jobPosting.findMany({
     orderBy: { createdAt: "desc" },
     take: 80,
@@ -34,6 +38,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Sign in to post a job." }, { status: 401 });

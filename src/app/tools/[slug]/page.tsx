@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
+import MarketingHeader from "@/components/MarketingHeader";
+import { requireMarketingFeature } from "@/lib/require-marketing-feature";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import ToolRunner from "@/components/tools/ToolRunner";
@@ -50,6 +51,7 @@ function isLiveToolId(slug: string): slug is LiveToolId {
 }
 
 export default async function ToolDetailPage({ params }: Props) {
+  await requireMarketingFeature("marketing_tools", "marketing_tools");
   const { slug } = await params;
   const tool = getToolBySlug(slug);
   if (!tool) notFound();
@@ -79,7 +81,7 @@ export default async function ToolDetailPage({ params }: Props) {
       <JsonLd data={breadcrumbLd} />
       <JsonLd data={webAppLd} />
       {faqLd && <JsonLd data={faqLd} />}
-      <Header />
+      <MarketingHeader />
       <main>
         <section className="gradient-mesh relative border-b border-[var(--color-border)]/50 px-4 pt-28 pb-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">

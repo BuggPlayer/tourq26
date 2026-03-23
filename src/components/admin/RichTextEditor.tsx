@@ -1,82 +1,43 @@
 "use client";
 
-import { useEditor, EditorContent, type Editor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
+import dynamic from "next/dynamic";
+import { useMemo } from "react";
+import "react-quill/dist/quill.snow.css";
 
-type RichTextEditorProps = {
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="flex min-h-[14rem] items-center justify-center rounded-lg border border-slate-600 bg-slate-900/40 text-sm text-slate-500"
+      aria-hidden
+    >
+      Loading editor…
+    </div>
+  ),
+});
+
+export type RichTextEditorProps = {
   value: string;
   onChange: (html: string) => void;
   placeholder?: string;
   minHeight?: string;
 };
 
-function Toolbar({ editor }: { editor: Editor | null }) {
-  if (!editor) return null;
-  const btn = "rounded p-1.5 text-slate-400 hover:bg-slate-700 hover:text-white disabled:opacity-40";
-  const btnActive = "rounded p-1.5 bg-slate-700 text-cyan-400";
-  return (
-    <div className="flex flex-wrap items-center gap-0.5 border-b border-slate-600 bg-slate-800/50 px-2 py-1.5">
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={editor.isActive("bold") ? btnActive : btn}
-        title="Bold"
-      >
-        <span className="font-bold">B</span>
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={editor.isActive("italic") ? btnActive : btn}
-        title="Italic"
-      >
-        <span className="italic">I</span>
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive("heading", { level: 2 }) ? btnActive : btn}
-        title="Heading 2"
-      >
-        H2
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={editor.isActive("heading", { level: 3 }) ? btnActive : btn}
-        title="Heading 3"
-      >
-        H3
-      </button>
-      <span className="mx-1 w-px self-stretch bg-slate-600" />
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive("bulletList") ? btnActive : btn}
-        title="Bullet list"
-      >
-        •
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive("orderedList") ? btnActive : btn}
-        title="Numbered list"
-      >
-        1.
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={editor.isActive("blockquote") ? btnActive : btn}
-        title="Quote"
-      >
-        “
-      </button>
-    </div>
-  );
-}
+/** Industry-style toolbar: H1–H3, semantic blocks, lists, indent, link, clear formatting. */
+const QUILL_FORMATS = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "indent",
+  "blockquote",
+  "code-block",
+  "link",
+  "align",
+] as const;
 
 export function RichTextEditor({
   value,
@@ -84,31 +45,39 @@ export function RichTextEditor({
   placeholder = "Write your content…",
   minHeight = "14rem",
 }: RichTextEditorProps) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Placeholder.configure({ placeholder }),
-    ],
-    content: value || "",
-    immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        class:
-          "prose prose-invert max-w-none min-h-[10rem] px-4 py-3 text-white focus:outline-none [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-base [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-2 [&_blockquote]:border-cyan-500 [&_blockquote]:pl-4 [&_blockquote]:italic [&_p]:my-2",
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          ["blockquote", "code-block"],
+          ["link"],
+          [{ align: [] }],
+          ["clean"],
+        ],
       },
-    },
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
-  });
+      clipboard: { matchVisual: false },
+    }),
+    [],
+  );
 
   return (
     <div
-      className="overflow-hidden rounded-lg border border-slate-600 bg-slate-900/50"
+      className="admin-quill-editor overflow-hidden rounded-lg border border-slate-600 bg-slate-900/50"
       style={{ minHeight }}
     >
-      <Toolbar editor={editor} />
-      <EditorContent editor={editor} />
+      <ReactQuill
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={modules}
+        formats={[...QUILL_FORMATS]}
+        placeholder={placeholder}
+        className="admin-quill-react"
+      />
     </div>
   );
 }

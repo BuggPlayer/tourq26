@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Header from "@/components/Header";
+import MarketingHeader from "@/components/MarketingHeader";
+import { requireMarketingFeature } from "@/lib/require-marketing-feature";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import ContactForm from "./ContactForm";
@@ -26,6 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
+  await requireMarketingFeature("marketing_contact_form", "marketing_contact_form");
   const siteUrl = await getSiteUrl();
   const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
     { name: "Home", path: "/" },
@@ -34,7 +36,7 @@ export default async function ContactPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <JsonLd data={breadcrumbLd} />
-      <Header />
+      <MarketingHeader />
       <main>
         <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">

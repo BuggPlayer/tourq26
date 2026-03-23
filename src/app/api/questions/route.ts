@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/hub/auth";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 import { needsPremiumGate } from "@/lib/hub/usage";
 
 export async function GET(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type") ?? undefined;
   const topic = searchParams.get("topic") ?? undefined;
@@ -20,7 +24,9 @@ export async function GET(req: Request) {
   if (difficulty) where.difficulty = difficulty;
   if (framework) where.framework = framework;
   if (company) {
-    where.companyTags = { some: { name: company } };
+    where.companyTagLinks = {
+      some: { companyTag: { name: company } },
+    };
   }
 
   if (needsPremiumGate(tier) && framework && framework !== "vanilla") {
@@ -36,7 +42,7 @@ export async function GET(req: Request) {
     );
   }
 
-  const questions = await prisma.question.findMany({
+  const rows = await prisma.question.findMany({
     where,
     orderBy: { createdAt: "asc" },
     select: {
@@ -48,9 +54,16 @@ export async function GET(req: Request) {
       topic: true,
       framework: true,
       defaultLanguage: true,
-      companyTags: { select: { name: true, category: true } },
+      companyTagLinks: {
+        select: { companyTag: { select: { name: true, category: true } } },
+      },
     },
   });
+
+  const questions = rows.map(({ companyTagLinks, ...rest }) => ({
+    ...rest,
+    companyTags: companyTagLinks.map((l) => l.companyTag),
+  }));
 
   return NextResponse.json({ questions });
 }

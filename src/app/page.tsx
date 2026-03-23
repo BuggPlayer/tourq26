@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Header from "@/components/Header";
+import MarketingHeader from "@/components/MarketingHeader";
 import Hero from "@/components/Hero";
 import WorkGalleryStrip from "@/components/WorkGalleryStrip";
 import TrustBar from "@/components/TrustBar";
@@ -50,7 +50,7 @@ export default async function Home() {
     <>
       <JsonLd data={webPageLd} />
       <JsonLd data={servicesLd} />
-      <Header />
+      <MarketingHeader />
       <main>
         <Hero />
         <WorkGalleryStrip />

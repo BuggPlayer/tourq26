@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "crypto";
 
 const COOKIE_NAME = "admin_session";
-const SECRET = process.env.ADMIN_PASSWORD ?? "change-me-in-production";
+const SECRET = process.env.ADMIN_PASSWORD ?? "admin";
 
 export function getSessionToken(): string {
   return createHmac("sha256", SECRET).update("admin").digest("hex");

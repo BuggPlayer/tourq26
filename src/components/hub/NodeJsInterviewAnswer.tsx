@@ -32,12 +32,17 @@ type Props = {
   totalBankCount: number;
   /** Full page shows CTA + source row; accordion can hide CTA */
   showCta?: boolean;
+  listHref?: string;
+  /** e.g. “JavaScript & Node.js” — used in “N … interview questions” */
+  ctaBankLabel?: string;
 };
 
 export function NodeJsInterviewAnswer({
   item,
   totalBankCount,
   showCta = true,
+  listHref = "/hub/candidate/interview/nodejs",
+  ctaBankLabel = "JavaScript & Node.js",
 }: Props) {
   const structured = hasStructuredBody(item);
 
@@ -92,10 +97,10 @@ export function NodeJsInterviewAnswer({
           <p className="text-sm" style={{ color: "var(--hub-muted, #94a3b8)" }}>
             Having a tech or coding interview? Check{" "}
             <Link
-              href="/hub/candidate/nodejs-interview"
+              href={listHref}
               className="hub-qa-link font-medium underline-offset-2 hover:underline"
             >
-              {totalBankCount} JavaScript &amp; Node.js interview questions
+              {totalBankCount} {ctaBankLabel} interview questions
             </Link>
             .
           </p>

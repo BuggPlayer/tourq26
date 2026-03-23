@@ -3,6 +3,7 @@ import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { readSiteContent } from "@/lib/content";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -74,7 +75,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const site = await readSiteContent();
+  const [site, showWhatsApp] = await Promise.all([
+    readSiteContent(),
+    isFeatureEnabled("floating_whatsapp"),
+  ]);
   const siteUrl = site.siteUrl.replace(/\/$/, "");
 
   const organizationJsonLd = {
@@ -111,7 +115,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         {children}
-        <FloatingWhatsApp />
+        {showWhatsApp ? <FloatingWhatsApp /> : null}
       </body>
     </html>
   );

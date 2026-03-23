@@ -15,6 +15,7 @@ import {
   type InterviewTrackId,
   type LiveToolId,
 } from "@/lib/tools/schemas";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 
 export const maxDuration = 60;
 
@@ -31,6 +32,12 @@ function sortInterviewSections<T extends { track: string }>(
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await isFeatureEnabled("marketing_tools"))) {
+    return NextResponse.json(
+      { error: "Tools are temporarily disabled." },
+      { status: 503 },
+    );
+  }
   if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json(
       { error: "AI tools are not configured. Set OPENAI_API_KEY." },

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
+import MarketingHeader from "@/components/MarketingHeader";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
@@ -86,7 +86,7 @@ export default async function CaseStudyDetailPage({
     <div className="min-h-screen bg-[var(--background)]">
       <JsonLd data={articleLd} />
       <JsonLd data={breadcrumbLd} />
-      <Header />
+      <MarketingHeader />
       <main>
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
           <Link

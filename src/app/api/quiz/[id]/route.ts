@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 
 export async function GET(
   _req: Request,
   ctx: { params: Promise<{ id: string }> },
 ) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const { id } = await ctx.params;
   const q = await prisma.question.findFirst({
     where: { id, type: "QUIZ" },

@@ -60,14 +60,16 @@ Full-stack interview preparation and hiring surface (candidates + companies), co
 - **Community** — Per-question forums, static live-session copy (MVP).
 - **Pricing / access** — **Launch: full hub is free** (`HUB_ALL_FREE_LAUNCH = true` in `src/lib/hub/usage.ts`). Stripe + tier checks are disabled until you flip that flag.
 - **Auth** — **NextAuth.js** (credentials + optional Google/GitHub via env).
+- **Ops** — **Admin → Feature flags** (plus env kill-switches) for maintenance, marketing sections, header links, WhatsApp chip, and Hub DB APIs / registration — see `docs/ADMIN-KV.md`.
+- **Interview hub CMS** — **Admin → Interview hub CMS** (`/admin/hub`): Node.js Q&A bank, preparation plans, company tags, and Prisma questions (MongoDB). Blog editor: rich text, **Preview**, **Content score**, links, code blocks; public posts use sanitized HTML.
 
 ### Hub setup
 
 1. **Environment** — Copy `.env.example` to `.env` and set at least:
-   - `DATABASE_URL` — demo: `file:./prisma/dev.db` (SQLite). For production, use PostgreSQL (see below).
+   - `DATABASE_URL` — **MongoDB** (local `mongodb://127.0.0.1:27017/your_db` or Atlas `mongodb+srv://.../your_db?retryWrites=true&w=majority`). The path **must** include the database name.
    - `AUTH_SECRET` — `openssl rand -base64 32`
    - Optional: `OPENAI_API_KEY`, OAuth client IDs/secrets, Stripe keys (see `.env.example`).
-2. **Database & seed**
+2. **Database & seed** — Prisma uses **`db push`** for MongoDB (no SQL migrations folder in this setup).
    ```bash
    npx prisma db push
    npm run db:seed
@@ -78,13 +80,12 @@ Full-stack interview preparation and hiring surface (candidates + companies), co
    ```
    Open [http://localhost:3000/hub](http://localhost:3000/hub). Register at `/hub/register`, then sign in at `/hub/signin`.
 
-### PostgreSQL (production shape)
+### MongoDB (Atlas / self-hosted)
 
-The Prisma schema is modeled for relational data; for Postgres:
-
-1. In `prisma/schema.prisma`, set `provider = "postgresql"` on `datasource db`.
-2. Set `DATABASE_URL` to your Postgres connection string.
-3. Run `npx prisma migrate dev` (or `migrate deploy` in CI) instead of `db push` when you want versioned migrations.
+1. Create a cluster and database user; allow your app’s IP (or `0.0.0.0/0` for serverless hosts).
+2. Use a connection string whose path is **`/your_database_name`** (not an empty path before `?`).
+3. URL-encode special characters in the password.
+4. Run `npx prisma db push` after schema changes; use `npm run db:seed` to load demo questions and tags.
 
 ### Stripe (INR) — optional (when not all-free)
 
@@ -99,7 +100,7 @@ While `HUB_ALL_FREE_LAUNCH` is `true`, users are not charged; you can skip Strip
 
 1. **Project** — Import the repo; **Framework Preset**: Next.js.
 2. **Env vars** — Add all variables from `.env.example` in Vercel **Settings → Environment Variables** (Production + Preview as needed). Set `AUTH_URL` to `https://your-domain.com` if redirects misbehave.
-3. **Database** — Use [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres) or any hosted Postgres; set `DATABASE_URL`. Run `prisma migrate deploy` in a **build command** or a one-off script (e.g. `prisma migrate deploy && prisma generate && next build`), or run migrations from your machine against the production URL before/after deploy.
+3. **Database** — Use [MongoDB Atlas](https://www.mongodb.com/atlas) (or any MongoDB reachable from Vercel); set `DATABASE_URL` to a `mongodb` or `mongodb+srv` URL with a database name in the path. Run **`npx prisma db push`** once against production (locally or in a release job) whenever the Prisma schema changes; the default build runs `prisma generate` only.
 4. **Build** — Default `npm run build` runs `prisma generate` via the `build` script.
 5. **Stripe webhook** — In Stripe, add the production webhook URL; redeploy after adding `STRIPE_WEBHOOK_SECRET`.
 6. **OAuth** — Add production callback URLs in Google/GitHub consoles: `https://your-domain.com/api/auth/callback/google` (and `/github`).

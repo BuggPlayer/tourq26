@@ -47,6 +47,14 @@ So you can change default SEO and branding without editing code.
 | `KV_REST_API_URL`      | For KV   | Redis REST API URL             |
 | `KV_REST_API_TOKEN`    | For KV   | Redis REST API token          |
 | `ADMIN_PASSWORD`       | Yes      | Admin login password           |
+| `MAINTENANCE_MODE`     | Optional | `true` / `1` — instant public maintenance (overrides admin UI when set) |
+
+### Feature flags (Admin → Feature flags)
+
+- Toggle **maintenance**, **blog / tools / freebies / contact**, **header links**, **WhatsApp chip**, and **Interview Hub** database APIs / registration without redeploying.
+- Values persist in the same store as site content: **local** `content/feature-flags.json` or **Vercel KV** when `KV_REST_API_*` is set.
+- Optional **env overrides** per flag (for example `FF_MARKETING_BLOG=false`, `FF_HUB_DATABASE_API=false`) always win over the admin panel — use for break-glass deploys.
+- With KV, marketing route gates also run in **middleware** at the edge; with files only, **server pages and APIs** still enforce flags.
 | `NEXT_PUBLIC_SITE_URL` | Optional | Used in sitemap, canonicals    |
 
 When both `KV_REST_API_URL` and `KV_REST_API_TOKEN` are set, the app uses Redis for all content (blog, testimonials, site). Otherwise it uses the file-based store (works locally; on Vercel, file writes don’t persist).

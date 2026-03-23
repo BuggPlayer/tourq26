@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/hub/auth";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 
 export async function GET(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const { searchParams } = new URL(req.url);
   const questionId = searchParams.get("questionId");
   if (!questionId) {
@@ -29,6 +33,9 @@ const threadSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Sign in to post" }, { status: 401 });

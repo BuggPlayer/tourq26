@@ -1,12 +1,13 @@
-// TorqStudio Interview Hub — Prisma schema
-// Demo: SQLite (`file:./dev.db`). Production: set provider to "postgresql" and DATABASE_URL to Postgres.
+// TorqStudio Interview Hub — Prisma + MongoDB Atlas
+// Set DATABASE_URL=mongodb+srv://.../YOUR_DB_NAME?retryWrites=true&w=majority
+// Push schema: npx prisma db push   |   Seed: npm run db:seed
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -18,34 +19,35 @@ enum QuestionType {
 }
 
 model User {
-  id                     String    @id @default(cuid())
-  name                   String?
-  email                  String?   @unique
-  emailVerified          DateTime?
-  image                  String?
-  passwordHash           String?
-  role                   String    @default("candidate") // candidate | company | admin
-  subscriptionTier       String    @default("free") // free | premium | student
-  monthlyQuestionViews   Int       @default(0)
-  monthResetAt           DateTime?
-  studentVerified        Boolean   @default(false)
-  solvedCount            Int       @default(0)
-  totalScoreSum          Float     @default(0)
-  scoreSamples           Int       @default(0)
-  streakDays             Int       @default(0)
-  lastActiveDate         DateTime?
-  accounts               Account[]
-  sessions               Session[]
-  progress               UserProgress[]
-  planEnrollments        UserPlanEnrollment[]
-  talentPool             TalentPoolEntry?
-  mockBookings           MockInterviewBooking[]
-  forumPosts             ForumPost[]
-  jobPostings            JobPosting[] @relation("PostedJobs")
+  id                   String    @id @default(cuid()) @map("_id")
+  name                 String?
+  email                String?   @unique
+  emailVerified        DateTime?
+  image                String?
+  passwordHash         String?
+  role                 String    @default("candidate")
+  subscriptionTier     String    @default("free")
+  monthlyQuestionViews Int       @default(0)
+  monthResetAt         DateTime?
+  studentVerified      Boolean   @default(false)
+  solvedCount          Int       @default(0)
+  totalScoreSum        Float     @default(0)
+  scoreSamples         Int       @default(0)
+  streakDays           Int       @default(0)
+  lastActiveDate       DateTime?
+
+  accounts        Account[]
+  sessions        Session[]
+  progress        UserProgress[]
+  planEnrollments UserPlanEnrollment[]
+  talentPool      TalentPoolEntry?
+  mockBookings    MockInterviewBooking[]
+  forumPosts      ForumPost[]
+  jobPostings     JobPosting[]             @relation("PostedJobs")
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String @id @default(cuid()) @map("_id")
   userId            String
   type              String
   provider          String
@@ -57,143 +59,216 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// MongoDB requires an explicit @id; NextAuth still uses @@unique([identifier, token]).
 model VerificationToken {
+  id         String   @id @default(cuid()) @map("_id")
   identifier String
-  token      String   @unique
+  token      String
   expires    DateTime
 
   @@unique([identifier, token])
 }
 
 model CompanyTag {
-  id        String     @id @default(cuid())
-  name      String     @unique
-  category  String // FAANG | unicorn | service | other
-  questions Question[] @relation("QuestionCompanyTags")
+  id       String @id @default(cuid()) @map("_id")
+  name     String @unique
+  category String
+
+  questionLinks QuestionCompanyTag[]
+}
+
+// Explicit join — MongoDB does not support implicit many-to-many in Prisma.
+model QuestionCompanyTag {
+  id             String @id @default(cuid()) @map("_id")
+  questionId     String
+  companyTagId   String
+
+  question   Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  companyTag CompanyTag @relation(fields: [companyTagId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, companyTagId])
 }
 
 model Question {
-  id               String         @id @default(cuid())
+  id               String       @id @default(cuid()) @map("_id")
   type             QuestionType
   title            String
   description      String
-  difficulty       String // easy | medium | hard
+  difficulty       String
   topic            String
-  framework        String? // vanilla | react | vue | angular | svelte
-  defaultLanguage  String? // for DSA
-  starterCode      String? // JSON string: { "javascript": "...", ... }
-  tests            String? // JSON: test cases or quiz/UI checks
+  framework        String?
+  defaultLanguage  String?
+  starterCode      String?
+  tests            String?
   officialSolution String?
-  systemDesignMeta String? // JSON: nodes/edges for official FSD solution
-  createdAt        DateTime       @default(now())
-  companyTags      CompanyTag[]   @relation("QuestionCompanyTags")
-  progress         UserProgress[]
-  forumThreads     ForumThread[]
+  systemDesignMeta String?
+  createdAt        DateTime     @default(now())
+
+  companyTagLinks QuestionCompanyTag[]
+  progress        UserProgress[]
+  forumThreads    ForumThread[]
 }
 
 model UserProgress {
-  id          String   @id @default(cuid())
-  userId      String
-  questionId  String
-  solved      Boolean  @default(false)
-  score       Float?
-  attempts    Int      @default(0)
-  lastCode    String?
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid()) @map("_id")
+  userId     String
+  questionId String
+  solved     Boolean  @default(false)
+  score      Float?
+  attempts   Int      @default(0)
+  lastCode   String?
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([userId, questionId])
 }
 
 model PreparationPlan {
-  id           String               @id @default(cuid())
-  slug         String               @unique
+  id           String @id @default(cuid()) @map("_id")
+  slug         String @unique
   name         String
   description  String
   durationDays Int
-  milestones   String // JSON array of { id, title, questionCount }
-  sortOrder    Int                  @default(0)
-  enrollments  UserPlanEnrollment[]
+  milestones   String
+  sortOrder    Int    @default(0)
+
+  enrollments UserPlanEnrollment[]
 }
 
 model UserPlanEnrollment {
-  id               String          @id @default(cuid())
-  userId           String
-  planId           String
-  startedAt        DateTime        @default(now())
-  milestonesDone   Int             @default(0)
-  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan             PreparationPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  id             String   @id @default(cuid()) @map("_id")
+  userId         String
+  planId         String
+  startedAt      DateTime @default(now())
+  milestonesDone Int      @default(0)
+
+  user User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan PreparationPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 
   @@unique([userId, planId])
 }
 
 model JobPosting {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   companyName String
   title       String
   description String
   location    String
-  skills      String // JSON string array
+  skills      String
   postedById  String?
   createdAt   DateTime @default(now())
-  postedBy    User?    @relation("PostedJobs", fields: [postedById], references: [id])
+
+  postedBy User? @relation("PostedJobs", fields: [postedById], references: [id])
 }
 
 model TalentPoolEntry {
-  id         String   @id @default(cuid())
+  id         String   @id @default(cuid()) @map("_id")
   userId     String   @unique
   optIn      Boolean  @default(false)
   avgScore   Float    @default(0)
   percentile Float?
-  skills     String // JSON array
+  skills     String
   location   String?
   headline   String?
   updatedAt  DateTime @updatedAt
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model MockInterviewBooking {
-  id              String    @id @default(cuid())
-  userId          String
-  stripeSessionId String?
-  scheduledAt     DateTime?
+  id               String    @id @default(cuid()) @map("_id")
+  userId           String
+  stripeSessionId  String?
+  scheduledAt      DateTime?
   calendlyEventUrl String?
-  status          String    @default("pending") // pending | paid | scheduled | completed
-  amountInr       Int       @default(2499)
-  createdAt       DateTime  @default(now())
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status           String    @default("pending")
+  amountInr        Int       @default(2499)
+  createdAt        DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ForumThread {
-  id         String      @id @default(cuid())
+  id         String   @id @default(cuid()) @map("_id")
   questionId String
   title      String
-  question   Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  posts      ForumPost[]
-  createdAt  DateTime    @default(now())
+  createdAt  DateTime @default(now())
+
+  question Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  posts    ForumPost[]
 }
 
 model ForumPost {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   threadId  String
   userId    String
   body      String
-  createdAt DateTime    @default(now())
-  thread    ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  thread ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// --- Interview Q&A banks (admin-managed; e.g. Node.js, React — seed fills `nodejs` from static file) ---
+
+model InterviewQuestionBank {
+  id          String @id @default(cuid()) @map("_id")
+  slug        String @unique
+  label       String
+  description String?
+  sortOrder   Int    @default(0)
+
+  categories InterviewBankCategory[]
+  items      InterviewBankItem[]
+}
+
+model InterviewBankCategory {
+  id        String @id @default(cuid()) @map("_id")
+  bankId    String
+  bank      InterviewQuestionBank @relation(fields: [bankId], references: [id], onDelete: Cascade)
+  slug      String
+  label     String
+  sortOrder Int    @default(0)
+
+  items InterviewBankItem[]
+
+  @@unique([bankId, slug])
+}
+
+model InterviewBankItem {
+  id            String @id @default(cuid()) @map("_id")
+  bankId        String
+  bank          InterviewQuestionBank @relation(fields: [bankId], references: [id], onDelete: Cascade)
+  /** Stable URL segment within this bank (legacy numeric ids preserved for `nodejs` seed) */
+  publicId      String
+  categoryId    String
+  category      InterviewBankCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  question      String
+  answer        String
+  difficulty    String?
+  categoryBadge String?
+  answerIntro   String?
+  bulletsJson   String?
+  codeExample   String?
+  sourceName    String?
+  sourceUrl     String?
+  sortOrder     Int    @default(0)
+
+  @@unique([bankId, publicId])
 }

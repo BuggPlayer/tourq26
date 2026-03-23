@@ -5,22 +5,42 @@
 
 const STORAGE_KEY = "torq-candidate-behavior";
 const MAX_RECENT_PATHS = 12;
-const MAX_RECENT_NODE_QA = 10;
+const MAX_RECENT_INTERVIEW_QA = 10;
 
 export type CandidateBehaviorV1 = {
   v: 1;
   /** path -> visit count */
   pathCounts: Record<string, number>;
   recentPaths: { path: string; at: number }[];
-  recentNodeQaIds: { id: string; at: number }[];
+  /** Per-bank full-page Q&A views (newest first). */
+  recentInterviewQa: { bankSlug: string; id: string; at: number }[];
+  /** @deprecated migrated into recentInterviewQa on read */
+  recentNodeQaIds?: { id: string; at: number }[];
 };
 
 const defaultState = (): CandidateBehaviorV1 => ({
   v: 1,
   pathCounts: {},
   recentPaths: [],
-  recentNodeQaIds: [],
+  recentInterviewQa: [],
 });
+
+function migrateFromLegacy(p: Partial<CandidateBehaviorV1>): CandidateBehaviorV1 {
+  let recentInterviewQa = Array.isArray(p.recentInterviewQa) ? [...p.recentInterviewQa] : [];
+  if (recentInterviewQa.length === 0 && Array.isArray(p.recentNodeQaIds)) {
+    recentInterviewQa = p.recentNodeQaIds.map((x) => ({
+      bankSlug: "nodejs",
+      id: x.id,
+      at: x.at,
+    }));
+  }
+  return {
+    v: 1,
+    pathCounts: typeof p.pathCounts === "object" && p.pathCounts ? p.pathCounts : {},
+    recentPaths: Array.isArray(p.recentPaths) ? p.recentPaths : [],
+    recentInterviewQa,
+  };
+}
 
 export function readCandidateBehavior(): CandidateBehaviorV1 {
   if (typeof window === "undefined") return defaultState();
@@ -29,12 +49,7 @@ export function readCandidateBehavior(): CandidateBehaviorV1 {
     if (!raw) return defaultState();
     const p = JSON.parse(raw) as Partial<CandidateBehaviorV1>;
     if (p?.v !== 1) return defaultState();
-    return {
-      v: 1,
-      pathCounts: typeof p.pathCounts === "object" && p.pathCounts ? p.pathCounts : {},
-      recentPaths: Array.isArray(p.recentPaths) ? p.recentPaths : [],
-      recentNodeQaIds: Array.isArray(p.recentNodeQaIds) ? p.recentNodeQaIds : [],
-    };
+    return migrateFromLegacy(p);
   } catch {
     return defaultState();
   }
@@ -61,13 +76,22 @@ export function recordCandidatePath(path: string): CandidateBehaviorV1 {
   return b;
 }
 
-export function recordNodeQaFullPageView(questionId: string): CandidateBehaviorV1 {
+export function recordInterviewQaFullPageView(
+  bankSlug: string,
+  questionId: string,
+): CandidateBehaviorV1 {
   const b = readCandidateBehavior();
   const now = Date.now();
-  b.recentNodeQaIds = [
-    { id: questionId, at: now },
-    ...b.recentNodeQaIds.filter((x) => x.id !== questionId),
-  ].slice(0, MAX_RECENT_NODE_QA);
+  const key = `${bankSlug}:${questionId}`;
+  b.recentInterviewQa = [
+    { bankSlug, id: questionId, at: now },
+    ...b.recentInterviewQa.filter((x) => `${x.bankSlug}:${x.id}` !== key),
+  ].slice(0, MAX_RECENT_INTERVIEW_QA);
   writeCandidateBehavior(b);
   return b;
+}
+
+/** @deprecated use recordInterviewQaFullPageView("nodejs", id) */
+export function recordNodeQaFullPageView(questionId: string): CandidateBehaviorV1 {
+  return recordInterviewQaFullPageView("nodejs", questionId);
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 
 const bodySchema = z.object({
@@ -8,6 +9,9 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const denied = await guardHubBackend();
+  if (denied) return denied;
+
   try {
     const json = await req.json();
     const parsed = bodySchema.safeParse(json);
