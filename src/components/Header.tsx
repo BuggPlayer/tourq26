@@ -10,6 +10,7 @@ const baseNavLinks = [
   { href: "/#why-us", label: "Why Us" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/blog", label: "Blog" },
+  { href: "/tech-news", label: "Tech News" },
   { href: "/tools", label: "Tools", flag: "tools" as const },
   { href: "/freebies", label: "Freebies" },
   { href: "/#testimonials", label: "Testimonials" },

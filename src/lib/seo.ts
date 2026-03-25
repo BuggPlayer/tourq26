@@ -138,3 +138,88 @@ export function webApplicationJsonLd(params: {
     },
   };
 }
+
+/** Single tech news story — NewsArticle for article detail pages. */
+export function techNewsArticleJsonLd(params: {
+  siteUrl: string;
+  slug: string;
+  headline: string;
+  description: string;
+  datePublished: string;
+  dateModified?: string;
+  articleSection: string;
+  siteName: string;
+  articleBody: string;
+}) {
+  const url = `${params.siteUrl}/tech-news/${params.slug}`;
+  const modified = params.dateModified ?? params.datePublished;
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: params.headline,
+    description: params.description,
+    datePublished: params.datePublished,
+    dateModified: modified,
+    articleSection: params.articleSection,
+    articleBody: params.articleBody,
+    author: { "@type": "Organization", name: params.siteName, url: params.siteUrl },
+    publisher: {
+      "@type": "Organization",
+      name: params.siteName,
+      url: params.siteUrl,
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+  };
+}
+
+/** Tech news hub: CollectionPage + ItemList of NewsArticle linking to full article URLs. */
+export function techNewsCollectionJsonLd(params: {
+  siteUrl: string;
+  siteName: string;
+  pageName: string;
+  pageDescription: string;
+  articles: {
+    headline: string;
+    description: string;
+    datePublished: string;
+    articleSection: string;
+    url: string;
+  }[];
+}) {
+  const pageUrl = `${params.siteUrl}/tech-news`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: params.pageName,
+    description: params.pageDescription,
+    isPartOf: { "@type": "WebSite", name: params.siteName, url: params.siteUrl },
+    publisher: { "@type": "Organization", name: params.siteName, url: params.siteUrl },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: params.articles.length,
+      itemListElement: params.articles.map((a, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "NewsArticle",
+          headline: a.headline,
+          description: a.description,
+          datePublished: a.datePublished,
+          dateModified: a.datePublished,
+          articleSection: a.articleSection,
+          url: a.url,
+          mainEntityOfPage: { "@type": "WebPage", "@id": a.url },
+          author: { "@type": "Organization", name: params.siteName, url: params.siteUrl },
+          publisher: {
+            "@type": "Organization",
+            name: params.siteName,
+            url: params.siteUrl,
+          },
+        },
+      })),
+    },
+  };
+}

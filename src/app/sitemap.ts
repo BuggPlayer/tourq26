@@ -4,6 +4,7 @@ import { freebies } from "@/data/freebies";
 import { caseStudies } from "@/data/case-studies";
 import { servicePages } from "@/data/services-content";
 import { tools } from "@/data/tools";
+import { techNewsDemoItems } from "@/data/tech-news-demo";
 import { getSiteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -14,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/tech-news`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.82 },
     { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/case-studies`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
     { url: `${baseUrl}/freebies`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
@@ -57,5 +59,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.75,
   }));
 
-  return [...staticPages, ...serviceUrls, ...caseStudyUrls, ...toolUrls, ...freebieUrls, ...blogUrls];
+  const techNewsUrls: MetadataRoute.Sitemap = techNewsDemoItems.map((item) => ({
+    url: `${baseUrl}/tech-news/${item.slug}`,
+    lastModified: new Date(item.datePublished),
+    changeFrequency: "weekly" as const,
+    priority: 0.72,
+  }));
+
+  return [
+    ...staticPages,
+    ...serviceUrls,
+    ...caseStudyUrls,
+    ...toolUrls,
+    ...freebieUrls,
+    ...blogUrls,
+    ...techNewsUrls,
+  ];
 }
