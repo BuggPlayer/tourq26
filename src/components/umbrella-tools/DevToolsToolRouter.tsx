@@ -14,6 +14,8 @@ import HmacTool from "@/components/umbrella-tools/HmacTool";
 import JsonFormatterTool from "@/components/umbrella-tools/JsonFormatterTool";
 import JsonToCsvTool from "@/components/umbrella-tools/JsonToCsvTool";
 import JwtDecoderTool from "@/components/umbrella-tools/JwtDecoderTool";
+import PdfExtractPagesTool from "@/components/umbrella-tools/PdfExtractPagesTool";
+import PdfMergeTool from "@/components/umbrella-tools/PdfMergeTool";
 import PastebinTool from "@/components/umbrella-tools/PastebinTool";
 import QrCodeTool from "@/components/umbrella-tools/QrCodeTool";
 import RandomStringTool from "@/components/umbrella-tools/RandomStringTool";
@@ -148,6 +150,10 @@ export function DevToolsToolRouter({ slug }: { slug: string }) {
       return <CidrCalculatorTool />;
     case "checksum-calculator":
       return <ChecksumCalculatorTool />;
+    case "pdf-merge":
+      return <PdfMergeTool />;
+    case "pdf-extract-pages":
+      return <PdfExtractPagesTool />;
     case "pastebin":
       return (
         <Suspense fallback={<ToolFallback />}>

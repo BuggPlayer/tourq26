@@ -49,6 +49,7 @@ export const DEV_TOOL_CATEGORY_LABELS: Record<DevToolCategory, string> = {
   qrcode: "QR Code Tools",
   network: "Network Tools",
   checksum: "Checksum Tools",
+  pdf: "PDF Tools",
   pastebin: "Pastebin",
 };
 
@@ -76,6 +77,7 @@ export const DEV_TOOL_CATEGORY_ORDER: DevToolCategory[] = [
   "qrcode",
   "network",
   "checksum",
+  "pdf",
   "pastebin",
 ];
 
@@ -103,6 +105,7 @@ export const DEV_TOOL_CATEGORY_BLURB: Record<DevToolCategory, string> = {
   qrcode: "Generate QR codes from text or URLs — download or copy.",
   network: "CIDR, subnets, and IPv4 addressing helpers.",
   checksum: "CRC and lightweight integrity checks over UTF-8 bytes.",
+  pdf: "Merge PDFs and extract page ranges — all processing runs in your browser.",
   pastebin: "Scratch pad and shareable links — everything stays in the browser or the URL.",
 };
 

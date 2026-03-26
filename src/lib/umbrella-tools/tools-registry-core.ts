@@ -209,6 +209,28 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     seoTitle: "CRC-32 checksum calculator — Fletcher-16 online free",
   },
   {
+    slug: "pdf-merge",
+    title: "PDF merge",
+    description: "Combine multiple PDF files in order — download one merged document. Runs entirely in your browser.",
+    category: "pdf",
+    icon: "∪",
+    keywords: ["merge pdf", "combine pdf online", "pdf merger"],
+    seoTitle: "Merge PDF files online — combine PDFs free in your browser",
+    seoDescription:
+      "Merge two or more PDFs into one file with pdf-lib. Free client-side tool — your PDFs are not uploaded to our servers.",
+  },
+  {
+    slug: "pdf-extract-pages",
+    title: "PDF extract pages",
+    description: "Keep only selected pages (ranges like 1-3, 5, 8) and download a new PDF — client-side only.",
+    category: "pdf",
+    icon: "⊡",
+    keywords: ["extract pdf pages", "split pdf pages", "pdf page range"],
+    seoTitle: "Extract PDF pages — save selected pages as a new PDF online",
+    seoDescription:
+      "Pick page ranges from a PDF and download a smaller file. Runs locally in your browser with pdf-lib.",
+  },
+  {
     slug: "pastebin",
     title: "Pastebin",
     description:

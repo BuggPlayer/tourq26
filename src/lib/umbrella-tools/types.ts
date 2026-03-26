@@ -21,6 +21,7 @@ export type DevToolCategory =
   | "qrcode"
   | "network"
   | "checksum"
+  | "pdf"
   | "pastebin";
 
 export type UmbrellaTool = {

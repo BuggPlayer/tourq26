@@ -34,6 +34,7 @@ const CATEGORY_META_TAIL: Record<DevToolCategory, string> = {
   qrcode: "Free QR tool — generated or decoded locally in your browser.",
   network: "Free network calculator — IPv4 and IP info without server-side storage.",
   checksum: "Free checksum utility — integrity checks over UTF-8 in your browser.",
+  pdf: "Free PDF tool — merge or extract pages locally; files are not uploaded to our servers.",
   pastebin: "Free pastebin — optional share links; content stays client-side or in the URL.",
 };
 
