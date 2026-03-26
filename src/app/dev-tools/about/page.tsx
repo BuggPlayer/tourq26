@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import UmbrellaToolsLayout from "@/components/umbrella-tools/UmbrellaToolsLayout";
-import { umbrellaToolsMetadata } from "@/lib/umbrella-tools/seo";
+import { DEV_TOOLS_OG_IMAGE_PATH, umbrellaToolsMetadata } from "@/lib/umbrella-tools/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   return umbrellaToolsMetadata({
     title: "About developer utilities",
     description: "What the Torq Studio in-browser developer utilities are and how we handle your data.",
     path: "/dev-tools/about",
+    ogImagePath: DEV_TOOLS_OG_IMAGE_PATH,
   });
 }
 

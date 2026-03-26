@@ -1,10 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { decodeBase32, encodeBase32 } from "@/lib/umbrella-tools/base32";
 import { decodeBase58, encodeBase58 } from "@/lib/umbrella-tools/base58";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 function utf8ToBase64(str: string): string {
   return btoa(unescape(encodeURIComponent(str)));
@@ -32,22 +31,19 @@ function hexToBytes(hex: string): Uint8Array {
 
 export function Base32EncoderTool() {
   const [input, setInput] = useState("hi");
-  const meta = getDevToolBySlug("base32-encoder");
   const out = useMemo(() => encodeBase32(new TextEncoder().encode(input)), [input]);
   return (
-    <>
-      <ToolHeader title="Base32 encoder" description="Encode UTF-8 text to RFC 4648 Base32." category={meta?.category} />
+    <DevToolPageShell slug="base32-encoder">
       <div className="grid gap-4 lg:grid-cols-2">
         <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={8} className="rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
         <textarea readOnly value={out} rows={8} className="rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base32DecoderTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("base32-decoder");
   let out = "";
   let err: string | null = null;
   try {
@@ -56,18 +52,16 @@ export function Base32DecoderTool() {
     err = e instanceof Error ? e.message : "Error";
   }
   return (
-    <>
-      <ToolHeader title="Base32 decoder" description="Decode Base32 to UTF-8 text." category={meta?.category} />
+    <DevToolPageShell slug="base32-decoder">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={8} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       {err ? <p className="mt-2 text-sm text-destructive">{err}</p> : null}
       <textarea readOnly value={out} rows={8} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base32ToHexTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("base32-to-hex");
   const out = useMemo(() => {
     try {
       return bytesToHex(decodeBase32(input));
@@ -76,17 +70,15 @@ export function Base32ToHexTool() {
     }
   }, [input]);
   return (
-    <>
-      <ToolHeader title="Base32 to HEX" description="Decode Base32 to a hex byte string." category={meta?.category} />
+    <DevToolPageShell slug="base32-to-hex">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       <textarea readOnly value={out} rows={4} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-xs" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function HexToBase32Tool() {
   const [input, setInput] = useState("4869");
-  const meta = getDevToolBySlug("hex-to-base32");
   const out = useMemo(() => {
     try {
       return encodeBase32(hexToBytes(input));
@@ -95,32 +87,28 @@ export function HexToBase32Tool() {
     }
   }, [input]);
   return (
-    <>
-      <ToolHeader title="HEX to Base32" description="Encode raw hex bytes as Base32." category={meta?.category} />
+    <DevToolPageShell slug="hex-to-base32">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       <textarea readOnly value={out} rows={4} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base58EncoderTool() {
   const [input, setInput] = useState("hi");
-  const meta = getDevToolBySlug("base58-encoder");
   const out = useMemo(() => encodeBase58(new TextEncoder().encode(input)), [input]);
   return (
-    <>
-      <ToolHeader title="Base58 encoder" description="Encode UTF-8 bytes as Base58." category={meta?.category} />
+    <DevToolPageShell slug="base58-encoder">
       <div className="grid gap-4 lg:grid-cols-2">
         <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={8} className="rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
         <textarea readOnly value={out} rows={8} className="rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base58DecoderTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("base58-decoder");
   let out = "";
   let err: string | null = null;
   try {
@@ -129,18 +117,16 @@ export function Base58DecoderTool() {
     err = e instanceof Error ? e.message : "Error";
   }
   return (
-    <>
-      <ToolHeader title="Base58 decoder" description="Decode Base58 to UTF-8." category={meta?.category} />
+    <DevToolPageShell slug="base58-decoder">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={8} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       {err ? <p className="mt-2 text-sm text-destructive">{err}</p> : null}
       <textarea readOnly value={out} rows={8} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base58ToHexTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("base58-to-hex");
   const out = useMemo(() => {
     try {
       return bytesToHex(decodeBase58(input.trim()));
@@ -149,17 +135,15 @@ export function Base58ToHexTool() {
     }
   }, [input]);
   return (
-    <>
-      <ToolHeader title="Base58 to HEX" description="Decode Base58 to hex bytes." category={meta?.category} />
+    <DevToolPageShell slug="base58-to-hex">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       <textarea readOnly value={out} rows={4} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-xs" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function HexToBase58Tool() {
   const [input, setInput] = useState("4869");
-  const meta = getDevToolBySlug("hex-to-base58");
   const out = useMemo(() => {
     try {
       return encodeBase58(hexToBytes(input));
@@ -168,32 +152,28 @@ export function HexToBase58Tool() {
     }
   }, [input]);
   return (
-    <>
-      <ToolHeader title="HEX to Base58" description="Encode hex bytes as Base58." category={meta?.category} />
+    <DevToolPageShell slug="hex-to-base58">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       <textarea readOnly value={out} rows={4} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base64EncoderTool() {
   const [input, setInput] = useState("hello");
-  const meta = getDevToolBySlug("base64-encoder");
   const out = useMemo(() => utf8ToBase64(input), [input]);
   return (
-    <>
-      <ToolHeader title="Base64 encoder" description="Encode UTF-8 text to Base64." category={meta?.category} />
+    <DevToolPageShell slug="base64-encoder">
       <div className="grid gap-4 lg:grid-cols-2">
         <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={10} className="rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
         <textarea readOnly value={out} rows={10} className="rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base64DecoderTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("base64-decoder");
   let out = "";
   let err: string | null = null;
   try {
@@ -202,18 +182,16 @@ export function Base64DecoderTool() {
     err = e instanceof Error ? e.message : "Invalid Base64";
   }
   return (
-    <>
-      <ToolHeader title="Base64 decoder" description="Decode Base64 to UTF-8 text." category={meta?.category} />
+    <DevToolPageShell slug="base64-decoder">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={10} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       {err ? <p className="mt-2 text-sm text-destructive">{err}</p> : null}
       <textarea readOnly value={out} rows={10} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base64ToHexTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("base64-to-hex");
   const out = useMemo(() => {
     try {
       const bin = atob(input.trim());
@@ -225,17 +203,15 @@ export function Base64ToHexTool() {
     }
   }, [input]);
   return (
-    <>
-      <ToolHeader title="Base64 to HEX" description="Decode Base64 to lowercase hex bytes." category={meta?.category} />
+    <DevToolPageShell slug="base64-to-hex">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       <textarea readOnly value={out} rows={4} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-xs" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function HexToBase64Tool() {
   const [input, setInput] = useState("4869");
-  const meta = getDevToolBySlug("hex-to-base64");
   const out = useMemo(() => {
     try {
       const bytes = hexToBytes(input);
@@ -247,17 +223,15 @@ export function HexToBase64Tool() {
     }
   }, [input]);
   return (
-    <>
-      <ToolHeader title="HEX to Base64" description="Encode hex bytes as Base64." category={meta?.category} />
+    <DevToolPageShell slug="hex-to-base64">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       <textarea readOnly value={out} rows={4} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function Base64ToImageTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("base64-to-image");
   const src = useMemo(() => {
     const t = input.trim();
     if (!t) return "";
@@ -265,23 +239,25 @@ export function Base64ToImageTool() {
     return `data:image/png;base64,${t}`;
   }, [input]);
   return (
-    <>
-      <ToolHeader title="Base64 to image" description="Paste a data URL or raw Base64 PNG/JPEG to preview." category={meta?.category} />
+    <DevToolPageShell slug="base64-to-image">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-xs" placeholder="data:image/png;base64,... or raw base64" />
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt="Decoded from Base64" className="mt-4 max-h-96 rounded-xl border border-border object-contain" />
+        <img
+          src={src}
+          alt="Decoded from Base64"
+          loading="lazy"
+          className="mt-4 max-h-96 rounded-xl border border-border object-contain"
+        />
       ) : null}
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function ImageToBase64Tool() {
   const [dataUrl, setDataUrl] = useState("");
-  const meta = getDevToolBySlug("image-to-base64");
   return (
-    <>
-      <ToolHeader title="Image to Base64" description="Read a local image file to a data URL (Base64)." category={meta?.category} />
+    <DevToolPageShell slug="image-to-base64">
       <input
         type="file"
         accept="image/*"
@@ -298,9 +274,9 @@ export function ImageToBase64Tool() {
         <>
           <textarea readOnly value={dataUrl} rows={6} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-xs" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={dataUrl} alt="Preview" className="mt-4 max-h-64 rounded-xl border object-contain" />
+          <img src={dataUrl} alt="Preview" loading="lazy" className="mt-4 max-h-64 rounded-xl border object-contain" />
         </>
       ) : null}
-    </>
+    </DevToolPageShell>
   );
 }

@@ -1,20 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useMemo } from "react";
-import "react-quill/dist/quill.snow.css";
-
-const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false,
-  loading: () => (
-    <div
-      className="flex min-h-[14rem] items-center justify-center rounded-lg border border-border bg-surface/40 text-sm text-muted-foreground"
-      aria-hidden
-    >
-      Loading editor…
-    </div>
-  ),
-});
+import { QuillEditor } from "@/components/admin/QuillEditor";
 
 export type RichTextEditorProps = {
   value: string;
@@ -22,22 +9,6 @@ export type RichTextEditorProps = {
   placeholder?: string;
   minHeight?: string;
 };
-
-/** Industry-style toolbar: H1–H3, semantic blocks, lists, indent, link, clear formatting. */
-const QUILL_FORMATS = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "list",
-  "bullet",
-  "indent",
-  "blockquote",
-  "code-block",
-  "link",
-  "align",
-] as const;
 
 export function RichTextEditor({
   value,
@@ -69,13 +40,11 @@ export function RichTextEditor({
       className="admin-quill-editor overflow-hidden rounded-lg border border-border bg-surface/50"
       style={{ minHeight }}
     >
-      <ReactQuill
-        theme="snow"
+      <QuillEditor
         value={value}
         onChange={onChange}
-        modules={modules}
-        formats={[...QUILL_FORMATS]}
         placeholder={placeholder}
+        modules={modules}
         className="admin-quill-react"
       />
     </div>

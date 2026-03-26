@@ -4,8 +4,7 @@ import { useMemo, useState } from "react";
 import FileUploader from "@/components/umbrella-tools/FileUploader";
 import CodeBlock from "@/components/umbrella-tools/CodeBlock";
 import PreviewBox from "@/components/umbrella-tools/PreviewBox";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { svgToDataURL, validateSVG } from "@/lib/umbrella-tools/svg";
 
 const TOOL_SLUG = "svg-to-css-background";
@@ -28,15 +27,9 @@ export default function SvgToCssBackgroundTool() {
     setError(next.trim() ? (v.valid ? null : v.error) : null);
   }
 
-  const meta = getDevToolBySlug(TOOL_SLUG);
-
   return (
-    <>
-      <ToolHeader
-        title="SVG to CSS background"
-        description="Paste SVG markup or upload an .svg file. We validate the SVG and output a data-URL background you can paste into CSS."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-4">
           <label className="block text-sm font-medium text-muted-foreground">SVG source</label>
@@ -75,6 +68,6 @@ export default function SvgToCssBackgroundTool() {
           </div>
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

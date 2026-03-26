@@ -3,8 +3,7 @@
 import { useState } from "react";
 import bcrypt from "bcryptjs";
 import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 const TOOL_SLUG = "bcrypt-hash";
 
@@ -17,7 +16,6 @@ export default function BcryptTool() {
   const [comparePassword, setComparePassword] = useState("");
   const [compareResult, setCompareResult] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   function doHash() {
     setBusy(true);
@@ -45,12 +43,8 @@ export default function BcryptTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="Bcrypt hash & compare"
-        description="Hash passwords with bcrypt or verify plaintext against a bcrypt hash. Runs entirely in your browser with bcryptjs."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <DevToolsSecurityNote lead="Passwords and hashes stay in this browser tab — they are not sent to our servers. " />
       <p className="mb-6 text-sm text-muted-foreground">
         Higher cost factors take longer and can briefly make this tab unresponsive while hashing; use lower values for quick tests.
@@ -148,6 +142,6 @@ export default function BcryptTool() {
           ) : null}
         </div>
       )}
-    </>
+    </DevToolPageShell>
   );
 }

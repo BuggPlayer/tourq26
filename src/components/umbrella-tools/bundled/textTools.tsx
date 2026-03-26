@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 const LOREM =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -16,11 +15,9 @@ function wc(text: string) {
 
 export function WordCounterTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug("word-counter");
   const stats = useMemo(() => wc(input), [input]);
   return (
-    <>
-      <ToolHeader title="Word counter" description="Unicode-aware counts for words, characters, and lines." category={meta?.category} />
+    <DevToolPageShell slug="word-counter">
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -41,7 +38,7 @@ export function WordCounterTool() {
           <dd className="font-display text-2xl font-bold">{stats.lines}</dd>
         </div>
       </dl>
-    </>
+    </DevToolPageShell>
   );
 }
 
@@ -73,10 +70,12 @@ function toTrain(s: string) {
 
 export function CaseConverterTool() {
   const [input, setInput] = useState("Hello World Example");
-  const meta = getDevToolBySlug("case-converter");
   return (
-    <>
-      <ToolHeader title="Case converter" description="Transform letter case for titles, code, and constants." category={meta?.category} />
+    <DevToolPageShell slug="case-converter">
+      <p className="mb-4 text-sm text-muted-foreground">
+        Paste or type text, then tap a format. Your text is not sent to any server — conversion runs in this browser tab
+        only.
+      </p>
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       <div className="mt-4 flex flex-wrap gap-2">
         {(
@@ -100,14 +99,13 @@ export function CaseConverterTool() {
           </button>
         ))}
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function LineSorterTool() {
   const [input, setInput] = useState("c\nb\na");
   const [numbered, setNumbered] = useState(false);
-  const meta = getDevToolBySlug("line-sorter");
   function apply(mode: "sort" | "sort-ci" | "reverse" | "shuffle") {
     let lines = input.split(/\r\n|\r|\n/);
     if (mode === "sort") lines = [...lines].sort((a, b) => a.localeCompare(b));
@@ -125,8 +123,7 @@ export function LineSorterTool() {
     setInput(out);
   }
   return (
-    <>
-      <ToolHeader title="Line sorter" description="Sort, reverse, or shuffle lines; optional numbering." category={meta?.category} />
+    <DevToolPageShell slug="line-sorter">
       <div className="mb-3 flex flex-wrap gap-2">
         <button type="button" onClick={() => apply("sort")} className="rounded-lg border px-3 py-1.5 text-sm">
           Sort A→Z
@@ -146,22 +143,20 @@ export function LineSorterTool() {
         </label>
       </div>
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={14} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function WhitespaceRemoverTool() {
   const [input, setInput] = useState("  a \n  b  ");
   const [mode, setMode] = useState<"trim-lines" | "collapse" | "strip-all">("trim-lines");
-  const meta = getDevToolBySlug("whitespace-remover");
   const out = useMemo(() => {
     if (mode === "trim-lines") return input.split(/\r\n|\r|\n/).map((l) => l.trim()).join("\n");
     if (mode === "collapse") return input.replace(/[ \t]+/g, " ");
     return input.replace(/\s+/g, "");
   }, [input, mode]);
   return (
-    <>
-      <ToolHeader title="Whitespace remover" description="Trim each line, collapse spaces, or remove all whitespace." category={meta?.category} />
+    <DevToolPageShell slug="whitespace-remover">
       <div className="mb-3 flex flex-wrap gap-2">
         {(
           [
@@ -184,27 +179,24 @@ export function WhitespaceRemoverTool() {
         <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={12} className="rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
         <textarea readOnly value={out} rows={12} className="rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function LoremIpsumTool() {
   const [paragraphs, setParagraphs] = useState(3);
-  const meta = getDevToolBySlug("lorem-ipsum-generator");
   const text = useMemo(() => Array.from({ length: paragraphs }, () => LOREM).join("\n\n"), [paragraphs]);
   return (
-    <>
-      <ToolHeader title="Lorem ipsum generator" description="Classic placeholder paragraphs for layouts and mockups." category={meta?.category} />
+    <DevToolPageShell slug="lorem-ipsum-generator">
       <label className="text-sm text-muted-foreground">Paragraphs: {paragraphs}</label>
       <input type="range" min={1} max={20} value={paragraphs} onChange={(e) => setParagraphs(+e.target.value)} className="mt-2 w-full accent-primary" />
       <textarea readOnly value={text} rows={12} className="mt-4 w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function TextToHexTool() {
   const [input, setInput] = useState("Hi");
-  const meta = getDevToolBySlug("text-to-hex");
   const out = useMemo(() => {
     const bytes = new TextEncoder().encode(input);
     return Array.from(bytes)
@@ -212,19 +204,17 @@ export function TextToHexTool() {
       .join(" ");
   }, [input]);
   return (
-    <>
-      <ToolHeader title="Text to HEX" description="UTF-8 bytes as lowercase hex pairs, space-separated." category={meta?.category} />
+    <DevToolPageShell slug="text-to-hex">
       <div className="grid gap-4 lg:grid-cols-2">
         <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={10} className="rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
         <textarea readOnly value={out} rows={10} className="rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-xs" />
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 
 export function HexToTextTool() {
   const [input, setInput] = useState("48 69");
-  const meta = getDevToolBySlug("hex-to-text");
   let out = "";
   let err: string | null = null;
   try {
@@ -239,11 +229,10 @@ export function HexToTextTool() {
     err = e instanceof Error ? e.message : "Invalid hex";
   }
   return (
-    <>
-      <ToolHeader title="HEX to text" description="Decode hex (with or without spaces) to UTF-8 text." category={meta?.category} />
+    <DevToolPageShell slug="hex-to-text">
       <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={10} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
       {err ? <p className="mt-2 text-sm text-destructive">{err}</p> : null}
       <textarea readOnly value={out} rows={6} className="mt-4 w-full rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm" />
-    </>
+    </DevToolPageShell>
   );
 }

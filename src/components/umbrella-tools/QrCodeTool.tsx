@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 const TOOL_SLUG = "qr-code-generator";
 
@@ -10,7 +9,6 @@ export default function QrCodeTool() {
   const [text, setText] = useState("");
   const [dataUrl, setDataUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   useEffect(() => {
     const t = text.trim();
@@ -42,12 +40,8 @@ export default function QrCodeTool() {
   }, [text]);
 
   return (
-    <>
-      <ToolHeader
-        title="QR code generator"
-        description="Encode URLs, Wi‑Fi strings, or any short text as a QR code PNG (data URL). Generated in your browser."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-2">
           <label className="text-sm font-medium text-muted-foreground">Content</label>
@@ -63,7 +57,14 @@ export default function QrCodeTool() {
           {dataUrl ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element -- dynamic PNG data URL from qrcode */}
-              <img src={dataUrl} alt="Generated QR code" width={280} height={280} className="rounded-lg bg-white p-2" />
+              <img
+                src={dataUrl}
+                alt="Generated QR code"
+                width={280}
+                height={280}
+                loading="lazy"
+                className="rounded-lg bg-white p-2"
+              />
             </>
           ) : (
             <div className="flex h-[280px] w-[280px] items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
@@ -74,6 +75,7 @@ export default function QrCodeTool() {
             <a
               href={dataUrl}
               download="qrcode.png"
+              aria-label="Download QR code as PNG image"
               className="text-sm font-medium text-primary underline-offset-2 hover:underline"
             >
               Download PNG
@@ -81,6 +83,6 @@ export default function QrCodeTool() {
           ) : null}
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

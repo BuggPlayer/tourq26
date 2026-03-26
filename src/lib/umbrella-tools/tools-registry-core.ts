@@ -9,6 +9,9 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "css",
     icon: "◈",
     keywords: ["svg to css", "background-image", "data url"],
+    seoTitle: "SVG to CSS background-image — data URL generator online",
+    seoDescription:
+      "Convert inline SVG to a data URL and copy-ready background-image CSS. Free browser-based tool — no upload.",
   },
   {
     slug: "css-shadow-generator",
@@ -17,6 +20,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "css",
     icon: "◐",
     keywords: ["box-shadow generator", "css shadow"],
+    seoTitle: "CSS box-shadow generator — live preview & copy CSS free",
   },
   {
     slug: "json-formatter",
@@ -25,6 +29,9 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "json",
     icon: "{}",
     keywords: ["json formatter", "json minify", "json validator online"],
+    seoTitle: "JSON formatter & validator — minify and prettify online free",
+    seoDescription:
+      "Format, minify, and validate JSON for APIs and configs. Free online JSON tool — everything runs in your browser, no account.",
   },
   {
     slug: "jwt-decoder",
@@ -33,6 +40,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "json",
     icon: "◎",
     keywords: ["jwt decode", "jwt parser online", "json web token"],
+    seoTitle: "JWT decoder online — inspect JSON Web Token header & payload",
   },
   {
     slug: "json-to-csv",
@@ -41,6 +49,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "csv",
     icon: "▤",
     keywords: ["json to csv", "export csv"],
+    seoTitle: "JSON to CSV converter — export arrays online free",
   },
   {
     slug: "base64",
@@ -49,6 +58,9 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "base64",
     icon: "⊕",
     keywords: ["base64 encode", "base64 decode online", "utf-8 base64"],
+    seoTitle: "Base64 encode & decode — UTF-8 text online free",
+    seoDescription:
+      "Encode or decode Base64 for UTF-8 text, tokens, and APIs. Free Base64 tool — runs entirely in your browser.",
   },
   {
     slug: "hash-generator",
@@ -57,6 +69,9 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "hash",
     icon: "#",
     keywords: ["sha256 online", "sha512 hash", "generate hash"],
+    seoTitle: "SHA-256/384/512 hash generator — free online in browser",
+    seoDescription:
+      "Generate SHA-256, SHA-384, or SHA-512 hashes with Web Crypto. Free hash tool — your text never leaves this tab.",
   },
   {
     slug: "uuid-generator",
@@ -65,6 +80,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "text",
     icon: "◇",
     keywords: ["uuid generator", "guid generator online", "random uuid"],
+    seoTitle: "UUID generator — random v4 GUID online free",
   },
   {
     slug: "timestamp-converter",
@@ -73,6 +89,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "text",
     icon: "◷",
     keywords: ["unix timestamp converter", "epoch converter", "iso 8601"],
+    seoTitle: "Unix timestamp converter — epoch ↔ ISO 8601 date",
   },
   {
     slug: "url-encode",
@@ -81,6 +98,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "url",
     icon: "§",
     keywords: ["url encode", "percent encode", "decodeURIComponent"],
+    seoTitle: "URL encode & decode — percent-encoding online free",
   },
   {
     slug: "database-url-parser",
@@ -90,6 +108,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "database",
     icon: "▢",
     keywords: ["postgres connection string", "mysql url parser", "database url"],
+    seoTitle: "Database URL parser — Postgres, MySQL, MongoDB, Redis",
   },
   {
     slug: "random-string",
@@ -98,6 +117,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "randomizers",
     icon: "✧",
     keywords: ["random string", "secure random", "token generator"],
+    seoTitle: "Random string generator — secure tokens online free",
   },
   {
     slug: "base32-encode-decode",
@@ -106,6 +126,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "base32",
     icon: "Ⓑ",
     keywords: ["base32 encode", "rfc 4648", "base32 decode"],
+    seoTitle: "Base32 encoder & decoder — RFC 4648 online free",
   },
   {
     slug: "base58-encode-decode",
@@ -114,6 +135,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "base58",
     icon: "₿",
     keywords: ["base58", "bitcoin encoding"],
+    seoTitle: "Base58 encoder & decoder — Bitcoin-style online free",
   },
   {
     slug: "hmac-generator",
@@ -122,6 +144,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "hmac",
     icon: "⌬",
     keywords: ["hmac sha256", "hmac generator online", "webhook signature"],
+    seoTitle: "HMAC generator — SHA-256/384/512 for webhooks & APIs",
   },
   {
     slug: "bcrypt-hash",
@@ -130,6 +153,9 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "bcrypt",
     icon: "⚿",
     keywords: ["bcrypt online", "bcrypt compare", "password hash"],
+    seoTitle: "Bcrypt hash & compare — online password tool free",
+    seoDescription:
+      "Hash or verify bcrypt passwords in your browser with bcryptjs. Free tool — passwords are not sent to our servers.",
   },
   {
     slug: "qr-code-generator",
@@ -138,6 +164,9 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "qrcode",
     icon: "▣",
     keywords: ["qr code generator", "qr online"],
+    seoTitle: "QR code generator — free PNG from text or URL online",
+    seoDescription:
+      "Create a QR code from any text or URL with a downloadable PNG. Free QR generator — runs locally in your browser.",
   },
   {
     slug: "cidr-calculator",
@@ -146,6 +175,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "network",
     icon: "⬚",
     keywords: ["cidr calculator", "subnet calculator", "ipv4 cidr"],
+    seoTitle: "CIDR calculator — IPv4 subnet, mask & network range",
   },
   {
     slug: "checksum-calculator",
@@ -154,6 +184,7 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "checksum",
     icon: "∑",
     keywords: ["crc32 online", "checksum calculator", "fletcher checksum"],
+    seoTitle: "CRC-32 checksum calculator — Fletcher-16 online free",
   },
   {
     slug: "pastebin",
@@ -163,5 +194,6 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "pastebin",
     icon: "¶",
     keywords: ["pastebin online", "text share", "client side paste"],
+    seoTitle: "Pastebin — share plain text with a browser link",
   },
 ];

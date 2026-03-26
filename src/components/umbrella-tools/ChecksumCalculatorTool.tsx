@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { crc32, fletcher16 } from "@/lib/umbrella-tools/crc32";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "checksum-calculator";
 
@@ -13,7 +12,6 @@ function hex8(n: number): string {
 
 export default function ChecksumCalculatorTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   const result = useMemo(() => {
     const bytes = new TextEncoder().encode(input);
@@ -23,12 +21,8 @@ export default function ChecksumCalculatorTool() {
   }, [input]);
 
   return (
-    <>
-      <ToolHeader
-        title="Checksum calculator"
-        description="IEEE CRC-32 (same family as Ethernet, ZIP, PNG) and a 16-bit Fletcher sum over UTF-8 bytes. Handy for comparing blobs, configs, and wire formats."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <label className="block text-sm font-medium text-muted-foreground">Input (UTF-8)</label>
       <textarea
         value={input}
@@ -55,6 +49,6 @@ export default function ChecksumCalculatorTool() {
           </dd>
         </div>
       </dl>
-    </>
+    </DevToolPageShell>
   );
 }

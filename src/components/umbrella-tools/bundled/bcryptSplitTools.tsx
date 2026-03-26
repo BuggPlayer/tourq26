@@ -3,15 +3,13 @@
 import { useState } from "react";
 import bcrypt from "bcryptjs";
 import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 export function BcryptGeneratorOnlyTool() {
   const [password, setPassword] = useState("");
   const [rounds, setRounds] = useState(10);
   const [hashOut, setHashOut] = useState("");
   const [busy, setBusy] = useState(false);
-  const meta = getDevToolBySlug("bcrypt-generator");
 
   function doHash() {
     setBusy(true);
@@ -25,8 +23,7 @@ export function BcryptGeneratorOnlyTool() {
   }
 
   return (
-    <>
-      <ToolHeader title="Bcrypt generator" description="Generate bcrypt hashes with configurable cost." category={meta?.category} />
+    <DevToolPageShell slug="bcrypt-generator">
       <DevToolsSecurityNote lead="Passwords and hashes stay in this browser tab. " />
       <div className="space-y-4">
         <div>
@@ -60,7 +57,7 @@ export function BcryptGeneratorOnlyTool() {
         </button>
         {hashOut ? <pre className="overflow-x-auto break-all rounded-xl border border-border bg-surface p-4 font-mono text-xs">{hashOut}</pre> : null}
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 
@@ -69,7 +66,6 @@ export function BcryptCheckerOnlyTool() {
   const [comparePassword, setComparePassword] = useState("");
   const [compareResult, setCompareResult] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
-  const meta = getDevToolBySlug("bcrypt-checker");
 
   function doCompare() {
     setBusy(true);
@@ -84,8 +80,7 @@ export function BcryptCheckerOnlyTool() {
   }
 
   return (
-    <>
-      <ToolHeader title="Bcrypt checker" description="Verify a password against a bcrypt hash." category={meta?.category} />
+    <DevToolPageShell slug="bcrypt-checker">
       <DevToolsSecurityNote lead="Passwords and hashes stay in this browser tab. " />
       <div className="space-y-4">
         <div>
@@ -122,6 +117,6 @@ export function BcryptCheckerOnlyTool() {
           </p>
         ) : null}
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

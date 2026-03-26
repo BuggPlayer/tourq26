@@ -4,12 +4,16 @@ import { freebies } from "@/data/freebies";
 import { caseStudies } from "@/data/case-studies";
 import { servicePages } from "@/data/services-content";
 import { techNewsDemoItems } from "@/data/tech-news-demo";
+import { readDevToolsAdminDocument } from "@/lib/content";
+import { filterUmbrellaToolsByAdmin } from "@/lib/dev-tools-admin";
 import { UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
 import { getSiteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = await getSiteUrl();
   const blogPosts = await readBlogPosts();
+  const adminDoc = await readDevToolsAdminDocument();
+  const toolsForSitemap = filterUmbrellaToolsByAdmin(UMBRELLA_TOOLS, adminDoc);
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
@@ -19,9 +23,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/case-studies`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
     { url: `${baseUrl}/freebies`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/dev-tools`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.82 },
+    { url: `${baseUrl}/dev-tools`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.88 },
     { url: `${baseUrl}/dev-tools/about`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
-    ...UMBRELLA_TOOLS.map((t) => ({
+    ...toolsForSitemap.map((t) => ({
       url: `${baseUrl}/dev-tools/${t.slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,

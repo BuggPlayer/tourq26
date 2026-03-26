@@ -1,15 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { parseCidr } from "@/lib/umbrella-tools/cidr";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "cidr-calculator";
 
 export default function CidrCalculatorTool() {
   const [input, setInput] = useState("192.168.1.10/24");
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   const result = useMemo(() => {
     try {
@@ -22,12 +20,8 @@ export default function CidrCalculatorTool() {
   const err = input.trim() && !result ? "Enter a valid IPv4 CIDR, e.g. 10.0.0.0/16" : null;
 
   return (
-    <>
-      <ToolHeader
-        title="CIDR calculator"
-        description="Given an IPv4 address and prefix length, compute the network, broadcast, mask, and usable hosts."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <label className="text-sm font-medium text-muted-foreground">IPv4 CIDR</label>
       <input
         value={input}
@@ -58,6 +52,6 @@ export default function CidrCalculatorTool() {
           ))}
         </dl>
       ) : null}
-    </>
+    </DevToolPageShell>
   );
 }

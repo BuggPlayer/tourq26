@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import type { HashAlgorithm } from "@/lib/umbrella-tools/hash";
 import { digestText } from "@/lib/umbrella-tools/hash";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "hash-generator";
 
@@ -16,7 +15,6 @@ export default function HashGeneratorTool() {
   const [algorithm, setAlgorithm] = useState<HashAlgorithm>("SHA-256");
   const [hash, setHash] = useState("");
   const [busy, setBusy] = useState(false);
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   async function compute() {
     setBusy(true);
@@ -30,12 +28,8 @@ export default function HashGeneratorTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="SHA hash generator"
-        description="Compute SHA-256, SHA-384, or SHA-512 hashes of arbitrary text using the Web Crypto API. Nothing is sent to a server."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <DevToolsSecurityNote lead="Your input and digest are computed only in this browser tab — no uploads. " />
       <div className="flex flex-wrap gap-3">
         {ALGS.map((a) => (
@@ -79,6 +73,6 @@ export default function HashGeneratorTool() {
           </div>
         ) : null}
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

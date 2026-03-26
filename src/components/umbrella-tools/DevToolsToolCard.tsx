@@ -4,9 +4,11 @@ import { DEV_TOOL_CATEGORY_LABELS } from "@/lib/umbrella-tools/tools-config";
 
 type Props = {
   tool: UmbrellaTool;
+  /** Admin-managed hub highlight (badge + sort); independent of optional registry `tool.badge`. */
+  featured?: boolean;
 };
 
-export function DevToolsToolCard({ tool }: Props) {
+export function DevToolsToolCard({ tool, featured }: Props) {
   const categoryLabel = DEV_TOOL_CATEGORY_LABELS[tool.category];
 
   return (
@@ -14,6 +16,11 @@ export function DevToolsToolCard({ tool }: Props) {
       href={`/dev-tools/${tool.slug}`}
       className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border/70 bg-surface-elevated/90 p-5 shadow-[0_1px_0_0_rgb(255_255_255/0.04)_inset] transition-all duration-200 hover:border-primary/30 hover:shadow-md sm:p-6"
     >
+      {featured ? (
+        <span className="absolute left-4 top-4 rounded-full border border-amber-500/35 bg-amber-500/12 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          Featured
+        </span>
+      ) : null}
       {tool.badge ? (
         <span className="absolute right-4 top-4 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
           {tool.badge}

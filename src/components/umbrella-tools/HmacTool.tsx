@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import type { HmacAlgorithm } from "@/lib/umbrella-tools/hmac";
 import { hmacHex } from "@/lib/umbrella-tools/hmac";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "hmac-generator";
 
@@ -17,7 +16,6 @@ export default function HmacTool() {
   const [algorithm, setAlgorithm] = useState<HmacAlgorithm>("SHA-256");
   const [hex, setHex] = useState("");
   const [busy, setBusy] = useState(false);
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   async function compute() {
     setBusy(true);
@@ -31,12 +29,8 @@ export default function HmacTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="HMAC generator"
-        description="Compute HMAC in hexadecimal using your secret key and message. Matches Web Crypto — use the same inputs as your server to debug signatures."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <DevToolsSecurityNote />
       <div className="flex flex-wrap gap-3">
         {ALGS.map((a) => (
@@ -90,6 +84,6 @@ export default function HmacTool() {
           </div>
         ) : null}
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 const TOOL_SLUG = "timestamp-converter";
 
@@ -20,7 +19,6 @@ function parseUnix(input: string): number | null {
 export default function TimestampConverterTool() {
   const [unixInput, setUnixInput] = useState("");
   const [isoInput, setIsoInput] = useState("");
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   const fromUnix = useMemo(() => {
     const sec = parseUnix(unixInput);
@@ -55,12 +53,8 @@ export default function TimestampConverterTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="Unix timestamp converter"
-        description="Convert between Unix epoch seconds (or milliseconds) and ISO 8601 dates. Handy for APIs, logs, and JWT exp fields."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="mb-6">
         <button
           type="button"
@@ -122,6 +116,6 @@ export default function TimestampConverterTool() {
           ) : null}
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

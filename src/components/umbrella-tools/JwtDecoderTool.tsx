@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { decodeJwtToken } from "@/lib/umbrella-tools/jwt";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "jwt-decoder";
 
 export default function JwtDecoderTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   const result = input.trim() ? decodeJwtToken(input) : null;
   const headerJson =
@@ -18,12 +16,7 @@ export default function JwtDecoderTool() {
     result && !("error" in result) ? JSON.stringify(result.payload, null, 2) : "";
 
   return (
-    <>
-      <ToolHeader
-        title="JWT decoder"
-        description="Paste a JWT to inspect the header and payload. This does not verify signatures or check expiry — use your backend or auth provider for that."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
       <p className="mb-4 rounded-lg border border-border/60 bg-surface/50 px-4 py-3 text-sm text-muted-foreground">
         Read-only debugging tool. Never paste production secrets into untrusted sites.
       </p>
@@ -67,6 +60,6 @@ export default function JwtDecoderTool() {
           )}
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

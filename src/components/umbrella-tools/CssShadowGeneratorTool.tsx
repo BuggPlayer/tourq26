@@ -3,8 +3,7 @@
 import { useMemo, useState } from "react";
 import CodeBlock from "@/components/umbrella-tools/CodeBlock";
 import PreviewBox from "@/components/umbrella-tools/PreviewBox";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { generateBoxShadow } from "@/lib/umbrella-tools/css";
 
 const TOOL_SLUG = "css-shadow-generator";
@@ -22,15 +21,10 @@ export default function CssShadowGeneratorTool() {
   );
 
   const cssSnippet = `box-shadow: ${shadow};`;
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   return (
-    <>
-      <ToolHeader
-        title="CSS box-shadow generator"
-        description="Adjust shadow parameters and copy the declaration. Preview updates live."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-5 rounded-xl border border-border bg-surface p-6">
           <Slider label="Offset X (px)" value={offsetX} onChange={setOffsetX} min={-80} max={80} />
@@ -73,7 +67,7 @@ export default function CssShadowGeneratorTool() {
           </div>
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }
 

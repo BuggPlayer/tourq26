@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 const TOOL_SLUG = "uuid-generator";
 
@@ -10,7 +9,6 @@ export default function UuidGeneratorTool() {
   const [count, setCount] = useState(5);
   const [uuids, setUuids] = useState<string[]>([]);
   const [copied, setCopied] = useState<number | "all" | null>(null);
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   const generate = useCallback(() => {
     const n = Math.min(50, Math.max(1, count));
@@ -34,12 +32,8 @@ export default function UuidGeneratorTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="UUID generator"
-        description="Generate cryptographically random RFC 4122 version 4 UUIDs using the browser crypto API. Safe for local IDs and test data."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="flex flex-wrap items-end gap-4">
         <div>
           <label htmlFor="uuid-count" className="block text-sm font-medium text-muted-foreground">
@@ -58,6 +52,7 @@ export default function UuidGeneratorTool() {
         <button
           type="button"
           onClick={generate}
+          aria-label="Generate random UUIDs"
           className="rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
         >
           Generate
@@ -66,6 +61,7 @@ export default function UuidGeneratorTool() {
           <button
             type="button"
             onClick={copyAll}
+            aria-label={copied === "all" ? "All UUIDs copied to clipboard" : "Copy all UUIDs to clipboard"}
             className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-elevated"
           >
             {copied === "all" ? "Copied!" : "Copy all"}
@@ -79,6 +75,11 @@ export default function UuidGeneratorTool() {
             <button
               type="button"
               onClick={() => copyOne(i)}
+              aria-label={
+                copied === i
+                  ? `UUID ${i + 1} copied to clipboard`
+                  : `Copy UUID ${i + 1} to clipboard`
+              }
               className="shrink-0 rounded-md bg-primary/15 px-3 py-1 text-xs font-medium text-primary hover:bg-primary/25"
             >
               {copied === i ? "Copied" : "Copy"}
@@ -86,6 +87,13 @@ export default function UuidGeneratorTool() {
           </li>
         ))}
       </ul>
-    </>
+      <p role="status" aria-live="polite" className="sr-only">
+        {copied === "all"
+          ? "All UUIDs copied to clipboard."
+          : typeof copied === "number"
+            ? `UUID ${copied + 1} copied to clipboard.`
+            : ""}
+      </p>
+    </DevToolPageShell>
   );
 }

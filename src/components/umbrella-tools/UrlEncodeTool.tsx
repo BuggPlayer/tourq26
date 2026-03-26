@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 const TOOL_SLUG = "url-encode";
 
 export default function UrlEncodeTool() {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   let output = "";
   let error: string | null = null;
@@ -22,12 +20,8 @@ export default function UrlEncodeTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="URL encode / decode"
-        description="Use encodeURIComponent / decodeURIComponent for query strings and path segments. For full URLs, encode only the parts that need escaping."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
@@ -70,6 +64,6 @@ export default function UrlEncodeTool() {
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

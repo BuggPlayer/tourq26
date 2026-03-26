@@ -2,15 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { parseDatabaseUrl } from "@/lib/umbrella-tools/database-url";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "database-url-parser";
 
 export default function DatabaseUrlParserTool() {
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   const parsed = useMemo(() => {
     if (!input.trim()) return null;
@@ -24,12 +22,8 @@ export default function DatabaseUrlParserTool() {
   const error = input.trim() && !parsed ? "Could not parse this URL. Check the scheme and format." : null;
 
   return (
-    <>
-      <ToolHeader
-        title="Database URL parser"
-        description="Paste a database connection URL to see scheme, host, port, credentials, and database name. Parsed only in your browser."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <DevToolsSecurityNote lead="Connection strings may include passwords — values are parsed only in this browser tab and are not uploaded. " />
       <label className="block text-sm font-medium text-muted-foreground">Connection URL</label>
       <textarea
@@ -73,6 +67,6 @@ export default function DatabaseUrlParserTool() {
           ) : null}
         </dl>
       ) : null}
-    </>
+    </DevToolPageShell>
   );
 }

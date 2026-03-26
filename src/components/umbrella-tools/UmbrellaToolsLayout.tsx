@@ -1,11 +1,20 @@
 import Footer from "@/components/Footer";
 import { DevToolsBreadcrumbs } from "@/components/umbrella-tools/DevToolsBreadcrumbs";
 import { DevToolsMobileSection } from "@/components/umbrella-tools/DevToolsMobileSection";
+import { DevToolsToolFaq } from "@/components/umbrella-tools/DevToolsToolFaq";
 import { DevToolsRelatedTools } from "@/components/umbrella-tools/DevToolsRelatedTools";
 import { DevToolsSidebar } from "@/components/umbrella-tools/DevToolsSidebar";
 import { DevToolsTopBar } from "@/components/umbrella-tools/DevToolsTopBar";
+import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 
-export default function UmbrellaToolsLayout({ children }: { children: React.ReactNode }) {
+export default function UmbrellaToolsLayout({
+  children,
+  relatedToolsOverride,
+}: {
+  children: React.ReactNode;
+  /** When set (e.g. from admin overrides), related tools exclude disabled slugs. */
+  relatedToolsOverride?: UmbrellaTool[];
+}) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <DevToolsTopBar />
@@ -25,7 +34,8 @@ export default function UmbrellaToolsLayout({ children }: { children: React.Reac
           <main className="px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
             <DevToolsBreadcrumbs />
             {children}
-            <DevToolsRelatedTools />
+            <DevToolsToolFaq />
+            <DevToolsRelatedTools relatedToolsOverride={relatedToolsOverride} />
           </main>
         </div>
       </div>

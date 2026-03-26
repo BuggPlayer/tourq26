@@ -1,16 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { decodeBase58, encodeBase58 } from "@/lib/umbrella-tools/base58";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "base58-encode-decode";
 
 export default function Base58Tool() {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [input, setInput] = useState("");
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   let output = "";
   let error: string | null = null;
@@ -29,12 +27,8 @@ export default function Base58Tool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="Base58 encode / decode"
-        description="Bitcoin-style Base58 — no 0, O, I, or l. For arbitrary UTF-8 text as bytes (not Base58Check with checksum)."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
@@ -76,6 +70,6 @@ export default function Base58Tool() {
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

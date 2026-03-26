@@ -44,10 +44,14 @@ export default function CodeBlock({ code, language }: Props) {
       <button
         type="button"
         onClick={copy}
+        aria-label={copied ? "Code copied to clipboard" : `Copy ${language} code to clipboard`}
         className="absolute right-3 top-3 z-10 rounded-lg bg-foreground/10 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-foreground/18"
       >
         {copied ? "Copied" : "Copy"}
       </button>
+      <p role="status" aria-live="polite" className="sr-only">
+        {copied ? "Code copied to clipboard." : ""}
+      </p>
       <SyntaxHighlighter
         language={prismLang}
         style={oneDark}

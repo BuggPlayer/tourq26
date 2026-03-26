@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { isAdmin } from "@/lib/auth";
 import { LogoutButton } from "./LogoutButton";
+import "quill/dist/quill.snow.css";
 
 export default async function AdminLayout({
   children,
@@ -33,6 +34,7 @@ export default async function AdminLayout({
               <NavLink href="/admin/testimonials">Testimonials</NavLink>
               <NavLink href="/admin/site">Site & SEO</NavLink>
               <NavLink href="/admin/feature-flags">Feature flags</NavLink>
+              <NavLink href="/admin/dev-tools">Dev tools</NavLink>
             </aside>
             <main className="min-w-0 flex-1">{children}</main>
           </div>

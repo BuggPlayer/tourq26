@@ -3,9 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { base64UrlToUtf8, utf8ToBase64Url } from "@/lib/umbrella-tools/paste-url";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 const TOOL_SLUG = "pastebin";
 const STORAGE_KEY = "torq-devtools-pastebin";
@@ -16,7 +15,6 @@ export default function PastebinTool() {
   const pathname = usePathname();
   const [text, setText] = useState("");
   const [hint, setHint] = useState<string | null>(null);
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   useEffect(() => {
     const d = searchParams.get("d");
@@ -98,18 +96,15 @@ export default function PastebinTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="Pastebin"
-        description="Plain-text pad with autosave on this device, a shareable link (content encoded in ?d=), and download. No upload — works offline after load."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <DevToolsSecurityNote lead="Anyone with the share link can read the paste (it lives in the URL). Do not use for secrets. " />
 
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
           onClick={copyShareLink}
+          aria-label="Copy shareable link to clipboard"
           className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
         >
           Copy share link
@@ -117,6 +112,7 @@ export default function PastebinTool() {
         <button
           type="button"
           onClick={copyPlainText}
+          aria-label="Copy paste text to clipboard"
           className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground hover:border-primary/40"
         >
           Copy text
@@ -124,6 +120,7 @@ export default function PastebinTool() {
         <button
           type="button"
           onClick={downloadTxt}
+          aria-label="Download paste as a text file"
           className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground hover:border-primary/40"
         >
           Download .txt
@@ -131,12 +128,17 @@ export default function PastebinTool() {
         <button
           type="button"
           onClick={clearPad}
+          aria-label="Clear paste pad"
           className="rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground hover:border-destructive/40 hover:text-destructive"
         >
           Clear
         </button>
       </div>
-      {hint ? <p className="mt-3 text-sm text-muted-foreground">{hint}</p> : null}
+      {hint ? (
+        <p role="status" aria-live="polite" className="mt-3 text-sm text-foreground/85">
+          {hint}
+        </p>
+      ) : null}
       <p className="mt-2 text-xs text-muted-foreground">
         Autosaves to this browser. Share links may hit browser length limits for very large pastes.
       </p>
@@ -154,6 +156,6 @@ export default function PastebinTool() {
         spellCheck={false}
       />
       <p className="mt-2 text-xs text-muted-foreground">{text.length} characters</p>
-    </>
+    </DevToolPageShell>
   );
 }

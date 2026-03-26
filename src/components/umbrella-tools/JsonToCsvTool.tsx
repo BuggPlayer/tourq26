@@ -3,8 +3,7 @@
 import { useMemo, useState } from "react";
 import FileUploader from "@/components/umbrella-tools/FileUploader";
 import CodeBlock from "@/components/umbrella-tools/CodeBlock";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 import { jsonToCSV, validateJSON } from "@/lib/umbrella-tools/json";
 
 const TOOL_SLUG = "json-to-csv";
@@ -68,15 +67,9 @@ export default function JsonToCsvTool() {
     URL.revokeObjectURL(url);
   }
 
-  const meta = getDevToolBySlug(TOOL_SLUG);
-
   return (
-    <>
-      <ToolHeader
-        title="JSON to CSV"
-        description="Provide a JSON array of objects with the same keys. Headers come from the first object; nested values are stringified."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-4">
           <label className="block text-sm font-medium text-muted-foreground">JSON input</label>
@@ -105,6 +98,6 @@ export default function JsonToCsvTool() {
           {csv ? <CodeBlock code={csv} language="csv" /> : <p className="text-sm text-muted-foreground">Valid JSON array will render here.</p>}
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

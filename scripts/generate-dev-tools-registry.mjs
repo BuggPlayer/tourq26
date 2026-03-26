@@ -1,4 +1,8 @@
-/** One-off generator: writes src/lib/umbrella-tools/tools-registry-extra.ts */
+/**
+ * One-off generator: writes src/lib/umbrella-tools/tools-registry-extra.ts
+ * Optional per-tool `seoTitle` / `seoDescription` / `seoIntro` for generated rows: use
+ * `src/lib/umbrella-tools/seo-overrides.ts` (merged after this file) so regenerating does not drop SEO copy.
+ */
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";

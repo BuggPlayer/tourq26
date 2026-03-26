@@ -5,6 +5,7 @@
 import type { DevToolCategory, UmbrellaTool } from "./types";
 import { CORE_UMBRELLA_TOOLS } from "./tools-registry-core";
 import { EXTRA_UMBRELLA_TOOLS } from "./tools-registry-extra";
+import { applyDevToolSeoOverrides } from "./seo-overrides";
 
 export type { DevToolCategory, UmbrellaTool } from "./types";
 
@@ -16,11 +17,12 @@ function mergeUmbrellaTools(): UmbrellaTool[] {
   }
   const order = DEV_TOOL_CATEGORY_ORDER;
   const catIndex = (c: DevToolCategory) => order.indexOf(c);
-  return [...map.values()].sort((a, b) => {
+  const sorted = [...map.values()].sort((a, b) => {
     const d = catIndex(a.category) - catIndex(b.category);
     if (d !== 0) return d;
     return a.title.localeCompare(b.title);
   });
+  return sorted.map(applyDevToolSeoOverrides);
 }
 
 /** Section titles on /dev-tools */

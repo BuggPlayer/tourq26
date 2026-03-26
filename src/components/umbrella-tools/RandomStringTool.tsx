@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useId, useState } from "react";
-import ToolHeader from "@/components/umbrella-tools/ToolHeader";
-import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
+import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
 
 const TOOL_SLUG = "random-string";
 
@@ -32,7 +31,6 @@ export default function RandomStringTool() {
   const [useSymbols, setUseSymbols] = useState(false);
   const [output, setOutput] = useState("");
   const [copyHint, setCopyHint] = useState<string | null>(null);
-  const meta = getDevToolBySlug(TOOL_SLUG);
 
   const generate = useCallback(() => {
     let charset = "";
@@ -60,12 +58,8 @@ export default function RandomStringTool() {
   }
 
   return (
-    <>
-      <ToolHeader
-        title="Random string generator"
-        description="Uses crypto.getRandomValues for unpredictable output. Pick length and character sets, then generate and copy."
-        category={meta?.category}
-      />
+    <DevToolPageShell slug={TOOL_SLUG}>
+      
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-4">
           <div>
@@ -111,6 +105,7 @@ export default function RandomStringTool() {
           <button
             type="button"
             onClick={generate}
+            aria-label="Generate random string"
             className="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
           >
             Generate
@@ -123,11 +118,20 @@ export default function RandomStringTool() {
               type="button"
               onClick={copy}
               disabled={!output}
+              aria-label={
+                copyHint === "Copied to clipboard."
+                  ? "Random string copied to clipboard"
+                  : "Copy generated string to clipboard"
+              }
               className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:border-primary/40 disabled:opacity-40"
             >
               Copy
             </button>
-            {copyHint ? <span className="text-xs text-muted-foreground">{copyHint}</span> : null}
+            {copyHint ? (
+              <p role="status" aria-live="polite" className="text-xs text-foreground/80">
+                {copyHint}
+              </p>
+            ) : null}
           </div>
           <textarea
             readOnly
@@ -138,6 +142,6 @@ export default function RandomStringTool() {
           />
         </div>
       </div>
-    </>
+    </DevToolPageShell>
   );
 }

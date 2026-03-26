@@ -6,9 +6,18 @@ type Props = {
   title: string;
   description: string;
   category?: DevToolCategory;
+  /** Plain text; use `\\n\\n` between paragraphs. Renders visible copy for users & search. */
+  seoIntro?: string;
 };
 
-export default function ToolHeader({ title, description, category }: Props) {
+export default function ToolHeader({ title, description, category, seoIntro }: Props) {
+  const introParagraphs = seoIntro?.trim()
+    ? seoIntro
+        .split(/\n\n+/)
+        .map((p) => p.trim())
+        .filter(Boolean)
+    : [];
+
   return (
     <header className="mb-8 border-b border-border/40 pb-8">
       <Link
@@ -26,6 +35,17 @@ export default function ToolHeader({ title, description, category }: Props) {
         {title}
       </h1>
       <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">{description}</p>
+      {introParagraphs.length > 0 ? (
+        <div
+          className="mt-6 max-w-2xl space-y-3 border-l-2 border-primary/30 pl-4 text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]"
+          role="region"
+          aria-label="About this tool"
+        >
+          {introParagraphs.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      ) : null}
     </header>
   );
 }

@@ -2,16 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { DEV_TOOL_CATEGORY_LABELS, getRelatedDevTools } from "@/lib/umbrella-tools/tools-config";
+import { DEV_TOOL_CATEGORY_LABELS, getRelatedDevTools, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 
-export function DevToolsRelatedTools() {
+type Props = {
+  /** From server when admin has disabled tools — omits hidden slugs from suggestions. */
+  relatedToolsOverride?: UmbrellaTool[];
+};
+
+export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
   const pathname = usePathname();
   const segments = pathname.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
   if (segments.length !== 2 || segments[0] !== "dev-tools" || segments[1] === "about") {
     return null;
   }
   const slug = segments[1]!;
-  const related = getRelatedDevTools(slug, 6);
+  const related = relatedToolsOverride ?? getRelatedDevTools(slug, 6);
   if (related.length === 0) return null;
 
   return (

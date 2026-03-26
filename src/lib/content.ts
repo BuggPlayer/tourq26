@@ -55,10 +55,44 @@ const KV_KEYS = {
   site: "content:site",
   contact: "content:contact",
   featureFlags: FEATURE_FLAGS_KV_KEY,
+  devToolsAdmin: "content:dev-tools-admin",
 } as const;
 
 export type FeatureFlagsDocument = {
   values: Record<string, boolean>;
+  updatedAt: string;
+};
+
+/** Admin-managed visibility and notes per dev-tool slug (merged with code registry at runtime). */
+export type DevToolAdminOverride = {
+  /** When false, tool is hidden from hub, related tools, and sitemap; the URL returns 404. Default true. */
+  enabled?: boolean;
+  /** When true, tool shows a Featured badge on the hub and sorts first within its category. */
+  featured?: boolean;
+  /** Internal notes for operators only (not shown publicly). */
+  notes?: string;
+  /**
+   * Dynamic titled sections (rich HTML per block). Preferred over legacy fields below.
+   * Order is preserved for the public tool page.
+   */
+  editorialSections?: DevToolEditorialSection[];
+  /** @deprecated Use `editorialSections`; still read for migration. */
+  featuresHtml?: string;
+  /** @deprecated Use `editorialSections`. */
+  bestPracticesHtml?: string;
+  /** @deprecated Use `editorialSections`. */
+  faqHtml?: string;
+};
+
+/** One admin-authored section below the tool UI (title + Quill HTML body). */
+export type DevToolEditorialSection = {
+  id: string;
+  title: string;
+  bodyHtml: string;
+};
+
+export type DevToolsAdminDocument = {
+  overrides: Record<string, DevToolAdminOverride>;
   updatedAt: string;
 };
 
@@ -108,6 +142,34 @@ export async function writeFeatureFlagsDocument(doc: FeatureFlagsDocument): Prom
     return;
   }
   const filePath = await getContentPath("feature-flags.json");
+  await writeFile(filePath, JSON.stringify(doc, null, 2), "utf-8");
+}
+
+export async function readDevToolsAdminDocument(): Promise<DevToolsAdminDocument | null> {
+  const kv = await getKv();
+  if (kv) {
+    const data = await kv.get(KV_KEYS.devToolsAdmin);
+    if (data && typeof data === "object" && data !== null && "overrides" in data) {
+      return data as DevToolsAdminDocument;
+    }
+    return null;
+  }
+  try {
+    const filePath = await getContentPath("dev-tools-admin.json");
+    const raw = await readFile(filePath, "utf-8");
+    return JSON.parse(raw) as DevToolsAdminDocument;
+  } catch {
+    return null;
+  }
+}
+
+export async function writeDevToolsAdminDocument(doc: DevToolsAdminDocument): Promise<void> {
+  const kv = await getKv();
+  if (kv) {
+    await kv.set(KV_KEYS.devToolsAdmin, doc);
+    return;
+  }
+  const filePath = await getContentPath("dev-tools-admin.json");
   await writeFile(filePath, JSON.stringify(doc, null, 2), "utf-8");
 }
 
