@@ -23,7 +23,9 @@ export type DevToolCategory =
   | "hmac"
   | "bcrypt"
   | "qrcode"
-  | "network";
+  | "network"
+  | "checksum"
+  | "pastebin";
 
 export type UmbrellaTool = {
   slug: string;
@@ -58,6 +60,8 @@ export const DEV_TOOL_CATEGORY_LABELS: Record<DevToolCategory, string> = {
   bcrypt: "Bcrypt Tools",
   qrcode: "QR Code Tools",
   network: "Network Tools",
+  checksum: "Checksum Tools",
+  pastebin: "Pastebin",
 };
 
 /** Order of sections on the hub (SEO + UX). */
@@ -83,6 +87,8 @@ export const DEV_TOOL_CATEGORY_ORDER: DevToolCategory[] = [
   "bcrypt",
   "qrcode",
   "network",
+  "checksum",
+  "pastebin",
 ];
 
 /** Short line under each section heading (only shown when the section has tools). */
@@ -108,6 +114,8 @@ export const DEV_TOOL_CATEGORY_BLURB: Record<DevToolCategory, string> = {
   bcrypt: "Password hashing and comparison with bcrypt.",
   qrcode: "Generate QR codes from text or URLs — download or copy.",
   network: "CIDR, subnets, and IPv4 addressing helpers.",
+  checksum: "CRC and lightweight integrity checks over UTF-8 bytes.",
+  pastebin: "Scratch pad and shareable links — everything stays in the browser or the URL.",
 };
 
 export const UMBRELLA_TOOLS: UmbrellaTool[] = [
@@ -255,6 +263,23 @@ export const UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "network",
     icon: "⬚",
     keywords: ["cidr calculator", "subnet calculator", "ipv4 cidr"],
+  },
+  {
+    slug: "checksum-calculator",
+    title: "Checksum calculator",
+    description: "IEEE CRC-32 and Fletcher-16 over UTF-8 bytes — compare with firmware, ZIP, and network stacks.",
+    category: "checksum",
+    icon: "∑",
+    keywords: ["crc32 online", "checksum calculator", "fletcher checksum"],
+  },
+  {
+    slug: "pastebin",
+    title: "Pastebin",
+    description:
+      "Plain-text scratch pad with optional share link (base64 in the URL), clipboard copy, and .txt download — no server upload.",
+    category: "pastebin",
+    icon: "¶",
+    keywords: ["pastebin online", "text share", "client side paste"],
   },
 ];
 
