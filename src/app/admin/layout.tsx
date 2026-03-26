@@ -33,7 +33,6 @@ export default async function AdminLayout({
               <NavLink href="/admin/testimonials">Testimonials</NavLink>
               <NavLink href="/admin/site">Site & SEO</NavLink>
               <NavLink href="/admin/feature-flags">Feature flags</NavLink>
-              <NavLink href="/admin/hub">Interview hub CMS</NavLink>
             </aside>
             <main className="min-w-0 flex-1">{children}</main>
           </div>

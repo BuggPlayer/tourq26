@@ -4,33 +4,22 @@ import { useState } from "react";
 import Link from "next/link";
 
 const baseNavLinks = [
-  { href: "/hub", label: "Interview Hub", flag: "hub" as const },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/#why-us", label: "Why Us" },
-  { href: "/case-studies", label: "Case Studies" },
   { href: "/blog", label: "Blog" },
-  { href: "/tech-news", label: "Tech News" },
-  { href: "/tools", label: "Tools", flag: "tools" as const },
-  { href: "/freebies", label: "Freebies" },
+  { href: "/dev-tools", label: "Dev tools", flag: "tools" as const },
   { href: "/#testimonials", label: "Testimonials" },
-  { href: "/contact", label: "Contact", flag: "contact" as const },
 ];
 
 export type HeaderNavFlags = {
-  showInterviewHub?: boolean;
   showTools?: boolean;
-  showContact?: boolean;
 };
 
 function buildNavLinks(flags?: HeaderNavFlags) {
-  const showHub = flags?.showInterviewHub !== false;
   const showTools = flags?.showTools !== false;
-  const showContact = flags?.showContact !== false;
   return baseNavLinks.filter((link) => {
-    if ("flag" in link && link.flag === "hub" && !showHub) return false;
     if ("flag" in link && link.flag === "tools" && !showTools) return false;
-    if ("flag" in link && link.flag === "contact" && !showContact) return false;
     return true;
   });
 }
@@ -59,14 +48,6 @@ export default function Header({ navFlags }: { navFlags?: HeaderNavFlags }) {
               {link.label}
             </Link>
           ))}
-          {(navFlags?.showContact !== false) && (
-            <Link
-              href="/contact"
-              className="rounded-full bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--background)] transition-all hover:bg-[var(--color-primary-hover)] hover:shadow-lg hover:shadow-[var(--color-primary)]/20"
-            >
-              Get in touch
-            </Link>
-          )}
         </nav>
 
         <button
@@ -100,15 +81,6 @@ export default function Header({ navFlags }: { navFlags?: HeaderNavFlags }) {
                 {link.label}
               </Link>
             ))}
-            {(navFlags?.showContact !== false) && (
-              <Link
-                href="/contact"
-                className="mx-4 mt-2 block rounded-full bg-[var(--color-primary)] py-3.5 text-center font-semibold text-[var(--background)]"
-                onClick={() => setOpen(false)}
-              >
-                Get in touch
-              </Link>
-            )}
           </nav>
         </div>
       )}

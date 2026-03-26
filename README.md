@@ -33,7 +33,7 @@ npm start
 4. **Contact** — Replace `hello@torqstudio.com` where needed; ensure **Vercel KV** (or writable `content/`) so the contact form saves submissions.
 5. **Legal** — Review `/privacy` and `/terms` for your jurisdiction.
 6. **WhatsApp (floating button)** — Set **`NEXT_PUBLIC_WHATSAPP_NUMBER`** to your WhatsApp Business / mobile number in **international format, digits only, no `+`** (example India: `919876543210`). If you use a **10-digit local** number, the app prepends **`NEXT_PUBLIC_WHATSAPP_PREFIX`** (defaults to **`91`**). Use `1` for US/Canada, `44` for UK, etc. Links use **`https://api.whatsapp.com/send`** (more reliable than `wa.me` with bad numbers). **`NEXT_PUBLIC_*` is applied at build time** — after changing env on Vercel, **redeploy**.
-7. **AI tools (`/tools`)** — Set **`OPENAI_API_KEY`** for generation (budget estimator, vendor evaluation, pitch & founder one-pager, RFP drafter, tech stack trade-offs, interview prep, job posts). Without it, the API returns 503. Optional: **Vercel KV** enables per-IP daily rate limiting (`src/lib/tools-rate-limit.ts`). See `docs/TOOLS-STRATEGY.md`.
+7. **Developer utilities** — **`/dev-tools`** hosts client-side helpers (SVG→CSS, JSON→CSV, CSS shadows). No API key required.
 
 ### Trust & SEO
 
@@ -43,7 +43,7 @@ npm start
 - **Blog posts:** BlogPosting + BreadcrumbList; optional **author** per post in admin.
 - **Breadcrumbs** on about, contact, blog, freebies, privacy, terms.
 - **`robots.txt`:** allows public pages; **disallows `/admin` and `/api/`**.
-- **`sitemap.xml`** built from Site URL + blog + freebies + **tools** (`/tools` and each tool slug).
+- **`sitemap.xml`** built from Site URL + blog + freebies + **dev-tools** (`/dev-tools` and each utility slug).
 - **404** uses `noindex`.
 
 ## TorqStudio Interview Hub (`/hub`)
@@ -60,8 +60,8 @@ Full-stack interview preparation and hiring surface (candidates + companies), co
 - **Community** — Per-question forums, static live-session copy (MVP).
 - **Pricing / access** — **Launch: full hub is free** (`HUB_ALL_FREE_LAUNCH = true` in `src/lib/hub/usage.ts`). Stripe + tier checks are disabled until you flip that flag.
 - **Auth** — **NextAuth.js** (credentials + optional Google/GitHub via env).
-- **Ops** — **Admin → Feature flags** (plus env kill-switches) for maintenance, marketing sections, header links, WhatsApp chip, and Hub DB APIs / registration — see `docs/ADMIN-KV.md`.
-- **Interview hub CMS** — **Admin → Interview hub CMS** (`/admin/hub`): Node.js Q&A bank, preparation plans, company tags, and Prisma questions (MongoDB). Blog editor: rich text, **Preview**, **Content score**, links, code blocks; public posts use sanitized HTML.
+- **Ops** — **Admin → Feature flags** (plus env kill-switches) for maintenance, marketing sections, header links, and WhatsApp chip — see `docs/ADMIN-KV.md`.
+- **Content** — Blog editor in admin: rich text, **Preview**, **Content score**, links, code blocks; public posts use sanitized HTML.
 
 ### Hub setup
 
@@ -125,6 +125,6 @@ While `HUB_ALL_FREE_LAUNCH` is `true`, users are not charged; you can skip Strip
 
 ## Structure
 
-- `src/app/` — Layout, metadata, home, privacy, terms, **tools** (`/tools`, `/tools/[slug]`), **hub** (`/hub/**`), 404, robots, sitemap
+- `src/app/` — Layout, metadata, home, privacy, terms, **dev-tools** (`/dev-tools/**`), **hub** (`/hub/**`), 404, robots, sitemap
 - `src/components/` — Header, Hero, …, **`hub/*`** (Interview Hub UI)
 - `prisma/` — Schema + seed data for the hub

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MarketingHeader from "@/components/MarketingHeader";
-import { requireMarketingFeature } from "@/lib/require-marketing-feature";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { freebies } from "@/data/freebies";
@@ -54,7 +53,6 @@ export default async function FreebiePage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  await requireMarketingFeature("marketing_freebies", "marketing_freebies");
   const { slug } = await params;
   const freebie = freebies.find((f) => f.slug === slug);
   if (!freebie) notFound();

@@ -10,8 +10,7 @@ export default async function AdminFeatureFlagsPage() {
     <div>
       <h1 className="text-2xl font-bold text-white">Feature flags</h1>
       <p className="mt-1 text-slate-400">
-        Control marketing sections, maintenance, and Interview Hub behaviour without redeploying (unless an env
-        override is set).
+        Control marketing sections and maintenance without redeploying (unless an env override is set).
       </p>
       <div className="mt-8">
         <FeatureFlagsForm />

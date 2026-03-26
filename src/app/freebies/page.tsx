@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import MarketingHeader from "@/components/MarketingHeader";
-import { requireMarketingFeature } from "@/lib/require-marketing-feature";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { freebies } from "@/data/freebies";
@@ -31,7 +30,6 @@ const typeLabel: Record<string, string> = {
 };
 
 export default async function FreebiesPage() {
-  await requireMarketingFeature("marketing_freebies", "marketing_freebies");
   const siteUrl = await getSiteUrl();
   const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
     { name: "Home", path: "/" },

@@ -51,9 +51,9 @@ So you can change default SEO and branding without editing code.
 
 ### Feature flags (Admin → Feature flags)
 
-- Toggle **maintenance**, **blog / tools / freebies / contact**, **header links**, **WhatsApp chip**, and **Interview Hub** database APIs / registration without redeploying.
+- Toggle **maintenance**, **blog / contact**, **nav: Dev tools link** (`/dev-tools`), and **WhatsApp chip** without redeploying.
 - Values persist in the same store as site content: **local** `content/feature-flags.json` or **Vercel KV** when `KV_REST_API_*` is set.
-- Optional **env overrides** per flag (for example `FF_MARKETING_BLOG=false`, `FF_HUB_DATABASE_API=false`) always win over the admin panel — use for break-glass deploys.
+- Optional **env overrides** per flag (for example `FF_MARKETING_BLOG=false`) always win over the admin panel — use for break-glass deploys.
 - With KV, marketing route gates also run in **middleware** at the edge; with files only, **server pages and APIs** still enforce flags.
 | `NEXT_PUBLIC_SITE_URL` | Optional | Used in sitemap, canonicals    |
 

@@ -22,15 +22,11 @@ export default function DevToolsAboutPage() {
         </p>
         <p>
           Processing happens in your browser. We do not send your pasted or uploaded content to our servers for these
-          tools. For our separate AI-powered tools, see{" "}
-          <Link href="/tools" className="text-[var(--color-primary)] hover:underline">
-            /tools
-          </Link>{" "}
-          and the{" "}
+          utilities. See the{" "}
           <Link href="/privacy" className="text-[var(--color-primary)] hover:underline">
             privacy policy
-          </Link>
-          .
+          </Link>{" "}
+          for how we handle data elsewhere on the site.
         </p>
         <p>
           <Link href="/dev-tools" className="text-[var(--color-primary)] hover:underline">

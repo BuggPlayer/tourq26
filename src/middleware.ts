@@ -56,24 +56,10 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (!flags.marketing_tools && (pathname === "/tools" || pathname.startsWith("/tools/"))) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/feature-unavailable";
-    url.searchParams.set("k", "marketing_tools");
-    return NextResponse.redirect(url);
-  }
-
   if (!flags.marketing_blog && (pathname === "/blog" || pathname.startsWith("/blog/"))) {
     const url = request.nextUrl.clone();
     url.pathname = "/feature-unavailable";
     url.searchParams.set("k", "marketing_blog");
-    return NextResponse.redirect(url);
-  }
-
-  if (!flags.marketing_freebies && (pathname === "/freebies" || pathname.startsWith("/freebies/"))) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/feature-unavailable";
-    url.searchParams.set("k", "marketing_freebies");
     return NextResponse.redirect(url);
   }
 

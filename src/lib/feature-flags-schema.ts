@@ -1,14 +1,9 @@
 export const FEATURE_FLAG_KEYS = [
   "maintenance_mode",
   "marketing_contact_form",
-  "marketing_tools",
   "marketing_blog",
-  "marketing_freebies",
-  "nav_interview_hub",
   "nav_tools",
   "floating_whatsapp",
-  "hub_database_api",
-  "hub_allow_registration",
 ] as const;
 
 export type FeatureFlagKey = (typeof FEATURE_FLAG_KEYS)[number];
@@ -17,7 +12,7 @@ export type FeatureFlagDefinition = {
   key: FeatureFlagKey;
   label: string;
   description: string;
-  category: "Site" | "Marketing" | "Interview Hub";
+  category: "Site" | "Marketing";
   defaultEnabled: boolean;
   envOverride?: string;
 };
@@ -41,14 +36,6 @@ export const FEATURE_FLAG_DEFINITIONS: readonly FeatureFlagDefinition[] = [
     envOverride: "FF_MARKETING_CONTACT_FORM",
   },
   {
-    key: "marketing_tools",
-    label: "Tools section",
-    description: "All routes under /tools.",
-    category: "Marketing",
-    defaultEnabled: true,
-    envOverride: "FF_MARKETING_TOOLS",
-  },
-  {
     key: "marketing_blog",
     label: "Blog",
     description: "All routes under /blog.",
@@ -57,25 +44,9 @@ export const FEATURE_FLAG_DEFINITIONS: readonly FeatureFlagDefinition[] = [
     envOverride: "FF_MARKETING_BLOG",
   },
   {
-    key: "marketing_freebies",
-    label: "Freebies",
-    description: "All routes under /freebies.",
-    category: "Marketing",
-    defaultEnabled: true,
-    envOverride: "FF_MARKETING_FREEBIES",
-  },
-  {
-    key: "nav_interview_hub",
-    label: "Nav: Interview Hub link",
-    description: "Header link to /hub (does not disable /hub if URL is known).",
-    category: "Marketing",
-    defaultEnabled: true,
-    envOverride: "FF_NAV_INTERVIEW_HUB",
-  },
-  {
     key: "nav_tools",
-    label: "Nav: Tools link",
-    description: "Header link to /tools.",
+    label: "Nav: Dev tools link",
+    description: "Header link to /dev-tools (browser utilities).",
     category: "Marketing",
     defaultEnabled: true,
     envOverride: "FF_NAV_TOOLS",
@@ -87,23 +58,6 @@ export const FEATURE_FLAG_DEFINITIONS: readonly FeatureFlagDefinition[] = [
     category: "Marketing",
     defaultEnabled: true,
     envOverride: "FF_FLOATING_WHATSAPP",
-  },
-  {
-    key: "hub_database_api",
-    label: "Hub database APIs",
-    description:
-      "Prisma-backed hub APIs (questions, submit, jobs, …). HUB_BACKEND_FULL=false in env always disables regardless of this toggle.",
-    category: "Interview Hub",
-    defaultEnabled: true,
-    envOverride: "FF_HUB_DATABASE_API",
-  },
-  {
-    key: "hub_allow_registration",
-    label: "Hub: allow sign-up",
-    description: "POST /api/register. OAuth may still need separate app configuration.",
-    category: "Interview Hub",
-    defaultEnabled: true,
-    envOverride: "FF_HUB_ALLOW_REGISTRATION",
   },
 ] as const;
 

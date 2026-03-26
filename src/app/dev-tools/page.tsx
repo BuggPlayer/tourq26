@@ -19,11 +19,7 @@ export default function DevToolsIndexPage() {
       <header className="mb-10">
         <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">Developer utilities</h1>
         <p className="mt-3 max-w-2xl text-[var(--color-muted)]">
-          Small, private tools that run entirely in your browser — no server processing. Also see our{" "}
-          <Link href="/tools" className="text-[var(--color-primary)] hover:underline">
-            AI-assisted tools
-          </Link>
-          .
+          Small utilities that run entirely in your browser — no server processing.
         </p>
       </header>
       <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

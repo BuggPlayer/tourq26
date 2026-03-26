@@ -2,14 +2,9 @@
   "values": {
     "maintenance_mode": false,
     "marketing_contact_form": true,
-    "marketing_tools": true,
     "marketing_blog": true,
-    "marketing_freebies": true,
-    "nav_interview_hub": true,
     "nav_tools": true,
-    "floating_whatsapp": true,
-    "hub_database_api": true,
-    "hub_allow_registration": true
+    "floating_whatsapp": true
   },
-  "updatedAt": "2026-03-23T18:43:06.495Z"
+  "updatedAt": "2026-03-26T00:00:00.000Z"
 }

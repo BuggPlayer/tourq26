@@ -6,17 +6,9 @@ const MESSAGES: Record<string, { title: string; body: string }> = {
     title: "Contact unavailable",
     body: "The contact page and form are temporarily disabled. Please try again later or reach us via your usual channel.",
   },
-  marketing_tools: {
-    title: "Tools unavailable",
-    body: "The tools section is temporarily offline. Check back soon.",
-  },
   marketing_blog: {
     title: "Blog unavailable",
     body: "The blog is temporarily unavailable.",
-  },
-  marketing_freebies: {
-    title: "Freebies unavailable",
-    body: "Freebies are temporarily unavailable.",
   },
 };
 

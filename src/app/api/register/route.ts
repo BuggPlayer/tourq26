@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { isFeatureEnabled } from "@/lib/feature-flags";
 import { guardHubBackend } from "@/lib/hub/hub-backend-flag";
 import { prisma } from "@/lib/hub/prisma";
 
@@ -14,7 +13,8 @@ const bodySchema = z.object({
 export async function POST(req: Request) {
   const denied = await guardHubBackend();
   if (denied) return denied;
-  if (!(await isFeatureEnabled("hub_allow_registration"))) {
+  const regOff = process.env.HUB_ALLOW_REGISTRATION?.trim().toLowerCase();
+  if (regOff === "false" || regOff === "0" || regOff === "off" || regOff === "no") {
     return NextResponse.json(
       { error: "registration_disabled", message: "New sign-ups are temporarily disabled." },
       { status: 503 },
