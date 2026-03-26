@@ -10,10 +10,13 @@ import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 export default function UmbrellaToolsLayout({
   children,
   relatedToolsOverride,
+  hideRegistryFaq,
 }: {
   children: React.ReactNode;
   /** When set (e.g. from admin overrides), related tools exclude disabled slugs. */
   relatedToolsOverride?: UmbrellaTool[];
+  /** When true, omit built-in registry FAQ accordion (admin content replaces it). */
+  hideRegistryFaq?: boolean;
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -34,7 +37,7 @@ export default function UmbrellaToolsLayout({
           <main className="px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
             <DevToolsBreadcrumbs />
             {children}
-            <DevToolsToolFaq />
+            {hideRegistryFaq ? null : <DevToolsToolFaq />}
             <DevToolsRelatedTools relatedToolsOverride={relatedToolsOverride} />
           </main>
         </div>

@@ -4,7 +4,7 @@
 /*
  * Design system — single source of truth
  * --------------------------------------
- * - Colors & fonts: `html` (dark default) and `html.light` set `--app-*` tokens.
+ * - Colors & fonts: `html` / `html.dark` base dark palette; `html.light` for light (see next-themes + system default).
  * - Tailwind maps them via `@theme inline` → use utilities: `bg-background`, `text-foreground`,
  *   `text-muted-foreground`, `border-border`, `bg-surface`, `bg-surface-elevated`, `text-primary`,
  *   `bg-primary`, `text-success`, `text-destructive`, `text-destructive-foreground`, `bg-accent`, `text-accent-foreground`,
@@ -34,7 +34,7 @@ html[data-font-family="system"] {
   --font-display-stack: ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Dark palette — default on `html` for SSR (matches next-themes defaultTheme="dark") */
+/* Dark palette — base tokens on `html` (before class: inline script + next-themes set `light` | `dark` from system or storage) */
 html {
   color-scheme: dark;
   --app-bg: #07090e;

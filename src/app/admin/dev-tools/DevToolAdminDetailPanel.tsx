@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
-import type { DevToolAdminOverride, DevToolsAdminDocument } from "@/lib/content";
+import type { DevToolAdminFaqItem, DevToolAdminOverride, DevToolsAdminDocument } from "@/lib/content";
 import { applyDevToolOverridePatch } from "@/lib/dev-tool-admin-override-merge";
 import { getFaqHtmlForAdminForm } from "@/lib/dev-tool-editorial";
 import { DEV_TOOL_CATEGORY_LABELS, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
@@ -38,6 +38,9 @@ export function DevToolAdminDetailPanel({ slug, tool, initialOverrides, initialU
   const o = overrides[slug] ?? {};
   const enabled = o.enabled !== false;
   const faqBody = getFaqHtmlForAdminForm(o);
+  const blogBody = o.blogHtml ?? "";
+  const faqRows: DevToolAdminFaqItem[] = Array.isArray(o.faqItems) ? o.faqItems : [];
+  const showLegacyFaqEditor = faqBody.trim().length > 0 && faqRows.length === 0;
 
   function setOverride(patch: Partial<DevToolAdminOverride>) {
     setOverrides((prev) => applyDevToolOverridePatch(prev, slug, patch));
@@ -72,6 +75,27 @@ export function DevToolAdminDetailPanel({ slug, tool, initialOverrides, initialU
     });
   }
 
+  function setFaqItems(next: DevToolAdminFaqItem[]) {
+    setOverride({ faqItems: next });
+  }
+
+  function addFaqRow() {
+    const id =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `faq-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+    setFaqItems([...faqRows, { id, question: "", answerHtml: "" }]);
+  }
+
+  function updateFaqRow(index: number, patch: Partial<DevToolAdminFaqItem>) {
+    const next = faqRows.map((row, i) => (i === index ? { ...row, ...patch } : row));
+    setFaqItems(next);
+  }
+
+  function removeFaqRow(index: number) {
+    setFaqItems(faqRows.filter((_, i) => i !== index));
+  }
+
   const previewSrc = `/dev-tools/${slug}?adminPreview=1`;
 
   return (
@@ -97,32 +121,98 @@ export function DevToolAdminDetailPanel({ slug, tool, initialOverrides, initialU
         ) : null}
       </div>
 
-      <section className="mt-6 max-w-4xl space-y-4">
-        <div className="flex flex-wrap gap-2 border-b border-border pb-4">
-          <span className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-foreground">FAQ</span>
-        </div>
+      <section className="mt-6 max-w-4xl space-y-10">
         <div>
-          <label className="block text-sm font-medium text-foreground/90">Public FAQ</label>
-          <p className="mt-0.5 text-xs text-muted-foreground">
-            Same editor as blog posts: headings, lists, quotes, code blocks, links, alignment. Shown on the live tool
-            page below the interactive UI. The structured FAQ from code (
-            <code className="rounded bg-muted px-1 font-mono text-xs">DevToolsToolFaq</code>) still appears underneath.
-            Saving here stores <code className="rounded bg-muted px-1 font-mono text-[11px]">faqHtml</code> and clears
-            older multi-section editorial data.
+          <h2 className="font-display text-lg font-semibold text-foreground">Public guide (blog)</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Long-form content below the tool UI, shown expanded under &quot;Guide&quot; (not collapsed). Same rich text as
+            blog posts. Stored as <code className="rounded bg-muted px-1 font-mono text-[11px]">blogHtml</code>.
           </p>
           <div className="mt-2">
             <RichTextEditor
-              value={faqBody}
-              onChange={(html) => setOverride({ faqHtml: html })}
-              placeholder="Write FAQ content for this tool…"
-              minHeight="22rem"
+              value={blogBody}
+              onChange={(html) => setOverride({ blogHtml: html })}
+              placeholder="Optional: how to use this tool, SEO-friendly tips, examples…"
+              minHeight="18rem"
             />
           </div>
         </div>
+
+        <div>
+          <h2 className="font-display text-lg font-semibold text-foreground">FAQ (accordion)</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Structured questions and answers — each pair is an accordion row. Drives{" "}
+            <abbr title="FAQ rich results" className="cursor-help no-underline">
+              FAQPage
+            </abbr>{" "}
+            JSON-LD when saved. If you add items here, any legacy HTML FAQ below is removed on save. When this section is
+            empty and no legacy FAQ exists, the built-in registry FAQ block still appears on the public page.
+          </p>
+          <div className="mt-4 space-y-6">
+            {faqRows.map((row, index) => (
+              <div
+                key={row.id}
+                className="rounded-xl border border-border/60 bg-muted/10 p-4"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <label className="text-sm font-medium text-foreground">Question {index + 1}</label>
+                  <button
+                    type="button"
+                    onClick={() => removeFaqRow(index)}
+                    className="text-xs font-medium text-destructive hover:underline"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={row.question}
+                  onChange={(e) => updateFaqRow(index, { question: e.target.value })}
+                  placeholder="e.g. Does this tool upload my data?"
+                  className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+                />
+                <p className="mt-3 text-xs font-medium text-muted-foreground">Answer</p>
+                <div className="mt-1">
+                  <RichTextEditor
+                    value={row.answerHtml}
+                    onChange={(html) => updateFaqRow(index, { answerHtml: html })}
+                    placeholder="Rich text answer…"
+                    minHeight="12rem"
+                  />
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addFaqRow}
+              className="rounded-lg border border-dashed border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+            >
+              + Add FAQ
+            </button>
+          </div>
+        </div>
+
+        {showLegacyFaqEditor ? (
+          <div className="rounded-xl border border-amber-500/40 bg-amber-500/5 p-4">
+            <h3 className="font-display text-sm font-semibold text-foreground">Legacy FAQ (HTML)</h3>
+            <p className="mt-1 text-xs text-muted-foreground">
+              This single HTML block is still shown publicly until you add structured FAQs above (which replaces it on
+              save). You can edit or clear it here.
+            </p>
+            <div className="mt-2">
+              <RichTextEditor
+                value={faqBody}
+                onChange={(html) => setOverride({ faqHtml: html })}
+                placeholder="Legacy FAQ…"
+                minHeight="16rem"
+              />
+            </div>
+          </div>
+        ) : null}
       </section>
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-start">
-        <div className="space-y-4 rounded-xl border border-border/50 bg-muted/20 p-5">
+        <div className="space-y-4 rounded-xl bg-muted/25 p-5">
           <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground">Overrides</h2>
           {message && (
             <p className={message.type === "ok" ? "text-sm text-success" : "text-sm text-destructive"}>{message.text}</p>
@@ -201,18 +291,18 @@ export function DevToolAdminDetailPanel({ slug, tool, initialOverrides, initialU
           <p className="text-xs text-muted-foreground">
             Embedded view uses admin preview so you can verify the tool even when it is disabled for the public.
           </p>
-          <div className="overflow-hidden rounded-xl border border-border/60 bg-background shadow-inner">
+          <div className="overflow-hidden rounded-xl bg-muted/30 shadow-inner">
             <iframe
               title={`Preview: ${tool.title}`}
               src={previewSrc}
               className="h-[min(72vh,880px)] w-full border-0 bg-background"
-              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
             />
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl border border-border/40 bg-muted/15 p-5">
+      <div className="rounded-xl bg-muted/20 p-5">
         <h3 className="font-display text-sm font-semibold text-foreground">Registry description</h3>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{tool.description}</p>
         <p className="mt-4 font-mono text-xs text-muted-foreground">

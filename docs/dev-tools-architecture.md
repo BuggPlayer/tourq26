@@ -16,10 +16,10 @@ Order of UI:
 
 1. `DevToolsTopBar`
 2. `DevToolsSidebar` (desktop) / `DevToolsMobileSection` (mobile)
-3. `main`: `DevToolsBreadcrumbs` → **tool content** → optional **public FAQ** (`DevToolEditorialSections`, admin `faqHtml`) → `DevToolsToolFaq` → `DevToolsRelatedTools`
+3. `main`: `DevToolsBreadcrumbs` → **tool content** → optional **Guide** (expanded `blogHtml`) + **FAQ** (`<details>` accordions from `faqItems` or legacy `faqHtml`) → `DevToolsToolFaq` (hidden when admin supplies FAQ HTML or structured FAQs) → `DevToolsRelatedTools`
 4. `Footer`
 
-The public FAQ block is injected from `app/dev-tools/[slug]/page.tsx` when `faqHtml` (or legacy migrated content) exists. Registry/code FAQs (`DevToolsToolFaq`) still render after it. Related tools are shared.
+Public **Guide** and **FAQ** blocks come from `app/dev-tools/[slug]/page.tsx` via `DevToolAccordionContent` (`blogHtml`, structured `faqItems`, or legacy `faqHtml`). The guide is expanded prose; FAQs use native `<details>` so Q&A stays in the HTML for crawlers. When admin provides structured FAQs, `FAQPage` JSON-LD uses those pairs; legacy HTML-only FAQ omits FAQPage (avoids schema/body mismatch). Registry FAQs (`DevToolsToolFaq`) render only when the tool has no admin FAQ content.
 
 ## Registry
 
@@ -32,7 +32,7 @@ The public FAQ block is injected from `app/dev-tools/[slug]/page.tsx` when `faqH
 ## SEO and JSON-LD
 
 - `app/dev-tools/[slug]/page.tsx` calls `devToolsPageMetadata(slug)` and injects `devToolsToolFullJsonLd` (WebPage, BreadcrumbList, SoftwareApplication/WebApplication, FAQPage when FAQs exist).
-- FAQ items come from `getDevToolFaqItems(slug)` (`dev-tool-faq.ts` + optional `tool.faq` + defaults).
+- **FAQPage** pairs: admin `faqItems` when set; else registry/code `getDevToolFaqItems(slug)` (`dev-tool-faq.ts` + optional `tool.faq` + defaults). Legacy `faqHtml` only → no FAQPage (see above).
 
 ## Tool UI: `DevToolPageShell`
 
@@ -52,16 +52,20 @@ Runtime flags are stored separately from the code registry so operators can chan
 | Concern | Detail |
 |--------|--------|
 | **Persistence** | Vercel KV key `content:dev-tools-admin` when `KV_REST_API_URL` / `KV_REST_API_TOKEN` are set; otherwise `content/dev-tools-admin.json` under the project `content/` directory. |
-| **Types** | `DevToolAdminOverride` (`enabled?`, `featured?`, `notes?`, `faqHtml?` primary; optional legacy `editorialSections?` / `featuresHtml?` / `bestPracticesHtml?`) and `DevToolsAdminDocument` in `src/lib/content.ts`. |
+| **Types** | `DevToolAdminOverride` (`enabled?`, `featured?`, `notes?`, `blogHtml?`, `faqItems?[]`, `faqHtml?` legacy; optional `editorialSections?` / `featuresHtml?` / `bestPracticesHtml?`) and `DevToolsAdminDocument` in `src/lib/content.ts`. |
 | **Public behavior** | Default is **enabled** if a slug has no override. `enabled: false` removes the tool from the hub, related-tool blocks, and sitemap; `/dev-tools/[slug]` returns **404** for normal visitors. |
 | **Featured** | `featured: true` shows a **Featured** badge on hub cards and sorts that tool **first within its category** (then title order). JSON-LD item list for the hub follows the same ordering helpers. |
 | **API** | `GET` / `PUT` `/api/admin/dev-tools` (admin session only). `PUT` replaces the persisted override map with the request body — always send the **full** `overrides` object (same as the list UI). |
-| **Admin UI** | `/admin/dev-tools` table; `/admin/dev-tools/[slug]` uses the same **RichTextEditor** pattern as blog (toolbar, height), **FAQ only** for public copy, overrides, registry description, **live preview** iframe (see below). |
+| **Admin UI** | `/admin/dev-tools` table; `/admin/dev-tools/[slug]` — **Guide** (`blogHtml`) and **structured FAQ** (question + rich answer per row), plus legacy **HTML FAQ** if present until migrated; overrides; registry description; **live preview** iframe. |
 | **Registry** | Adding or removing a tool permanently still requires an `UmbrellaTool` entry in code and deploy — admin only toggles runtime visibility and metadata stored in KV/file. |
 
-### Public FAQ (blog-style editor)
+### Public guide & FAQ (admin)
 
-Operators edit **one FAQ block** per tool in `/admin/dev-tools/[slug]` using `RichTextEditor` (same Quill toolbar as blog: headings, alignment, lists, etc.). Stored as **`faqHtml`**. Saving clears older **`editorialSections`** / legacy HTML fields for that slug. **Sanitized on every `PUT`** (`src/lib/dev-tool-html-sanitize.ts`). **120k** characters max after sanitize. Quill Snow CSS: `app/admin/layout.tsx`. Legacy multi-section data is still read for display until `faqHtml` is saved.
+- **Guide**: `blogHtml` — one rich HTML block, shown expanded under **Guide** on the tool page (not an accordion).
+- **FAQ**: `faqItems[]` — each row is a question (plain) + answer (`answerHtml`, rich). Sanitized on `PUT`. Drives the accordion and **FAQPage** JSON-LD when present.
+- **Legacy**: `faqHtml` — still read if no structured `faqItems`; shown as a single “More help” accordion. **FAQPage** is omitted for legacy-only (no reliable Q&A extraction). Migrating to `faqItems` removes `faqHtml` on save.
+
+All HTML fields: **max ~120k** after sanitize (`src/lib/dev-tool-html-sanitize.ts`). Quill: `app/admin/layout.tsx`.
 
 ### Admin preview of disabled tools
 

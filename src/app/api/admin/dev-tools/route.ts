@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/auth";
 import {
   readDevToolsAdminDocument,
   writeDevToolsAdminDocument,
+  type DevToolAdminFaqItem,
   type DevToolAdminOverride,
   type DevToolEditorialSection,
   type DevToolsAdminDocument,
@@ -16,6 +17,8 @@ const MAX_NOTES_LEN = 2000;
 const MAX_EDITORIAL_HTML = 120_000;
 const MAX_EDITORIAL_SECTIONS = 25;
 const MAX_SECTION_ID_LEN = 80;
+const MAX_FAQ_ITEMS = 40;
+const MAX_FAQ_QUESTION_LEN = 400;
 
 export async function GET() {
   const ok = await requireAdmin();
@@ -98,6 +101,38 @@ export async function PUT(request: NextRequest) {
           if (s.trim()) o[key] = s;
         }
       }
+    }
+    if (typeof patch.blogHtml === "string") {
+      const s = sanitizeDevToolEditorialHtml(patch.blogHtml).slice(0, MAX_EDITORIAL_HTML);
+      if (s.trim()) o.blogHtml = s;
+    }
+    if (Array.isArray(patch.faqItems)) {
+      if (patch.faqItems.length > MAX_FAQ_ITEMS) {
+        return NextResponse.json({ error: `At most ${MAX_FAQ_ITEMS} FAQ items per tool` }, { status: 400 });
+      }
+      const sanitized: DevToolAdminFaqItem[] = [];
+      for (const raw of patch.faqItems) {
+        if (!raw || typeof raw !== "object") continue;
+        const id =
+          typeof (raw as { id?: unknown }).id === "string"
+            ? (raw as { id: string }).id.trim().slice(0, MAX_SECTION_ID_LEN)
+            : "";
+        if (!id) continue;
+        let question =
+          typeof (raw as { question?: unknown }).question === "string" ? (raw as { question: string }).question : "";
+        question = sanitizeDevToolSectionTitle(question).slice(0, MAX_FAQ_QUESTION_LEN);
+        const bodyRaw =
+          typeof (raw as { answerHtml?: unknown }).answerHtml === "string"
+            ? (raw as { answerHtml: string }).answerHtml
+            : "";
+        const answerHtml = sanitizeDevToolEditorialHtml(bodyRaw).slice(0, MAX_EDITORIAL_HTML);
+        if (!question.trim() && !answerHtml.trim()) continue;
+        sanitized.push({ id, question, answerHtml });
+      }
+      if (sanitized.length) o.faqItems = sanitized;
+    }
+    if (o.faqItems && o.faqItems.length > 0) {
+      delete o.faqHtml;
     }
     if (Object.keys(o).length) next[slug] = o;
   }

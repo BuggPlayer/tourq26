@@ -80,8 +80,12 @@ export type DevToolAdminOverride = {
   featuresHtml?: string;
   /** @deprecated Use `editorialSections`. */
   bestPracticesHtml?: string;
-  /** @deprecated Use `editorialSections`. */
+  /** @deprecated Use `faqItems` or legacy migration; still read for display. */
   faqHtml?: string;
+  /** Long-form guide / blog-style copy below the tool (sanitized rich HTML). Shown in an accordion panel. */
+  blogHtml?: string;
+  /** Operator-authored FAQ accordion; preferred over `faqHtml` for display and FAQ schema. */
+  faqItems?: DevToolAdminFaqItem[];
 };
 
 /** One admin-authored section below the tool UI (title + Quill HTML body). */
@@ -89,6 +93,13 @@ export type DevToolEditorialSection = {
   id: string;
   title: string;
   bodyHtml: string;
+};
+
+/** Structured FAQ row for accordion UI + FAQPage JSON-LD (answers are sanitized HTML). */
+export type DevToolAdminFaqItem = {
+  id: string;
+  question: string;
+  answerHtml: string;
 };
 
 export type DevToolsAdminDocument = {

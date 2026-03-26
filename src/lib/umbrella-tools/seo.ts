@@ -188,22 +188,32 @@ export function devToolsToolPageJsonLd(opts: { siteUrl: string; siteName: string
 }
 
 /** Merges tool WebPage graph + optional FAQPage for rich results. */
-export function devToolsToolFullJsonLd(opts: { siteUrl: string; siteName: string; tool: UmbrellaTool; slug: string }) {
+export function devToolsToolFullJsonLd(opts: {
+  siteUrl: string;
+  siteName: string;
+  tool: UmbrellaTool;
+  slug: string;
+  /** When omitted, uses registry/code FAQs from `getDevToolFaqItems`. Pass admin-driven pairs for structured FAQs. */
+  faqSchemaPairs?: { question: string; answerPlain: string }[];
+}) {
   const base = devToolsToolPageJsonLd(opts) as { "@context": string; "@graph": object[] };
-  const faqs = getDevToolFaqItems(opts.slug);
-  if (faqs.length === 0) return base;
+  const pairs =
+    opts.faqSchemaPairs !== undefined
+      ? opts.faqSchemaPairs
+      : getDevToolFaqItems(opts.slug).map((f) => ({ question: f.question, answerPlain: f.answer }));
+  if (pairs.length === 0) return base;
   const baseUrl = opts.siteUrl.replace(/\/$/, "");
   const pageUrl = `${baseUrl}/dev-tools/${opts.slug}`;
   const faqPage = {
     "@type": "FAQPage",
     "@id": `${pageUrl}#faq`,
     url: pageUrl,
-    mainEntity: faqs.map((f) => ({
+    mainEntity: pairs.map((f) => ({
       "@type": "Question",
       name: f.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: f.answer,
+        text: f.answerPlain,
       },
     })),
   };

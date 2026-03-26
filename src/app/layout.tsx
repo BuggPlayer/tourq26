@@ -5,6 +5,7 @@ import { readSiteContent } from "@/lib/content";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { ThemeShell } from "@/components/theme/ThemeShell";
 import { isFeatureEnabled } from "@/lib/feature-flags";
+import { SITE_THEME_STORAGE_KEY } from "@/lib/theme-storage";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -107,6 +108,14 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Before paint: match next-themes + defaultTheme=&quot;system&quot; to avoid wrong-theme flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var k=${JSON.stringify(SITE_THEME_STORAGE_KEY)};var t=localStorage.getItem(k);var d=document.documentElement;if(t==='light'||t==='dark'){d.classList.add(t);}else{if(window.matchMedia('(prefers-color-scheme: light)').matches)d.classList.add('light');else d.classList.add('dark');}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className={`${dmSans.variable} ${outfit.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"

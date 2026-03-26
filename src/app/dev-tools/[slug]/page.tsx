@@ -9,8 +9,13 @@ import { devToolsPageMetadata, devToolsToolFullJsonLd } from "@/lib/umbrella-too
 import { getDevToolBySlug, UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
 import { getSiteUrl } from "@/lib/site-url";
 import { isAdmin } from "@/lib/auth";
-import { DevToolEditorialSections } from "@/components/umbrella-tools/DevToolEditorialSections";
-import { getDevToolPublicFaqSanitized } from "@/lib/dev-tool-editorial";
+import { DevToolAccordionContent } from "@/components/umbrella-tools/DevToolAccordionContent";
+import {
+  getDevToolFaqSchemaPairs,
+  getDevToolPublicBelowFold,
+  shouldHideRegistryDevToolFaq,
+} from "@/lib/dev-tool-editorial";
+import { getDevToolFaqItems } from "@/lib/umbrella-tools/dev-tool-faq";
 import { getRelatedDevToolsFiltered, isDevToolEnabled } from "@/lib/dev-tools-admin";
 
 /** Admin can disable tools without redeploy; re-evaluate visibility per request. */
@@ -45,12 +50,21 @@ export default async function DevToolBySlugPage({
   if (!adminBypass && !isDevToolEnabled(slug, adminDoc)) notFound();
 
   const [siteUrl, site] = await Promise.all([getSiteUrl(), readSiteContent()]);
-  const structuredData = devToolsToolFullJsonLd({ siteUrl, siteName: site.siteName, tool, slug });
+  const registryFaqs = getDevToolFaqItems(slug);
+  const faqSchemaPairs = getDevToolFaqSchemaPairs(adminDoc, slug, registryFaqs);
+  const structuredData = devToolsToolFullJsonLd({
+    siteUrl,
+    siteName: site.siteName,
+    tool,
+    slug,
+    faqSchemaPairs,
+  });
   const relatedToolsOverride = getRelatedDevToolsFiltered(slug, 6, adminDoc);
-  const publicFaq = getDevToolPublicFaqSanitized(adminDoc, slug);
+  const belowFold = getDevToolPublicBelowFold(adminDoc, slug);
+  const hideRegistryFaq = shouldHideRegistryDevToolFaq(belowFold);
 
   return (
-    <UmbrellaToolsLayout relatedToolsOverride={relatedToolsOverride}>
+    <UmbrellaToolsLayout relatedToolsOverride={relatedToolsOverride} hideRegistryFaq={hideRegistryFaq}>
       <>
         <JsonLd data={structuredData} />
         {adminBypass ? (
@@ -69,7 +83,7 @@ export default async function DevToolBySlugPage({
         <Suspense fallback={<ToolFallback />}>
           <DevToolsToolRouter slug={slug} />
         </Suspense>
-        {publicFaq ? <DevToolEditorialSections html={publicFaq.html} /> : null}
+        <DevToolAccordionContent below={belowFold} />
       </>
     </UmbrellaToolsLayout>
   );

@@ -1,9 +1,40 @@
 {
   "overrides": {
     "case-converter": {
+      "enabled": false,
+      "featured": true,
+      "notes": "test oprate noted ",
       "featuresHtml": "<p>qfewfwef</p>",
-      "faqHtml": "<p>zdfgfdfaghdgfhg</p>"
+      "blogHtml": "<h2><strong>Section 1: The Basics – Why AC Repair Matters in Mumbai</strong></h2><p><span>Mumbai’s tropical climate means your AC works overtime – often 10–12 hours a day during summer. Humidity, dust, and voltage fluctuations take a toll on every component. Yet many homeowners only call a technician when cooling stops entirely.</span></p><p><span>Common myths:</span></p><ol><li><span>“My AC needs gas every year.” – False. A properly sealed system should hold gas for years. Frequent refills indicate a leak.</span></li><li><span>“Any technician can fix any brand.” – Not always. Brands like Voltas, Daikin, and LG have unique parts and service requirements.</span></li><li><span>“A cheap service is just as good.” – Cutting corners often leads to repeated breakdowns and hidden costs.</span></li></ol><p><span>Regular maintenance and prompt repair extend your AC’s life, lower electricity bills, and ensure clean, healthy air.</span></p><p><br /></p><p><br /></p><h2><strong>Section 2: Key Factors &amp; Service Types (with Pricing Table)</strong></h2><p><span>When searching for ac repair near me, you’ll encounter various services. Below is a breakdown of common AC services and their typical price ranges in Mumbai – based on ProFixer’s actual service records from the last 12 months.</span></p><p><br /></p><p><br /></p><p><span>Standard AC Service</span></p><p>Filter cleaning, coil wash, drain check</p><p>399 – 799</p><p><span>AC Gas Filling (R22)</span></p><p>Refrigerant recharge + leak inspection</p><p>1,500 – 2,500</p><p><span>AC Gas Filling (R32 / R410A)</span></p><p>Refrigerant recharge + leak inspection</p><p>2,500 – 4,000</p><p><span>Capacitor Replacement</span></p><p>Diagnosis + part</p><p>1,200 – 2,200</p><p><span>PCB / Circuit Board Repair</span></p><p>Repair or replacement</p><p>1,500 – 5,000</p><p><span>Fan Motor Replacement</span></p><p>Indoor or outdoor fan motor</p><p>2,500 – 4,500</p><p><br /></p>",
+      "faqItems": [
+        {
+          "id": "844fe304-2a2c-4ea2-8802-93568dbf1749",
+          "question": "test",
+          "answerHtml": "<p>test </p>"
+        },
+        {
+          "id": "2a7e868c-53f1-4943-a80b-8b20978a74ad",
+          "question": "test 2",
+          "answerHtml": "<p>test 2</p>"
+        }
+      ]
+    },
+    "hex-to-text": {
+      "featured": false,
+      "blogHtml": "<p>test conet </p>",
+      "faqItems": [
+        {
+          "id": "03273ed6-3663-4b33-9fe9-8b29f1df96eb",
+          "question": "tettet",
+          "answerHtml": "<p>tetet</p>"
+        },
+        {
+          "id": "410d9843-123b-41be-a25a-2ddc689d5520",
+          "question": "ete",
+          "answerHtml": "<p>etet</p>"
+        }
+      ]
     }
   },
-  "updatedAt": "2026-03-26T16:10:39.427Z"
+  "updatedAt": "2026-03-26T17:52:16.905Z"
 }
