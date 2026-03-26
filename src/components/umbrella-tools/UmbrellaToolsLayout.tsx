@@ -5,19 +5,23 @@ import { DevToolsToolFaq } from "@/components/umbrella-tools/DevToolsToolFaq";
 import { DevToolsRelatedTools } from "@/components/umbrella-tools/DevToolsRelatedTools";
 import { DevToolsSidebar } from "@/components/umbrella-tools/DevToolsSidebar";
 import { DevToolsTopBar } from "@/components/umbrella-tools/DevToolsTopBar";
-import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
+import { UMBRELLA_TOOLS, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 
 export default function UmbrellaToolsLayout({
   children,
   relatedToolsOverride,
   hideRegistryFaq,
+  catalogTools,
 }: {
   children: React.ReactNode;
   /** When set (e.g. from admin overrides), related tools exclude disabled slugs. */
   relatedToolsOverride?: UmbrellaTool[];
   /** When true, omit built-in registry FAQ accordion (admin content replaces it). */
   hideRegistryFaq?: boolean;
+  /** Tools shown in sidebar / mobile nav (e.g. feature-flag filtered). Defaults to full registry. */
+  catalogTools?: UmbrellaTool[];
 }) {
+  const navCatalog = catalogTools ?? UMBRELLA_TOOLS;
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <DevToolsTopBar />
@@ -28,11 +32,11 @@ export default function UmbrellaToolsLayout({
           className="sticky top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-[min(100%,18rem)] shrink-0 flex-col border-r border-border/50 bg-surface/50 sm:top-[3.75rem] sm:h-[calc(100vh-3.75rem)] lg:flex"
           aria-label="Tool categories"
         >
-          <DevToolsSidebar />
+          <DevToolsSidebar baseTools={navCatalog} />
         </aside>
 
         <div className="min-w-0 flex-1">
-          <DevToolsMobileSection />
+          <DevToolsMobileSection baseTools={navCatalog} />
 
           <main className="px-4  py-6 sm:px-6 lg:px-10 lg:py-8">
             <DevToolsBreadcrumbs />

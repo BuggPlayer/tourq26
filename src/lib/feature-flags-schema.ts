@@ -4,6 +4,7 @@ export const FEATURE_FLAG_KEYS = [
   "marketing_blog",
   "nav_tools",
   "floating_whatsapp",
+  "dev_tools_code_playground",
 ] as const;
 
 export type FeatureFlagKey = (typeof FEATURE_FLAG_KEYS)[number];
@@ -58,6 +59,15 @@ export const FEATURE_FLAG_DEFINITIONS: readonly FeatureFlagDefinition[] = [
     category: "Marketing",
     defaultEnabled: true,
     envOverride: "FF_FLOATING_WHATSAPP",
+  },
+  {
+    key: "dev_tools_code_playground",
+    label: "Dev tools: Code playground",
+    description:
+      "Public /dev-tools/code-playground (Monaco IDE + Piston runs). When off, the page is hidden, hub links removed, and playground runs return 403. Hub /api/run for interviews is unchanged.",
+    category: "Site",
+    defaultEnabled: true,
+    envOverride: "FF_DEV_TOOLS_CODE_PLAYGROUND",
   },
 ] as const;
 

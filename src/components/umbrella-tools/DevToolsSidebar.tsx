@@ -7,13 +7,15 @@ import {
   DEV_TOOL_CATEGORY_LABELS,
   filterUmbrellaTools,
   groupToolsByCategoryOrder,
+  UMBRELLA_TOOLS,
+  type UmbrellaTool,
 } from "@/lib/umbrella-tools/tools-config";
 
-export function DevToolsSidebar() {
+export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: UmbrellaTool[] }) {
   const [q, setQ] = useState("");
   const pathname = usePathname();
 
-  const filtered = useMemo(() => filterUmbrellaTools(q), [q]);
+  const filtered = useMemo(() => filterUmbrellaTools(q, baseTools), [q, baseTools]);
 
   const groups = useMemo(() => groupToolsByCategoryOrder(filtered), [filtered]);
 

@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { DevToolsMobileNav } from "@/components/umbrella-tools/DevToolsMobileNav";
-import { filterUmbrellaTools } from "@/lib/umbrella-tools/tools-config";
+import { filterUmbrellaTools, UMBRELLA_TOOLS, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 
-export function DevToolsMobileSection() {
+export function DevToolsMobileSection({ baseTools = UMBRELLA_TOOLS }: { baseTools?: UmbrellaTool[] }) {
   const [q, setQ] = useState("");
-  const filtered = useMemo(() => filterUmbrellaTools(q), [q]);
+  const filtered = useMemo(() => filterUmbrellaTools(q, baseTools), [q, baseTools]);
 
   return (
     <div className="border-b border-border/50 bg-surface/30 lg:hidden">

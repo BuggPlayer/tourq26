@@ -110,6 +110,7 @@ export default function CodePlaygroundTool() {
         body: JSON.stringify({
           code,
           language: language as "javascript" | "typescript" | "python" | "java" | "cpp" | "go",
+          source: "playground" as const,
         }),
       });
       const data = (await res.json()) as {

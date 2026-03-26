@@ -1,6 +1,11 @@
 import type { DevToolsAdminDocument } from "@/lib/content";
 import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
-import { getRelatedDevTools, getDevToolBySlug, UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
+import {
+  CODE_PLAYGROUND_SLUG,
+  getRelatedDevTools,
+  getDevToolBySlug,
+  UMBRELLA_TOOLS,
+} from "@/lib/umbrella-tools/tools-config";
 
 /**
  * Merge admin-stored SEO overrides onto the registry tool (after static `seo-overrides.ts`).
@@ -51,8 +56,13 @@ export function getRelatedDevToolsFiltered(
   slug: string,
   limit: number,
   doc: DevToolsAdminDocument | null,
+  opts?: { codePlaygroundEnabled?: boolean },
 ): UmbrellaTool[] {
-  return filterUmbrellaToolsByAdmin(getRelatedDevTools(slug, limit * 2), doc).slice(0, limit);
+  const raw = filterUmbrellaToolsByAdmin(getRelatedDevTools(slug, limit * 2), doc).slice(0, limit);
+  if (opts?.codePlaygroundEnabled === false) {
+    return raw.filter((t) => t.slug !== CODE_PLAYGROUND_SLUG);
+  }
+  return raw;
 }
 
 export function countEnabledTools(doc: DevToolsAdminDocument | null): number {

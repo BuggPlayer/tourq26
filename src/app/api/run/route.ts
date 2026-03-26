@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import * as ts from "typescript";
 import { z } from "zod";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 import { runPiston, type PistonLanguage } from "@/lib/hub/piston";
 
 const bodySchema = z.object({
   code: z.string().max(500_000),
   language: z.enum(["javascript", "typescript", "python", "java", "cpp", "go"]),
+  /** When set, this request is from the dev-tools code playground — gated by feature flag. */
+  source: z.literal("playground").optional(),
 });
 
 function transpileTypeScript(source: string): string {
@@ -39,6 +42,15 @@ export async function POST(req: Request) {
     const parsed = bodySchema.safeParse(json);
     if (!parsed.success) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+    }
+    if (parsed.data.source === "playground") {
+      const on = await isFeatureEnabled("dev_tools_code_playground");
+      if (!on) {
+        return NextResponse.json(
+          { error: "Code playground is disabled. Hub interview runs are unaffected." },
+          { status: 403 },
+        );
+      }
     }
     let { code, language } = parsed.data;
     if (language === "typescript") {

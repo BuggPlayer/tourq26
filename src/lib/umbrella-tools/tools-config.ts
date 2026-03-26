@@ -119,11 +119,20 @@ export function getDevToolBySlug(slug: string): UmbrellaTool | undefined {
   return UMBRELLA_TOOLS.find((t) => t.slug === slug);
 }
 
+/** Slug for the online code playground (gated by `dev_tools_code_playground` feature flag). */
+export const CODE_PLAYGROUND_SLUG = "code-playground";
+
+/** Hide the code playground tool from catalog UIs when the feature flag is off. */
+export function filterCodePlaygroundFromCatalog(tools: UmbrellaTool[], codePlaygroundEnabled: boolean): UmbrellaTool[] {
+  if (codePlaygroundEnabled) return tools;
+  return tools.filter((t) => t.slug !== CODE_PLAYGROUND_SLUG);
+}
+
 /** Filter tools by search query (title, description, slug, category label). */
-export function filterUmbrellaTools(query: string): UmbrellaTool[] {
+export function filterUmbrellaTools(query: string, catalog: UmbrellaTool[] = UMBRELLA_TOOLS): UmbrellaTool[] {
   const s = query.trim().toLowerCase();
-  if (!s) return UMBRELLA_TOOLS;
-  return UMBRELLA_TOOLS.filter(
+  if (!s) return catalog;
+  return catalog.filter(
     (t) =>
       t.title.toLowerCase().includes(s) ||
       t.description.toLowerCase().includes(s) ||

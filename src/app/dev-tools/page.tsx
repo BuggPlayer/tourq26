@@ -4,8 +4,8 @@ import UmbrellaToolsLayout from "@/components/umbrella-tools/UmbrellaToolsLayout
 import { DevToolsToolCard } from "@/components/umbrella-tools/DevToolsToolCard";
 import JsonLd from "@/components/JsonLd";
 import { readDevToolsAdminDocument, readSiteContent } from "@/lib/content";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 import {
-  countEnabledTools,
   filterUmbrellaToolsByAdmin,
   isDevToolFeatured,
   sortUmbrellaToolsForHub,
@@ -14,6 +14,7 @@ import {
   DEV_TOOL_CATEGORY_BLURB,
   DEV_TOOL_CATEGORY_LABELS,
   DEV_TOOL_CATEGORY_ORDER,
+  filterCodePlaygroundFromCatalog,
   UMBRELLA_TOOLS,
   toolsByCategory,
 } from "@/lib/umbrella-tools/tools-config";
@@ -54,13 +55,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function DevToolsIndexPage() {
   const adminDoc = await readDevToolsAdminDocument();
-  const toolsForHub = sortUmbrellaToolsForHub(filterUmbrellaToolsByAdmin(UMBRELLA_TOOLS, adminDoc), adminDoc);
-  const toolCount = countEnabledTools(adminDoc);
+  const playgroundOn = await isFeatureEnabled("dev_tools_code_playground");
+  const catalogTools = filterCodePlaygroundFromCatalog(UMBRELLA_TOOLS, playgroundOn);
+  const toolsForHub = sortUmbrellaToolsForHub(filterUmbrellaToolsByAdmin(catalogTools, adminDoc), adminDoc);
+  const toolCount = filterUmbrellaToolsByAdmin(catalogTools, adminDoc).length;
   const [siteUrl, site] = await Promise.all([getSiteUrl(), readSiteContent()]);
   const hubLd = devToolsHubPageJsonLd(siteUrl, site.siteName, toolsForHub);
 
   return (
-    <UmbrellaToolsLayout>
+    <UmbrellaToolsLayout catalogTools={catalogTools}>
       <JsonLd data={hubLd} />
       <section className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-surface/50 via-background to-background px-6 py-10 sm:px-10 sm:py-12 lg:px-12">
         <div
