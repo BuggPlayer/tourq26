@@ -75,7 +75,7 @@ export default function HubSignInPage() {
           />
         </div>
         {err && (
-          <p className="text-sm text-red-400" role="alert">
+          <p className="text-sm text-destructive" role="alert">
             {err}
           </p>
         )}

@@ -14,23 +14,28 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function DevToolsAboutPage() {
   return (
     <UmbrellaToolsLayout>
-      <article className="prose prose-invert max-w-2xl prose-headings:font-display prose-p:text-muted-foreground prose-li:text-muted-foreground">
-        <h1 className="text-3xl font-bold text-foreground">About these utilities</h1>
+      <header className="mb-10 max-w-2xl border-b border-border/40 pb-10">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">About these utilities</h1>
+        <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+          Small, focused tools for everyday dev tasks — built to run without sending your input to our servers.
+        </p>
+      </header>
+      <article className="blog-article max-w-2xl text-[1.02rem]">
         <p>
-          This section hosts small developer helpers — SVG backgrounds, JSON to CSV, and CSS shadows. They are built
-          for quick, repeatable tasks without leaving the site.
+          This section hosts developer helpers for things like SVG backgrounds, JSON→CSV conversion, and CSS shadows.
+          They are designed for quick, repeatable work without leaving the site.
         </p>
         <p>
           Processing happens in your browser. We do not send your pasted or uploaded content to our servers for these
           utilities. See the{" "}
-          <Link href="/privacy" className="text-primary hover:underline">
+          <Link href="/privacy" className="font-medium text-primary underline-offset-2 hover:underline">
             privacy policy
           </Link>{" "}
           for how we handle data elsewhere on the site.
         </p>
         <p>
-          <Link href="/dev-tools" className="text-primary hover:underline">
-            ← Back to utilities
+          <Link href="/dev-tools" className="font-medium text-primary underline-offset-2 hover:underline">
+            ← Back to all tools
           </Link>
         </p>
       </article>

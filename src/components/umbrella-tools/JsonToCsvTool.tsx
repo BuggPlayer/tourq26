@@ -4,7 +4,10 @@ import { useMemo, useState } from "react";
 import FileUploader from "@/components/umbrella-tools/FileUploader";
 import CodeBlock from "@/components/umbrella-tools/CodeBlock";
 import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 import { jsonToCSV, validateJSON } from "@/lib/umbrella-tools/json";
+
+const TOOL_SLUG = "json-to-csv";
 
 export default function JsonToCsvTool() {
   const [input, setInput] = useState("");
@@ -65,11 +68,14 @@ export default function JsonToCsvTool() {
     URL.revokeObjectURL(url);
   }
 
+  const meta = getDevToolBySlug(TOOL_SLUG);
+
   return (
     <>
       <ToolHeader
         title="JSON to CSV"
         description="Provide a JSON array of objects with the same keys. Headers come from the first object; nested values are stringified."
+        category={meta?.category}
       />
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-4">
@@ -82,7 +88,7 @@ export default function JsonToCsvTool() {
             className="w-full resize-y rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <FileUploader accept=".json,application/json" onFileLoad={applyInput} />
-          {error ? <p className="text-sm text-red-400">{error}</p> : null}
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
         </div>
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2">

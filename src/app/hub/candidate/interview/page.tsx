@@ -23,7 +23,7 @@ export default async function InterviewBanksIndexPage() {
           <li key={b.slug}>
             <Link
               href={`/hub/candidate/interview/${b.slug}`}
-              className="block rounded-xl border border-border/80 bg-surface/40 px-4 py-4 transition-colors hover:border-cyan-800/60 hover:bg-surface/70"
+              className="block rounded-xl border border-border/80 bg-surface/40 px-4 py-4 transition-colors hover:border-primary/50 hover:bg-surface/70"
             >
               <span className="font-semibold text-foreground">{b.label}</span>
               {b.description ? (

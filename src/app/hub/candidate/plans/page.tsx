@@ -77,7 +77,7 @@ export default function PlansPage() {
             <button
               type="button"
               onClick={() => enroll(p.id)}
-              className="mt-4 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-foreground"
+              className="mt-4 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
             >
               Track this plan
             </button>

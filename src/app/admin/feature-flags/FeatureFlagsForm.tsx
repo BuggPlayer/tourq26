@@ -76,7 +76,7 @@ export function FeatureFlagsForm() {
         files only, page-level checks still apply.
       </p>
       {message && (
-        <p className={message.type === "ok" ? "text-emerald-400 text-sm" : "text-red-400 text-sm"}>
+        <p className={message.type === "ok" ? "text-sm text-success" : "text-sm text-destructive"}>
           {message.text}
         </p>
       )}
@@ -104,7 +104,7 @@ export function FeatureFlagsForm() {
                   </span>
                   <input
                     type="checkbox"
-                    className="h-5 w-10 cursor-pointer accent-cyan-500"
+                    className="h-5 w-10 cursor-pointer accent-primary"
                     checked={values[def.key]}
                     onChange={(e) =>
                       setValues((prev) =>

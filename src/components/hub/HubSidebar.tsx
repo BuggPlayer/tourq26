@@ -58,10 +58,10 @@ export function HubSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                 active
-                  ? "bg-cyan-500/15 text-primary"
-                  : "opacity-90 hover:bg-black/10"
+                  ? "bg-primary/15 text-primary"
+                  : "opacity-90 hover:bg-foreground/5"
               }`}
               style={
                 !active ? { color: "var(--hub-page-fg, #e2e8f0)" } : undefined
@@ -85,7 +85,7 @@ export function HubSidebar() {
         <button
           type="button"
           onClick={() => openAgency("sidebar")}
-          className="mt-2 w-full rounded-lg bg-violet-600 px-3 py-2 text-center text-xs font-semibold text-foreground hover:bg-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+          className="mt-2 w-full rounded-lg bg-accent px-3 py-2 text-center text-xs font-semibold text-accent-foreground transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         >
           Talk to TorqStudio
         </button>

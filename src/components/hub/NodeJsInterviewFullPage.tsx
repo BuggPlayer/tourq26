@@ -8,9 +8,9 @@ import type { NodeJsQAItem } from "@/data/nodejs-interview-qa";
 import { recordInterviewQaFullPageView } from "@/lib/hub/candidate-behavior";
 
 const DIFF_BADGE: Record<string, string> = {
-  Easy: "bg-emerald-500/15 text-emerald-300",
-  Mid: "bg-amber-500/15 text-amber-200",
-  Hard: "bg-rose-500/15 text-rose-200",
+  Easy: "bg-success/15 text-success",
+  Mid: "bg-primary/15 text-primary",
+  Hard: "bg-destructive/15 text-destructive",
 };
 
 const DEFAULT_SCRATCH = `// Scratch space — try ideas from the answer on the left.
@@ -107,7 +107,7 @@ export function NodeJsInterviewFullPage({
               <div className="flex flex-wrap items-center gap-2">
                 {item.difficulty ? (
                   <span
-                    className={`rounded-md px-2.5 py-1 text-xs font-semibold ${DIFF_BADGE[item.difficulty] ?? "bg-slate-700 text-slate-200"}`}
+                    className={`rounded-md px-2.5 py-1 text-xs font-semibold ${DIFF_BADGE[item.difficulty] ?? "bg-muted text-muted-foreground"}`}
                   >
                     {item.difficulty}
                   </span>

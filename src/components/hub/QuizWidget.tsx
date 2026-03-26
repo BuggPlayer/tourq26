@@ -54,13 +54,13 @@ export function QuizWidget() {
         <button
           type="button"
           onClick={load}
-          className="mt-3 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-foreground"
+          className="mt-3 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
         >
           Load random question
         </button>
       ) : (
         <div className="mt-3 space-y-3 text-sm">
-          <p className="font-medium text-slate-200">{q.title}</p>
+          <p className="font-medium text-foreground">{q.title}</p>
           <p className="text-muted-foreground">{q.description}</p>
           <div className="space-y-2" role="radiogroup" aria-label="Choices">
             {q.options.map((opt, i) => (
@@ -82,7 +82,7 @@ export function QuizWidget() {
             <button
               type="button"
               onClick={submit}
-              className="rounded-lg bg-violet-600 px-3 py-1.5 text-sm text-foreground"
+              className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
             >
               Check answer
             </button>

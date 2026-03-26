@@ -96,7 +96,7 @@ export default function FileUploader({ accept, onFileLoad, label = "Drop a file 
           }}
         />
       </div>
-      {error ? <p className="text-sm text-red-400">{error}</p> : null}
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
     </div>
   );
 }

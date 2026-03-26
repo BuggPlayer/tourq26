@@ -67,7 +67,7 @@ export function BlogEditorInsights({ title, description, bodyHtml }: Props) {
   }, [title, description, bodyHtml]);
 
   const barColor =
-    metrics.score >= 75 ? "bg-emerald-500" : metrics.score >= 55 ? "bg-amber-500" : "bg-rose-500";
+    metrics.score >= 75 ? "bg-success" : metrics.score >= 55 ? "bg-primary" : "bg-destructive";
 
   return (
     <div className="space-y-4 rounded-xl border border-border bg-surface/40 p-4">
@@ -109,7 +109,7 @@ export function BlogEditorInsights({ title, description, bodyHtml }: Props) {
           <dt className="text-muted-foreground">Title length</dt>
           <dd
             className={`font-medium tabular-nums ${
-              metrics.titleLen >= 30 && metrics.titleLen <= 65 ? "text-emerald-400" : "text-foreground/95"
+              metrics.titleLen >= 30 && metrics.titleLen <= 65 ? "text-success" : "text-foreground/95"
             }`}
           >
             {metrics.titleLen}{" "}
@@ -120,7 +120,7 @@ export function BlogEditorInsights({ title, description, bodyHtml }: Props) {
           <dt className="text-muted-foreground">Meta description</dt>
           <dd
             className={`font-medium tabular-nums ${
-              metrics.descLen >= 120 && metrics.descLen <= 170 ? "text-emerald-400" : "text-foreground/95"
+              metrics.descLen >= 120 && metrics.descLen <= 170 ? "text-success" : "text-foreground/95"
             }`}
           >
             {metrics.descLen}{" "}

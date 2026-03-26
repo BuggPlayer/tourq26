@@ -23,7 +23,7 @@ function TagPill({ tag }: { tag: Tag }) {
     <Link
       href={tag.href}
       title={`${tag.label} — ${tag.count} items`}
-      className="group inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium shadow-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--hub-primary,#0891b2)] group-hover:border-[color:var(--hub-primary,#0891b2)]"
+      className="group inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium shadow-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--hub-primary,#d97706)] group-hover:border-[color:var(--hub-primary,#d97706)]"
       style={{
         borderColor: "var(--hub-border, #334155)",
         backgroundColor:
@@ -276,7 +276,7 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
                 className="relative inline-flex h-6 w-11 shrink-0 rounded-full transition-colors"
                 style={{
                   backgroundColor: hiringMode
-                    ? "var(--hub-primary, #0891b2)"
+                    ? "var(--hub-primary, #d97706)"
                     : "var(--hub-border, #334155)",
                 }}
               >
@@ -287,7 +287,7 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
                   onChange={(e) => setHiringMode(e.target.checked)}
                   aria-label="I'm hiring developers"
                 />
-                <span className="pointer-events-none absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+                <span className="pointer-events-none absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-surface-elevated shadow transition-transform peer-checked:translate-x-5" />
               </span>
               <span className="hidden sm:inline">I&apos;m hiring devs</span>
             </label>
@@ -383,7 +383,7 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
           <div
             className="mx-auto mt-8 max-w-3xl rounded-xl border-2 px-4 py-3 text-center text-sm"
             style={{
-              borderColor: "var(--hub-primary, #0891b2)",
+              borderColor: "var(--hub-primary, #d97706)",
               backgroundColor:
                 "color-mix(in srgb, var(--hub-primary) 16%, var(--hub-elevated, #0f172a))",
               color: "var(--hub-page-fg, #e2e8f0)",
@@ -429,7 +429,7 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
                 onClick={() => setTab(t.id)}
                 className={`relative flex items-center gap-2 rounded-t-lg px-4 py-3 text-sm font-semibold transition-colors md:text-base ${
                   tab === t.id
-                    ? "after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:rounded-full after:bg-[var(--hub-primary,#0891b2)]"
+                    ? "after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:rounded-full after:bg-[var(--hub-primary,#d97706)]"
                     : ""
                 }`}
                 style={{
@@ -472,7 +472,7 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
           <div
             className="mt-8 rounded-xl border px-4 py-3 text-center text-sm"
             style={{
-              borderColor: "var(--hub-primary, #0891b2)",
+              borderColor: "var(--hub-primary, #d97706)",
               backgroundColor:
                 "color-mix(in srgb, var(--hub-primary) 12%, var(--hub-elevated, #0f172a))",
               color: "var(--hub-page-fg, #e2e8f0)",
@@ -497,21 +497,21 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
               tag: `Algorithms ${stats.dsa}`,
               desc: "Monaco editor, Piston execution, and instant feedback. Solve arrays, graphs, DP, and more.",
               href: "/hub/candidate",
-              gradient: "from-violet-500 to-indigo-600",
+              gradient: "from-accent to-indigo-600",
             },
             {
               title: "Multi-framework UI challenges",
               tag: `UI ${stats.ui}`,
               desc: "Vanilla, React, Vue, Angular, Svelte templates with live iframe preview and structure checks.",
               href: "/hub/candidate",
-              gradient: "from-cyan-500 to-blue-600",
+              gradient: "from-amber-500 to-blue-600",
             },
             {
               title: "Frontend system design canvas",
               tag: `System ${stats.fsd}`,
               desc: "Drag CDN, SSR, API, and cache nodes. Submit diagrams against official solution patterns.",
               href: "/hub/candidate",
-              gradient: "from-cyan-600 to-indigo-700",
+              gradient: "from-amber-600 to-indigo-700",
             },
           ].map((card) => (
             <article

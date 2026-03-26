@@ -65,7 +65,7 @@ export function TestimonialsEditor({ initialItems }: { initialItems: Testimonial
             <button
               type="button"
               onClick={() => remove(index)}
-              className="text-sm text-red-400 hover:text-red-300"
+              className="text-sm text-destructive hover:text-destructive/80"
             >
               Remove
             </button>
@@ -134,11 +134,11 @@ export function TestimonialsEditor({ initialItems }: { initialItems: Testimonial
       <button
         type="button"
         onClick={add}
-        className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground hover:border-cyan-500 hover:text-primary"
+        className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground hover:border-primary hover:text-primary"
       >
         + Add testimonial
       </button>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
       <button
         type="button"
         onClick={save}

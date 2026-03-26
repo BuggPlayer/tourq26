@@ -44,7 +44,7 @@ export default function CodeBlock({ code, language }: Props) {
       <button
         type="button"
         onClick={copy}
-        className="absolute right-3 top-3 z-10 rounded-lg bg-white/10 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-white/20"
+        className="absolute right-3 top-3 z-10 rounded-lg bg-foreground/10 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-foreground/18"
       >
         {copied ? "Copied" : "Copy"}
       </button>

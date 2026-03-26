@@ -55,8 +55,8 @@ function TrackPanel(props: {
 
   const border =
     props.accent === "cyan"
-      ? "border-primary/40 ring-1 ring-cyan-900/20"
-      : "border-violet-900/40 ring-1 ring-violet-900/20";
+      ? "border-primary/40 ring-1 ring-primary/20"
+      : "border-accent/35 ring-1 ring-accent/20";
 
   return (
     <section
@@ -80,7 +80,7 @@ function TrackPanel(props: {
         </label>
         <select
           id={`pick-${props.accent}`}
-          className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+          className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           value={selectedId}
           onChange={(e) => setSelectedId(e.target.value)}
           disabled={props.loading || props.questions.length === 0}
@@ -106,7 +106,7 @@ function TrackPanel(props: {
           <strong className="text-muted-foreground">Submit</strong> to self-test.
         </p>
         {props.error && (
-          <p className="text-xs text-red-400" role="alert">
+          <p className="text-xs text-destructive" role="alert">
             {props.error}
           </p>
         )}
@@ -114,11 +114,11 @@ function TrackPanel(props: {
           <div className="flex flex-wrap gap-2">
             <Link
               href={practiceHref(selected)}
-              className={`inline-flex items-center rounded-lg px-4 py-2 text-sm font-semibold text-slate-950 ${
+              className={`inline-flex items-center rounded-lg px-4 py-2 text-sm font-semibold transition-opacity hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                 props.accent === "cyan"
-                  ? "bg-cyan-500 hover:bg-primary-hover"
-                  : "bg-violet-400 text-slate-900 hover:bg-violet-300"
-              } focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                  ? "bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:ring-primary"
+                  : "bg-accent text-accent-foreground hover:opacity-90 focus-visible:ring-accent"
+              }`}
             >
               Open editor &amp; test yourself →
             </Link>
@@ -132,7 +132,7 @@ function TrackPanel(props: {
       </div>
 
       <details className="mt-6 group rounded-xl border border-border bg-background/60 open:border-border">
-        <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-slate-200 [&::-webkit-details-marker]:hidden">
+        <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-foreground [&::-webkit-details-marker]:hidden">
           <span className="flex items-center justify-between gap-2">
             Interview theory (read before / between attempts)
             <span className="text-primary/80 group-open:rotate-180 transition-transform">

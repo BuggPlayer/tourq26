@@ -21,7 +21,7 @@ export default function CommunityPage() {
         thread.
       </p>
       <section aria-labelledby="live-title">
-        <h2 id="live-title" className="text-lg font-semibold text-slate-200">
+        <h2 id="live-title" className="text-lg font-semibold text-foreground">
           Live sessions (MVP)
         </h2>
         <ul className="mt-2 list-disc pl-5 text-sm text-muted-foreground">
@@ -44,7 +44,7 @@ export default function CommunityPage() {
               className="block rounded-xl border border-border bg-surface/40 px-4 py-3 text-sm hover:border-primary/40"
             >
               <span className="text-xs text-primary">{q.type}</span>
-              <span className="ml-2 text-slate-200">{q.title}</span>
+              <span className="ml-2 text-foreground">{q.title}</span>
             </Link>
           </li>
         ))}

@@ -28,9 +28,9 @@ type Props = {
 };
 
 const DIFF_BADGE: Record<string, string> = {
-  Easy: "bg-emerald-500/15 text-emerald-300",
-  Mid: "bg-amber-500/15 text-amber-200",
-  Hard: "bg-rose-500/15 text-rose-200",
+  Easy: "bg-success/15 text-success",
+  Mid: "bg-primary/15 text-primary",
+  Hard: "bg-destructive/15 text-destructive",
 };
 
 export function CafeStyleInterviewQA({
@@ -138,10 +138,10 @@ export function CafeStyleInterviewQA({
                   <button
                     type="button"
                     onClick={() => setCategoryId(c.id)}
-                    className={`flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
+                    className={`flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                       active
-                        ? "bg-cyan-500/15 font-medium text-primary"
-                        : "opacity-90 hover:bg-black/10"
+                        ? "bg-primary/15 font-medium text-primary"
+                        : "opacity-90 hover:bg-foreground/5"
                     }`}
                     style={
                       !active
@@ -180,7 +180,7 @@ export function CafeStyleInterviewQA({
               placeholder="Search questions & answers…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full max-w-xl rounded-xl border px-4 py-2.5 text-sm focus:border-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              className="w-full max-w-xl rounded-xl border px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               style={{
                 borderColor: "var(--hub-border, #334155)",
                 backgroundColor:
@@ -219,7 +219,7 @@ export function CafeStyleInterviewQA({
                     {({ open }) => (
                       <>
                         <div className="flex w-full flex-col gap-3 px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-5">
-                          <DisclosureButton className="flex w-full flex-1 items-start gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-500">
+                          <DisclosureButton className="flex w-full flex-1 items-start gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
                             <span
                               className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted text-xs font-mono text-primary"
                               aria-hidden
@@ -254,7 +254,7 @@ export function CafeStyleInterviewQA({
                           <div className="flex shrink-0 flex-wrap items-center gap-2 pl-10 sm:pl-0">
                             {item.difficulty ? (
                               <span
-                                className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${DIFF_BADGE[item.difficulty] ?? "bg-slate-700 text-slate-200"}`}
+                                className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${DIFF_BADGE[item.difficulty] ?? "bg-muted text-muted-foreground"}`}
                               >
                                 {item.difficulty}
                               </span>
@@ -264,7 +264,7 @@ export function CafeStyleInterviewQA({
                             </span>
                             <Link
                               href={`${basePath.replace(/\/$/, "")}/${encodeURIComponent(item.id)}`}
-                              className="rounded-md border border-border px-2 py-0.5 text-[11px] font-medium text-slate-200 hover:border-cyan-600 hover:text-primary"
+                              className="rounded-md border border-border px-2 py-0.5 text-[11px] font-medium text-foreground/90 hover:border-primary/60 hover:text-primary"
                               onClick={(e) => e.stopPropagation()}
                             >
                               Full page
@@ -275,7 +275,7 @@ export function CafeStyleInterviewQA({
                           className="border-t px-4 pb-5 pt-0 sm:px-5"
                           style={{ borderColor: "var(--hub-border, #1e293b)" }}
                         >
-                          <div className="ml-0 border-l-2 border-cyan-900/50 pl-4 sm:ml-10 sm:pl-5">
+                          <div className="ml-0 border-l-2 border-primary/35 pl-4 sm:ml-10 sm:pl-5">
                             <div className="pt-4">
                               <NodeJsInterviewAnswer
                                 item={item}

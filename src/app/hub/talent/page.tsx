@@ -133,7 +133,7 @@ export default function TalentPage() {
             />
             <button
               type="submit"
-              className="w-full rounded-lg bg-violet-600 py-2 text-sm text-foreground"
+              className="w-full rounded-lg bg-accent py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
             >
               Save
             </button>

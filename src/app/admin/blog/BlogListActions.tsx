@@ -24,7 +24,7 @@ export function BlogListActions({ slug }: { slug: string }) {
       <button
         type="button"
         onClick={handleDelete}
-        className="rounded bg-red-900/50 px-3 py-1.5 text-sm text-red-300 hover:bg-red-900/70"
+        className="rounded bg-destructive/15 px-3 py-1.5 text-sm text-destructive hover:bg-destructive/25"
       >
         Delete
       </button>

@@ -21,17 +21,17 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 56,
-          background: "linear-gradient(155deg, #07090e 0%, #134e4a 35%, #0f172a 100%)",
+          background: "linear-gradient(155deg, #07090e 0%, #1c1410 38%, #0f172a 100%)",
           fontFamily: "system-ui, sans-serif",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ fontSize: 26, fontWeight: 800, color: "#fff" }}>torq</span>
-          <span style={{ fontSize: 26, fontWeight: 800, color: "#06b6d4" }}>studio</span>
+          <span style={{ fontSize: 26, fontWeight: 800, color: "#f59e0b" }}>studio</span>
           <span style={{ fontSize: 16, color: "#64748b", marginLeft: 12 }}>Case study</span>
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 16 }}>
-          <div style={{ fontSize: 15, color: "#5eead4", fontWeight: 600 }}>{line}</div>
+          <div style={{ fontSize: 15, color: "#fbbf24", fontWeight: 600 }}>{line}</div>
           <div
             style={{
               fontSize: title.length > 90 ? 36 : 46,

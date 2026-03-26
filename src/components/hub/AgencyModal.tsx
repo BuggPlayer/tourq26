@@ -30,7 +30,7 @@ export function AgencyModal() {
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="/contact"
-              className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-primary-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
             >
               Talk to TorqStudio
             </a>

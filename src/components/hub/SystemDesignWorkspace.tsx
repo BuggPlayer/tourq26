@@ -103,7 +103,7 @@ export function SystemDesignWorkspace(props: {
             key={p.type}
             type="button"
             onClick={() => addNode(p)}
-            className="rounded-full border border-border px-3 py-1 text-xs hover:border-cyan-600"
+            className="rounded-full border border-border px-3 py-1 text-xs hover:border-primary/60"
           >
             + {p.label}
           </button>
@@ -124,7 +124,7 @@ export function SystemDesignWorkspace(props: {
         </button>
       </div>
       {showSolution && (
-        <p className="rounded-lg border border-primary/40 bg-cyan-950/20 p-3 text-sm text-primary">
+        <p className="rounded-lg border border-primary/40 bg-primary/10 p-3 text-sm text-primary">
           {props.officialSolution}
         </p>
       )}

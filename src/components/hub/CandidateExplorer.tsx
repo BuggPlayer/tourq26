@@ -119,7 +119,7 @@ export function CandidateExplorer() {
         </label>
       </div>
       {error && (
-        <p className="text-sm text-red-400" role="alert">
+        <p className="text-sm text-destructive" role="alert">
           {error}
         </p>
       )}
@@ -136,7 +136,7 @@ export function CandidateExplorer() {
                       ? `/hub/candidate/system-design/${q.id}`
                       : `/hub/candidate/quiz?q=${q.id}`
               }
-              className="flex flex-col rounded-xl border border-border bg-surface/40 p-4 transition hover:border-cyan-900/50 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col rounded-xl border border-border bg-surface/40 p-4 transition hover:border-primary/40 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <span className="text-xs font-medium uppercase text-primary">

@@ -78,7 +78,7 @@ export function NodeJsInterviewAnswer({
             </ul>
           ) : null}
           {item.codeExample ? (
-            <pre className="mt-5 overflow-x-auto rounded-xl bg-[#1e1e1e] p-4 text-left text-sm leading-relaxed text-foreground">
+            <pre className="mt-5 overflow-x-auto rounded-xl bg-[var(--app-code-bg)] p-4 text-left text-sm leading-relaxed text-foreground">
               <code className="font-mono text-[13px]">{item.codeExample}</code>
             </pre>
           ) : null}

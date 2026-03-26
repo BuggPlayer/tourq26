@@ -99,7 +99,7 @@ export default function ContactForm() {
         </p>
       )}
       {status === "error" && (
-        <p className="text-sm text-red-400">{errorMessage}</p>
+        <p className="text-sm text-destructive">{errorMessage}</p>
       )}
       <button
         type="submit"

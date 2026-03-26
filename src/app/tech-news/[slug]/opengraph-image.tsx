@@ -27,7 +27,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>torq</span>
-          <span style={{ fontSize: 28, fontWeight: 800, color: "#06b6d4" }}>studio</span>
+          <span style={{ fontSize: 28, fontWeight: 800, color: "#f59e0b" }}>studio</span>
           <span style={{ fontSize: 18, color: "#64748b", marginLeft: 12 }}>Tech news</span>
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 20 }}>

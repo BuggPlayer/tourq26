@@ -180,7 +180,7 @@ export function BlogPostForm({ post }: Props) {
         <BlogEditorInsights title={title} description={description} bodyHtml={body} />
       )}
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
       <button
         type="submit"
         disabled={saving}

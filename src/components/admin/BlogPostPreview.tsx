@@ -33,7 +33,7 @@ export function BlogPostPreview({
       ) : null}
       <p className="mt-4 text-muted-foreground">{description}</p>
       <div
-        className="prose prose-invert mt-8 max-w-none [&_h1]:mt-8 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-foreground [&_h2]:mt-8 [&_h2]:font-semibold [&_h2]:text-foreground [&_h3]:font-semibold [&_h3]:text-foreground [&_p]:text-foreground/90 [&_a]:text-primary [&_pre]:rounded-lg [&_pre]:bg-background [&_pre]:p-3"
+        className="blog-article mt-8 border-t border-border/50 pt-8"
         dangerouslySetInnerHTML={{ __html: safe }}
       />
     </article>

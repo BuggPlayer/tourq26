@@ -23,10 +23,10 @@ function ThemeSync({ children }: { children: React.ReactNode }) {
       el.style.setProperty("--hub-muted", dark ? "#64748b" : "#475569");
       el.style.setProperty("--hub-border", dark ? "#1e293b" : "#e2e8f0");
       el.style.setProperty("--hub-elevated", dark ? "#0f172a" : "#ffffff");
-      /* Accent: matches sidebar / top bar cyan; tuned per mode for contrast */
-      el.style.setProperty("--hub-primary", dark ? "#0891b2" : "#0e7490");
-      el.style.setProperty("--hub-primary-hover", dark ? "#06b6d4" : "#0891b2");
-      el.style.setProperty("--hub-primary-foreground", "#ffffff");
+      /* Accent: matches site primary (amber) */
+      el.style.setProperty("--hub-primary", dark ? "#f59e0b" : "#d97706");
+      el.style.setProperty("--hub-primary-hover", dark ? "#fbbf24" : "#b45309");
+      el.style.setProperty("--hub-primary-foreground", dark ? "#0c0a09" : "#fffbeb");
     };
     apply();
     mq.addEventListener("change", apply);

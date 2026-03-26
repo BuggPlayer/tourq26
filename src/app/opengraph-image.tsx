@@ -30,7 +30,7 @@ export default async function OgImage() {
           <span style={{ fontSize: 48, fontWeight: 800, color: "#fff" }}>
             torq
           </span>
-          <span style={{ fontSize: 48, fontWeight: 800, color: "#6366f1" }}>
+          <span style={{ fontSize: 48, fontWeight: 800, color: "#f59e0b" }}>
             studio
           </span>
         </div>

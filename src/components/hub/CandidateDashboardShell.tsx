@@ -100,7 +100,7 @@ export function CandidateDashboardShell({
         <div className="mt-4 flex flex-wrap gap-2">
           <Link
             href="/hub/candidate/interview"
-            className="inline-flex items-center gap-2 rounded-xl border border-cyan-900/50 bg-cyan-950/30 px-4 py-3 text-sm font-medium text-primary transition-colors hover:border-cyan-700/50 hover:bg-cyan-950/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+            className="inline-flex items-center gap-2 rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-sm font-medium text-primary transition-colors hover:border-primary/55 hover:bg-primary/[0.14] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             All interview Q&amp;A banks
             <span className="text-primary/80" aria-hidden>
@@ -111,7 +111,7 @@ export function CandidateDashboardShell({
             <Link
               key={b.slug}
               href={`/hub/candidate/interview/${b.slug}`}
-              className="inline-flex items-center rounded-xl border border-border/80 bg-surface/40 px-3 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-primary/40 hover:text-primary"
+              className="inline-flex items-center rounded-xl border border-border/80 bg-surface/40 px-3 py-2.5 text-sm font-medium text-foreground/90 transition-colors hover:border-primary/40 hover:text-primary"
             >
               {b.label}
             </Link>
@@ -135,7 +135,7 @@ export function CandidateDashboardShell({
               <li key={`${row.bankSlug}:${row.id}`}>
                 <Link
                   href={row.href}
-                  className="block rounded-lg border border-transparent px-3 py-2 text-sm text-slate-200 transition-colors hover:border-cyan-900/50 hover:bg-background/50 hover:text-primary"
+                  className="block rounded-lg border border-transparent px-3 py-2 text-sm text-foreground/90 transition-colors hover:border-primary/40 hover:bg-background/50 hover:text-primary"
                 >
                   {row.question}
                 </Link>
@@ -170,7 +170,7 @@ export function CandidateDashboardShell({
         <aside className="space-y-6">
           <QuizWidget />
           <div className="rounded-xl border border-border bg-surface/40 p-4 text-sm text-muted-foreground">
-            <h2 className="font-semibold text-slate-200">Preparation plans</h2>
+            <h2 className="font-semibold text-foreground">Preparation plans</h2>
             <p className="mt-2">
               Structured 1 week, 1 month, 3 month, and campus tracks with
               milestones.

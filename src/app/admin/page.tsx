@@ -54,7 +54,7 @@ export default function AdminLoginPage() {
           autoFocus
           required
         />
-        {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
+        {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
         <button
           type="submit"
           disabled={loading}

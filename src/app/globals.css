@@ -7,7 +7,8 @@
  * - Colors & fonts: `html` (dark default) and `html.light` set `--app-*` tokens.
  * - Tailwind maps them via `@theme inline` → use utilities: `bg-background`, `text-foreground`,
  *   `text-muted-foreground`, `border-border`, `bg-surface`, `bg-surface-elevated`, `text-primary`,
- *   `bg-primary`, `ring-border`, etc. Avoid raw hex/slate/cyan in components.
+ *   `bg-primary`, `text-success`, `text-destructive`, `text-destructive-foreground`, `bg-accent`, `text-accent-foreground`,
+ *   `ring-border`, etc. Avoid raw slate/red/emerald utility classes in components; brand is amber primary + violet accent.
  * - Theme switch: `src/components/theme/` (next-themes). Font: `data-font-family` brand | system.
  * - Hub-specific vars (`--hub-*`) stay for interview UI; prefer `border-border` / `text-primary` where possible.
  */
@@ -25,7 +26,7 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
   --shadow-card: 0 32px 64px -24px rgb(0 0 0 / 0.45);
-  --shadow-cta: 0 16px 40px -12px rgb(6 182 212 / 0.45);
+  --shadow-cta: 0 16px 40px -12px rgb(245 158 11 / 0.42);
 }
 
 html[data-font-family="system"] {
@@ -43,24 +44,28 @@ html {
   --app-border: #1e293b;
   --app-surface: #0f1319;
   --app-surface-elevated: #161c26;
-  --app-primary: #06b6d4;
-  --app-primary-hover: #22d3ee;
-  --app-primary-fg: #020617;
-  --app-primary-muted: rgb(6 182 212 / 0.12);
+  /* Brand primary: amber — reads as energy / “torque”; pairs with violet accent */
+  --app-primary: #f59e0b;
+  --app-primary-hover: #fbbf24;
+  --app-primary-fg: #0c0a09;
+  --app-primary-muted: rgb(245 158 11 / 0.14);
   --app-accent: #a78bfa;
+  --app-accent-fg: #fafafa;
   --app-accent-muted: rgb(167 139 250 / 0.12);
-  --app-ring: #22d3ee;
+  --app-ring: #fbbf24;
   --app-destructive: #f87171;
+  --app-destructive-fg: #fafafa;
+  --app-success: #34d399;
   --app-glass-bg: rgb(15 19 25 / 0.7);
   --app-glass-border: rgb(255 255 255 / 0.06);
-  --app-gradient-mesh-a: rgb(6 182 212 / 0.2);
-  --app-gradient-mesh-b: rgb(139 92 246 / 0.08);
-  --app-gradient-mesh-c: rgb(6 182 212 / 0.06);
-  --app-hero-a: rgb(6 182 212 / 0.22);
+  --app-gradient-mesh-a: rgb(245 158 11 / 0.18);
+  --app-gradient-mesh-b: rgb(139 92 246 / 0.09);
+  --app-gradient-mesh-c: rgb(245 158 11 / 0.06);
+  --app-hero-a: rgb(245 158 11 / 0.2);
   --app-hero-b: rgb(139 92 246 / 0.1);
-  --app-hero-c: rgb(6 182 212 / 0.08);
-  --app-card-hover-ring: rgb(6 182 212 / 0.12);
-  --app-stat-gradient: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #a78bfa 100%);
+  --app-hero-c: rgb(245 158 11 / 0.07);
+  --app-card-hover-ring: rgb(245 158 11 / 0.14);
+  --app-stat-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 48%, #a78bfa 100%);
   --app-theme-color: #07090e;
   --app-whatsapp: #25d366;
   --app-whatsapp-foreground: #ffffff;
@@ -83,24 +88,27 @@ html.light {
   --app-border: #e2e8f0;
   --app-surface: #f1f5f9;
   --app-surface-elevated: #ffffff;
-  --app-primary: #0891b2;
-  --app-primary-hover: #0e7490;
-  --app-primary-fg: #f8fafc;
-  --app-primary-muted: rgb(8 145 178 / 0.12);
+  --app-primary: #d97706;
+  --app-primary-hover: #b45309;
+  --app-primary-fg: #fffbeb;
+  --app-primary-muted: rgb(217 119 6 / 0.12);
   --app-accent: #7c3aed;
+  --app-accent-fg: #fafafa;
   --app-accent-muted: rgb(124 58 237 / 0.12);
-  --app-ring: #0891b2;
+  --app-ring: #d97706;
   --app-destructive: #dc2626;
+  --app-destructive-fg: #fafafa;
+  --app-success: #059669;
   --app-glass-bg: rgb(255 255 255 / 0.72);
   --app-glass-border: rgb(15 23 42 / 0.08);
-  --app-gradient-mesh-a: rgb(8 145 178 / 0.14);
+  --app-gradient-mesh-a: rgb(217 119 6 / 0.13);
   --app-gradient-mesh-b: rgb(124 58 237 / 0.08);
-  --app-gradient-mesh-c: rgb(8 145 178 / 0.06);
-  --app-hero-a: rgb(8 145 178 / 0.16);
+  --app-gradient-mesh-c: rgb(217 119 6 / 0.05);
+  --app-hero-a: rgb(217 119 6 / 0.14);
   --app-hero-b: rgb(124 58 237 / 0.08);
-  --app-hero-c: rgb(8 145 178 / 0.06);
-  --app-card-hover-ring: rgb(8 145 178 / 0.15);
-  --app-stat-gradient: linear-gradient(135deg, #0e7490 0%, #0891b2 45%, #7c3aed 100%);
+  --app-hero-c: rgb(217 119 6 / 0.05);
+  --app-card-hover-ring: rgb(217 119 6 / 0.14);
+  --app-stat-gradient: linear-gradient(135deg, #b45309 0%, #d97706 45%, #7c3aed 100%);
   --app-theme-color: #fafafa;
   --app-whatsapp: #25d366;
   --app-whatsapp-foreground: #ffffff;
@@ -127,9 +135,12 @@ html.light {
   --color-primary-foreground: var(--app-primary-fg);
   --color-primary-muted: var(--app-primary-muted);
   --color-accent: var(--app-accent);
+  --color-accent-foreground: var(--app-accent-fg);
   --color-accent-muted: var(--app-accent-muted);
   --color-ring: var(--app-ring);
   --color-destructive: var(--app-destructive);
+  --color-destructive-foreground: var(--app-destructive-fg);
+  --color-success: var(--app-success);
   --color-whatsapp: var(--app-whatsapp);
   --color-whatsapp-foreground: var(--app-whatsapp-foreground);
   --font-sans: var(--font-body-stack);
@@ -302,31 +313,31 @@ select:focus-visible {
   color: #881337;
 }
 #hub-root[data-hub-theme="dark"] .hub-qa-link {
-  color: #22d3ee;
+  color: #fbbf24;
 }
 #hub-root[data-hub-theme="dark"] .hub-qa-link:hover {
-  color: #67e8f9;
+  color: #fde68a;
 }
 #hub-root[data-hub-theme="light"] .hub-qa-link {
-  color: #0e7490;
+  color: #b45309;
 }
 #hub-root[data-hub-theme="light"] .hub-qa-link:hover {
-  color: #155e75;
+  color: #92400e;
 }
 
 .hub-btn-primary {
-  background-color: var(--hub-primary, #0891b2);
-  color: var(--hub-primary-foreground, #fff);
+  background-color: var(--hub-primary, #d97706);
+  color: var(--hub-primary-foreground, #fffbeb);
   transition: background-color 0.15s ease, transform 0.2s ease;
 }
 .hub-btn-primary:hover {
-  background-color: var(--hub-primary-hover, #06b6d4);
+  background-color: var(--hub-primary-hover, #fbbf24);
 }
 .hub-text-accent {
-  color: var(--hub-primary, #0891b2);
+  color: var(--hub-primary, #d97706);
 }
 .hub-text-accent:hover {
-  color: var(--hub-primary-hover, #06b6d4);
+  color: var(--hub-primary-hover, #f59e0b);
 }
 
 #hub-root[data-hub-theme="dark"] .hub-hero-highlight {
@@ -457,4 +468,119 @@ select:focus-visible {
   color: var(--app-primary-hover);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Blog article body (sanitized HTML from CMS) — readable long-form           */
+/* -------------------------------------------------------------------------- */
+.blog-article {
+  font-size: 1.0625rem;
+  line-height: 1.78;
+  color: var(--app-muted-fg);
+  max-width: 42rem;
+}
+.blog-article > * + * {
+  margin-top: 1.125rem;
+}
+.blog-article h1 {
+  font-family: var(--font-display-stack);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--app-fg);
+  margin-top: 2.75rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 6rem;
+}
+.blog-article h2 {
+  font-family: var(--font-display-stack);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--app-fg);
+  margin-top: 2.5rem;
+  margin-bottom: 0.65rem;
+  scroll-margin-top: 6rem;
+}
+.blog-article h3 {
+  font-family: var(--font-display-stack);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--app-fg);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  scroll-margin-top: 6rem;
+}
+.blog-article a {
+  color: var(--app-primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--app-primary) 45%, transparent);
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+.blog-article a:hover {
+  color: var(--app-primary-hover);
+  text-decoration-color: color-mix(in srgb, var(--app-primary-hover) 55%, transparent);
+}
+.blog-article strong {
+  color: var(--app-fg);
+  font-weight: 600;
+}
+.blog-article em {
+  font-style: italic;
+}
+.blog-article ul,
+.blog-article ol {
+  margin-top: 1rem;
+  padding-left: 1.35rem;
+}
+.blog-article ul {
+  list-style-type: disc;
+}
+.blog-article ol {
+  list-style-type: decimal;
+}
+.blog-article li {
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
+}
+.blog-article li::marker {
+  color: color-mix(in srgb, var(--app-primary) 65%, var(--app-muted-fg));
+}
+.blog-article blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 0 0.75rem 1.15rem;
+  border-left: 3px solid color-mix(in srgb, var(--app-primary) 55%, var(--app-border));
+  font-style: italic;
+  color: color-mix(in srgb, var(--app-muted-fg) 88%, var(--app-fg));
+  background: color-mix(in srgb, var(--app-surface) 65%, transparent);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.blog-article pre {
+  margin: 1.25rem 0;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--app-border) 80%, transparent);
+  background: var(--app-surface);
+  font-size: 0.9em;
+  line-height: 1.65;
+  overflow-x: auto;
+  color: var(--app-code-fg);
+}
+.blog-article code {
+  font-size: 0.88em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  padding: 0.15em 0.4em;
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, var(--app-muted) 85%, transparent);
+  color: var(--app-fg);
+}
+.blog-article pre code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+  color: inherit;
 }
