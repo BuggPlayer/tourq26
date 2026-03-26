@@ -35,9 +35,9 @@ export function DevToolsToolCard({ tool, featured }: Props) {
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{categoryLabel}</p>
-          <h2 className="mt-1 font-display text-lg font-bold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-xl">
+          <h3 className="mt-1 font-display text-lg font-bold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-xl">
             {tool.title}
-          </h2>
+          </h3>
         </div>
       </div>
       <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">{tool.description}</p>

@@ -37,7 +37,8 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)",
+        // Skip `/_next/*` so hashed CSS/JS chunks keep Next’s `Content-Type` (avoids nosniff + wrong MIME in dev).
+        source: "/((?!_next/).*)",
         headers: [
           // SAMEORIGIN allows same-site iframes (e.g. admin live preview of /dev-tools/*) while blocking embeds on other domains.
           { key: "X-Frame-Options", value: "SAMEORIGIN" },

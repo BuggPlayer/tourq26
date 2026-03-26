@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { readSiteContent } from "@/lib/content";
+import { readDevToolsAdminDocument, readSiteContent } from "@/lib/content";
 import { getDevToolFaqItems } from "@/lib/umbrella-tools/dev-tool-faq";
-import { getDevToolBySlug, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
+import { getDevToolBySlugWithAdminSeo } from "@/lib/dev-tools-admin";
+import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 import type { DevToolCategory } from "@/lib/umbrella-tools/types";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -59,17 +60,19 @@ export async function umbrellaToolsMetadata(opts: {
   const [baseUrl, site] = await Promise.all([getSiteUrl(), readSiteContent()]);
   const path = opts.path.startsWith("/") ? opts.path : `/${opts.path}`;
   const url = `${baseUrl}${path}`;
-  const pageTitle = `${opts.title} | ${DEFAULT_SUFFIX} | ${site.siteName}`;
+  /** Segment merged with root `layout` `titleTemplate` (e.g. `%s | Torq Studio`) — do not append site name here. */
+  const titleSegment = `${opts.title} | ${DEFAULT_SUFFIX}`;
+  const resolvedTitle = `${titleSegment} | ${site.siteName}`;
   const ogImage = opts.ogImagePath ?? DEV_TOOLS_OG_IMAGE_PATH;
   const ogAlt = `${opts.title} | ${site.siteName}`;
   return {
-    title: pageTitle,
+    title: titleSegment,
     description: opts.description,
     ...(opts.keywords?.length ? { keywords: opts.keywords } : {}),
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
     alternates: { canonical: url },
     openGraph: {
-      title: pageTitle,
+      title: resolvedTitle,
       description: opts.description,
       url,
       siteName: site.siteName,
@@ -78,7 +81,7 @@ export async function umbrellaToolsMetadata(opts: {
     },
     twitter: {
       card: "summary_large_image",
-      title: pageTitle,
+      title: resolvedTitle,
       description: opts.description,
       images: [ogImage],
       ...(site.twitterSite ? { site: `@${site.twitterSite}`, creator: `@${site.twitterSite}` } : {}),
@@ -225,16 +228,17 @@ export function devToolsToolFullJsonLd(opts: {
 }
 
 export async function devToolsPageMetadata(slug: string): Promise<Metadata> {
-  const tool = getDevToolBySlug(slug);
-  if (!tool) {
+  const adminDoc = await readDevToolsAdminDocument();
+  const merged = getDevToolBySlugWithAdminSeo(slug, adminDoc);
+  if (!merged) {
     return { title: "Developer tool", robots: { index: false, follow: false } };
   }
-  const title = tool.seoTitle?.trim() || tool.title;
+  const title = merged.seoTitle?.trim() || merged.title;
   return umbrellaToolsMetadata({
     title,
-    description: getDevToolMetaDescription(tool),
+    description: getDevToolMetaDescription(merged),
     path: `/dev-tools/${slug}`,
-    keywords: tool.keywords,
+    keywords: merged.keywords,
     ogImagePath: DEV_TOOLS_OG_IMAGE_PATH,
   });
 }

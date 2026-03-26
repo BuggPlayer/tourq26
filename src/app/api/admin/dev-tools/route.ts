@@ -19,6 +19,8 @@ const MAX_EDITORIAL_SECTIONS = 25;
 const MAX_SECTION_ID_LEN = 80;
 const MAX_FAQ_ITEMS = 40;
 const MAX_FAQ_QUESTION_LEN = 400;
+const MAX_SEO_TITLE_LEN = 120;
+const MAX_SEO_DESC_LEN = 320;
 
 export async function GET() {
   const ok = await requireAdmin();
@@ -66,6 +68,14 @@ export async function PUT(request: NextRequest) {
     if (typeof patch.notes === "string") {
       const n = patch.notes.slice(0, MAX_NOTES_LEN);
       if (n.trim()) o.notes = n;
+    }
+    if (typeof patch.seoTitle === "string") {
+      const s = patch.seoTitle.trim().slice(0, MAX_SEO_TITLE_LEN);
+      if (s) o.seoTitle = s;
+    }
+    if (typeof patch.seoDescription === "string") {
+      const s = patch.seoDescription.trim().slice(0, MAX_SEO_DESC_LEN);
+      if (s) o.seoDescription = s;
     }
     if (Array.isArray(patch.editorialSections)) {
       if (patch.editorialSections.length > MAX_EDITORIAL_SECTIONS) {

@@ -121,6 +121,61 @@ export function DevToolAdminDetailPanel({ slug, tool, initialOverrides, initialU
         ) : null}
       </div>
 
+      <section className="mt-8 max-w-4xl rounded-xl border border-border/60 bg-muted/20 p-5">
+        <h2 className="font-display text-lg font-semibold text-foreground">Search (SEO)</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Optional overrides stored in the dev-tools admin document. They replace registry / code defaults for the page{" "}
+          <code className="rounded bg-muted px-1 font-mono text-[11px]">&lt;title&gt;</code>, meta description, and JSON-LD.
+          Leave blank to use the registry (including <code className="rounded bg-muted px-1 font-mono text-[11px]">seo-overrides.ts</code>).
+        </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Registry title segment:{" "}
+          <span className="font-medium text-foreground">{tool.seoTitle?.trim() || tool.title}</span>
+        </p>
+        <div className="mt-4 space-y-4">
+          <div>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <label htmlFor="dev-tool-seo-title" className="text-sm font-medium text-foreground">
+                SEO title (tab title segment)
+              </label>
+              <span
+                className={`text-xs tabular-nums ${(o.seoTitle ?? "").length > 60 ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"}`}
+              >
+                {(o.seoTitle ?? "").length} / ~60
+              </span>
+            </div>
+            <input
+              id="dev-tool-seo-title"
+              type="text"
+              value={o.seoTitle ?? ""}
+              onChange={(e) => setOverride({ seoTitle: e.target.value })}
+              placeholder={`Default: ${tool.seoTitle?.trim() || tool.title}`}
+              className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground"
+            />
+          </div>
+          <div>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <label htmlFor="dev-tool-seo-desc" className="text-sm font-medium text-foreground">
+                Meta description
+              </label>
+              <span
+                className={`text-xs tabular-nums ${(o.seoDescription ?? "").length > 160 ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"}`}
+              >
+                {(o.seoDescription ?? "").length} / ~160
+              </span>
+            </div>
+            <textarea
+              id="dev-tool-seo-desc"
+              value={o.seoDescription ?? ""}
+              onChange={(e) => setOverride({ seoDescription: e.target.value })}
+              rows={3}
+              placeholder="Full meta description (not the category suffix). Leave blank for registry default."
+              className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground"
+            />
+          </div>
+        </div>
+      </section>
+
       <section className="mt-6 max-w-4xl space-y-10">
         <div>
           <h2 className="font-display text-lg font-semibold text-foreground">Public guide (blog)</h2>

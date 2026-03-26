@@ -26,8 +26,13 @@ export async function PUT(request: NextRequest) {
       typeof body.twitterSite === "string"
         ? body.twitterSite.replace(/^@/, "").trim()
         : current.twitterSite,
+    twitterTitle: typeof body.twitterTitle === "string" ? body.twitterTitle : current.twitterTitle,
+    twitterDescription:
+      typeof body.twitterDescription === "string" ? body.twitterDescription : current.twitterDescription,
   };
   await writeSiteContent(data);
   revalidatePath("/");
+  revalidatePath("/dev-tools");
+  revalidatePath("/blog");
   return NextResponse.json(data);
 }

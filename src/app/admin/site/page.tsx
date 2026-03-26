@@ -12,8 +12,10 @@ export default async function AdminSitePage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-foreground">Site & SEO</h1>
-      <p className="mt-1 text-muted-foreground">
-        Default metadata and Open Graph. Root layout uses these where applicable; some defaults are in code.
+      <p className="mt-1 max-w-2xl text-muted-foreground">
+        Edit global meta: default title and description, page title template, Open Graph, X/Twitter Card text, keywords,
+        and social URLs. Changes apply to the root layout, shared defaults, and cache after save (KV in production,{" "}
+        <code className="rounded bg-muted px-1 font-mono text-xs">content/site.json</code> locally).
       </p>
       <SiteForm initialData={data} />
     </div>

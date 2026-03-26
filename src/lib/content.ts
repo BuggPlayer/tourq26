@@ -86,6 +86,10 @@ export type DevToolAdminOverride = {
   blogHtml?: string;
   /** Operator-authored FAQ accordion; preferred over `faqHtml` for display and FAQ schema. */
   faqItems?: DevToolAdminFaqItem[];
+  /** Override `<title>` / Open Graph title segment (merged with site title template). Empty = use registry. */
+  seoTitle?: string;
+  /** Override meta description and OG/Twitter description tail. Empty = use registry + category default. */
+  seoDescription?: string;
 };
 
 /** One admin-authored section below the tool UI (title + Quill HTML body). */

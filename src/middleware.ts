@@ -20,6 +20,12 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const method = request.method;
 
+  // Never run feature flags / maintenance / redirects on Next.js assets (chunks, CSS, fonts, Turbopack).
+  // If these paths hit middleware, responses can break (wrong MIME, 500) and the app shell fails to load.
+  if (pathname.startsWith("/_next")) {
+    return NextResponse.next();
+  }
+
   const flags = await getResolvedFeatureFlagsFromKvOnly();
   const maintenanceActive = envMaintenanceOn() || (flags?.maintenance_mode === true);
 
@@ -68,6 +74,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    // Exclude everything under /_next (static chunks, media, image optimizer) — matcher is a hint; guard above is authoritative.
+    "/((?!_next/|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

@@ -24,9 +24,9 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return umbrellaToolsMetadata({
-    title: "Free online developer tools",
+    title: "Free dev tools online",
     description:
-      "Free developer tools online: JSON formatter, Base64, hash & HMAC, bcrypt, QR codes, CIDR calculator, encodings, URL tools, and more. No account — utilities run client-side in your browser.",
+      "Free developer tools online — JSON, Base64, SHA/HMAC, bcrypt, QR, CIDR, encodings & URL utilities. No account; everything runs locally in your browser.",
     path: "/dev-tools",
     keywords: [
       "free developer tools",

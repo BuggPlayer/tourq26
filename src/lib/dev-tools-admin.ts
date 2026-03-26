@@ -1,6 +1,30 @@
 import type { DevToolsAdminDocument } from "@/lib/content";
 import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
-import { getRelatedDevTools, UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
+import { getRelatedDevTools, getDevToolBySlug, UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
+
+/**
+ * Merge admin-stored SEO overrides onto the registry tool (after static `seo-overrides.ts`).
+ * Non-empty `seoTitle` / `seoDescription` in admin replace registry values for metadata & JSON-LD.
+ */
+export function applyDevToolAdminSeoToTool(tool: UmbrellaTool, doc: DevToolsAdminDocument | null): UmbrellaTool {
+  const o = doc?.overrides?.[tool.slug];
+  if (!o) return tool;
+  const seoTitle = o.seoTitle?.trim();
+  const seoDescription = o.seoDescription?.trim();
+  if (!seoTitle && !seoDescription) return tool;
+  return {
+    ...tool,
+    ...(seoTitle ? { seoTitle } : {}),
+    ...(seoDescription ? { seoDescription } : {}),
+  };
+}
+
+/** Registry tool with admin SEO merged — for metadata and structured data. */
+export function getDevToolBySlugWithAdminSeo(slug: string, doc: DevToolsAdminDocument | null): UmbrellaTool | undefined {
+  const tool = getDevToolBySlug(slug);
+  if (!tool) return undefined;
+  return applyDevToolAdminSeoToTool(tool, doc);
+}
 
 /** Whether a tool is publicly accessible (default true). */
 export function isDevToolEnabled(slug: string, doc: DevToolsAdminDocument | null): boolean {

@@ -6,6 +6,8 @@ const TRIMMABLE_STRING_KEYS: (keyof DevToolAdminOverride)[] = [
   "bestPracticesHtml",
   "faqHtml",
   "blogHtml",
+  "seoTitle",
+  "seoDescription",
 ];
 
 function trimEmptyDevToolOverride(o: DevToolAdminOverride): DevToolAdminOverride | null {

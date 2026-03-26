@@ -16,7 +16,11 @@ import {
   shouldHideRegistryDevToolFaq,
 } from "@/lib/dev-tool-editorial";
 import { getDevToolFaqItems } from "@/lib/umbrella-tools/dev-tool-faq";
-import { getRelatedDevToolsFiltered, isDevToolEnabled } from "@/lib/dev-tools-admin";
+import {
+  applyDevToolAdminSeoToTool,
+  getRelatedDevToolsFiltered,
+  isDevToolEnabled,
+} from "@/lib/dev-tools-admin";
 
 /** Admin can disable tools without redeploy; re-evaluate visibility per request. */
 export const dynamic = "force-dynamic";
@@ -55,7 +59,7 @@ export default async function DevToolBySlugPage({
   const structuredData = devToolsToolFullJsonLd({
     siteUrl,
     siteName: site.siteName,
-    tool,
+    tool: applyDevToolAdminSeoToTool(tool, adminDoc),
     slug,
     faqSchemaPairs,
   });
