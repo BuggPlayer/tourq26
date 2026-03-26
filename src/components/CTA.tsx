@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function CTA() {
   return (
-    <section className="relative overflow-hidden border-t border-[var(--color-border)]/40 py-20 sm:py-24 lg:py-28">
+    <section className="relative overflow-hidden border-t border-border/40 py-20 sm:py-24 lg:py-28">
       {/* Background visual */}
       <div
         className="absolute inset-0 opacity-40"
@@ -23,27 +23,27 @@ export default function CTA() {
         />
       </div>
       <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 className="font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+        <h2 className="font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
           Need build, advice, or both?
         </h2>
-        <p className="mt-4 text-[var(--color-muted)]">
+        <p className="mt-4 text-muted-foreground">
           Free 30-min call—React Native, Node, MVP scope, or architecture review. Based in Mumbai; overlap with India, EU & MENA.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/contact"
-            className="btn-primary w-full rounded-full bg-[var(--color-primary)] px-8 py-4 text-base font-semibold text-[var(--background)] sm:w-auto"
+            className="btn-primary w-full rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground sm:w-auto"
           >
             Get free consultation
           </Link>
           <a
             href="mailto:hello@torqstudio.com"
-            className="text-sm text-[var(--color-muted)] underline decoration-[var(--color-primary)]/50 underline-offset-4 transition-colors hover:text-[var(--color-primary)]"
+            className="text-sm text-muted-foreground underline decoration-primary/50 underline-offset-4 transition-colors hover:text-primary"
           >
             hello@torqstudio.com
           </a>
         </div>
-        <p className="mt-6 text-center text-sm text-[var(--color-muted)]">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           No commitment · Clear path to results
         </p>
       </div>

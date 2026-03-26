@@ -33,62 +33,62 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
   return (
     <form onSubmit={(e) => { e.preventDefault(); save(); }} className="mt-6 max-w-2xl space-y-4">
       <div>
-        <label className="block text-sm font-medium text-slate-300">Site URL</label>
+        <label className="block text-sm font-medium text-foreground/90">Site URL</label>
         <input
           type="url"
           value={data.siteUrl}
           onChange={(e) => update("siteUrl", e.target.value)}
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">Default title</label>
+        <label className="block text-sm font-medium text-foreground/90">Default title</label>
         <input
           type="text"
           value={data.defaultTitle}
           onChange={(e) => update("defaultTitle", e.target.value)}
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">Default description</label>
+        <label className="block text-sm font-medium text-foreground/90">Default description</label>
         <textarea
           value={data.defaultDescription}
           onChange={(e) => update("defaultDescription", e.target.value)}
           rows={3}
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">Title template (%s = page title)</label>
+        <label className="block text-sm font-medium text-foreground/90">Title template (%s = page title)</label>
         <input
           type="text"
           value={data.titleTemplate}
           onChange={(e) => update("titleTemplate", e.target.value)}
           placeholder="%s | Torq Studio"
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">OG title</label>
+        <label className="block text-sm font-medium text-foreground/90">OG title</label>
         <input
           type="text"
           value={data.ogTitle}
           onChange={(e) => update("ogTitle", e.target.value)}
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">OG description</label>
+        <label className="block text-sm font-medium text-foreground/90">OG description</label>
         <textarea
           value={data.ogDescription}
           onChange={(e) => update("ogDescription", e.target.value)}
           rows={2}
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">Keywords (one per line or comma-separated)</label>
+        <label className="block text-sm font-medium text-foreground/90">Keywords (one per line or comma-separated)</label>
         <textarea
           value={Array.isArray(data.keywords) ? data.keywords.join("\n") : ""}
           onChange={(e) =>
@@ -101,20 +101,20 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
             )
           }
           rows={4}
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">Site name</label>
+        <label className="block text-sm font-medium text-foreground/90">Site name</label>
         <input
           type="text"
           value={data.siteName}
           onChange={(e) => update("siteName", e.target.value)}
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">
+        <label className="block text-sm font-medium text-foreground/90">
           X (Twitter) handle — without @ (for meta tags)
         </label>
         <input
@@ -122,11 +122,11 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
           value={data.twitterSite ?? ""}
           onChange={(e) => update("twitterSite", e.target.value.replace(/^@/, ""))}
           placeholder="yourbrand"
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white placeholder:text-slate-500"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground placeholder:text-muted-foreground"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300">
+        <label className="block text-sm font-medium text-foreground/90">
           Social profile URLs (Organization sameAs) — one per line
         </label>
         <textarea
@@ -142,14 +142,14 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
           }
           rows={4}
           placeholder="https://www.linkedin.com/company/…&#10;https://x.com/…"
-          className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white placeholder:text-slate-500"
+          className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground placeholder:text-muted-foreground"
         />
       </div>
       {error && <p className="text-sm text-red-400">{error}</p>}
       <button
         type="submit"
         disabled={saving}
-        className="rounded-lg bg-cyan-600 px-6 py-2 font-medium text-white hover:bg-cyan-500 disabled:opacity-50"
+        className="rounded-lg bg-primary px-6 py-2 font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
       >
         {saving ? "Saving…" : "Save site & SEO"}
       </button>

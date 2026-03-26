@@ -44,29 +44,29 @@ export function QuizWidget() {
 
   return (
     <section
-      className="rounded-xl border border-slate-800 bg-slate-900/40 p-4"
+      className="rounded-xl border border-border bg-surface/40 p-4"
       aria-labelledby="quiz-widget-title"
     >
-      <h2 id="quiz-widget-title" className="font-semibold text-slate-100">
+      <h2 id="quiz-widget-title" className="font-semibold text-foreground">
         Quick quiz
       </h2>
       {!q ? (
         <button
           type="button"
           onClick={load}
-          className="mt-3 rounded-lg bg-cyan-600 px-3 py-2 text-sm font-medium text-white"
+          className="mt-3 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-foreground"
         >
           Load random question
         </button>
       ) : (
         <div className="mt-3 space-y-3 text-sm">
           <p className="font-medium text-slate-200">{q.title}</p>
-          <p className="text-slate-400">{q.description}</p>
+          <p className="text-muted-foreground">{q.description}</p>
           <div className="space-y-2" role="radiogroup" aria-label="Choices">
             {q.options.map((opt, i) => (
               <label
                 key={opt}
-                className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 hover:bg-slate-800/80"
+                className="flex cursor-pointer items-center gap-2 rounded-lg border border-border px-3 py-2 hover:bg-muted/80"
               >
                 <input
                   type="radio"
@@ -82,20 +82,20 @@ export function QuizWidget() {
             <button
               type="button"
               onClick={submit}
-              className="rounded-lg bg-violet-600 px-3 py-1.5 text-sm text-white"
+              className="rounded-lg bg-violet-600 px-3 py-1.5 text-sm text-foreground"
             >
               Check answer
             </button>
             <button
               type="button"
               onClick={load}
-              className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm"
+              className="rounded-lg border border-border px-3 py-1.5 text-sm"
             >
               Next
             </button>
           </div>
           {result && (
-            <p className="text-xs text-slate-300" role="status">
+            <p className="text-xs text-foreground/90" role="status">
               {result}
             </p>
           )}

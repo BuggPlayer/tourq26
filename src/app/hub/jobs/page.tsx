@@ -23,10 +23,10 @@ export default function JobsPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-display text-3xl font-bold text-white">Job board</h1>
+        <h1 className="font-display text-3xl font-bold text-foreground">Job board</h1>
         <Link
           href="/hub/jobs/new"
-          className="rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-foreground"
         >
           Post a job
         </Link>
@@ -35,18 +35,18 @@ export default function JobsPage() {
         {jobs.map((j) => (
           <li
             key={j.id}
-            className="rounded-xl border border-slate-800 bg-slate-900/40 p-4"
+            className="rounded-xl border border-border bg-surface/40 p-4"
           >
-            <h2 className="font-semibold text-slate-100">{j.title}</h2>
-            <p className="text-xs text-slate-500">
+            <h2 className="font-semibold text-foreground">{j.title}</h2>
+            <p className="text-xs text-muted-foreground">
               {j.companyName} · {j.location}
             </p>
-            <p className="mt-2 line-clamp-3 text-sm text-slate-400">{j.description}</p>
+            <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{j.description}</p>
             <div className="mt-2 flex flex-wrap gap-1">
               {j.skills.map((s) => (
                 <span
                   key={s}
-                  className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-300"
+                  className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-foreground/90"
                 >
                   {s}
                 </span>

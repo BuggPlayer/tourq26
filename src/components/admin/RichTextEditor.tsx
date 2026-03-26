@@ -8,7 +8,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => (
     <div
-      className="flex min-h-[14rem] items-center justify-center rounded-lg border border-slate-600 bg-slate-900/40 text-sm text-slate-500"
+      className="flex min-h-[14rem] items-center justify-center rounded-lg border border-border bg-surface/40 text-sm text-muted-foreground"
       aria-hidden
     >
       Loading editor…
@@ -66,7 +66,7 @@ export function RichTextEditor({
 
   return (
     <div
-      className="admin-quill-editor overflow-hidden rounded-lg border border-slate-600 bg-slate-900/50"
+      className="admin-quill-editor overflow-hidden rounded-lg border border-border bg-surface/50"
       style={{ minHeight }}
     >
       <ReactQuill

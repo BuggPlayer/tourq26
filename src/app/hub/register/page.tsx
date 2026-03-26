@@ -37,11 +37,11 @@ export default function HubRegisterPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md rounded-2xl border border-slate-800 bg-slate-900/50 p-8">
-      <h1 className="font-display text-2xl font-bold text-white">Create account</h1>
-      <p className="mt-2 text-sm text-slate-400">
+    <div className="mx-auto max-w-md rounded-2xl border border-border bg-surface/50 p-8">
+      <h1 className="font-display text-2xl font-bold text-foreground">Create account</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
         Already have one?{" "}
-        <Link href="/hub/signin" className="text-cyan-400 hover:underline">
+        <Link href="/hub/signin" className="text-primary hover:underline">
           Sign in
         </Link>
       </p>
@@ -51,36 +51,36 @@ export default function HubRegisterPage() {
         noValidate
       >
         <div>
-          <label htmlFor="name" className="text-sm text-slate-300">
+          <label htmlFor="name" className="text-sm text-foreground/90">
             Name
           </label>
           <input
             id="name"
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("name")}
           />
         </div>
         <div>
-          <label htmlFor="email" className="text-sm text-slate-300">
+          <label htmlFor="email" className="text-sm text-foreground/90">
             Email
           </label>
           <input
             id="email"
             type="email"
             autoComplete="email"
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("email")}
           />
         </div>
         <div>
-          <label htmlFor="password" className="text-sm text-slate-300">
+          <label htmlFor="password" className="text-sm text-foreground/90">
             Password (min 8)
           </label>
           <input
             id="password"
             type="password"
             autoComplete="new-password"
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("password")}
           />
         </div>
@@ -91,7 +91,7 @@ export default function HubRegisterPage() {
         )}
         <button
           type="submit"
-          className="w-full rounded-lg bg-cyan-600 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500"
+          className="w-full rounded-lg bg-primary py-2.5 text-sm font-semibold text-foreground hover:bg-primary-hover"
         >
           Register
         </button>

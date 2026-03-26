@@ -41,19 +41,19 @@ export default async function BlogPage() {
     { name: "Blog", path: "/blog" },
   ]);
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <JsonLd data={breadcrumbLd} />
       <MarketingHeader />
       <main>
-        <section className="gradient-mesh relative border-b border-[var(--color-border)]/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
+        <section className="gradient-mesh relative border-b border-border/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">
               Insights
             </p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-foreground sm:text-5xl">
               Blog
             </h1>
-            <p className="mt-6 text-lg text-[var(--color-muted)]">
+            <p className="mt-6 text-lg text-muted-foreground">
               Practical guides on mobile app development, web, AI, and remote teams—from your technology partner.
             </p>
           </div>
@@ -65,18 +65,18 @@ export default async function BlogPage() {
               <li key={post.slug}>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="card-hover block rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)] p-6 transition-colors hover:border-[var(--color-primary)]/30"
+                  className="card-hover block rounded-2xl border border-border/50 bg-surface p-6 transition-colors hover:border-primary/30"
                 >
-                  <time className="text-sm text-[var(--color-muted)]" dateTime={post.date}>
+                  <time className="text-sm text-muted-foreground" dateTime={post.date}>
                     {formatDate(post.date)}
                   </time>
-                  <h2 className="mt-2 font-display text-xl font-semibold text-white sm:text-2xl">
+                  <h2 className="mt-2 font-display text-xl font-semibold text-foreground sm:text-2xl">
                     {post.title}
                   </h2>
-                  <p className="mt-2 text-[var(--color-muted)] leading-relaxed">
+                  <p className="mt-2 text-muted-foreground leading-relaxed">
                     {post.description}
                   </p>
-                  <span className="mt-4 inline-block text-sm font-medium text-[var(--color-primary)]">
+                  <span className="mt-4 inline-block text-sm font-medium text-primary">
                     Read more →
                   </span>
                 </Link>

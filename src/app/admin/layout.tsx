@@ -9,16 +9,16 @@ export default async function AdminLayout({
 }) {
   const ok = await isAdmin();
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-200">
+    <div className="min-h-screen bg-background text-foreground">
       {ok ? (
         <>
-          <header className="sticky top-0 z-10 border-b border-slate-700/50 bg-[#0f172a]/95 backdrop-blur">
+          <header className="sticky top-0 z-10 border-b border-border/50 bg-background/95 backdrop-blur">
             <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-              <Link href="/admin/dashboard" className="font-semibold text-white">
+              <Link href="/admin/dashboard" className="font-semibold text-foreground">
                 Torq Admin
               </Link>
               <div className="flex items-center gap-4">
-                <Link href="/" target="_blank" className="text-sm text-slate-400 hover:text-white">
+                <Link href="/" target="_blank" className="text-sm text-muted-foreground hover:text-foreground">
                   View site
                 </Link>
                 <LogoutButton />
@@ -48,7 +48,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link
       href={href}
-      className="block rounded-lg px-3 py-2 text-sm text-slate-400 hover:bg-slate-800 hover:text-white"
+      className="block rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
     >
       {children}
     </Link>

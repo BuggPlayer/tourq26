@@ -91,7 +91,7 @@ export default async function BlogPostPage({
   ]);
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <JsonLd data={articleLd} />
       <JsonLd data={breadcrumbLd} />
       <MarketingHeader />
@@ -99,32 +99,32 @@ export default async function BlogPostPage({
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
           <Link
             href="/blog"
-            className="text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+            className="text-sm text-muted-foreground hover:text-primary"
           >
             ← Blog
           </Link>
           <header className="mt-6">
-            <time className="text-sm text-[var(--color-muted)]" dateTime={post.date}>
+            <time className="text-sm text-muted-foreground" dateTime={post.date}>
               {formatDate(post.date)} · {post.readTime}
             </time>
-            <h1 className="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">
+            <h1 className="mt-2 font-display text-3xl font-bold text-foreground sm:text-4xl">
               {post.title}
             </h1>
-            <p className="mt-3 text-sm text-[var(--color-muted)]">
-              By <span className="text-white/90">{authorLabel}</span>
+            <p className="mt-3 text-sm text-muted-foreground">
+              By <span className="text-foreground/90">{authorLabel}</span>
             </p>
-            <p className="mt-4 text-lg text-[var(--color-muted)] leading-relaxed">
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
               {post.description}
             </p>
           </header>
           <div
-            className="prose prose-invert mt-10 max-w-none [&_h1]:font-display [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-white [&_h1]:mt-12 [&_h1]:mb-4 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-10 [&_h3]:font-semibold [&_h3]:text-white [&_p]:text-[var(--color-muted)] [&_p]:leading-relaxed [&_ul]:text-[var(--color-muted)] [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_a]:text-[var(--color-primary)] [&_a]:underline-offset-2 [&_pre]:rounded-lg [&_pre]:bg-[var(--surface)] [&_pre]:p-4 [&_code]:text-sm"
+            className="prose prose-invert mt-10 max-w-none [&_h1]:font-display [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-12 [&_h1]:mb-4 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-10 [&_h3]:font-semibold [&_h3]:text-foreground [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_a]:text-primary [&_a]:underline-offset-2 [&_pre]:rounded-lg [&_pre]:bg-surface [&_pre]:p-4 [&_code]:text-sm"
             dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.body || "") }}
           />
-          <div className="mt-14 border-t border-[var(--color-border)]/50 pt-8">
+          <div className="mt-14 border-t border-border/50 pt-8">
             <Link
               href="/contact"
-              className="inline-block rounded-full bg-[var(--color-primary)] px-6 py-3 text-sm font-semibold text-[var(--background)] hover:bg-[var(--color-primary-hover)]"
+              className="inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
             >
               Get in touch for a free consultation
             </Link>

@@ -58,10 +58,10 @@ export function TestimonialsEditor({ initialItems }: { initialItems: Testimonial
       {items.map((item, index) => (
         <div
           key={item.id}
-          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-4 space-y-3"
+          className="rounded-xl border border-border/50 bg-muted/30 p-4 space-y-3"
         >
           <div className="flex justify-between">
-            <span className="text-sm text-slate-500">#{index + 1}</span>
+            <span className="text-sm text-muted-foreground">#{index + 1}</span>
             <button
               type="button"
               onClick={() => remove(index)}
@@ -71,62 +71,62 @@ export function TestimonialsEditor({ initialItems }: { initialItems: Testimonial
             </button>
           </div>
           <div>
-            <label className="block text-sm text-slate-400">Quote</label>
+            <label className="block text-sm text-muted-foreground">Quote</label>
             <textarea
               value={item.quote}
               onChange={(e) => update(index, "quote", e.target.value)}
               rows={2}
-              className="mt-1 w-full rounded border border-slate-600 bg-slate-900/50 px-3 py-2 text-white"
+              className="mt-1 w-full rounded border border-border bg-surface/50 px-3 py-2 text-foreground"
             />
           </div>
           <div>
-            <label className="block text-sm text-slate-400">Result tag</label>
+            <label className="block text-sm text-muted-foreground">Result tag</label>
             <input
               type="text"
               value={item.result}
               onChange={(e) => update(index, "result", e.target.value)}
               placeholder="On time, under budget"
-              className="mt-1 w-full rounded border border-slate-600 bg-slate-900/50 px-3 py-2 text-white"
+              className="mt-1 w-full rounded border border-border bg-surface/50 px-3 py-2 text-foreground"
             />
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block text-sm text-slate-400">Name</label>
+              <label className="block text-sm text-muted-foreground">Name</label>
               <input
                 type="text"
                 value={item.name}
                 onChange={(e) => update(index, "name", e.target.value)}
-                className="mt-1 w-full rounded border border-slate-600 bg-slate-900/50 px-3 py-2 text-white"
+                className="mt-1 w-full rounded border border-border bg-surface/50 px-3 py-2 text-foreground"
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-400">Role</label>
+              <label className="block text-sm text-muted-foreground">Role</label>
               <input
                 type="text"
                 value={item.role}
                 onChange={(e) => update(index, "role", e.target.value)}
-                className="mt-1 w-full rounded border border-slate-600 bg-slate-900/50 px-3 py-2 text-white"
+                className="mt-1 w-full rounded border border-border bg-surface/50 px-3 py-2 text-foreground"
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-400">Company</label>
+              <label className="block text-sm text-muted-foreground">Company</label>
               <input
                 type="text"
                 value={item.company}
                 onChange={(e) => update(index, "company", e.target.value)}
-                className="mt-1 w-full rounded border border-slate-600 bg-slate-900/50 px-3 py-2 text-white"
+                className="mt-1 w-full rounded border border-border bg-surface/50 px-3 py-2 text-foreground"
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm text-slate-400">Rating (1–5)</label>
+            <label className="block text-sm text-muted-foreground">Rating (1–5)</label>
             <input
               type="number"
               min={1}
               max={5}
               value={item.rating}
               onChange={(e) => update(index, "rating", parseInt(e.target.value, 10) || 5)}
-              className="mt-1 w-20 rounded border border-slate-600 bg-slate-900/50 px-3 py-2 text-white"
+              className="mt-1 w-20 rounded border border-border bg-surface/50 px-3 py-2 text-foreground"
             />
           </div>
         </div>
@@ -134,7 +134,7 @@ export function TestimonialsEditor({ initialItems }: { initialItems: Testimonial
       <button
         type="button"
         onClick={add}
-        className="rounded-lg border border-dashed border-slate-600 px-4 py-3 text-sm text-slate-400 hover:border-cyan-500 hover:text-cyan-400"
+        className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground hover:border-cyan-500 hover:text-primary"
       >
         + Add testimonial
       </button>
@@ -143,7 +143,7 @@ export function TestimonialsEditor({ initialItems }: { initialItems: Testimonial
         type="button"
         onClick={save}
         disabled={saving}
-        className="rounded-lg bg-cyan-600 px-6 py-2 font-medium text-white hover:bg-cyan-500 disabled:opacity-50"
+        className="rounded-lg bg-primary px-6 py-2 font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
       >
         {saving ? "Saving…" : "Save all testimonials"}
       </button>

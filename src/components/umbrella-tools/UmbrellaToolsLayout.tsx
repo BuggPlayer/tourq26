@@ -12,22 +12,22 @@ export default function UmbrellaToolsLayout({ children }: { children: React.Reac
   return (
     <>
       <MarketingHeader />
-      <div className="min-h-screen bg-[var(--background)] pt-28 sm:pt-32">
-        <div className="border-b border-[var(--color-border)]/50 bg-[var(--color-surface)]/40">
+      <div className="min-h-screen bg-background pt-28 sm:pt-32">
+        <div className="border-b border-border/50 bg-surface/40">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
             <Link
               href="/"
-              className="font-display text-lg font-semibold tracking-tight text-white transition-opacity hover:opacity-90"
+              className="font-display text-lg font-semibold tracking-tight text-foreground transition-opacity hover:opacity-90"
             >
-              torq <span className="text-[var(--color-primary)]">studio</span>
-              <span className="ml-2 text-sm font-normal text-[var(--color-muted)]">· dev utilities</span>
+              torq <span className="text-primary">studio</span>
+              <span className="ml-2 text-sm font-normal text-muted-foreground">· dev utilities</span>
             </Link>
             <nav className="flex flex-wrap items-center gap-4 text-sm">
               {nav.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-[var(--color-muted)] transition-colors hover:text-white"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {item.label}
                 </Link>

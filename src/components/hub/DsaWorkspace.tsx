@@ -68,18 +68,18 @@ export function DsaWorkspace(props: {
   return (
     <div className="space-y-4">
       <nav aria-label="Breadcrumb">
-        <Link href="/hub/candidate" className="text-sm text-cyan-400 hover:underline">
+        <Link href="/hub/candidate" className="text-sm text-primary hover:underline">
           ← Candidate hub
         </Link>
       </nav>
       <header>
-        <h1 className="font-display text-2xl font-bold text-white">{props.title}</h1>
-        <div className="prose prose-invert mt-2 max-w-none text-sm text-slate-300">
+        <h1 className="font-display text-2xl font-bold text-foreground">{props.title}</h1>
+        <div className="prose prose-invert mt-2 max-w-none text-sm text-foreground/90">
           <p className="whitespace-pre-wrap">{props.description}</p>
         </div>
       </header>
       <div className="flex flex-wrap items-center gap-3">
-        <label htmlFor="lang" className="text-sm text-slate-400">
+        <label htmlFor="lang" className="text-sm text-muted-foreground">
           Language
         </label>
         <select
@@ -90,7 +90,7 @@ export function DsaWorkspace(props: {
             setLang(next);
             setValue(starterFor(next, props.starterByLang));
           }}
-          className="rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+          className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
           aria-label="Programming language"
         >
           {LANGS.map((l) => (
@@ -102,14 +102,14 @@ export function DsaWorkspace(props: {
         <button
           type="button"
           onClick={runCode}
-          className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium"
+          className="rounded-lg border border-border px-4 py-2 text-sm font-medium"
         >
           Run
         </button>
         <button
           type="button"
           onClick={submit}
-          className="rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-foreground"
         >
           Submit
         </button>

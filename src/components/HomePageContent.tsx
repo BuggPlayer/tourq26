@@ -3,16 +3,16 @@
  * Structured as a single <article> with minimal wrapper churn.
  */
 const prose =
-  "text-sm leading-relaxed text-[var(--color-muted)] sm:text-base [&_strong]:font-semibold [&_strong]:text-white/90";
+  "text-sm leading-relaxed text-muted-foreground sm:text-base [&_strong]:font-semibold [&_strong]:text-foreground/90";
 
 export default function HomePageContent() {
   return (
     <section
-      className="border-t border-[var(--color-border)]/40 bg-[var(--background)] py-16 sm:py-20"
+      className="border-t border-border/40 bg-background py-16 sm:py-20"
       aria-labelledby="homepage-about-heading"
     >
       <article className={`mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 ${prose}`}>
-        <h2 id="homepage-about-heading" className="font-display text-2xl font-bold text-white sm:text-3xl">
+        <h2 id="homepage-about-heading" className="font-display text-2xl font-bold text-foreground sm:text-3xl">
           How we work with product and engineering teams
         </h2>
         <p className="mt-5">
@@ -39,7 +39,7 @@ export default function HomePageContent() {
           before the first invoice.
         </p>
 
-        <h3 className="mt-10 font-display text-lg font-semibold text-white">Engagement models that match the risk</h3>
+        <h3 className="mt-10 font-display text-lg font-semibold text-foreground">Engagement models that match the risk</h3>
         <p className="mt-4">
           Not every problem should start as a multi-month build. When the scope is bounded and the acceptance criteria can
           be written down, a <strong>fixed-price or milestone MVP</strong> gives finance and leadership predictable spend
@@ -54,7 +54,7 @@ export default function HomePageContent() {
           or security-sensitive work, we respect your access policies, NDAs, and vendor questionnaires from day one.
         </p>
 
-        <h3 className="mt-10 font-display text-lg font-semibold text-white">Where we add the most value</h3>
+        <h3 className="mt-10 font-display text-lg font-semibold text-foreground">Where we add the most value</h3>
         <p className="mt-4">
           Teams usually bring us in when delivery risk is high: consumer or B2B <strong>mobile apps</strong> that must
           pass store review and handle real traffic; <strong>web platforms</strong> where SEO, performance, and admin UX
@@ -70,7 +70,7 @@ export default function HomePageContent() {
           <strong>maintainable code</strong>, and <strong>clear accountability</strong>.
         </p>
 
-        <h3 className="mt-10 font-display text-lg font-semibold text-white">Engineering practices you can audit</h3>
+        <h3 className="mt-10 font-display text-lg font-semibold text-foreground">Engineering practices you can audit</h3>
         <p className="mt-4">
           Before launch we care about automated tests where they buy confidence (critical paths, payments, auth), manual
           exploratory testing for edge cases, and realistic device or browser coverage for your audience. We favour small,
@@ -79,7 +79,7 @@ export default function HomePageContent() {
           READMEs, runbooks for operators, and walkthroughs for your engineers so knowledge is not trapped in one person.
         </p>
 
-        <h3 className="mt-10 font-display text-lg font-semibold text-white">Common reasons teams reach out</h3>
+        <h3 className="mt-10 font-display text-lg font-semibold text-foreground">Common reasons teams reach out</h3>
         <ul className="mt-4 list-disc space-y-2 pl-5">
           <li>You need a senior engineer to own a mobile or web MVP with a fixed scope and predictable milestones.</li>
           <li>Your platform needs new APIs, performance work, or a careful modernization without breaking integrations.</li>
@@ -88,45 +88,45 @@ export default function HomePageContent() {
           <li>You want a second opinion on estimates, technical risk, or build-vs-buy before committing budget.</li>
         </ul>
 
-        <h3 className="mt-10 font-display text-lg font-semibold text-white">Terms buyers ask about</h3>
-        <dl className="mt-4 space-y-4 border-t border-[var(--color-border)]/30 pt-6">
+        <h3 className="mt-10 font-display text-lg font-semibold text-foreground">Terms buyers ask about</h3>
+        <dl className="mt-4 space-y-4 border-t border-border/30 pt-6">
           <div>
-            <dt className="font-medium text-white">MVP (minimum viable product)</dt>
+            <dt className="font-medium text-foreground">MVP (minimum viable product)</dt>
             <dd className="mt-1 pl-0 sm:pl-0">
               The smallest version that proves value to users and stakeholders, with explicit out-of-scope items so the
               timeline is defensible.
             </dd>
           </div>
           <div>
-            <dt className="font-medium text-white">Technical debt</dt>
+            <dt className="font-medium text-foreground">Technical debt</dt>
             <dd className="mt-1">
               Shortcuts taken under time pressure; we help you decide when to pay it down versus when it is acceptable
               risk for a learning phase.
             </dd>
           </div>
           <div>
-            <dt className="font-medium text-white">API versioning</dt>
+            <dt className="font-medium text-foreground">API versioning</dt>
             <dd className="mt-1">
               A strategy so mobile apps and partners can migrate without surprise breaking changes—often paired with
               documentation and sunset timelines.
             </dd>
           </div>
           <div>
-            <dt className="font-medium text-white">Retrieval-augmented AI</dt>
+            <dt className="font-medium text-foreground">Retrieval-augmented AI</dt>
             <dd className="mt-1">
               Patterns where a model is grounded in your approved content or tools instead of hallucinating policies or
               live data it cannot see.
             </dd>
           </div>
           <div>
-            <dt className="font-medium text-white">Embedded team</dt>
+            <dt className="font-medium text-foreground">Embedded team</dt>
             <dd className="mt-1">
               Engineers who work inside your rituals and systems with shared ownership, as opposed to throwing specs over
               a wall every sprint.
             </dd>
           </div>
           <div>
-            <dt className="font-medium text-white">Production readiness</dt>
+            <dt className="font-medium text-foreground">Production readiness</dt>
             <dd className="mt-1">
               Checklist-style concerns: backups, secrets handling, rate limits, monitoring, rollback paths, and support
               expectations after launch.
@@ -136,19 +136,19 @@ export default function HomePageContent() {
 
         <p className="mt-10">
           Read detailed write-ups on the{" "}
-          <a className="font-medium text-[var(--color-primary)] hover:underline" href="/case-studies">
+          <a className="font-medium text-primary hover:underline" href="/case-studies">
             case studies
           </a>{" "}
           page, explore{" "}
-          <a className="font-medium text-[var(--color-primary)] hover:underline" href="/services">
+          <a className="font-medium text-primary hover:underline" href="/services">
             services and FAQs
           </a>
           , browse the{" "}
-          <a className="font-medium text-[var(--color-primary)] hover:underline" href="/blog">
+          <a className="font-medium text-primary hover:underline" href="/blog">
             blog
           </a>{" "}
           for longer-form guides, or{" "}
-          <a className="font-medium text-[var(--color-primary)] hover:underline" href="/contact">
+          <a className="font-medium text-primary hover:underline" href="/contact">
             book a free consultation
           </a>{" "}
           to discuss your roadmap.

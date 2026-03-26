@@ -90,21 +90,21 @@ export default async function TechNewsPage() {
   const [featured, ...rest] = techNewsDemoItems;
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <JsonLd data={breadcrumbLd} />
       <JsonLd data={webPageLd} />
       <JsonLd data={collectionLd} />
       <MarketingHeader />
       <main>
-        <section className="gradient-mesh relative border-b border-[var(--color-border)]/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
+        <section className="gradient-mesh relative border-b border-border/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">
               Technology briefing
             </p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-foreground sm:text-5xl">
               Tech news
             </h1>
-            <p className="mt-6 text-lg text-[var(--color-muted)] leading-relaxed">
+            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
               Signal over noise: what matters for builders, product teams, and leaders shipping software. Full articles
               open on dedicated URLs for sharing and SEO.
             </p>
@@ -120,29 +120,29 @@ export default async function TechNewsPage() {
           </h2>
           <Link
             href={`/tech-news/${featured.slug}`}
-            className="card-hover block overflow-hidden rounded-2xl border border-[var(--color-border)]/60 bg-[var(--surface)] shadow-[0_0_0_1px_rgba(255,255,255,0.03)] transition-colors hover:border-[var(--color-primary)]/30"
+            className="card-hover block overflow-hidden rounded-2xl border border-border/60 bg-surface shadow-[0_0_0_1px_rgba(255,255,255,0.03)] transition-colors hover:border-primary/30"
           >
             <div className="grid gap-0 lg:grid-cols-5">
-              <div className="relative min-h-[220px] bg-gradient-to-br from-[var(--color-primary)]/30 via-[var(--surface)] to-[var(--background)] lg:col-span-2">
+              <div className="relative min-h-[220px] bg-gradient-to-br from-primary/30 via-surface to-background lg:col-span-2">
                 <div className="absolute inset-0 flex items-center justify-center p-8">
-                  <span className="font-display text-6xl font-bold text-white/10">01</span>
+                  <span className="font-display text-6xl font-bold text-foreground/10">01</span>
                 </div>
               </div>
               <div className="p-8 lg:col-span-3">
-                <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--color-muted)]">
-                  <span className="rounded-full border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]">
+                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                  <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-primary">
                     {featured.category}
                   </span>
                   <time dateTime={featured.datePublished}>{formatDate(featured.datePublished)}</time>
                   <span aria-hidden>·</span>
                   <span>{featured.readingTimeMinutes} min read</span>
                 </div>
-                <h3 className="mt-4 font-display text-2xl font-bold leading-snug text-white sm:text-3xl">
+                <h3 className="mt-4 font-display text-2xl font-bold leading-snug text-foreground sm:text-3xl">
                   {featured.title}
                 </h3>
-                <p className="mt-2 text-[var(--color-primary)]/90 font-medium">{featured.dek}</p>
-                <p className="mt-4 text-[var(--color-muted)] leading-relaxed">{featured.excerpt}</p>
-                <span className="mt-4 inline-block text-sm font-medium text-[var(--color-primary)]">
+                <p className="mt-2 text-primary/90 font-medium">{featured.dek}</p>
+                <p className="mt-4 text-muted-foreground leading-relaxed">{featured.excerpt}</p>
+                <span className="mt-4 inline-block text-sm font-medium text-primary">
                   Read full article →
                 </span>
               </div>
@@ -156,10 +156,10 @@ export default async function TechNewsPage() {
         >
           <div className="mb-10 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 id="latest-heading" className="font-display text-2xl font-bold text-white sm:text-3xl">
+              <h2 id="latest-heading" className="font-display text-2xl font-bold text-foreground sm:text-3xl">
                 Latest
               </h2>
-              <p className="mt-1 text-sm text-[var(--color-muted)]">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Each headline links to a full article page with canonical URL and structured data.
               </p>
             </div>
@@ -169,22 +169,22 @@ export default async function TechNewsPage() {
               <li key={item.slug}>
                 <Link
                   href={`/tech-news/${item.slug}`}
-                  className="card-hover flex h-full flex-col rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)] p-6 transition-colors hover:border-[var(--color-primary)]/30"
+                  className="card-hover flex h-full flex-col rounded-2xl border border-border/50 bg-surface p-6 transition-colors hover:border-primary/30"
                 >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--color-muted)]">
-                    <span className="font-semibold text-[var(--color-primary)]">{item.category}</span>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <span className="font-semibold text-primary">{item.category}</span>
                     <span aria-hidden>·</span>
                     <time dateTime={item.datePublished}>{formatDate(item.datePublished)}</time>
                   </div>
-                  <h3 className="mt-3 font-display text-lg font-semibold leading-snug text-white">
+                  <h3 className="mt-3 font-display text-lg font-semibold leading-snug text-foreground">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm text-[var(--color-primary)]/90">{item.dek}</p>
-                  <p className="mt-3 flex-1 text-sm text-[var(--color-muted)] leading-relaxed">
+                  <p className="mt-2 text-sm text-primary/90">{item.dek}</p>
+                  <p className="mt-3 flex-1 text-sm text-muted-foreground leading-relaxed">
                     {item.excerpt}
                   </p>
-                  <p className="mt-4 text-xs text-[var(--color-muted)]">{item.readingTimeMinutes} min read</p>
-                  <span className="mt-3 text-sm font-medium text-[var(--color-primary)]">Read article →</span>
+                  <p className="mt-4 text-xs text-muted-foreground">{item.readingTimeMinutes} min read</p>
+                  <span className="mt-3 text-sm font-medium text-primary">Read article →</span>
                 </Link>
               </li>
             ))}

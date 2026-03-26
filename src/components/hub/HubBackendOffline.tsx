@@ -22,18 +22,18 @@ export function HubBackendOffline() {
         style={{ color: "var(--hub-muted)" }}
       >
         This page needs the Interview Hub API and database. For production, set{" "}
-        <code className="rounded bg-slate-800 px-1 py-0.5 text-xs text-cyan-200">
+        <code className="rounded bg-muted px-1 py-0.5 text-xs text-primary">
           HUB_BACKEND_FULL=true
         </code>{" "}
         and a working{" "}
-        <code className="rounded bg-slate-800 px-1 py-0.5 text-xs text-cyan-200">
+        <code className="rounded bg-muted px-1 py-0.5 text-xs text-primary">
           DATABASE_URL
         </code>
         , then run migrations.
       </p>
       <Link
         href="/hub"
-        className="mt-6 inline-block text-sm font-medium text-cyan-400 hover:underline"
+        className="mt-6 inline-block text-sm font-medium text-primary hover:underline"
       >
         ← Back to hub overview
       </Link>

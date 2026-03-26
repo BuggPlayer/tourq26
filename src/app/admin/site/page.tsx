@@ -11,8 +11,8 @@ export default async function AdminSitePage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white">Site & SEO</h1>
-      <p className="mt-1 text-slate-400">
+      <h1 className="text-2xl font-bold text-foreground">Site & SEO</h1>
+      <p className="mt-1 text-muted-foreground">
         Default metadata and Open Graph. Root layout uses these where applicable; some defaults are in code.
       </p>
       <SiteForm initialData={data} />

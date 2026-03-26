@@ -33,7 +33,7 @@ export function HubMobileNav() {
     >
       <Link
         href="/hub"
-        className="font-display text-sm font-bold text-cyan-400"
+        className="font-display text-sm font-bold text-primary"
       >
         {pathname === "/hub" ? "TorqStudio Hub" : "Interview Hub"}
       </Link>
@@ -65,7 +65,7 @@ export function HubMobileNav() {
                   href={l.href}
                   className={`block px-3 py-2 text-sm ${
                     menuLinkActive(pathname, l.href)
-                      ? "font-semibold text-cyan-400"
+                      ? "font-semibold text-primary"
                       : ""
                   }`}
                   style={{

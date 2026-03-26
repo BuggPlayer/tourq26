@@ -1,29 +1,145 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
-@theme inline {
-  --color-background: #07090e;
-  --color-foreground: #f1f5f9;
-  --color-surface: #0f1319;
-  --color-surface-elevated: #161c26;
-  --color-primary: #06b6d4;
-  --color-primary-hover: #22d3ee;
-  --color-primary-muted: rgba(6, 182, 212, 0.12);
-  --color-accent: #a78bfa;
-  --color-accent-muted: rgba(167, 139, 250, 0.12);
-  --color-muted: #94a3b8;
-  --color-border: #1e293b;
-  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
-  --font-display: var(--font-outfit), system-ui, sans-serif;
-}
+/*
+ * Design system — single source of truth
+ * --------------------------------------
+ * - Colors & fonts: `html` (dark default) and `html.light` set `--app-*` tokens.
+ * - Tailwind maps them via `@theme inline` → use utilities: `bg-background`, `text-foreground`,
+ *   `text-muted-foreground`, `border-border`, `bg-surface`, `bg-surface-elevated`, `text-primary`,
+ *   `bg-primary`, `ring-border`, etc. Avoid raw hex/slate/cyan in components.
+ * - Theme switch: `src/components/theme/` (next-themes). Font: `data-font-family` brand | system.
+ * - Hub-specific vars (`--hub-*`) stay for interview UI; prefer `border-border` / `text-primary` where possible.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* -------------------------------------------------------------------------- */
+/* Semantic design tokens (see --app-* on `html` / `html.light`)              */
+/* -------------------------------------------------------------------------- */
 
 :root {
-  --background: #07090e;
-  --foreground: #f1f5f9;
-  --surface: #0f1319;
-  --primary: #06b6d4;
-  --primary-muted: rgba(6, 182, 212, 0.12);
-  --muted: #94a3b8;
+  --font-body-stack: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display-stack: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --shadow-card: 0 32px 64px -24px rgb(0 0 0 / 0.45);
+  --shadow-cta: 0 16px 40px -12px rgb(6 182 212 / 0.45);
+}
+
+html[data-font-family="system"] {
+  --font-body-stack: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display-stack: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Dark palette — default on `html` for SSR (matches next-themes defaultTheme="dark") */
+html {
+  color-scheme: dark;
+  --app-bg: #07090e;
+  --app-fg: #f1f5f9;
+  --app-muted: #1e293b;
+  --app-muted-fg: #94a3b8;
+  --app-border: #1e293b;
+  --app-surface: #0f1319;
+  --app-surface-elevated: #161c26;
+  --app-primary: #06b6d4;
+  --app-primary-hover: #22d3ee;
+  --app-primary-fg: #020617;
+  --app-primary-muted: rgb(6 182 212 / 0.12);
+  --app-accent: #a78bfa;
+  --app-accent-muted: rgb(167 139 250 / 0.12);
+  --app-ring: #22d3ee;
+  --app-destructive: #f87171;
+  --app-glass-bg: rgb(15 19 25 / 0.7);
+  --app-glass-border: rgb(255 255 255 / 0.06);
+  --app-gradient-mesh-a: rgb(6 182 212 / 0.2);
+  --app-gradient-mesh-b: rgb(139 92 246 / 0.08);
+  --app-gradient-mesh-c: rgb(6 182 212 / 0.06);
+  --app-hero-a: rgb(6 182 212 / 0.22);
+  --app-hero-b: rgb(139 92 246 / 0.1);
+  --app-hero-c: rgb(6 182 212 / 0.08);
+  --app-card-hover-ring: rgb(6 182 212 / 0.12);
+  --app-stat-gradient: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #a78bfa 100%);
+  --app-theme-color: #07090e;
+  --app-whatsapp: #25d366;
+  --app-whatsapp-foreground: #ffffff;
+  --app-code-bg: #020617;
+  --app-code-fg: #e2e8f0;
+  --background: var(--app-bg);
+  --foreground: var(--app-fg);
+  --surface: var(--app-surface);
+  --primary: var(--app-primary);
+  --primary-muted: var(--app-primary-muted);
+  --muted: var(--app-muted-fg);
+}
+
+html.light {
+  color-scheme: light;
+  --app-bg: #fafafa;
+  --app-fg: #0f172a;
+  --app-muted: #e2e8f0;
+  --app-muted-fg: #64748b;
+  --app-border: #e2e8f0;
+  --app-surface: #f1f5f9;
+  --app-surface-elevated: #ffffff;
+  --app-primary: #0891b2;
+  --app-primary-hover: #0e7490;
+  --app-primary-fg: #f8fafc;
+  --app-primary-muted: rgb(8 145 178 / 0.12);
+  --app-accent: #7c3aed;
+  --app-accent-muted: rgb(124 58 237 / 0.12);
+  --app-ring: #0891b2;
+  --app-destructive: #dc2626;
+  --app-glass-bg: rgb(255 255 255 / 0.72);
+  --app-glass-border: rgb(15 23 42 / 0.08);
+  --app-gradient-mesh-a: rgb(8 145 178 / 0.14);
+  --app-gradient-mesh-b: rgb(124 58 237 / 0.08);
+  --app-gradient-mesh-c: rgb(8 145 178 / 0.06);
+  --app-hero-a: rgb(8 145 178 / 0.16);
+  --app-hero-b: rgb(124 58 237 / 0.08);
+  --app-hero-c: rgb(8 145 178 / 0.06);
+  --app-card-hover-ring: rgb(8 145 178 / 0.15);
+  --app-stat-gradient: linear-gradient(135deg, #0e7490 0%, #0891b2 45%, #7c3aed 100%);
+  --app-theme-color: #fafafa;
+  --app-whatsapp: #25d366;
+  --app-whatsapp-foreground: #ffffff;
+  --app-code-bg: #f1f5f9;
+  --app-code-fg: #0f172a;
+  --background: var(--app-bg);
+  --foreground: var(--app-fg);
+  --surface: var(--app-surface);
+  --primary: var(--app-primary);
+  --primary-muted: var(--app-primary-muted);
+  --muted: var(--app-muted-fg);
+}
+
+@theme inline {
+  --color-background: var(--app-bg);
+  --color-foreground: var(--app-fg);
+  --color-muted: var(--app-muted);
+  --color-muted-foreground: var(--app-muted-fg);
+  --color-border: var(--app-border);
+  --color-surface: var(--app-surface);
+  --color-surface-elevated: var(--app-surface-elevated);
+  --color-primary: var(--app-primary);
+  --color-primary-hover: var(--app-primary-hover);
+  --color-primary-foreground: var(--app-primary-fg);
+  --color-primary-muted: var(--app-primary-muted);
+  --color-accent: var(--app-accent);
+  --color-accent-muted: var(--app-accent-muted);
+  --color-ring: var(--app-ring);
+  --color-destructive: var(--app-destructive);
+  --color-whatsapp: var(--app-whatsapp);
+  --color-whatsapp-foreground: var(--app-whatsapp-foreground);
+  --font-sans: var(--font-body-stack);
+  --font-display: var(--font-display-stack);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --shadow-card: var(--shadow-card);
+  --shadow-cta: var(--shadow-cta);
 }
 
 html {
@@ -31,48 +147,49 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  background-color: var(--app-bg);
+  color: var(--app-fg);
+  font-family: var(--font-body-stack);
 }
 
-/* Accessible focus */
+/* Accessible focus — uses theme ring */
 a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--color-primary);
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--app-ring);
   outline-offset: 2px;
 }
 
 /* Section backgrounds */
 .gradient-mesh {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(6, 182, 212, 0.2), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(139, 92, 246, 0.08), transparent),
-    radial-gradient(ellipse 50% 30% at 0% 50%, rgba(6, 182, 212, 0.06), transparent);
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--app-gradient-mesh-a), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, var(--app-gradient-mesh-b), transparent),
+    radial-gradient(ellipse 50% 30% at 0% 50%, var(--app-gradient-mesh-c), transparent);
 }
 
 .hero-section {
   background:
-    radial-gradient(ellipse 100% 70% at 50% -15%, rgba(6, 182, 212, 0.22), transparent 50%),
-    radial-gradient(ellipse 70% 50% at 100% 15%, rgba(139, 92, 246, 0.1), transparent 45%),
-    radial-gradient(ellipse 60% 40% at 0% 55%, rgba(6, 182, 212, 0.08), transparent 40%);
+    radial-gradient(ellipse 100% 70% at 50% -15%, var(--app-hero-a), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 100% 15%, var(--app-hero-b), transparent 45%),
+    radial-gradient(ellipse 60% 40% at 0% 55%, var(--app-hero-c), transparent 40%);
 }
 
 /* Glass panel */
 .glass-panel {
-  background: rgba(15, 19, 25, 0.7);
+  background: var(--app-glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--app-glass-border);
 }
 
-/* Card hover: lift + glow + smooth */
+/* Card hover */
 .card-hover {
   transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.35s ease, border-color 0.3s ease;
 }
 .card-hover:hover {
   transform: translateY(-8px);
-  box-shadow: 0 32px 64px -24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(6, 182, 212, 0.12);
+  box-shadow: var(--shadow-card), 0 0 0 1px var(--app-card-hover-ring);
 }
 
 /* Primary CTA */
@@ -81,12 +198,12 @@ button:focus-visible {
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 40px -12px rgba(6, 182, 212, 0.5);
+  box-shadow: var(--shadow-cta);
 }
 
 .stat-number {
   font-feature-settings: "tnum";
-  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #a78bfa 100%);
+  background: var(--app-stat-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -94,41 +211,88 @@ button:focus-visible {
 
 /* Animations */
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
-.animate-fade-up { animation: fade-up 0.6s cubic-bezier(0.2, 0, 0, 1) forwards; }
-.animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
-.animate-scale-in { animation: scale-in 0.5s cubic-bezier(0.2, 0, 0, 1) forwards; }
-.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
 
-.animate-delay-1 { animation-delay: 0.1s; }
-.animate-delay-2 { animation-delay: 0.2s; }
-.animate-delay-3 { animation-delay: 0.3s; }
-.animate-delay-4 { animation-delay: 0.4s; }
-.animate-delay-5 { animation-delay: 0.5s; }
+.animate-delay-1 {
+  animation-delay: 0.1s;
+}
+.animate-delay-2 {
+  animation-delay: 0.2s;
+}
+.animate-delay-3 {
+  animation-delay: 0.3s;
+}
+.animate-delay-4 {
+  animation-delay: 0.4s;
+}
+.animate-delay-5 {
+  animation-delay: 0.5s;
+}
 
-/* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up, .animate-fade-in, .animate-scale-in, .animate-float { animation: none; }
-  .card-hover:hover { transform: none; }
-  .btn-primary:hover { transform: none; }
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-scale-in,
+  .animate-float {
+    animation: none;
+  }
+  .card-hover:hover {
+    transform: none;
+  }
+  .btn-primary:hover {
+    transform: none;
+  }
 }
 
-/* Hub Q&A: theme-aware inline code + links (#hub-root[data-hub-theme] set in ThemeSync) */
+/* Hub Q&A — scoped hub theme (unchanged behaviour) */
 #hub-root[data-hub-theme="dark"] .hub-qa-inline-code {
   background-color: rgba(244, 63, 94, 0.22);
   color: #fecdd3;
@@ -150,7 +314,6 @@ button:focus-visible {
   color: #155e75;
 }
 
-/* Hub accent — driven by ThemeSync (--hub-primary*) */
 .hub-btn-primary {
   background-color: var(--hub-primary, #0891b2);
   color: var(--hub-primary-foreground, #fff);
@@ -166,7 +329,6 @@ button:focus-visible {
   color: var(--hub-primary-hover, #06b6d4);
 }
 
-/* Hub /hub landing — hero highlight + list hovers + tag swatches */
 #hub-root[data-hub-theme="dark"] .hub-hero-highlight {
   background-color: rgba(250, 204, 21, 0.22);
   color: #fef08a;
@@ -216,51 +378,51 @@ button:focus-visible {
   color: #6b21a8;
 }
 
-/* —— Admin: React Quill (snow) dark theme —— */
+/* Admin Quill — driven by app tokens + admin fallbacks */
 .admin-quill-editor .ql-toolbar.ql-snow {
-  border-color: rgb(71 85 105);
-  background: rgb(15 23 42 / 0.85);
+  border-color: var(--app-border);
+  background: color-mix(in srgb, var(--app-surface) 92%, transparent);
   border-radius: 0.5rem 0.5rem 0 0;
 }
 .admin-quill-editor .ql-container.ql-snow {
-  border-color: rgb(71 85 105);
+  border-color: var(--app-border);
   border-radius: 0 0 0.5rem 0.5rem;
-  font-family: var(--font-sans, system-ui, sans-serif);
+  font-family: var(--font-body-stack);
   font-size: 0.9375rem;
 }
 .admin-quill-editor .ql-editor {
   min-height: 11rem;
-  color: #f1f5f9;
+  color: var(--app-fg);
   line-height: 1.6;
 }
 .admin-quill-editor .ql-editor.ql-blank::before {
-  color: rgb(100 116 139);
+  color: var(--app-muted-fg);
   font-style: normal;
 }
 .admin-quill-editor .ql-snow .ql-stroke {
-  stroke: #94a3b8;
+  stroke: var(--app-muted-fg);
 }
 .admin-quill-editor .ql-snow .ql-fill {
-  fill: #94a3b8;
+  fill: var(--app-muted-fg);
 }
 .admin-quill-editor .ql-snow .ql-picker {
-  color: #cbd5e1;
+  color: var(--app-fg);
 }
 .admin-quill-editor .ql-snow .ql-picker-options {
-  background: #0f172a;
-  border-color: #475569;
+  background: var(--app-surface-elevated);
+  border-color: var(--app-border);
 }
 .admin-quill-editor .ql-snow .ql-picker-item:hover,
 .admin-quill-editor .ql-snow .ql-picker-item.ql-selected {
-  color: #22d3ee;
+  color: var(--app-primary);
 }
 .admin-quill-editor .ql-snow button:hover .ql-stroke,
 .admin-quill-editor .ql-snow .ql-picker-label:hover .ql-stroke {
-  stroke: #e2e8f0;
+  stroke: var(--app-fg);
 }
 .admin-quill-editor .ql-snow button.ql-active .ql-stroke,
 .admin-quill-editor .ql-snow .ql-picker-label.ql-active .ql-stroke {
-  stroke: #22d3ee;
+  stroke: var(--app-primary);
 }
 .admin-quill-editor .ql-editor h1 {
   font-size: 1.5rem;
@@ -279,20 +441,20 @@ button:focus-visible {
   margin: 0.5rem 0 0.35rem;
 }
 .admin-quill-editor .ql-editor blockquote {
-  border-left: 3px solid #06b6d4;
+  border-left: 3px solid var(--app-primary);
   margin: 0.5rem 0;
   padding-left: 1rem;
-  color: #cbd5e1;
+  color: var(--app-muted-fg);
 }
 .admin-quill-editor .ql-editor pre.ql-syntax {
-  background: #020617;
+  background: var(--app-code-bg);
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
-  color: #e2e8f0;
+  color: var(--app-code-fg);
   overflow-x: auto;
 }
 .admin-quill-editor .ql-editor a {
-  color: #22d3ee;
+  color: var(--app-primary-hover);
   text-decoration: underline;
   text-underline-offset: 2px;
 }

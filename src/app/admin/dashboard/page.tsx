@@ -18,57 +18,57 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-      <p className="mt-1 text-slate-400">Manage your site content.</p>
+      <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+      <p className="mt-1 text-muted-foreground">Manage your site content.</p>
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <Link
           href="/admin/contact"
-          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+          className="rounded-xl border border-border/50 bg-muted/30 p-6 transition hover:border-primary/50 hover:bg-muted/50"
         >
-          <h2 className="font-semibold text-white">Contact</h2>
-          <p className="mt-1 text-2xl font-bold text-cyan-400">{contactSubmissions.length}</p>
-          <p className="mt-1 text-sm text-slate-400">submissions</p>
+          <h2 className="font-semibold text-foreground">Contact</h2>
+          <p className="mt-1 text-2xl font-bold text-primary">{contactSubmissions.length}</p>
+          <p className="mt-1 text-sm text-muted-foreground">submissions</p>
         </Link>
         <Link
           href="/admin/blog"
-          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+          className="rounded-xl border border-border/50 bg-muted/30 p-6 transition hover:border-primary/50 hover:bg-muted/50"
         >
-          <h2 className="font-semibold text-white">Blog</h2>
-          <p className="mt-1 text-2xl font-bold text-cyan-400">{posts.length}</p>
-          <p className="mt-1 text-sm text-slate-400">posts</p>
+          <h2 className="font-semibold text-foreground">Blog</h2>
+          <p className="mt-1 text-2xl font-bold text-primary">{posts.length}</p>
+          <p className="mt-1 text-sm text-muted-foreground">posts</p>
         </Link>
         <Link
           href="/admin/testimonials"
-          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+          className="rounded-xl border border-border/50 bg-muted/30 p-6 transition hover:border-primary/50 hover:bg-muted/50"
         >
-          <h2 className="font-semibold text-white">Testimonials</h2>
-          <p className="mt-1 text-2xl font-bold text-cyan-400">{testimonials.length}</p>
-          <p className="mt-1 text-sm text-slate-400">testimonials</p>
+          <h2 className="font-semibold text-foreground">Testimonials</h2>
+          <p className="mt-1 text-2xl font-bold text-primary">{testimonials.length}</p>
+          <p className="mt-1 text-sm text-muted-foreground">testimonials</p>
         </Link>
         <Link
           href="/admin/site"
-          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+          className="rounded-xl border border-border/50 bg-muted/30 p-6 transition hover:border-primary/50 hover:bg-muted/50"
         >
-          <h2 className="font-semibold text-white">Site & SEO</h2>
-          <p className="mt-1 text-sm text-slate-400">Default title, description, OG</p>
+          <h2 className="font-semibold text-foreground">Site & SEO</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Default title, description, OG</p>
         </Link>
         <Link
           href="/admin/feature-flags"
-          className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-6 transition hover:border-cyan-500/50 hover:bg-slate-800/50"
+          className="rounded-xl border border-border/50 bg-muted/30 p-6 transition hover:border-primary/50 hover:bg-muted/50"
         >
-          <h2 className="font-semibold text-white">Feature flags</h2>
-          <p className="mt-1 text-sm text-slate-400">Maintenance, marketing routes, and nav toggles</p>
+          <h2 className="font-semibold text-foreground">Feature flags</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Maintenance, marketing routes, and nav toggles</p>
         </Link>
       </div>
-      <div className="mt-8 rounded-xl border border-slate-700/50 bg-slate-800/30 p-6">
-        <h2 className="font-semibold text-white">Storage</h2>
-        <p className="mt-1 text-sm text-slate-400">
+      <div className="mt-8 rounded-xl border border-border/50 bg-muted/30 p-6">
+        <h2 className="font-semibold text-foreground">Storage</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
           {kvConfigured
             ? "Using Vercel KV / Upstash Redis. Content persists on serverless."
             : "Using local files (content/*.json). On Vercel, add KV/Redis and set env to persist."}
         </p>
         {kvConfigured && (
-          <SeedKvButton className="mt-3 rounded bg-slate-700 px-3 py-1.5 text-sm text-white hover:bg-slate-600" />
+          <SeedKvButton className="mt-3 rounded bg-muted px-3 py-1.5 text-sm text-foreground hover:bg-muted" />
         )}
       </div>
     </div>

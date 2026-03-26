@@ -17,8 +17,8 @@ export default function DevToolsIndexPage() {
   return (
     <UmbrellaToolsLayout>
       <header className="mb-10">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">Developer utilities</h1>
-        <p className="mt-3 max-w-2xl text-[var(--color-muted)]">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Developer utilities</h1>
+        <p className="mt-3 max-w-2xl text-muted-foreground">
           Small utilities that run entirely in your browser — no server processing.
         </p>
       </header>
@@ -27,11 +27,11 @@ export default function DevToolsIndexPage() {
           <li key={tool.slug}>
             <Link
               href={`/dev-tools/${tool.slug}`}
-              className="block h-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-colors hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-surface-elevated)]"
+              className="block h-full rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-primary/40 hover:bg-surface-elevated"
             >
-              <h2 className="font-display text-lg font-semibold text-white">{tool.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">{tool.description}</p>
-              <span className="mt-4 inline-block text-sm font-medium text-[var(--color-primary)]">Open →</span>
+              <h2 className="font-display text-lg font-semibold text-foreground">{tool.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{tool.description}</p>
+              <span className="mt-4 inline-block text-sm font-medium text-primary">Open →</span>
             </Link>
           </li>
         ))}

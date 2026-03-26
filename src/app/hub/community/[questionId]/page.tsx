@@ -36,11 +36,11 @@ function ReplyBox({
         placeholder="Reply"
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        className="rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+        className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
       />
       <button
         type="submit"
-        className="self-start rounded-lg border border-slate-600 px-3 py-1 text-xs"
+        className="self-start rounded-lg border border-border px-3 py-1 text-xs"
       >
         Reply
       </button>
@@ -96,30 +96,30 @@ export default function ForumThreadPage() {
 
   return (
     <div className="space-y-8">
-      <Link href="/hub/community" className="text-sm text-cyan-400 hover:underline">
+      <Link href="/hub/community" className="text-sm text-primary hover:underline">
         ← Community
       </Link>
-      <h1 className="font-display text-2xl font-bold text-white">Discussion</h1>
+      <h1 className="font-display text-2xl font-bold text-foreground">Discussion</h1>
       {data?.user && (
         <form
-          className="space-y-2 rounded-xl border border-slate-800 bg-slate-900/40 p-4"
+          className="space-y-2 rounded-xl border border-border bg-surface/40 p-4"
           onSubmit={newThread.handleSubmit(createThread)}
         >
-          <p className="text-sm font-medium text-slate-300">Start a thread</p>
+          <p className="text-sm font-medium text-foreground/90">Start a thread</p>
           <input
             placeholder="Title"
-            className="w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
             {...newThread.register("title", { required: true })}
           />
           <textarea
             rows={3}
             placeholder="First post"
-            className="w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
             {...newThread.register("body", { required: true })}
           />
           <button
             type="submit"
-            className="rounded-lg bg-cyan-600 px-4 py-2 text-sm text-white"
+            className="rounded-lg bg-primary px-4 py-2 text-sm text-foreground"
           >
             Post
           </button>
@@ -127,12 +127,12 @@ export default function ForumThreadPage() {
       )}
       <ul className="space-y-6">
         {threads.map((t) => (
-          <li key={t.id} className="rounded-xl border border-slate-800 p-4">
-            <h2 className="font-semibold text-slate-100">{t.title}</h2>
-            <ul className="mt-3 space-y-2 border-l border-slate-700 pl-3">
+          <li key={t.id} className="rounded-xl border border-border p-4">
+            <h2 className="font-semibold text-foreground">{t.title}</h2>
+            <ul className="mt-3 space-y-2 border-l border-border pl-3">
               {t.posts.map((p) => (
-                <li key={p.id} className="text-sm text-slate-300">
-                  <span className="text-xs text-slate-500">
+                <li key={p.id} className="text-sm text-foreground/90">
+                  <span className="text-xs text-muted-foreground">
                     {p.user.name ?? "User"} ·{" "}
                     {new Date(p.createdAt).toLocaleString()}
                   </span>

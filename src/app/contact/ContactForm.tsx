@@ -39,8 +39,8 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-white">
-          Name <span className="text-[var(--color-muted)]">*</span>
+        <label htmlFor="name" className="block text-sm font-medium text-foreground">
+          Name <span className="text-muted-foreground">*</span>
         </label>
         <input
           id="name"
@@ -48,13 +48,13 @@ export default function ContactForm() {
           required
           value={formData.name}
           onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
+          className="mt-2 w-full rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
           placeholder="Your name"
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-white">
-          Email <span className="text-[var(--color-muted)]">*</span>
+        <label htmlFor="email" className="block text-sm font-medium text-foreground">
+          Email <span className="text-muted-foreground">*</span>
         </label>
         <input
           id="email"
@@ -62,12 +62,12 @@ export default function ContactForm() {
           required
           value={formData.email}
           onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
+          className="mt-2 w-full rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
           placeholder="you@company.com"
         />
       </div>
       <div>
-        <label htmlFor="company" className="block text-sm font-medium text-white">
+        <label htmlFor="company" className="block text-sm font-medium text-foreground">
           Company
         </label>
         <input
@@ -75,13 +75,13 @@ export default function ContactForm() {
           type="text"
           value={formData.company}
           onChange={(e) => setFormData((p) => ({ ...p, company: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
+          className="mt-2 w-full rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
           placeholder="Your company (optional)"
         />
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-white">
-          Message <span className="text-[var(--color-muted)]">*</span>
+        <label htmlFor="message" className="block text-sm font-medium text-foreground">
+          Message <span className="text-muted-foreground">*</span>
         </label>
         <textarea
           id="message"
@@ -89,12 +89,12 @@ export default function ContactForm() {
           rows={5}
           value={formData.message}
           onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
-          className="mt-2 w-full resize-y rounded-xl border border-[var(--color-border)]/60 bg-[var(--surface)] px-4 py-3.5 text-white placeholder:text-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
+          className="mt-2 w-full resize-y rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
           placeholder="Tell us about your project, timeline, and what you need..."
         />
       </div>
       {status === "sent" && (
-        <p className="text-sm text-[var(--color-primary)]">
+        <p className="text-sm text-primary">
           Thanks! We’ve received your message and will get back to you soon.
         </p>
       )}
@@ -104,7 +104,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="btn-primary w-full rounded-full bg-[var(--color-primary)] py-4 text-base font-semibold text-[var(--background)] disabled:opacity-60 sm:w-auto sm:px-10"
+        className="btn-primary w-full rounded-full bg-primary py-4 text-base font-semibold text-primary-foreground disabled:opacity-60 sm:w-auto sm:px-10"
       >
         {status === "sending" ? "Sending…" : "Send message"}
       </button>

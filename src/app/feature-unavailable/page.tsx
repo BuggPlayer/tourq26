@@ -29,12 +29,12 @@ export default async function FeatureUnavailablePage({
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#07090e] px-6 text-center text-slate-200">
-      <h1 className="max-w-md font-display text-2xl font-bold text-white sm:text-3xl">{msg.title}</h1>
-      <p className="mt-4 max-w-md text-slate-400">{msg.body}</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 text-center text-foreground">
+      <h1 className="max-w-md font-display text-2xl font-bold text-foreground sm:text-3xl">{msg.title}</h1>
+      <p className="mt-4 max-w-md text-muted-foreground">{msg.body}</p>
       <Link
         href="/"
-        className="mt-10 rounded-full bg-cyan-600 px-6 py-3 text-sm font-semibold text-[#07090e] hover:bg-cyan-500"
+        className="mt-10 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
       >
         Back to home
       </Link>

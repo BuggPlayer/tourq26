@@ -95,7 +95,7 @@ export default async function TechNewsArticlePage({
   ]);
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <JsonLd data={newsLd} />
       <JsonLd data={breadcrumbLd} />
       <MarketingHeader />
@@ -103,36 +103,36 @@ export default async function TechNewsArticlePage({
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
           <Link
             href="/tech-news"
-            className="text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+            className="text-sm text-muted-foreground hover:text-primary"
           >
             ← Tech news
           </Link>
           <header className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
               {article.category}
             </p>
-            <time className="mt-2 block text-sm text-[var(--color-muted)]" dateTime={article.datePublished}>
+            <time className="mt-2 block text-sm text-muted-foreground" dateTime={article.datePublished}>
               {formatDate(article.datePublished)} · {article.readingTimeMinutes} min read
             </time>
-            <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-white sm:text-4xl">
+            <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-foreground sm:text-4xl">
               {article.title}
             </h1>
-            <p className="mt-4 text-lg font-medium text-[var(--color-primary)]/95 leading-relaxed">
+            <p className="mt-4 text-lg font-medium text-primary/95 leading-relaxed">
               {article.dek}
             </p>
-            <p className="mt-4 text-lg text-[var(--color-muted)] leading-relaxed">{article.excerpt}</p>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">{article.excerpt}</p>
           </header>
-          <div className="prose prose-invert mt-10 max-w-none [&_p]:text-[var(--color-muted)] [&_p]:leading-relaxed [&_p]:text-[1.05rem]">
+          <div className="prose prose-invert mt-10 max-w-none [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_p]:text-[1.05rem]">
             {article.paragraphs.map((p, i) => (
               <p key={i} className="mb-6 last:mb-0">
                 {p}
               </p>
             ))}
           </div>
-          <div className="mt-14 border-t border-[var(--color-border)]/50 pt-8">
+          <div className="mt-14 border-t border-border/50 pt-8">
             <Link
               href="/tech-news"
-              className="text-sm font-medium text-[var(--color-primary)] hover:underline"
+              className="text-sm font-medium text-primary hover:underline"
             >
               More tech news →
             </Link>

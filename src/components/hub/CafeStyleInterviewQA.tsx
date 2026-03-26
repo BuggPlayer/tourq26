@@ -140,7 +140,7 @@ export function CafeStyleInterviewQA({
                     onClick={() => setCategoryId(c.id)}
                     className={`flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
                       active
-                        ? "bg-cyan-500/15 font-medium text-cyan-300"
+                        ? "bg-cyan-500/15 font-medium text-primary"
                         : "opacity-90 hover:bg-black/10"
                     }`}
                     style={
@@ -152,7 +152,7 @@ export function CafeStyleInterviewQA({
                     <span>{c.label}</span>
                     <span
                       className={`tabular-nums text-xs ${
-                        active ? "text-cyan-400/80" : ""
+                        active ? "text-primary/80" : ""
                       }`}
                       style={
                         !active
@@ -209,7 +209,7 @@ export function CafeStyleInterviewQA({
                 <li key={item.id}>
                   <Disclosure
                     as="div"
-                    className="rounded-xl border transition-colors hover:border-slate-600"
+                    className="rounded-xl border transition-colors hover:border-border"
                     style={{
                       borderColor: "var(--hub-border, #1e293b)",
                       backgroundColor:
@@ -221,7 +221,7 @@ export function CafeStyleInterviewQA({
                         <div className="flex w-full flex-col gap-3 px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-5">
                           <DisclosureButton className="flex w-full flex-1 items-start gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-500">
                             <span
-                              className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-800 text-xs font-mono text-cyan-400"
+                              className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted text-xs font-mono text-primary"
                               aria-hidden
                             >
                               {qNum}
@@ -239,13 +239,13 @@ export function CafeStyleInterviewQA({
                               >
                                 {categoryLabel}
                                 {" · "}
-                                <span className="font-medium text-cyan-400/90">
+                                <span className="font-medium text-primary/90">
                                   {open ? "Hide answer" : "Show answer"}
                                 </span>
                               </span>
                             </span>
                             <span
-                              className={`mt-1 shrink-0 text-slate-500 transition-transform ${open ? "rotate-180" : ""}`}
+                              className={`mt-1 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
                               aria-hidden
                             >
                               ▼
@@ -259,12 +259,12 @@ export function CafeStyleInterviewQA({
                                 {item.difficulty}
                               </span>
                             ) : null}
-                            <span className="rounded-md bg-slate-800/90 px-2 py-0.5 text-[11px] font-medium text-slate-300">
+                            <span className="rounded-md bg-muted/90 px-2 py-0.5 text-[11px] font-medium text-foreground/90">
                               {badgeLabel} {total}
                             </span>
                             <Link
                               href={`${basePath.replace(/\/$/, "")}/${encodeURIComponent(item.id)}`}
-                              className="rounded-md border border-slate-600 px-2 py-0.5 text-[11px] font-medium text-slate-200 hover:border-cyan-600 hover:text-cyan-300"
+                              className="rounded-md border border-border px-2 py-0.5 text-[11px] font-medium text-slate-200 hover:border-cyan-600 hover:text-primary"
                               onClick={(e) => e.stopPropagation()}
                             >
                               Full page

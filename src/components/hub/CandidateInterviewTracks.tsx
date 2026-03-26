@@ -55,32 +55,32 @@ function TrackPanel(props: {
 
   const border =
     props.accent === "cyan"
-      ? "border-cyan-900/40 ring-1 ring-cyan-900/20"
+      ? "border-primary/40 ring-1 ring-cyan-900/20"
       : "border-violet-900/40 ring-1 ring-violet-900/20";
 
   return (
     <section
-      className={`rounded-2xl border bg-slate-900/50 p-5 ${border}`}
+      className={`rounded-2xl border bg-surface/50 p-5 ${border}`}
       aria-labelledby={`track-${props.accent}-title`}
     >
       <h2
         id={`track-${props.accent}-title`}
-        className="font-display text-lg font-semibold text-white"
+        className="font-display text-lg font-semibold text-foreground"
       >
         {props.title}
       </h2>
-      <p className="mt-1 text-xs text-slate-500">{props.description}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{props.description}</p>
 
       <div className="mt-4 space-y-3">
         <label
           htmlFor={`pick-${props.accent}`}
-          className="block text-xs font-medium uppercase tracking-wide text-slate-400"
+          className="block text-xs font-medium uppercase tracking-wide text-muted-foreground"
         >
           Top picks (dropdown)
         </label>
         <select
           id={`pick-${props.accent}`}
-          className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+          className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
           value={selectedId}
           onChange={(e) => setSelectedId(e.target.value)}
           disabled={props.loading || props.questions.length === 0}
@@ -100,10 +100,10 @@ function TrackPanel(props: {
             </option>
           ))}
         </select>
-        <p id={`hint-${props.accent}`} className="text-xs text-slate-500">
+        <p id={`hint-${props.accent}`} className="text-xs text-muted-foreground">
           Choose a problem, read the theory below, then open the workspace to write
-          code and use <strong className="text-slate-400">Run</strong> /{" "}
-          <strong className="text-slate-400">Submit</strong> to self-test.
+          code and use <strong className="text-muted-foreground">Run</strong> /{" "}
+          <strong className="text-muted-foreground">Submit</strong> to self-test.
         </p>
         {props.error && (
           <p className="text-xs text-red-400" role="alert">
@@ -116,13 +116,13 @@ function TrackPanel(props: {
               href={practiceHref(selected)}
               className={`inline-flex items-center rounded-lg px-4 py-2 text-sm font-semibold text-slate-950 ${
                 props.accent === "cyan"
-                  ? "bg-cyan-500 hover:bg-cyan-400"
+                  ? "bg-cyan-500 hover:bg-primary-hover"
                   : "bg-violet-400 text-slate-900 hover:bg-violet-300"
               } focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
             >
               Open editor &amp; test yourself →
             </Link>
-            <span className="self-center text-xs text-slate-500">
+            <span className="self-center text-xs text-muted-foreground">
               {selected.type === "DSA" && "Monaco + Piston sandbox"}
               {selected.type === "UI" && "Live preview + checks"}
               {selected.type === "QUIZ" && "MCQ with instant feedback"}
@@ -131,16 +131,16 @@ function TrackPanel(props: {
         )}
       </div>
 
-      <details className="mt-6 group rounded-xl border border-slate-800 bg-slate-950/60 open:border-slate-700">
+      <details className="mt-6 group rounded-xl border border-border bg-background/60 open:border-border">
         <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-slate-200 [&::-webkit-details-marker]:hidden">
           <span className="flex items-center justify-between gap-2">
             Interview theory (read before / between attempts)
-            <span className="text-cyan-500/80 group-open:rotate-180 transition-transform">
+            <span className="text-primary/80 group-open:rotate-180 transition-transform">
               ▼
             </span>
           </span>
         </summary>
-        <div className="border-t border-slate-800 px-4 py-4">{props.theory}</div>
+        <div className="border-t border-border px-4 py-4">{props.theory}</div>
       </details>
     </section>
   );
@@ -220,12 +220,12 @@ export function CandidateInterviewTracks() {
       aria-label="JavaScript and React interview tracks"
     >
       <div>
-        <h2 className="font-display text-xl font-bold text-white">
+        <h2 className="font-display text-xl font-bold text-foreground">
           Interview tracks
         </h2>
-        <p className="mt-1 max-w-3xl text-sm text-slate-400">
-          Curated <strong className="text-slate-300">JavaScript</strong> and{" "}
-          <strong className="text-slate-300">React</strong> questions from the
+        <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+          Curated <strong className="text-foreground/90">JavaScript</strong> and{" "}
+          <strong className="text-foreground/90">React</strong> questions from the
           bank. Pick from the dropdown, study the theory, then jump into the editor
           to implement and test yourself.
         </p>

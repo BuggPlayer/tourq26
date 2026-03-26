@@ -101,28 +101,28 @@ export function HiringToolkit() {
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <form
-        className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/40 p-5"
+        className="space-y-4 rounded-2xl border border-border bg-surface/40 p-5"
         onSubmit={form.handleSubmit(generate)}
       >
-        <h2 className="font-semibold text-slate-100">Job context</h2>
-        <label className="block text-sm text-slate-400">
+        <h2 className="font-semibold text-foreground">Job context</h2>
+        <label className="block text-sm text-muted-foreground">
           Title
           <input
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("jobTitle")}
           />
         </label>
-        <label className="block text-sm text-slate-400">
+        <label className="block text-sm text-muted-foreground">
           Tech stack
           <input
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("stack")}
           />
         </label>
-        <label className="block text-sm text-slate-400">
+        <label className="block text-sm text-muted-foreground">
           Seniority
           <select
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("seniority")}
           >
             <option value="junior">Junior</option>
@@ -131,29 +131,29 @@ export function HiringToolkit() {
             <option value="staff">Staff</option>
           </select>
         </label>
-        <label className="block text-sm text-slate-400">
+        <label className="block text-sm text-muted-foreground">
           Job description (optional)
           <textarea
             rows={4}
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("jobDescription")}
           />
         </label>
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-foreground disabled:opacity-50"
         >
           {loading ? "Generating…" : "Generate question set"}
         </button>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted-foreground">
           Uses rule-based templates on-device. For GPT-4 generated sets, call a
           secured API route with your OpenAI key (see README).
         </p>
       </form>
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-        <h2 className="font-semibold text-slate-100">Output</h2>
-        <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-slate-300">
+      <div className="rounded-2xl border border-border bg-surface/40 p-5">
+        <h2 className="font-semibold text-foreground">Output</h2>
+        <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-foreground/90">
           {items.map((t, i) => (
             <li key={i}>{t}</li>
           ))}
@@ -162,7 +162,7 @@ export function HiringToolkit() {
           <button
             type="button"
             onClick={exportPdf}
-            className="mt-6 rounded-lg border border-slate-600 px-4 py-2 text-sm"
+            className="mt-6 rounded-lg border border-border px-4 py-2 text-sm"
           >
             Export PDF
           </button>

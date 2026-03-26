@@ -36,11 +36,11 @@ export default function HubSignInPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md rounded-2xl border border-slate-800 bg-slate-900/50 p-8">
-      <h1 className="font-display text-2xl font-bold text-white">Sign in</h1>
-      <p className="mt-2 text-sm text-slate-400">
+    <div className="mx-auto max-w-md rounded-2xl border border-border bg-surface/50 p-8">
+      <h1 className="font-display text-2xl font-bold text-foreground">Sign in</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
         New here?{" "}
-        <Link href="/hub/register" className="text-cyan-400 hover:underline">
+        <Link href="/hub/register" className="text-primary hover:underline">
           Create an account
         </Link>
       </p>
@@ -50,27 +50,27 @@ export default function HubSignInPage() {
         noValidate
       >
         <div>
-          <label htmlFor="email" className="text-sm text-slate-300">
+          <label htmlFor="email" className="text-sm text-foreground/90">
             Email
           </label>
           <input
             id="email"
             type="email"
             autoComplete="email"
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-slate-100"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground"
             aria-invalid={!!form.formState.errors.email}
             {...form.register("email")}
           />
         </div>
         <div>
-          <label htmlFor="password" className="text-sm text-slate-300">
+          <label htmlFor="password" className="text-sm text-foreground/90">
             Password
           </label>
           <input
             id="password"
             type="password"
             autoComplete="current-password"
-            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2"
             {...form.register("password")}
           />
         </div>
@@ -81,15 +81,15 @@ export default function HubSignInPage() {
         )}
         <button
           type="submit"
-          className="w-full rounded-lg bg-cyan-600 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500"
+          className="w-full rounded-lg bg-primary py-2.5 text-sm font-semibold text-foreground hover:bg-primary-hover"
         >
           Continue
         </button>
       </form>
-      <p className="mt-6 text-center text-xs text-slate-500">
+      <p className="mt-6 text-center text-xs text-muted-foreground">
         OAuth (Google / GitHub) is enabled automatically when{" "}
-        <code className="text-slate-400">AUTH_GOOGLE_*</code> /{" "}
-        <code className="text-slate-400">AUTH_GITHUB_*</code> are set — a
+        <code className="text-muted-foreground">AUTH_GOOGLE_*</code> /{" "}
+        <code className="text-muted-foreground">AUTH_GITHUB_*</code> are set — a
         provider button will appear here once configured.
       </p>
     </div>

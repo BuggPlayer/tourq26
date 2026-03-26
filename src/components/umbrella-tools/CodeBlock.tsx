@@ -9,7 +9,7 @@ const SyntaxHighlighter = dynamic(
   {
     ssr: false,
     loading: () => (
-      <pre className="rounded-lg bg-[var(--color-surface-elevated)] p-4 text-sm text-[var(--color-muted)]">
+      <pre className="rounded-lg bg-surface-elevated p-4 text-sm text-muted-foreground">
         Loading highlighter…
       </pre>
     ),
@@ -40,11 +40,11 @@ export default function CodeBlock({ code, language }: Props) {
   }, [code]);
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-[var(--color-border)]">
+    <div className="relative overflow-hidden rounded-xl border border-border">
       <button
         type="button"
         onClick={copy}
-        className="absolute right-3 top-3 z-10 rounded-lg bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+        className="absolute right-3 top-3 z-10 rounded-lg bg-white/10 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-white/20"
       >
         {copied ? "Copied" : "Copy"}
       </button>
@@ -57,7 +57,7 @@ export default function CodeBlock({ code, language }: Props) {
           borderRadius: "0.75rem",
           fontSize: "0.8125rem",
           maxHeight: "24rem",
-          background: "var(--color-surface-elevated)",
+          background: "var(--app-surface-elevated)",
         }}
         codeTagProps={{ className: "font-mono" }}
       >

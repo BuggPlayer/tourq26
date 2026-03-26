@@ -41,7 +41,7 @@ function Stars({ count }: { count: number }) {
   return (
     <div className="flex gap-0.5" aria-hidden>
       {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="text-[var(--color-primary)]" aria-hidden>
+        <span key={i} className="text-primary" aria-hidden>
           ★
         </span>
       ))}
@@ -56,17 +56,17 @@ export default function Testimonials({ items }: Props) {
   return (
     <section
       id="testimonials"
-      className="relative border-t border-[var(--color-border)]/40 bg-[var(--surface)] py-20 sm:py-24 lg:py-28"
+      className="relative border-t border-border/40 bg-surface py-20 sm:py-24 lg:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto">
-          <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">
             What clients say
           </p>
-          <h2 className="mt-3 font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
             Results our clients see
           </h2>
-          <p className="mt-4 text-[var(--color-muted)]">
+          <p className="mt-4 text-muted-foreground">
             Trusted globally to deliver real outcomes.
           </p>
         </div>
@@ -74,30 +74,30 @@ export default function Testimonials({ items }: Props) {
           {testimonials.map((t) => (
             <div
               key={t.id ?? t.name}
-              className="card-hover flex flex-col rounded-2xl border border-[var(--color-border)]/40 bg-[var(--surface-elevated)] p-6 sm:p-8"
+              className="card-hover flex flex-col rounded-2xl border border-border/40 bg-surface-elevated p-6 sm:p-8"
             >
-              <span className="text-4xl leading-none text-[var(--color-primary)]/25" aria-hidden>
+              <span className="text-4xl leading-none text-primary/25" aria-hidden>
                 &ldquo;
               </span>
-              <p className="mt-2 flex-1 text-[var(--color-muted)] leading-relaxed text-sm">
+              <p className="mt-2 flex-1 text-muted-foreground leading-relaxed text-sm">
                 {t.quote}
               </p>
-              <p className="mt-3 inline-flex w-fit rounded-full bg-[var(--color-primary-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--color-primary)]">
+              <p className="mt-3 inline-flex w-fit rounded-full bg-primary-muted px-3 py-1.5 text-xs font-semibold text-primary">
                 {t.result}
               </p>
               <Stars count={t.rating} />
-              <div className="mt-5 flex items-center gap-4 border-t border-[var(--color-border)]/40 pt-4">
+              <div className="mt-5 flex items-center gap-4 border-t border-border/40 pt-4">
                 <Image
                   src="/images/avatar-placeholder.svg"
                   alt={`Client testimonial avatar for ${t.name}`}
                   width={48}
                   height={48}
-                  className="h-12 w-12 shrink-0 rounded-full ring-2 ring-[var(--color-border)]/50 text-[var(--color-primary)]"
+                  className="h-12 w-12 shrink-0 rounded-full ring-2 ring-border/50 text-primary"
                   unoptimized
                 />
                 <div>
-                  <p className="font-display font-semibold text-white">{t.name}</p>
-                  <p className="text-sm text-[var(--color-muted)]">
+                  <p className="font-display font-semibold text-foreground">{t.name}</p>
+                  <p className="text-sm text-muted-foreground">
                     {t.role}, {t.company}
                   </p>
                 </div>

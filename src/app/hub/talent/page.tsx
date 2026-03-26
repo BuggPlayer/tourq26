@@ -66,8 +66,8 @@ export default function TalentPage() {
   return (
     <div className="grid gap-10 lg:grid-cols-2">
       <div>
-        <h1 className="font-display text-3xl font-bold text-white">Talent pool</h1>
-        <p className="mt-2 text-sm text-slate-400">
+        <h1 className="font-display text-3xl font-bold text-foreground">Talent pool</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Candidates who perform strongly can opt in. Companies filter by skills
           and scores (contact hints are masked for MVP).
         </p>
@@ -76,13 +76,13 @@ export default function TalentPage() {
             value={skill}
             onChange={(e) => setSkill(e.target.value)}
             placeholder="Filter skill"
-            className="rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
             aria-label="Filter by skill"
           />
           <button
             type="button"
             onClick={load}
-            className="rounded-lg border border-slate-600 px-3 py-2 text-sm"
+            className="rounded-lg border border-border px-3 py-2 text-sm"
           >
             Apply
           </button>
@@ -91,22 +91,22 @@ export default function TalentPage() {
           {candidates.map((c) => (
             <li
               key={c.id}
-              className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 text-sm"
+              className="rounded-xl border border-border bg-surface/40 p-4 text-sm"
             >
-              <p className="font-medium text-slate-100">{c.displayName}</p>
-              <p className="text-slate-400">{c.headline || "Hub candidate"}</p>
-              <p className="text-xs text-slate-500">
+              <p className="font-medium text-foreground">{c.displayName}</p>
+              <p className="text-muted-foreground">{c.headline || "Hub candidate"}</p>
+              <p className="text-xs text-muted-foreground">
                 Avg {c.avgScore.toFixed(1)} · {c.location || "Location n/a"}
               </p>
-              <p className="mt-1 text-xs text-cyan-400">Contact: {c.contactHint}</p>
+              <p className="mt-1 text-xs text-primary">Contact: {c.contactHint}</p>
             </li>
           ))}
         </ul>
       </div>
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-        <h2 className="font-semibold text-slate-100">Candidate opt-in</h2>
+      <div className="rounded-2xl border border-border bg-surface/40 p-5">
+        <h2 className="font-semibold text-foreground">Candidate opt-in</h2>
         {!data?.user ? (
-          <p className="mt-2 text-sm text-slate-500">Sign in to join the pool.</p>
+          <p className="mt-2 text-sm text-muted-foreground">Sign in to join the pool.</p>
         ) : (
           <form
             className="mt-4 space-y-3"
@@ -118,22 +118,22 @@ export default function TalentPage() {
             </label>
             <input
               placeholder="Headline"
-              className="w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               {...form.register("headline")}
             />
             <input
               placeholder="Location"
-              className="w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               {...form.register("location")}
             />
             <input
               placeholder="Skills (comma-separated)"
-              className="w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               {...form.register("skills")}
             />
             <button
               type="submit"
-              className="w-full rounded-lg bg-violet-600 py-2 text-sm text-white"
+              className="w-full rounded-lg bg-violet-600 py-2 text-sm text-foreground"
             >
               Save
             </button>

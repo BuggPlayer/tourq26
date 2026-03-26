@@ -24,7 +24,7 @@ export default function HubError({
       <button
         type="button"
         onClick={reset}
-        className="mt-6 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500"
+        className="mt-6 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-red-500"
       >
         Try again
       </button>

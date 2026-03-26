@@ -40,23 +40,23 @@ function QuizBody() {
 
   if (!qid) {
     return (
-      <p className="text-slate-400">
+      <p className="text-muted-foreground">
         Open a quiz from the candidate hub question list.
       </p>
     );
   }
 
-  if (!q) return <p className="text-slate-400">Loading…</p>;
+  if (!q) return <p className="text-muted-foreground">Loading…</p>;
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-2xl font-bold text-white">{q.title}</h1>
-      <p className="text-slate-300">{q.description}</p>
+      <h1 className="font-display text-2xl font-bold text-foreground">{q.title}</h1>
+      <p className="text-foreground/90">{q.description}</p>
       <div className="space-y-2" role="radiogroup">
         {q.options.map((opt, i) => (
           <label
             key={opt}
-            className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-700 px-3 py-2"
+            className="flex cursor-pointer items-center gap-2 rounded-lg border border-border px-3 py-2"
           >
             <input
               type="radio"
@@ -71,11 +71,11 @@ function QuizBody() {
       <button
         type="button"
         onClick={check}
-        className="rounded-lg bg-cyan-600 px-4 py-2 text-sm text-white"
+        className="rounded-lg bg-primary px-4 py-2 text-sm text-foreground"
       >
         Check
       </button>
-      {result && <p className="text-sm text-slate-300">{result}</p>}
+      {result && <p className="text-sm text-foreground/90">{result}</p>}
     </div>
   );
 }
@@ -83,10 +83,10 @@ function QuizBody() {
 export default function QuizPage() {
   return (
     <div>
-      <Link href="/hub/candidate" className="text-sm text-cyan-400 hover:underline">
+      <Link href="/hub/candidate" className="text-sm text-primary hover:underline">
         ← Back
       </Link>
-      <Suspense fallback={<p className="text-slate-400">Loading…</p>}>
+      <Suspense fallback={<p className="text-muted-foreground">Loading…</p>}>
         <QuizBody />
       </Suspense>
     </div>

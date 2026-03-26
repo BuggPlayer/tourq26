@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 
 const baseNavLinks = [
@@ -24,7 +24,14 @@ function buildNavLinks(flags?: HeaderNavFlags) {
   });
 }
 
-export default function Header({ navFlags }: { navFlags?: HeaderNavFlags }) {
+export default function Header({
+  navFlags,
+  endSlot,
+}: {
+  navFlags?: HeaderNavFlags;
+  /** Theme + font controls (client components) */
+  endSlot?: ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const navLinks = buildNavLinks(navFlags);
 
@@ -33,55 +40,61 @@ export default function Header({ navFlags }: { navFlags?: HeaderNavFlags }) {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="font-display text-xl font-bold tracking-tight text-white sm:text-2xl transition-opacity hover:opacity-90"
+          className="font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl transition-opacity hover:opacity-90"
         >
-          torq <span className="text-[var(--color-primary)]">studio</span>
+          torq <span className="text-primary">studio</span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-[var(--color-muted)] transition-colors hover:text-white"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <button
-          type="button"
-          aria-label="Toggle menu"
-          className="flex flex-col gap-1.5 md:hidden rounded-lg p-2 -m-2 active:bg-white/5"
-          onClick={() => setOpen(!open)}
-        >
-          <span
-            className={`h-0.5 w-6 rounded-full bg-white transition-all duration-200 ${open ? "translate-y-2 rotate-45" : ""}`}
-          />
-          <span
-            className={`h-0.5 w-6 rounded-full bg-white transition-all duration-200 ${open ? "opacity-0 scale-0" : ""}`}
-          />
-          <span
-            className={`h-0.5 w-6 rounded-full bg-white transition-all duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`}
-          />
-        </button>
-      </div>
-
-      {open && (
-        <div className="border-t border-[var(--color-border)]/50 bg-[var(--surface)]/95 backdrop-blur-xl md:hidden animate-fade-in">
-          <nav className="flex flex-col gap-0.5 px-4 py-4">
+        <div className="flex flex-1 items-center justify-end gap-3 md:gap-4">
+          <nav className="hidden items-center gap-7 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-xl px-4 py-3.5 text-[var(--color-muted)] transition-colors hover:bg-[var(--color-surface-elevated)] hover:text-white"
-                onClick={() => setOpen(false)}
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {link.label}
               </Link>
             ))}
           </nav>
+          {endSlot ? <div className="hidden shrink-0 items-center md:flex">{endSlot}</div> : null}
+        </div>
+
+        <button
+          type="button"
+          aria-label="Toggle menu"
+          className="flex flex-col gap-1.5 md:hidden rounded-lg p-2 -m-2 active:bg-muted/50"
+          onClick={() => setOpen(!open)}
+        >
+          <span
+            className={`h-0.5 w-6 rounded-full bg-foreground transition-all duration-200 ${open ? "translate-y-2 rotate-45" : ""}`}
+          />
+          <span
+            className={`h-0.5 w-6 rounded-full bg-foreground transition-all duration-200 ${open ? "opacity-0 scale-0" : ""}`}
+          />
+          <span
+            className={`h-0.5 w-6 rounded-full bg-foreground transition-all duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`}
+          />
+        </button>
+      </div>
+
+      {open && (
+        <div className="border-t border-border/50 bg-surface/95 backdrop-blur-xl md:hidden animate-fade-in">
+          <div className="flex flex-col gap-3 px-4 py-4">
+            {endSlot ? <div className="flex justify-end border-b border-border/40 pb-3">{endSlot}</div> : null}
+            <nav className="flex flex-col gap-0.5">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-xl px-4 py-3.5 text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground"
+                  onClick={() => setOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
         </div>
       )}
     </header>

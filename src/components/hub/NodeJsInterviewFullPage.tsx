@@ -112,8 +112,8 @@ export function NodeJsInterviewFullPage({
                     {item.difficulty}
                   </span>
                 ) : null}
-                <span className="inline-flex items-center gap-1.5 rounded-md bg-slate-800/90 px-2.5 py-1 text-xs font-medium text-slate-300">
-                  <span className="text-base leading-none text-cyan-500/80" aria-hidden>
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-muted/90 px-2.5 py-1 text-xs font-medium text-foreground/90">
+                  <span className="text-base leading-none text-primary/80" aria-hidden>
                     ●
                   </span>
                   {badgeLabel} {total}

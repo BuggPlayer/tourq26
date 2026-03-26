@@ -78,12 +78,12 @@ export default function FileUploader({ accept, onFileLoad, label = "Drop a file 
         onDrop={onDrop}
         className={`cursor-pointer rounded-xl border-2 border-dashed px-6 py-10 text-center transition-colors ${
           dragOver
-            ? "border-[var(--color-primary)] bg-[var(--color-primary-muted)]"
-            : "border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-muted)]"
+            ? "border-primary bg-primary-muted"
+            : "border-border bg-surface hover:border-muted"
         }`}
       >
-        <p className="text-sm text-[var(--color-muted)]">{label}</p>
-        <p className="mt-1 text-xs text-[var(--color-muted)]/80">Accepted: {accept}</p>
+        <p className="text-sm text-muted-foreground">{label}</p>
+        <p className="mt-1 text-xs text-muted-foreground/80">Accepted: {accept}</p>
         <input
           ref={inputRef}
           type="file"

@@ -65,8 +65,8 @@ export function BlogPostForm({ post }: Props) {
       onClick={() => setTab(id)}
       className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
         tab === id
-          ? "bg-cyan-600 text-white"
-          : "text-slate-400 hover:bg-slate-800 hover:text-white"
+          ? "bg-primary text-foreground"
+          : "text-muted-foreground hover:bg-muted hover:text-foreground"
       }`}
     >
       {label}
@@ -75,7 +75,7 @@ export function BlogPostForm({ post }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-6 max-w-4xl space-y-4">
-      <div className="flex flex-wrap gap-2 border-b border-slate-700 pb-4">
+      <div className="flex flex-wrap gap-2 border-b border-border pb-4">
         {tabBtn("write", "Write")}
         {tabBtn("preview", "Preview")}
         {tabBtn("score", "Content score")}
@@ -84,57 +84,57 @@ export function BlogPostForm({ post }: Props) {
       {tab === "write" && (
         <>
           <div>
-            <label className="block text-sm font-medium text-slate-300">Title</label>
+            <label className="block text-sm font-medium text-foreground/90">Title</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300">Slug</label>
+            <label className="block text-sm font-medium text-foreground/90">Slug</label>
             <input
               type="text"
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               placeholder="auto from title"
-              className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white placeholder:text-slate-500"
+              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground placeholder:text-muted-foreground"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300">Description (meta)</label>
+            <label className="block text-sm font-medium text-foreground/90">Description (meta)</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
-              className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300">Date</label>
+              <label className="block text-sm font-medium text-foreground/90">Date</label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+                className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300">Read time</label>
+              <label className="block text-sm font-medium text-foreground/90">Read time</label>
               <input
                 type="text"
                 value={readTime}
                 onChange={(e) => setReadTime(e.target.value)}
                 placeholder="5 min read"
-                className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white"
+                className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300">
+            <label className="block text-sm font-medium text-foreground/90">
               Author name (optional, for SEO)
             </label>
             <input
@@ -142,12 +142,12 @@ export function BlogPostForm({ post }: Props) {
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
               placeholder="Defaults to site name if empty"
-              className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2 text-white placeholder:text-slate-500"
+              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground placeholder:text-muted-foreground"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300">Body</label>
-            <p className="mt-0.5 text-xs text-slate-500">
+            <label className="block text-sm font-medium text-foreground/90">Body</label>
+            <p className="mt-0.5 text-xs text-muted-foreground">
               React Quill: H1–H3, lists, indent, blockquote, code blocks, links, alignment. Prefer one H1 per
               post (the page title is already an H1) — use H2/H3 for sections when possible.
             </p>
@@ -164,7 +164,7 @@ export function BlogPostForm({ post }: Props) {
       )}
 
       {tab === "preview" && (
-        <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
+        <div className="rounded-xl border border-border bg-background/50 p-4">
           <BlogPostPreview
             title={title}
             description={description}
@@ -184,7 +184,7 @@ export function BlogPostForm({ post }: Props) {
       <button
         type="submit"
         disabled={saving}
-        className="rounded-lg bg-cyan-600 px-6 py-2 font-medium text-white hover:bg-cyan-500 disabled:opacity-50"
+        className="rounded-lg bg-primary px-6 py-2 font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
       >
         {saving ? "Saving…" : post ? "Update post" : "Create post"}
       </button>

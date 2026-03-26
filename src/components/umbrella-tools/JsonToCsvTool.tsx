@@ -73,30 +73,30 @@ export default function JsonToCsvTool() {
       />
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-4">
-          <label className="block text-sm font-medium text-[var(--color-muted)]">JSON input</label>
+          <label className="block text-sm font-medium text-muted-foreground">JSON input</label>
           <textarea
             value={input}
             onChange={(e) => applyInput(e.target.value)}
             rows={16}
             placeholder='[ { "name": "Ada", "role": "Dev" }, { "name": "Bob", "role": "PM" } ]'
-            className="w-full resize-y rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 font-mono text-sm text-[var(--foreground)] placeholder:text-[var(--color-muted)]/50 focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="w-full resize-y rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <FileUploader accept=".json,application/json" onFileLoad={applyInput} />
           {error ? <p className="text-sm text-red-400">{error}</p> : null}
         </div>
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-medium text-[var(--color-muted)]">CSV output</h2>
+            <h2 className="text-sm font-medium text-muted-foreground">CSV output</h2>
             <button
               type="button"
               disabled={!csv}
               onClick={downloadCsv}
-              className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--background)] transition-opacity disabled:cursor-not-allowed disabled:opacity-40 hover:opacity-90"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40 hover:opacity-90"
             >
               Download .csv
             </button>
           </div>
-          {csv ? <CodeBlock code={csv} language="csv" /> : <p className="text-sm text-[var(--color-muted)]">Valid JSON array will render here.</p>}
+          {csv ? <CodeBlock code={csv} language="csv" /> : <p className="text-sm text-muted-foreground">Valid JSON array will render here.</p>}
         </div>
       </div>
     </>

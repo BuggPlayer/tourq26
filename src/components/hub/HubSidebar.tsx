@@ -44,7 +44,7 @@ export function HubSidebar() {
     >
       <Link
         href="/hub"
-        className="font-display text-lg font-bold tracking-tight text-cyan-400"
+        className="font-display text-lg font-bold tracking-tight text-primary"
       >
         TorqStudio Interview Hub
       </Link>
@@ -60,7 +60,7 @@ export function HubSidebar() {
               href={item.href}
               className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
                 active
-                  ? "bg-cyan-500/15 text-cyan-300"
+                  ? "bg-cyan-500/15 text-primary"
                   : "opacity-90 hover:bg-black/10"
               }`}
               style={
@@ -85,14 +85,14 @@ export function HubSidebar() {
         <button
           type="button"
           onClick={() => openAgency("sidebar")}
-          className="mt-2 w-full rounded-lg bg-violet-600 px-3 py-2 text-center text-xs font-semibold text-white hover:bg-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+          className="mt-2 w-full rounded-lg bg-violet-600 px-3 py-2 text-center text-xs font-semibold text-foreground hover:bg-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
         >
           Talk to TorqStudio
         </button>
       </div>
       <Link
         href="/"
-        className="mt-3 text-center text-xs underline-offset-2 hover:text-cyan-400 hover:underline"
+        className="mt-3 text-center text-xs underline-offset-2 hover:text-primary hover:underline"
         style={{ color: "var(--hub-muted)" }}
       >
         ← Main TorqStudio site

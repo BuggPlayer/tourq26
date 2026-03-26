@@ -13,7 +13,7 @@ export function LogoutButton() {
     <button
       type="button"
       onClick={handleLogout}
-      className="text-sm text-slate-400 hover:text-white"
+      className="text-sm text-muted-foreground hover:text-foreground"
     >
       Log out
     </button>

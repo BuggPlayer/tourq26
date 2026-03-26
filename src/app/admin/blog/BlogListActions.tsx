@@ -17,7 +17,7 @@ export function BlogListActions({ slug }: { slug: string }) {
     <div className="flex items-center gap-2">
       <Link
         href={`/admin/blog/${encodeURIComponent(slug)}/edit`}
-        className="rounded bg-slate-700 px-3 py-1.5 text-sm text-white hover:bg-slate-600"
+        className="rounded bg-muted px-3 py-1.5 text-sm text-foreground hover:bg-muted"
       >
         Edit
       </Link>

@@ -70,16 +70,16 @@ export function BlogEditorInsights({ title, description, bodyHtml }: Props) {
     metrics.score >= 75 ? "bg-emerald-500" : metrics.score >= 55 ? "bg-amber-500" : "bg-rose-500";
 
   return (
-    <div className="space-y-4 rounded-xl border border-slate-600 bg-slate-900/40 p-4">
+    <div className="space-y-4 rounded-xl border border-border bg-surface/40 p-4">
       <div>
         <div className="flex items-center justify-between gap-2">
-          <span className="text-sm font-medium text-slate-300">Content score</span>
-          <span className="text-lg font-bold text-white tabular-nums">{metrics.score}</span>
+          <span className="text-sm font-medium text-foreground/90">Content score</span>
+          <span className="text-lg font-bold text-foreground tabular-nums">{metrics.score}</span>
         </div>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           Heuristic only (readability, structure, meta lengths). Not a guarantee of rankings.
         </p>
-        <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-800">
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
           <div
             className={`h-full transition-all ${barColor}`}
             style={{ width: `${metrics.score}%` }}
@@ -88,48 +88,48 @@ export function BlogEditorInsights({ title, description, bodyHtml }: Props) {
       </div>
       <dl className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
         <div>
-          <dt className="text-slate-500">Words</dt>
-          <dd className="font-medium text-white tabular-nums">{metrics.words}</dd>
+          <dt className="text-muted-foreground">Words</dt>
+          <dd className="font-medium text-foreground tabular-nums">{metrics.words}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">Est. read time</dt>
-          <dd className="font-medium text-white">{metrics.readMin} min</dd>
+          <dt className="text-muted-foreground">Est. read time</dt>
+          <dd className="font-medium text-foreground">{metrics.readMin} min</dd>
         </div>
         <div>
-          <dt className="text-slate-500">Headings (H1/H2/H3)</dt>
-          <dd className="font-medium text-white tabular-nums">
+          <dt className="text-muted-foreground">Headings (H1/H2/H3)</dt>
+          <dd className="font-medium text-foreground tabular-nums">
             {metrics.h1}/{metrics.h2}/{metrics.h3}
           </dd>
         </div>
         <div>
-          <dt className="text-slate-500">Links in body</dt>
-          <dd className="font-medium text-white tabular-nums">{metrics.links}</dd>
+          <dt className="text-muted-foreground">Links in body</dt>
+          <dd className="font-medium text-foreground tabular-nums">{metrics.links}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">Title length</dt>
+          <dt className="text-muted-foreground">Title length</dt>
           <dd
             className={`font-medium tabular-nums ${
-              metrics.titleLen >= 30 && metrics.titleLen <= 65 ? "text-emerald-400" : "text-slate-200"
+              metrics.titleLen >= 30 && metrics.titleLen <= 65 ? "text-emerald-400" : "text-foreground/95"
             }`}
           >
             {metrics.titleLen}{" "}
-            <span className="text-xs font-normal text-slate-500">(guide ~30–60)</span>
+            <span className="text-xs font-normal text-muted-foreground">(guide ~30–60)</span>
           </dd>
         </div>
         <div>
-          <dt className="text-slate-500">Meta description</dt>
+          <dt className="text-muted-foreground">Meta description</dt>
           <dd
             className={`font-medium tabular-nums ${
-              metrics.descLen >= 120 && metrics.descLen <= 170 ? "text-emerald-400" : "text-slate-200"
+              metrics.descLen >= 120 && metrics.descLen <= 170 ? "text-emerald-400" : "text-foreground/95"
             }`}
           >
             {metrics.descLen}{" "}
-            <span className="text-xs font-normal text-slate-500">(guide ~120–160)</span>
+            <span className="text-xs font-normal text-muted-foreground">(guide ~120–160)</span>
           </dd>
         </div>
         <div className="col-span-2 sm:col-span-3">
-          <dt className="text-slate-500">Avg words / sentence</dt>
-          <dd className="font-medium text-white tabular-nums">{metrics.avgWordsPerSentence || "—"}</dd>
+          <dt className="text-muted-foreground">Avg words / sentence</dt>
+          <dd className="font-medium text-foreground tabular-nums">{metrics.avgWordsPerSentence || "—"}</dd>
         </div>
       </dl>
     </div>

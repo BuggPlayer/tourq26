@@ -41,16 +41,16 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-xl border border-slate-700/50 bg-slate-800/50 p-8 shadow-xl"
+        className="w-full max-w-sm rounded-xl border border-border/50 bg-muted/50 p-8 shadow-xl"
       >
-        <h1 className="text-xl font-semibold text-white">Admin login</h1>
-        <p className="mt-1 text-sm text-slate-400">Enter your password to continue.</p>
+        <h1 className="text-xl font-semibold text-foreground">Admin login</h1>
+        <p className="mt-1 text-sm text-muted-foreground">Enter your password to continue.</p>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="mt-6 w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3 text-white placeholder:text-slate-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+          className="mt-6 w-full rounded-lg border border-border bg-surface/50 px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           autoFocus
           required
         />
@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 w-full rounded-lg bg-cyan-600 py-3 font-medium text-white hover:bg-cyan-500 disabled:opacity-50"
+          className="mt-6 w-full rounded-lg bg-primary py-3 font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>

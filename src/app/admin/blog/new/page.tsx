@@ -8,8 +8,8 @@ export default async function NewBlogPostPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white">New post</h1>
-      <p className="mt-1 text-slate-400">Slug will be generated from title if left blank.</p>
+      <h1 className="text-2xl font-bold text-foreground">New post</h1>
+      <p className="mt-1 text-muted-foreground">Slug will be generated from title if left blank.</p>
       <BlogPostForm />
     </div>
   );

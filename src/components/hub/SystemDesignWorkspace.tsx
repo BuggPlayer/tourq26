@@ -84,15 +84,15 @@ export function SystemDesignWorkspace(props: {
 
   return (
     <div className="space-y-4">
-      <Link href="/hub/candidate" className="text-sm text-cyan-400 hover:underline">
+      <Link href="/hub/candidate" className="text-sm text-primary hover:underline">
         ← Back
       </Link>
       <header>
-        <h1 className="font-display text-2xl font-bold text-white">{props.title}</h1>
-        <p className="mt-2 text-sm text-slate-400 whitespace-pre-wrap">
+        <h1 className="font-display text-2xl font-bold text-foreground">{props.title}</h1>
+        <p className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">
           {props.description}
         </p>
-        <p className="mt-2 text-xs text-slate-500">
+        <p className="mt-2 text-xs text-muted-foreground">
           Official building blocks for this prompt:{" "}
           {props.officialTypes.join(", ")}
         </p>
@@ -103,7 +103,7 @@ export function SystemDesignWorkspace(props: {
             key={p.type}
             type="button"
             onClick={() => addNode(p)}
-            className="rounded-full border border-slate-600 px-3 py-1 text-xs hover:border-cyan-600"
+            className="rounded-full border border-border px-3 py-1 text-xs hover:border-cyan-600"
           >
             + {p.label}
           </button>
@@ -111,24 +111,24 @@ export function SystemDesignWorkspace(props: {
         <button
           type="button"
           onClick={submit}
-          className="ml-auto rounded-lg bg-cyan-600 px-4 py-1 text-sm font-semibold text-white"
+          className="ml-auto rounded-lg bg-primary px-4 py-1 text-sm font-semibold text-foreground"
         >
           Submit diagram
         </button>
         <button
           type="button"
           onClick={() => setShowSolution((s) => !s)}
-          className="rounded-lg border border-slate-600 px-3 py-1 text-sm"
+          className="rounded-lg border border-border px-3 py-1 text-sm"
         >
           {showSolution ? "Hide" : "Show"} solution notes
         </button>
       </div>
       {showSolution && (
-        <p className="rounded-lg border border-cyan-900/40 bg-cyan-950/20 p-3 text-sm text-cyan-100">
+        <p className="rounded-lg border border-primary/40 bg-cyan-950/20 p-3 text-sm text-primary">
           {props.officialSolution}
         </p>
       )}
-      <div className="h-[480px] rounded-xl border border-slate-700 bg-slate-950">
+      <div className="h-[480px] rounded-xl border border-border bg-background">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -143,7 +143,7 @@ export function SystemDesignWorkspace(props: {
           <Controls />
         </ReactFlow>
       </div>
-      <p id="sd-help" className="text-xs text-slate-500">
+      <p id="sd-help" className="text-xs text-muted-foreground">
         Drag nodes, connect edges to show data flow. Screen reader: use palette
         buttons to add named components, then submit for automated checks.
       </p>

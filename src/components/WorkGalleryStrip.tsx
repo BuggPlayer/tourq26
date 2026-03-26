@@ -10,24 +10,24 @@ const shots = [
 export default function WorkGalleryStrip() {
   return (
     <section
-      className="border-y border-[var(--color-border)]/40 bg-[var(--background)] py-14 sm:py-16"
+      className="border-y border-border/40 bg-background py-14 sm:py-16"
       aria-label="How we work"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
+        <p className="text-center text-sm font-medium uppercase tracking-widest text-primary">
           Beyond slide decks
         </p>
-        <h2 className="mt-2 text-center font-display text-2xl font-bold text-white sm:text-3xl">
+        <h2 className="mt-2 text-center font-display text-2xl font-bold text-foreground sm:text-3xl">
           Product, mobile, and platform delivery
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-[var(--color-muted)] sm:text-base">
+        <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-muted-foreground sm:text-base">
           Collaboration, mobile product work, and deep implementation—not just strategy decks.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           {shots.map((photo, i) => (
             <figure
               key={photo.src}
-              className={`group relative overflow-hidden rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)] shadow-lg ${
+              className={`group relative overflow-hidden rounded-2xl border border-border/50 bg-surface shadow-lg ${
                 i === 1 ? "sm:mt-6" : ""
               }`}
             >
@@ -40,7 +40,7 @@ export default function WorkGalleryStrip() {
                   sizes="(max-width: 640px) 100vw, 33vw"
                 />
                 <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent opacity-90"
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-90"
                   aria-hidden
                 />
               </div>

@@ -46,10 +46,10 @@ export function CandidateExplorer() {
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <label className="text-xs text-slate-400">
+        <label className="text-xs text-muted-foreground">
           Type
           <select
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-2 py-2 text-sm"
             value={filters.type}
             onChange={(e) => setFilters((f) => ({ ...f, type: e.target.value }))}
             aria-label="Filter by question type"
@@ -61,10 +61,10 @@ export function CandidateExplorer() {
             <option value="FRONTEND_SYSTEM_DESIGN">System design</option>
           </select>
         </label>
-        <label className="text-xs text-slate-400">
+        <label className="text-xs text-muted-foreground">
           Difficulty
           <select
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-2 py-2 text-sm"
             value={filters.difficulty}
             onChange={(e) =>
               setFilters((f) => ({ ...f, difficulty: e.target.value }))
@@ -77,10 +77,10 @@ export function CandidateExplorer() {
             <option value="hard">Hard</option>
           </select>
         </label>
-        <label className="text-xs text-slate-400">
+        <label className="text-xs text-muted-foreground">
           Framework (UI)
           <select
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-2 py-2 text-sm"
             value={filters.framework}
             onChange={(e) =>
               setFilters((f) => ({ ...f, framework: e.target.value }))
@@ -95,20 +95,20 @@ export function CandidateExplorer() {
             <option value="svelte">Svelte</option>
           </select>
         </label>
-        <label className="text-xs text-slate-400">
+        <label className="text-xs text-muted-foreground">
           Topic contains
           <input
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-2 py-2 text-sm"
             value={filters.topic}
             onChange={(e) => setFilters((f) => ({ ...f, topic: e.target.value }))}
             placeholder="e.g. arrays"
             aria-label="Filter by topic text"
           />
         </label>
-        <label className="text-xs text-slate-400">
+        <label className="text-xs text-muted-foreground">
           Company tag
           <input
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border bg-background px-2 py-2 text-sm"
             value={filters.company}
             onChange={(e) =>
               setFilters((f) => ({ ...f, company: e.target.value }))
@@ -136,14 +136,14 @@ export function CandidateExplorer() {
                       ? `/hub/candidate/system-design/${q.id}`
                       : `/hub/candidate/quiz?q=${q.id}`
               }
-              className="flex flex-col rounded-xl border border-slate-800 bg-slate-900/40 p-4 transition hover:border-cyan-900/50 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col rounded-xl border border-border bg-surface/40 p-4 transition hover:border-cyan-900/50 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
-                <span className="text-xs font-medium uppercase text-cyan-500">
+                <span className="text-xs font-medium uppercase text-primary">
                   {q.type}
                 </span>
-                <h3 className="font-medium text-slate-100">{q.title}</h3>
-                <p className="text-xs text-slate-500">
+                <h3 className="font-medium text-foreground">{q.title}</h3>
+                <p className="text-xs text-muted-foreground">
                   {q.topic} · {q.difficulty}
                   {q.framework ? ` · ${q.framework}` : ""}
                 </p>
@@ -152,7 +152,7 @@ export function CandidateExplorer() {
                 {q.companyTags.map((c) => (
                   <span
                     key={c.name}
-                    className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-300"
+                    className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-foreground/90"
                   >
                     {c.name}
                   </span>

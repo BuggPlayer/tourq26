@@ -90,20 +90,20 @@ export function CandidateDashboardShell({
   return (
     <div className="space-y-10">
       <header>
-        <h1 className="font-display text-3xl font-bold text-white">Candidate hub</h1>
-        <p className="mt-2 max-w-2xl text-sm text-slate-400">
-          Open an interview Q&amp;A via <strong className="font-medium text-slate-300">Full page</strong>{" "}
+        <h1 className="font-display text-3xl font-bold text-foreground">Candidate hub</h1>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+          Open an interview Q&amp;A via <strong className="font-medium text-foreground/90">Full page</strong>{" "}
           for split view: reading on the left, Monaco on the right. After that,
-          your recent questions show up in <strong className="font-medium text-slate-300">Continue reading</strong>{" "}
+          your recent questions show up in <strong className="font-medium text-foreground/90">Continue reading</strong>{" "}
           below (saved on this device).
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <Link
             href="/hub/candidate/interview"
-            className="inline-flex items-center gap-2 rounded-xl border border-cyan-900/50 bg-cyan-950/30 px-4 py-3 text-sm font-medium text-cyan-200 transition-colors hover:border-cyan-700/50 hover:bg-cyan-950/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+            className="inline-flex items-center gap-2 rounded-xl border border-cyan-900/50 bg-cyan-950/30 px-4 py-3 text-sm font-medium text-primary transition-colors hover:border-cyan-700/50 hover:bg-cyan-950/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
           >
             All interview Q&amp;A banks
-            <span className="text-cyan-500/80" aria-hidden>
+            <span className="text-primary/80" aria-hidden>
               →
             </span>
           </Link>
@@ -111,7 +111,7 @@ export function CandidateDashboardShell({
             <Link
               key={b.slug}
               href={`/hub/candidate/interview/${b.slug}`}
-              className="inline-flex items-center rounded-xl border border-slate-700/80 bg-slate-900/40 px-3 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-900/40 hover:text-cyan-200"
+              className="inline-flex items-center rounded-xl border border-border/80 bg-surface/40 px-3 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-primary/40 hover:text-primary"
             >
               {b.label}
             </Link>
@@ -121,13 +121,13 @@ export function CandidateDashboardShell({
 
       {continueItems.length > 0 ? (
         <section
-          className="rounded-2xl border border-slate-700/80 bg-slate-900/60 p-5"
+          className="rounded-2xl border border-border/80 bg-surface/60 p-5"
           aria-label="Continue where you left off"
         >
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Continue reading
           </h2>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             Recent full-page Q&amp;A views on this device.
           </p>
           <ul className="mt-3 space-y-2">
@@ -135,7 +135,7 @@ export function CandidateDashboardShell({
               <li key={`${row.bankSlug}:${row.id}`}>
                 <Link
                   href={row.href}
-                  className="block rounded-lg border border-transparent px-3 py-2 text-sm text-slate-200 transition-colors hover:border-cyan-900/50 hover:bg-slate-950/50 hover:text-cyan-200"
+                  className="block rounded-lg border border-transparent px-3 py-2 text-sm text-slate-200 transition-colors hover:border-cyan-900/50 hover:bg-background/50 hover:text-primary"
                 >
                   {row.question}
                 </Link>
@@ -151,16 +151,16 @@ export function CandidateDashboardShell({
         className="grid gap-4 sm:grid-cols-3"
         aria-label="Progress summary"
       >
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Solved</p>
+        <div className="rounded-xl border border-border bg-surface/50 p-4">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Solved</p>
           <p className="stat-number mt-1 text-3xl font-bold">{stats.solved}</p>
         </div>
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Avg score</p>
+        <div className="rounded-xl border border-border bg-surface/50 p-4">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Avg score</p>
           <p className="stat-number mt-1 text-3xl font-bold">{stats.avg}</p>
         </div>
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Streak</p>
+        <div className="rounded-xl border border-border bg-surface/50 p-4">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Streak</p>
           <p className="stat-number mt-1 text-3xl font-bold">{stats.streak}d</p>
         </div>
       </section>
@@ -169,7 +169,7 @@ export function CandidateDashboardShell({
         <CandidateExplorer />
         <aside className="space-y-6">
           <QuizWidget />
-          <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 text-sm text-slate-400">
+          <div className="rounded-xl border border-border bg-surface/40 p-4 text-sm text-muted-foreground">
             <h2 className="font-semibold text-slate-200">Preparation plans</h2>
             <p className="mt-2">
               Structured 1 week, 1 month, 3 month, and campus tracks with
@@ -177,7 +177,7 @@ export function CandidateDashboardShell({
             </p>
             <Link
               href="/hub/candidate/plans"
-              className="mt-3 inline-block text-cyan-400 hover:underline"
+              className="mt-3 inline-block text-primary hover:underline"
             >
               View plans →
             </Link>

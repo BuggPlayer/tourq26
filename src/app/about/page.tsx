@@ -47,20 +47,20 @@ export default async function AboutPage() {
     { name: "About", path: "/about" },
   ]);
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <JsonLd data={breadcrumbLd} />
       <MarketingHeader />
       <main>
-        <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
+        <section className="gradient-mesh relative border-b border-border/40 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">
               Who we are
             </p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-foreground sm:text-5xl md:text-6xl">
               Senior engineers you can actually talk to
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-[var(--color-muted)]">
-              Torq Studio combines <strong className="text-white/90 font-semibold">delivery and consulting</strong>: mobile apps,
+            <p className="mx-auto mt-6 max-w-xl text-muted-foreground">
+              Torq Studio combines <strong className="text-foreground/90 font-semibold">delivery and consulting</strong>: mobile apps,
               websites and web apps, AI integrations, and technical advice—architecture, estimates, reviews, and execution when you are ready.
             </p>
           </div>
@@ -68,7 +68,7 @@ export default async function AboutPage() {
 
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
-            <div className="relative order-2 overflow-hidden rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)] shadow-xl ring-1 ring-white/5 lg:order-1">
+            <div className="relative order-2 overflow-hidden rounded-2xl border border-border/50 bg-surface shadow-xl ring-1 ring-foreground/5 lg:order-1">
               <div className="relative aspect-[4/3] lg:aspect-[3/4] lg:min-h-[320px]">
                 <Image
                   src={sitePhotos.aboutMission.src}
@@ -78,43 +78,43 @@ export default async function AboutPage() {
                   sizes="(max-width: 1024px) 100vw, 45vw"
                 />
                 <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--background)]/50 to-transparent"
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/50 to-transparent"
                   aria-hidden
                 />
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+              <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
                 Our mission
               </h2>
-              <p className="mt-4 text-[var(--color-muted)] leading-relaxed">
-                Help you make the <strong className="text-white/90 font-semibold">right technical bets</strong>—then implement them. Whether you need a senior engineer to own delivery, a second opinion before you hire or outsource, or a partner for mobile, web, and AI, we keep the conversation honest and the work production-grade.
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                Help you make the <strong className="text-foreground/90 font-semibold">right technical bets</strong>—then implement them. Whether you need a senior engineer to own delivery, a second opinion before you hire or outsource, or a partner for mobile, web, and AI, we keep the conversation honest and the work production-grade.
               </p>
-              <p className="mt-4 text-[var(--color-muted)] leading-relaxed">
+              <p className="mt-4 text-muted-foreground leading-relaxed">
                 Many clients save significantly versus hiring only in high-cost markets, without giving up senior quality. Clear scopes, direct communication, and no bait-and-switch: you know who is doing the work.
               </p>
             </div>
           </div>
         </section>
 
-        <section className="border-t border-[var(--color-border)]/40 bg-[var(--surface)] py-16">
+        <section className="border-t border-border/40 bg-surface py-16">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+            <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
               What we stand for
             </h2>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {values.map((item, i) => (
                 <div
                   key={item.title}
-                  className="card-hover rounded-2xl border border-[var(--color-border)]/40 bg-[var(--background)] p-6"
+                  className="card-hover rounded-2xl border border-border/40 bg-background p-6"
                 >
-                  <span className="text-sm font-semibold text-[var(--color-primary)]">
+                  <span className="text-sm font-semibold text-primary">
                     0{i + 1}
                   </span>
-                  <h3 className="mt-3 font-display text-lg font-semibold text-white">
+                  <h3 className="mt-3 font-display text-lg font-semibold text-foreground">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm text-[var(--color-muted)] leading-relaxed">
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -123,24 +123,24 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        <section className="border-t border-[var(--color-border)]/40 px-4 py-16 sm:px-6 lg:px-8">
+        <section className="border-t border-border/40 px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+            <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
               Ready to build?
             </h2>
-            <p className="mt-4 text-[var(--color-muted)]">
+            <p className="mt-4 text-muted-foreground">
               Free 30-min consultation. We’ll listen and outline how we can help.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/contact"
-                className="btn-primary rounded-full bg-[var(--color-primary)] px-8 py-4 text-base font-semibold text-[var(--background)]"
+                className="btn-primary rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground"
               >
                 Get in touch
               </Link>
               <Link
                 href="/#case-studies"
-                className="rounded-full border border-[var(--color-border)] px-8 py-4 text-base font-semibold text-white transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-muted)]"
+                className="rounded-full border border-border px-8 py-4 text-base font-semibold text-foreground transition-all hover:border-primary hover:bg-primary-muted"
               >
                 See case studies
               </Link>

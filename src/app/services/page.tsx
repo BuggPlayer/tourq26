@@ -47,20 +47,20 @@ export default async function ServicesIndexPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <JsonLd data={breadcrumbLd} />
       <JsonLd data={webLd} />
       <MarketingHeader />
       <main>
-        <section className="gradient-mesh relative border-b border-[var(--color-border)]/40 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
+        <section className="gradient-mesh relative border-b border-border/40 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-medium uppercase tracking-widest text-[var(--color-primary)]">
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">
               What we deliver
             </p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-foreground sm:text-5xl">
               What we build &amp; advise on
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-[var(--color-muted)]">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
               Senior software engineers offering delivery and consulting. Each page covers how we work, what
               “good” looks like, and FAQs founders and engineering leads actually ask.
             </p>
@@ -73,9 +73,9 @@ export default async function ServicesIndexPage() {
               <Link
                 key={p.slug}
                 href={`/services/${p.slug}`}
-                className="card-hover group flex flex-col rounded-2xl border border-[var(--color-border)]/40 bg-[var(--surface)] p-8 transition-colors hover:border-[var(--color-primary)]/30"
+                className="card-hover group flex flex-col rounded-2xl border border-border/40 bg-surface p-8 transition-colors hover:border-primary/30"
               >
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/15 text-[var(--color-primary)]">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/15 text-primary">
                   <Image
                     src={iconMap[p.slug] ?? "/images/icons/web.svg"}
                     alt={`${p.title} service icon`}
@@ -85,11 +85,11 @@ export default async function ServicesIndexPage() {
                     unoptimized
                   />
                 </span>
-                <h2 className="mt-5 font-display text-xl font-semibold text-white sm:text-2xl group-hover:text-[var(--color-primary)]">
+                <h2 className="mt-5 font-display text-xl font-semibold text-foreground sm:text-2xl group-hover:text-primary">
                   {p.title}
                 </h2>
-                <p className="mt-3 flex-1 text-sm text-[var(--color-muted)] leading-relaxed">{p.description}</p>
-                <span className="mt-6 text-sm font-semibold text-[var(--color-primary)]">
+                <p className="mt-3 flex-1 text-sm text-muted-foreground leading-relaxed">{p.description}</p>
+                <span className="mt-6 text-sm font-semibold text-primary">
                   Read service overview →
                 </span>
               </Link>

@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function DevToolsAboutPage() {
   return (
     <UmbrellaToolsLayout>
-      <article className="prose prose-invert max-w-2xl prose-headings:font-display prose-p:text-[var(--color-muted)] prose-li:text-[var(--color-muted)]">
-        <h1 className="text-3xl font-bold text-white">About these utilities</h1>
+      <article className="prose prose-invert max-w-2xl prose-headings:font-display prose-p:text-muted-foreground prose-li:text-muted-foreground">
+        <h1 className="text-3xl font-bold text-foreground">About these utilities</h1>
         <p>
           This section hosts small developer helpers — SVG backgrounds, JSON to CSV, and CSS shadows. They are built
           for quick, repeatable tasks without leaving the site.
@@ -23,13 +23,13 @@ export default function DevToolsAboutPage() {
         <p>
           Processing happens in your browser. We do not send your pasted or uploaded content to our servers for these
           utilities. See the{" "}
-          <Link href="/privacy" className="text-[var(--color-primary)] hover:underline">
+          <Link href="/privacy" className="text-primary hover:underline">
             privacy policy
           </Link>{" "}
           for how we handle data elsewhere on the site.
         </p>
         <p>
-          <Link href="/dev-tools" className="text-[var(--color-primary)] hover:underline">
+          <Link href="/dev-tools" className="text-primary hover:underline">
             ← Back to utilities
           </Link>
         </p>

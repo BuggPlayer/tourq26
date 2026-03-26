@@ -3,6 +3,7 @@ import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { readSiteContent } from "@/lib/content";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import { ThemeShell } from "@/components/theme/ThemeShell";
 import { isFeatureEnabled } from "@/lib/feature-flags";
 
 const dmSans = DM_Sans({
@@ -20,7 +21,10 @@ const outfit = Outfit({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#07090e",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#07090e" },
+  ],
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -102,10 +106,8 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en">
-      <body
-        className={`${dmSans.variable} ${outfit.variable} font-sans antialiased`}
-      >
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${dmSans.variable} ${outfit.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -114,8 +116,10 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        {children}
-        {showWhatsApp ? <FloatingWhatsApp /> : null}
+        <ThemeShell>
+          {children}
+          {showWhatsApp ? <FloatingWhatsApp /> : null}
+        </ThemeShell>
       </body>
     </html>
   );

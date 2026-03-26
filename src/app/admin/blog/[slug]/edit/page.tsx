@@ -19,10 +19,10 @@ export default async function EditBlogPostPage({
 
   return (
     <div>
-      <Link href="/admin/blog" className="text-sm text-slate-400 hover:text-white">
+      <Link href="/admin/blog" className="text-sm text-muted-foreground hover:text-foreground">
         ← Blog
       </Link>
-      <h1 className="mt-2 text-2xl font-bold text-white">Edit post</h1>
+      <h1 className="mt-2 text-2xl font-bold text-foreground">Edit post</h1>
       <BlogPostForm key={post.slug} post={post} />
     </div>
   );

@@ -83,7 +83,7 @@ export default async function CaseStudyDetailPage({
   ]);
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <JsonLd data={articleLd} />
       <JsonLd data={breadcrumbLd} />
       <MarketingHeader />
@@ -91,11 +91,11 @@ export default async function CaseStudyDetailPage({
         <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
           <Link
             href="/case-studies"
-            className="text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+            className="text-sm text-muted-foreground hover:text-primary"
           >
             ← All case studies
           </Link>
-          <div className="relative mt-6 overflow-hidden rounded-2xl border border-[var(--color-border)]/50 bg-[var(--surface)] ring-1 ring-white/5">
+          <div className="relative mt-6 overflow-hidden rounded-2xl border border-border/50 bg-surface ring-1 ring-foreground/5">
             <div className="relative aspect-[2/1] w-full min-h-[200px] sm:min-h-[260px]">
               <Image
                 src={study.coverImage}
@@ -106,32 +106,32 @@ export default async function CaseStudyDetailPage({
                 sizes="(max-width: 768px) 100vw, 720px"
               />
               <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"
                 aria-hidden
               />
             </div>
           </div>
           <header className="mt-8">
-            <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-primary)]">
+            <p className="text-xs font-medium uppercase tracking-wider text-primary">
               {study.industry} · {study.client}
             </p>
-            <time className="mt-2 block text-sm text-[var(--color-muted)]" dateTime={study.date}>
+            <time className="mt-2 block text-sm text-muted-foreground" dateTime={study.date}>
               {formatDate(study.date)} · {study.readTime}
             </time>
-            <h1 className="mt-3 font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+            <h1 className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
               {study.title}
             </h1>
-            <p className="mt-4 text-lg text-[var(--color-muted)] leading-relaxed">{study.description}</p>
-            <div className="mt-6 rounded-xl border border-[var(--color-border)]/40 bg-[var(--surface)] p-5">
-              <p className="text-sm font-semibold text-white">Challenge</p>
-              <p className="mt-1 text-sm text-[var(--color-muted)]">{study.challenge}</p>
-              <p className="mt-4 text-sm font-semibold text-[var(--color-primary)]">Outcome</p>
-              <p className="mt-1 text-sm text-white">{study.outcome}</p>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">{study.description}</p>
+            <div className="mt-6 rounded-xl border border-border/40 bg-surface p-5">
+              <p className="text-sm font-semibold text-foreground">Challenge</p>
+              <p className="mt-1 text-sm text-muted-foreground">{study.challenge}</p>
+              <p className="mt-4 text-sm font-semibold text-primary">Outcome</p>
+              <p className="mt-1 text-sm text-foreground">{study.outcome}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {study.services.map((s) => (
                   <span
                     key={s}
-                    className="rounded-full bg-[var(--color-primary-muted)] px-3 py-1 text-xs font-medium text-[var(--color-primary)]"
+                    className="rounded-full bg-primary-muted px-3 py-1 text-xs font-medium text-primary"
                   >
                     {s}
                   </span>
@@ -140,19 +140,19 @@ export default async function CaseStudyDetailPage({
             </div>
           </header>
           <div
-            className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-10 [&_p]:text-[var(--color-muted)] [&_p]:leading-relaxed [&_ul]:text-[var(--color-muted)] [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_strong]:text-white/95"
+            className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-10 [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_strong]:text-foreground/95"
             dangerouslySetInnerHTML={{ __html: study.body }}
           />
-          <div className="mt-14 flex flex-col gap-4 border-t border-[var(--color-border)]/40 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-14 flex flex-col gap-4 border-t border-border/40 pt-8 sm:flex-row sm:items-center sm:justify-between">
             <Link
               href="/contact"
-              className="inline-flex justify-center rounded-full bg-[var(--color-primary)] px-8 py-3.5 text-sm font-semibold text-[var(--background)] hover:bg-[var(--color-primary-hover)]"
+              className="inline-flex justify-center rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
             >
               Discuss a similar project
             </Link>
             <Link
               href="/services"
-              className="text-center text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)] sm:text-right"
+              className="text-center text-sm text-muted-foreground hover:text-primary sm:text-right"
             >
               Explore services →
             </Link>
