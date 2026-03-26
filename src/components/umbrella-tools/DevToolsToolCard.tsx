@@ -12,7 +12,7 @@ export function DevToolsToolCard({ tool }: Props) {
   return (
     <Link
       href={`/dev-tools/${tool.slug}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-b from-surface-elevated/80 to-surface/40 p-6 shadow-sm transition-all duration-200 hover:border-primary/35 hover:shadow-[var(--shadow-card)] sm:p-7"
+      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border/70 bg-surface-elevated/90 p-5 shadow-[0_1px_0_0_rgb(255_255_255/0.04)_inset] transition-all duration-200 hover:border-primary/30 hover:shadow-md sm:p-6"
     >
       {tool.badge ? (
         <span className="absolute right-4 top-4 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">

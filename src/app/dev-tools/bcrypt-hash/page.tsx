@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import UmbrellaToolsLayout from "@/components/umbrella-tools/UmbrellaToolsLayout";
-import JsonToCsvTool from "@/components/umbrella-tools/JsonToCsvTool";
+import BcryptTool from "@/components/umbrella-tools/BcryptTool";
 import { devToolsPageMetadata } from "@/lib/umbrella-tools/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return devToolsPageMetadata("json-to-csv");
+  return devToolsPageMetadata("bcrypt-hash");
 }
 
-export default function JsonToCsvPage() {
+export default function BcryptHashPage() {
   return (
     <UmbrellaToolsLayout>
-      <JsonToCsvTool />
+      <BcryptTool />
     </UmbrellaToolsLayout>
   );
 }

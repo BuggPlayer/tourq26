@@ -22,8 +22,9 @@ export default function DevToolsAboutPage() {
       </header>
       <article className="blog-article max-w-2xl text-[1.02rem]">
         <p>
-          This section hosts developer helpers for things like SVG backgrounds, JSON→CSV conversion, and CSS shadows.
-          They are designed for quick, repeatable work without leaving the site.
+          Tools are grouped by category (Text, URL, CSS, JSON, CSV, and more). Today you&apos;ll find JSON formatting,
+          JWT inspection, Base64 and URL encoding, SHA hashing, UUID and timestamp helpers, SVG→CSS backgrounds,
+          JSON→CSV, and a CSS box-shadow generator — all designed for quick work without leaving the site.
         </p>
         <p>
           Processing happens in your browser. We do not send your pasted or uploaded content to our servers for these

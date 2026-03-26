@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import UmbrellaToolsLayout from "@/components/umbrella-tools/UmbrellaToolsLayout";
-import JsonToCsvTool from "@/components/umbrella-tools/JsonToCsvTool";
+import RandomStringTool from "@/components/umbrella-tools/RandomStringTool";
 import { devToolsPageMetadata } from "@/lib/umbrella-tools/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return devToolsPageMetadata("json-to-csv");
+  return devToolsPageMetadata("random-string");
 }
 
-export default function JsonToCsvPage() {
+export default function RandomStringPage() {
   return (
     <UmbrellaToolsLayout>
-      <JsonToCsvTool />
+      <RandomStringTool />
     </UmbrellaToolsLayout>
   );
 }

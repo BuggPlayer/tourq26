@@ -2,29 +2,51 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import UmbrellaToolsLayout from "@/components/umbrella-tools/UmbrellaToolsLayout";
 import { DevToolsToolCard } from "@/components/umbrella-tools/DevToolsToolCard";
+import JsonLd from "@/components/JsonLd";
 import {
+  DEV_TOOL_CATEGORY_BLURB,
   DEV_TOOL_CATEGORY_LABELS,
   DEV_TOOL_CATEGORY_ORDER,
   UMBRELLA_TOOLS,
   toolsByCategory,
 } from "@/lib/umbrella-tools/tools-config";
-import { umbrellaToolsMetadata } from "@/lib/umbrella-tools/seo";
+import { devToolsItemListJsonLd, umbrellaToolsMetadata } from "@/lib/umbrella-tools/seo";
+import { getSiteUrl } from "@/lib/site-url";
 
 export async function generateMetadata(): Promise<Metadata> {
   return umbrellaToolsMetadata({
     title: "Developer utilities",
     description:
-      "Free in-browser tools for developers: SVG to CSS backgrounds, JSON to CSV, CSS box-shadow generator. Private — runs locally in your browser.",
+      "Free online developer tools by category: Text, URL, CSS, JSON, CSV, database URLs, random strings, Base32, Base58, Base64, SHA, HMAC, bcrypt, QR codes, CIDR, and more. Private — runs in your browser.",
     path: "/dev-tools",
+    keywords: [
+      "developer tools online",
+      "text tools",
+      "url tools",
+      "json tools",
+      "csv tools",
+      "css tools",
+      "yaml tools",
+      "markdown tools",
+      "php tools online",
+      "database url parser",
+      "bcrypt online",
+      "qr code generator",
+      "cidr calculator",
+      "hmac generator",
+    ],
   });
 }
 
-export default function DevToolsIndexPage() {
+export default async function DevToolsIndexPage() {
   const toolCount = UMBRELLA_TOOLS.length;
+  const siteUrl = await getSiteUrl();
+  const itemListLd = devToolsItemListJsonLd(siteUrl, UMBRELLA_TOOLS);
 
   return (
     <UmbrellaToolsLayout>
-      <section className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-b from-surface/60 via-background to-background px-6 py-12 sm:px-10 sm:py-14 lg:px-12">
+      <JsonLd data={itemListLd} />
+      <section className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-surface/50 via-background to-background px-6 py-10 sm:px-10 sm:py-12 lg:px-12">
         <div
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_-25%,var(--app-primary-muted),transparent)] opacity-90"
           aria-hidden
@@ -34,9 +56,9 @@ export default function DevToolsIndexPage() {
           <h1 className="mt-4 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-[2.65rem]">
             Utilities that stay in your browser
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Quick helpers for CSS, data, and assets — no sign-up, no server round-trip for your pasted content. Add more
-            tools here over time; this hub is built to scale.
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Browse by category — Text, URL, CSS, JSON, CSV, database, encoding, crypto, QR, network, and more.
+            Everything runs client-side; no account, no sign-up.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/50 px-4 py-2">
@@ -66,11 +88,7 @@ export default function DevToolsIndexPage() {
                 >
                   {DEV_TOOL_CATEGORY_LABELS[category]}
                 </h2>
-                <p className="max-w-md text-sm text-muted-foreground">
-                  {category === "css" && "Visual tweaks with instant preview and copy-ready output."}
-                  {category === "data" && "Structured conversions without uploading files to our servers."}
-                  {category === "graphics" && "Asset pipelines from markup to production CSS."}
-                </p>
+                <p className="max-w-md text-sm text-muted-foreground">{DEV_TOOL_CATEGORY_BLURB[category]}</p>
               </div>
               <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {tools.map((tool) => (
@@ -85,9 +103,9 @@ export default function DevToolsIndexPage() {
       </div>
 
       <aside className="mt-16 rounded-2xl border border-dashed border-border/70 bg-surface/30 p-8 text-center lg:mt-20">
-        <p className="font-display text-lg font-semibold text-foreground">More utilities on the roadmap</p>
+        <p className="font-display text-lg font-semibold text-foreground">Expanding by category</p>
         <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
-          We&apos;ll keep adding small, focused tools. If you have a request, say hello via{" "}
+          We&apos;re growing HTML, Markdown, JavaScript, XML, YAML, and PHP utilities further. Request a tool via{" "}
           <Link href="/contact" className="font-medium text-primary underline-offset-2 hover:underline">
             contact
           </Link>

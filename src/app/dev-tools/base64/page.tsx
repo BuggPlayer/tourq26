@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import UmbrellaToolsLayout from "@/components/umbrella-tools/UmbrellaToolsLayout";
-import JsonToCsvTool from "@/components/umbrella-tools/JsonToCsvTool";
+import Base64Tool from "@/components/umbrella-tools/Base64Tool";
 import { devToolsPageMetadata } from "@/lib/umbrella-tools/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return devToolsPageMetadata("json-to-csv");
+  return devToolsPageMetadata("base64");
 }
 
-export default function JsonToCsvPage() {
+export default function Base64Page() {
   return (
     <UmbrellaToolsLayout>
-      <JsonToCsvTool />
+      <Base64Tool />
     </UmbrellaToolsLayout>
   );
 }
