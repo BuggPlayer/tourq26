@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /**
  * Homepage editorial copy — depth for readers and crawlers (text-to-code ratio).
  * Structured as a single <article> with minimal wrapper churn.
@@ -136,21 +138,21 @@ export default function HomePageContent() {
 
         <p className="mt-10">
           Read detailed write-ups on the{" "}
-          <a className="font-medium text-primary hover:underline" href="/case-studies">
+          <Link className="font-medium text-primary hover:underline" href="/case-studies">
             case studies
-          </a>{" "}
+          </Link>{" "}
           page, explore{" "}
-          <a className="font-medium text-primary hover:underline" href="/services">
+          <Link className="font-medium text-primary hover:underline" href="/services">
             services and FAQs
-          </a>
+          </Link>
           , browse the{" "}
-          <a className="font-medium text-primary hover:underline" href="/blog">
+          <Link className="font-medium text-primary hover:underline" href="/blog">
             blog
-          </a>{" "}
+          </Link>{" "}
           for longer-form guides, or{" "}
-          <a className="font-medium text-primary hover:underline" href="/contact">
+          <Link className="font-medium text-primary hover:underline" href="/contact">
             book a free consultation
-          </a>{" "}
+          </Link>{" "}
           to discuss your roadmap.
         </p>
       </article>

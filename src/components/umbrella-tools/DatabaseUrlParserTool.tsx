@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
 import ToolHeader from "@/components/umbrella-tools/ToolHeader";
 import { parseDatabaseUrl } from "@/lib/umbrella-tools/database-url";
 import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
@@ -29,6 +30,7 @@ export default function DatabaseUrlParserTool() {
         description="Paste a database connection URL to see scheme, host, port, credentials, and database name. Parsed only in your browser."
         category={meta?.category}
       />
+      <DevToolsSecurityNote lead="Connection strings may include passwords — values are parsed only in this browser tab and are not uploaded. " />
       <label className="block text-sm font-medium text-muted-foreground">Connection URL</label>
       <textarea
         value={input}

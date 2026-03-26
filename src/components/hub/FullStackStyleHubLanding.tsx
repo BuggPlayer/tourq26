@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import type { HubLandingStats } from "@/lib/hub/hub-landing-stats";
 
@@ -51,7 +50,6 @@ function TagPill({ tag }: { tag: Tag }) {
 }
 
 export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) {
-  const { data } = useSession();
   const [tab, setTab] = useState<TabId>("fullstack");
   const [hiringMode, setHiringMode] = useState(false);
 
@@ -375,6 +373,14 @@ export function FullStackStyleHubLanding({ stats }: { stats: HubLandingStats }) 
             >
               Interview Q&amp;A banks →
             </Link>
+            <button
+              type="button"
+              onClick={() => setHiringMode((v) => !v)}
+              className="text-sm font-medium underline-offset-2 hover:underline"
+              style={{ color: "var(--hub-muted, #94a3b8)" }}
+            >
+              {hiringMode ? "Hide hiring tools" : "I’m hiring — show tools"}
+            </button>
           </div>
         </div>
 

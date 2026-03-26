@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
 import ToolHeader from "@/components/umbrella-tools/ToolHeader";
 import type { HashAlgorithm } from "@/lib/umbrella-tools/hash";
 import { digestText } from "@/lib/umbrella-tools/hash";
@@ -35,6 +36,7 @@ export default function HashGeneratorTool() {
         description="Compute SHA-256, SHA-384, or SHA-512 hashes of arbitrary text using the Web Crypto API. Nothing is sent to a server."
         category={meta?.category}
       />
+      <DevToolsSecurityNote lead="Your input and digest are computed only in this browser tab — no uploads. " />
       <div className="flex flex-wrap gap-3">
         {ALGS.map((a) => (
           <button

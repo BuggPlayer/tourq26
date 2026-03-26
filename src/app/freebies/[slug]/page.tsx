@@ -5,7 +5,7 @@ import MarketingHeader from "@/components/MarketingHeader";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { freebies } from "@/data/freebies";
-import { getFreebieContent } from "@/data/freebie-content";
+import { getFreebieContentNode } from "@/data/freebie-content";
 import { readSiteContent } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
@@ -57,7 +57,6 @@ export default async function FreebiePage({
   const freebie = freebies.find((f) => f.slug === slug);
   if (!freebie) notFound();
 
-  const Content = getFreebieContent(slug);
   const siteUrl = await getSiteUrl();
   const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
     { name: "Home", path: "/" },
@@ -89,7 +88,7 @@ export default async function FreebiePage({
             </p>
           </header>
           <div className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-10 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-6 [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_input]:rounded [&_input]:border [&_input]:border-border [&_input]:bg-surface [&_input]:px-2 [&_input]:py-1">
-            {Content && <Content />}
+            {getFreebieContentNode(slug)}
           </div>
           <div className="mt-14 flex flex-wrap items-center gap-4 border-t border-border/50 pt-8">
             <p className="text-sm text-muted-foreground">

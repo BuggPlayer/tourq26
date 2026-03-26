@@ -265,3 +265,36 @@ export function toolsByCategory(category: DevToolCategory) {
 export function getDevToolBySlug(slug: string): UmbrellaTool | undefined {
   return UMBRELLA_TOOLS.find((t) => t.slug === slug);
 }
+
+/** Filter tools by search query (title, description, slug, category label). */
+export function filterUmbrellaTools(query: string): UmbrellaTool[] {
+  const s = query.trim().toLowerCase();
+  if (!s) return UMBRELLA_TOOLS;
+  return UMBRELLA_TOOLS.filter(
+    (t) =>
+      t.title.toLowerCase().includes(s) ||
+      t.description.toLowerCase().includes(s) ||
+      t.slug.includes(s) ||
+      DEV_TOOL_CATEGORY_LABELS[t.category].toLowerCase().includes(s),
+  );
+}
+
+/** Group tools into category sections following hub order; empty categories omitted. */
+export function groupToolsByCategoryOrder(tools: UmbrellaTool[]) {
+  const order = DEV_TOOL_CATEGORY_ORDER;
+  const map = new Map<string, UmbrellaTool[]>();
+  for (const c of order) map.set(c, []);
+  for (const t of tools) {
+    map.get(t.category)?.push(t);
+  }
+  return order.map((cat) => ({ category: cat, tools: map.get(cat) ?? [] })).filter((g) => g.tools.length > 0);
+}
+
+/** Same category first, then other tools — for “Related tools” on tool pages. */
+export function getRelatedDevTools(slug: string, limit = 6): UmbrellaTool[] {
+  const current = getDevToolBySlug(slug);
+  if (!current) return [];
+  const same = UMBRELLA_TOOLS.filter((t) => t.slug !== slug && t.category === current.category);
+  const rest = UMBRELLA_TOOLS.filter((t) => t.slug !== slug && t.category !== current.category);
+  return [...same, ...rest].slice(0, limit);
+}

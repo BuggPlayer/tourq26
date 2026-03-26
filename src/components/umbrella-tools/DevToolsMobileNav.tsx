@@ -1,30 +1,34 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import {
   DEV_TOOL_CATEGORY_LABELS,
-  DEV_TOOL_CATEGORY_ORDER,
-  UMBRELLA_TOOLS,
+  groupToolsByCategoryOrder,
+  type UmbrellaTool,
 } from "@/lib/umbrella-tools/tools-config";
 
-export function DevToolsMobileNav() {
+type Props = {
+  tools: UmbrellaTool[];
+  /** Current search string (for empty state copy). */
+  query: string;
+};
+
+export function DevToolsMobileNav({ tools, query }: Props) {
   const pathname = usePathname();
 
-  const groups = DEV_TOOL_CATEGORY_ORDER.map((cat) => ({
-    category: cat,
-    tools: UMBRELLA_TOOLS.filter((t) => t.category === cat),
-  })).filter((g) => g.tools.length > 0);
+  const groups = useMemo(() => groupToolsByCategoryOrder(tools), [tools]);
 
   return (
     <nav className="px-2 pb-4 pt-1" aria-label="Tools (mobile)">
-      {groups.map(({ category, tools }) => (
+      {groups.map(({ category, tools: catTools }) => (
         <div key={category} className="mb-4 last:mb-0">
           <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             {DEV_TOOL_CATEGORY_LABELS[category]}
           </p>
           <ul className="space-y-0.5">
-            {tools.map((tool) => {
+            {catTools.map((tool) => {
               const href = `/dev-tools/${tool.slug}`;
               const active = pathname === href;
               return (
@@ -44,6 +48,11 @@ export function DevToolsMobileNav() {
           </ul>
         </div>
       ))}
+      {tools.length === 0 ? (
+        <p className="px-2 py-3 text-sm text-muted-foreground">
+          No tools match {query.trim() ? `“${query.trim()}”.` : "that search."}
+        </p>
+      ) : null}
     </nav>
   );
 }

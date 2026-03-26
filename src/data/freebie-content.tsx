@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
 
-export function getFreebieContent(slug: string): (() => ReactNode) | null {
-  const map: Record<string, () => ReactNode> = {
-    "mobile-app-partner-checklist": () => <MobileAppChecklist />,
-    "project-brief-template": () => <ProjectBriefTemplate />,
-    "app-pre-launch-checklist": () => <PreLaunchChecklist />,
-    "build-vs-buy-vs-partner-guide": () => <BuildVsBuyGuide />,
-  };
-  return map[slug] ?? null;
+/** Module-level map so elements are not recreated each render (eslint react-hooks/static-components). */
+const FREEBIE_CONTENT_BY_SLUG: Record<string, ReactNode> = {
+  "mobile-app-partner-checklist": <MobileAppChecklist />,
+  "project-brief-template": <ProjectBriefTemplate />,
+  "app-pre-launch-checklist": <PreLaunchChecklist />,
+  "build-vs-buy-vs-partner-guide": <BuildVsBuyGuide />,
+};
+
+export function getFreebieContentNode(slug: string): ReactNode {
+  return FREEBIE_CONTENT_BY_SLUG[slug] ?? null;
 }
 
 function MobileAppChecklist() {

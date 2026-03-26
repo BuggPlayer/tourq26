@@ -27,7 +27,7 @@ export default function TrustBar() {
           </div>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-8">
-          {stats.map((stat, i) => (
+          {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="stat-number font-display text-3xl font-bold tabular-nums sm:text-4xl">
                 {stat.value}

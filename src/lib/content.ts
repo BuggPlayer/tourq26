@@ -62,12 +62,12 @@ export type FeatureFlagsDocument = {
   updatedAt: string;
 };
 
-function useKv(): boolean {
+function isVercelKvConfigured(): boolean {
   return !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
 }
 
 async function getKv(): Promise<{ get: (k: string) => Promise<unknown>; set: (k: string, v: unknown) => Promise<unknown> } | null> {
-  if (!useKv()) return null;
+  if (!isVercelKvConfigured()) return null;
   try {
     const { kv } = await import("@vercel/kv");
     return kv;

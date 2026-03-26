@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
 import ToolHeader from "@/components/umbrella-tools/ToolHeader";
 import type { HmacAlgorithm } from "@/lib/umbrella-tools/hmac";
 import { hmacHex } from "@/lib/umbrella-tools/hmac";
@@ -36,6 +37,7 @@ export default function HmacTool() {
         description="Compute HMAC in hexadecimal using your secret key and message. Matches Web Crypto — use the same inputs as your server to debug signatures."
         category={meta?.category}
       />
+      <DevToolsSecurityNote />
       <div className="flex flex-wrap gap-3">
         {ALGS.map((a) => (
           <button

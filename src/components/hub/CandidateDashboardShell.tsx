@@ -30,13 +30,14 @@ export function CandidateDashboardShell({
   const [resolvedTitles, setResolvedTitles] = useState<ResolvedRow[]>([]);
 
   useEffect(() => {
-    setBehavior(recordCandidatePath("/hub/candidate"));
+    queueMicrotask(() => {
+      setBehavior(recordCandidatePath("/hub/candidate"));
+    });
   }, []);
 
   useEffect(() => {
     const entries = behavior?.recentInterviewQa ?? [];
     if (!entries.length) {
-      setResolvedTitles([]);
       return;
     }
     const byBank = new Map<string, string[]>();

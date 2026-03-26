@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import bcrypt from "bcryptjs";
+import { DevToolsSecurityNote } from "@/components/umbrella-tools/DevToolsSecurityNote";
 import ToolHeader from "@/components/umbrella-tools/ToolHeader";
 import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
@@ -50,6 +51,10 @@ export default function BcryptTool() {
         description="Hash passwords with bcrypt or verify plaintext against a bcrypt hash. Runs entirely in your browser with bcryptjs."
         category={meta?.category}
       />
+      <DevToolsSecurityNote lead="Passwords and hashes stay in this browser tab — they are not sent to our servers. " />
+      <p className="mb-6 text-sm text-muted-foreground">
+        Higher cost factors take longer and can briefly make this tab unresponsive while hashing; use lower values for quick tests.
+      </p>
       <div className="flex flex-wrap gap-2">
         <button
           type="button"

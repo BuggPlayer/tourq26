@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import { DevToolsBreadcrumbs } from "@/components/umbrella-tools/DevToolsBreadcrumbs";
-import { DevToolsMobileNav } from "@/components/umbrella-tools/DevToolsMobileNav";
+import { DevToolsMobileSection } from "@/components/umbrella-tools/DevToolsMobileSection";
+import { DevToolsRelatedTools } from "@/components/umbrella-tools/DevToolsRelatedTools";
 import { DevToolsSidebar } from "@/components/umbrella-tools/DevToolsSidebar";
 import { DevToolsTopBar } from "@/components/umbrella-tools/DevToolsTopBar";
 
@@ -19,22 +20,12 @@ export default function UmbrellaToolsLayout({ children }: { children: React.Reac
         </aside>
 
         <div className="min-w-0 flex-1">
-          {/* Mobile browse panel */}
-          <details className="group border-b border-border/50 bg-surface/30 lg:hidden">
-            <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-              <span className="flex items-center justify-between gap-2">
-                Browse tools
-                <span className="text-muted-foreground transition-transform group-open:rotate-180">▼</span>
-              </span>
-            </summary>
-            <div className="max-h-[min(55vh,480px)] overflow-y-auto border-t border-border/40">
-              <DevToolsMobileNav />
-            </div>
-          </details>
+          <DevToolsMobileSection />
 
           <main className="px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
             <DevToolsBreadcrumbs />
             {children}
+            <DevToolsRelatedTools />
           </main>
         </div>
       </div>

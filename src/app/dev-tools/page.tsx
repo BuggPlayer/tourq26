@@ -60,6 +60,10 @@ export default async function DevToolsIndexPage() {
             Browse by category — Text, URL, CSS, JSON, CSV, database, encoding, crypto, QR, network, and more.
             Everything runs client-side; no account, no sign-up.
           </p>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground/90">
+            Includes database URL parsing, random strings, Base32/Base58/Base64, SHA and HMAC, bcrypt, QR codes, and IPv4
+            CIDR — all processed locally in your browser.
+          </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/50 px-4 py-2">
               <span className="h-2 w-2 rounded-full bg-success" aria-hidden />

@@ -5,38 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   DEV_TOOL_CATEGORY_LABELS,
-  DEV_TOOL_CATEGORY_ORDER,
-  UMBRELLA_TOOLS,
-  type UmbrellaTool,
+  filterUmbrellaTools,
+  groupToolsByCategoryOrder,
 } from "@/lib/umbrella-tools/tools-config";
-
-function groupFilteredTools(tools: UmbrellaTool[]) {
-  const order = DEV_TOOL_CATEGORY_ORDER;
-  const map = new Map<string, UmbrellaTool[]>();
-  for (const c of order) map.set(c, []);
-  for (const t of tools) {
-    map.get(t.category)?.push(t);
-  }
-  return order.map((cat) => ({ category: cat, tools: map.get(cat) ?? [] })).filter((g) => g.tools.length > 0);
-}
 
 export function DevToolsSidebar() {
   const [q, setQ] = useState("");
   const pathname = usePathname();
 
-  const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    if (!s) return UMBRELLA_TOOLS;
-    return UMBRELLA_TOOLS.filter(
-      (t) =>
-        t.title.toLowerCase().includes(s) ||
-        t.description.toLowerCase().includes(s) ||
-        t.slug.includes(s) ||
-        DEV_TOOL_CATEGORY_LABELS[t.category].toLowerCase().includes(s),
-    );
-  }, [q]);
+  const filtered = useMemo(() => filterUmbrellaTools(q), [q]);
 
-  const groups = useMemo(() => groupFilteredTools(filtered), [filtered]);
+  const groups = useMemo(() => groupToolsByCategoryOrder(filtered), [filtered]);
 
   return (
     <div className="flex h-full flex-col">

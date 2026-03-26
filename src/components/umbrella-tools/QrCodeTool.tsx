@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import QRCode from "qrcode";
 import ToolHeader from "@/components/umbrella-tools/ToolHeader";
 import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
@@ -21,7 +20,10 @@ export default function QrCodeTool() {
       return;
     }
     let cancelled = false;
-    QRCode.toDataURL(t, { width: 280, margin: 2, errorCorrectionLevel: "M" })
+    import("qrcode")
+      .then(({ default: QRCode }) =>
+        QRCode.toDataURL(t, { width: 280, margin: 2, errorCorrectionLevel: "M" }),
+      )
       .then((url) => {
         if (!cancelled) {
           setDataUrl(url);
@@ -59,7 +61,10 @@ export default function QrCodeTool() {
         </div>
         <div className="flex flex-col items-center justify-start gap-4 rounded-xl border border-border/60 bg-surface/50 p-6">
           {dataUrl ? (
-            <img src={dataUrl} alt="Generated QR code" width={280} height={280} className="rounded-lg bg-white p-2" />
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element -- dynamic PNG data URL from qrcode */}
+              <img src={dataUrl} alt="Generated QR code" width={280} height={280} className="rounded-lg bg-white p-2" />
+            </>
           ) : (
             <div className="flex h-[280px] w-[280px] items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
               {error ?? "Type or paste content…"}

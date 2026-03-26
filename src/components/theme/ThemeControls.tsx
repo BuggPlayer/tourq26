@@ -1,30 +1,44 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useIsClient } from "@/hooks/use-is-client";
 
 type FontFamily = "brand" | "system";
 
 export function ThemeControls() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [fontFamily, setFontFamily] = useState<FontFamily>("brand");
+  const mounted = useIsClient();
+
+  const persistedFont = useMemo((): FontFamily => {
+    if (!mounted) return "brand";
+    try {
+      const stored = localStorage.getItem("torq-font-family");
+      return stored === "system" ? "system" : "brand";
+    } catch {
+      return "brand";
+    }
+  }, [mounted]);
+
+  const [fontOverride, setFontOverride] = useState<FontFamily | null>(null);
+  const fontFamily = fontOverride ?? persistedFont;
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("torq-font-family");
-    const next: FontFamily = stored === "system" ? "system" : "brand";
-    setFontFamily(next);
-    document.documentElement.dataset.fontFamily = next;
-  }, []);
+    if (!mounted) return;
+    document.documentElement.dataset.fontFamily = fontFamily;
+  }, [mounted, fontFamily]);
 
   const cycleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   const onFontChange = (next: FontFamily) => {
-    setFontFamily(next);
-    localStorage.setItem("torq-font-family", next);
+    setFontOverride(next);
+    try {
+      localStorage.setItem("torq-font-family", next);
+    } catch {
+      /* quota / private mode */
+    }
     document.documentElement.dataset.fontFamily = next;
   };
 

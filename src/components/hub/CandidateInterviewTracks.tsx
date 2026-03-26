@@ -36,22 +36,17 @@ function TrackPanel(props: {
   accent: "cyan" | "violet";
 }) {
   const [selectedId, setSelectedId] = useState<string>("");
-  const selected = useMemo(
-    () => props.questions.find((q) => q.id === selectedId),
-    [props.questions, selectedId],
-  );
 
-  useEffect(() => {
-    if (props.questions.length === 0) {
-      setSelectedId("");
-      return;
-    }
-    setSelectedId((prev) =>
-      prev && props.questions.some((q) => q.id === prev)
-        ? prev
-        : props.questions[0].id,
-    );
-  }, [props.questions]);
+  const effectiveSelectedId = useMemo(() => {
+    if (props.questions.length === 0) return "";
+    if (selectedId && props.questions.some((q) => q.id === selectedId)) return selectedId;
+    return props.questions[0]!.id;
+  }, [props.questions, selectedId]);
+
+  const selected = useMemo(
+    () => props.questions.find((q) => q.id === effectiveSelectedId),
+    [props.questions, effectiveSelectedId],
+  );
 
   const border =
     props.accent === "cyan"
@@ -81,7 +76,7 @@ function TrackPanel(props: {
         <select
           id={`pick-${props.accent}`}
           className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          value={selectedId}
+          value={effectiveSelectedId}
           onChange={(e) => setSelectedId(e.target.value)}
           disabled={props.loading || props.questions.length === 0}
           aria-describedby={`hint-${props.accent}`}

@@ -7,7 +7,6 @@ import JsonLd from "@/components/JsonLd";
 import { caseStudies } from "@/data/case-studies";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd, webPageJsonLd } from "@/lib/seo";
-import { readSiteContent } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getSiteUrl();
@@ -27,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CaseStudiesIndexPage() {
-  const [siteUrl, site] = await Promise.all([getSiteUrl(), readSiteContent()]);
+  const siteUrl = await getSiteUrl();
   const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
     { name: "Home", path: "/" },
     { name: "Case studies", path: "/case-studies" },
