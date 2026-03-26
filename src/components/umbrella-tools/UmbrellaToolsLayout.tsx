@@ -34,7 +34,7 @@ export default function UmbrellaToolsLayout({
         <div className="min-w-0 flex-1">
           <DevToolsMobileSection />
 
-          <main className="px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
+          <main className="px-4  py-6 sm:px-6 lg:px-10 lg:py-8">
             <DevToolsBreadcrumbs />
             {children}
             {hideRegistryFaq ? null : <DevToolsToolFaq />}
@@ -43,7 +43,9 @@ export default function UmbrellaToolsLayout({
         </div>
       </div>
 
-      <Footer />
+      <div className="shrink-0 border-t border-border/30">
+        <Footer />
+      </div>
     </div>
   );
 }

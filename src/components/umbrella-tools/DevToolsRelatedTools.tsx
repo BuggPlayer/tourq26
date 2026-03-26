@@ -30,6 +30,7 @@ export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
           <li key={t.slug}>
             <Link
               href={`/dev-tools/${t.slug}`}
+              scroll={false}
               className="flex gap-3 rounded-xl border border-border/60 bg-surface/40 px-4 py-3 transition-colors hover:border-primary/35 hover:bg-surface-elevated/80"
             >
               <span className="font-mono text-sm text-primary/80" aria-hidden>

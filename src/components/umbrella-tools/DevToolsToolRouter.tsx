@@ -17,6 +17,8 @@ import JwtDecoderTool from "@/components/umbrella-tools/JwtDecoderTool";
 import PastebinTool from "@/components/umbrella-tools/PastebinTool";
 import QrCodeTool from "@/components/umbrella-tools/QrCodeTool";
 import RandomStringTool from "@/components/umbrella-tools/RandomStringTool";
+import ShapeDividerGeneratorTool from "@/components/umbrella-tools/ShapeDividerGeneratorTool";
+import SvgGeneratorsHubTool from "@/components/umbrella-tools/SvgGeneratorsHubTool";
 import SvgToCssBackgroundTool from "@/components/umbrella-tools/SvgToCssBackgroundTool";
 import TimestampConverterTool from "@/components/umbrella-tools/TimestampConverterTool";
 import UrlEncodeTool from "@/components/umbrella-tools/UrlEncodeTool";
@@ -104,8 +106,12 @@ function ToolFallback() {
 
 export function DevToolsToolRouter({ slug }: { slug: string }) {
   switch (slug) {
+    case "svg-generators":
+      return <SvgGeneratorsHubTool />;
     case "svg-to-css-background":
       return <SvgToCssBackgroundTool />;
+    case "shape-divider-generator":
+      return <ShapeDividerGeneratorTool />;
     case "css-shadow-generator":
       return <CssShadowGeneratorTool />;
     case "json-formatter":

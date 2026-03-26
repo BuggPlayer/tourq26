@@ -40,6 +40,7 @@ export function DevToolsSidebar() {
       <nav className="flex-1 overflow-y-auto p-3 pb-8" aria-label="Tools by category">
         <Link
           href="/dev-tools"
+          scroll={false}
           className={`mb-4 block rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             pathname === "/dev-tools"
               ? "bg-primary/15 text-primary"
@@ -50,6 +51,7 @@ export function DevToolsSidebar() {
         </Link>
         <Link
           href="/dev-tools/about"
+          scroll={false}
           className={`mb-6 block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
             pathname === "/dev-tools/about"
               ? "bg-primary/15 text-primary"
@@ -72,6 +74,7 @@ export function DevToolsSidebar() {
                   <li key={tool.slug}>
                     <Link
                       href={href}
+                      scroll={false}
                       className={`flex items-start gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors ${
                         active
                           ? "bg-primary/12 font-medium text-primary"

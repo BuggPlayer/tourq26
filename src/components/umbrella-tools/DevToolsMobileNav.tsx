@@ -35,6 +35,7 @@ export function DevToolsMobileNav({ tools, query }: Props) {
                 <li key={tool.slug}>
                   <Link
                     href={href}
+                    scroll={false}
                     className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm ${
                       active ? "bg-primary/12 font-medium text-primary" : "text-foreground hover:bg-surface-elevated"
                     }`}

@@ -1,7 +1,7 @@
 {
   "overrides": {
     "case-converter": {
-      "enabled": false,
+      "enabled": true,
       "featured": true,
       "notes": "test oprate noted ",
       "featuresHtml": "<p>qfewfwef</p>",
@@ -36,5 +36,5 @@
       ]
     }
   },
-  "updatedAt": "2026-03-26T17:52:16.905Z"
+  "updatedAt": "2026-03-26T18:15:29.347Z"
 }

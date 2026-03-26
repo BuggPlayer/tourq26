@@ -3,15 +3,37 @@ import type { UmbrellaTool } from "./types";
 /** Original shipped tools — merged with EXTRA_UMBRELLA_TOOLS in tools-config. */
 export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
   {
+    slug: "svg-generators",
+    title: "SVG generators",
+    description: "Browse SVG utilities: CSS background converter and shape divider generator — all client-side.",
+    category: "css",
+    icon: "◇",
+    keywords: ["svg generators", "svg tools", "svg utilities"],
+    seoTitle: "SVG generators — CSS backgrounds & section dividers online",
+    seoDescription:
+      "Free SVG tools in your browser: convert SVG to CSS backgrounds and generate wave or curve section dividers.",
+  },
+  {
     slug: "svg-to-css-background",
     title: "SVG → CSS background",
     description: "Turn inline SVG into a data URL and copy-ready background-image CSS.",
     category: "css",
     icon: "◈",
-    keywords: ["svg to css", "background-image", "data url"],
+    keywords: ["svg to css", "svg to css converter", "background-image", "data url"],
     seoTitle: "SVG to CSS background-image — data URL generator online",
     seoDescription:
       "Convert inline SVG to a data URL and copy-ready background-image CSS. Free browser-based tool — no upload.",
+  },
+  {
+    slug: "shape-divider-generator",
+    title: "Shape divider generator",
+    description: "Create SVG wave, curve, tilt, and zigzag dividers for sections — copy SVG or CSS.",
+    category: "css",
+    icon: "〰",
+    keywords: ["shape divider", "svg wave divider", "section divider svg", "landing page divider"],
+    seoTitle: "SVG shape divider generator — waves & curves for sections",
+    seoDescription:
+      "Generate decorative SVG section dividers with preset shapes. Export markup or CSS background-image — runs locally.",
   },
   {
     slug: "css-shadow-generator",
