@@ -7,6 +7,7 @@ import Base64Tool from "@/components/umbrella-tools/Base64Tool";
 import BcryptTool from "@/components/umbrella-tools/BcryptTool";
 import ChecksumCalculatorTool from "@/components/umbrella-tools/ChecksumCalculatorTool";
 import CidrCalculatorTool from "@/components/umbrella-tools/CidrCalculatorTool";
+import CodePlaygroundTool from "@/components/umbrella-tools/CodePlaygroundTool";
 import CssShadowGeneratorTool from "@/components/umbrella-tools/CssShadowGeneratorTool";
 import DatabaseUrlParserTool from "@/components/umbrella-tools/DatabaseUrlParserTool";
 import HashGeneratorTool from "@/components/umbrella-tools/HashGeneratorTool";
@@ -114,6 +115,8 @@ export function DevToolsToolRouter({ slug }: { slug: string }) {
       return <SvgToCssBackgroundTool />;
     case "shape-divider-generator":
       return <ShapeDividerGeneratorTool />;
+    case "code-playground":
+      return <CodePlaygroundTool />;
     case "css-shadow-generator":
       return <CssShadowGeneratorTool />;
     case "json-formatter":

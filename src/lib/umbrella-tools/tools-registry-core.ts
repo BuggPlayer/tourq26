@@ -231,6 +231,25 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
       "Pick page ranges from a PDF and download a smaller file. Runs locally in your browser with pdf-lib.",
   },
   {
+    slug: "code-playground",
+    title: "Code playground",
+    description:
+      "Monaco IDE: run JavaScript, TypeScript, Python, Java, C++, Go in a remote sandbox; preview HTML locally. Shortcuts, console, starter templates.",
+    category: "javascript",
+    icon: "⌘",
+    keywords: [
+      "online ide",
+      "run code online",
+      "javascript playground",
+      "python online",
+      "monaco editor online",
+      "typescript playground",
+    ],
+    seoTitle: "Online code playground — JS, TS, Python, Java, C++, Go & HTML preview",
+    seoDescription:
+      "Free browser IDE with Monaco: run JS, TS, Python, Java, C++, Go via Piston sandbox; HTML live preview. Console output, Cmd+Enter to run.",
+  },
+  {
     slug: "pastebin",
     title: "Pastebin",
     description:
