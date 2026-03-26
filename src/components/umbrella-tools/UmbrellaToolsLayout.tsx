@@ -1,6 +1,8 @@
 import Footer from "@/components/Footer";
+import { DevToolsAside } from "@/components/umbrella-tools/DevToolsAside";
 import { DevToolsBreadcrumbs } from "@/components/umbrella-tools/DevToolsBreadcrumbs";
 import { DevToolsMobileSection } from "@/components/umbrella-tools/DevToolsMobileSection";
+import { DevToolsShellRoot } from "@/components/umbrella-tools/DevToolsShellRoot";
 import { DevToolsToolFaq } from "@/components/umbrella-tools/DevToolsToolFaq";
 import { DevToolsRelatedTools } from "@/components/umbrella-tools/DevToolsRelatedTools";
 import { DevToolsSidebar } from "@/components/umbrella-tools/DevToolsSidebar";
@@ -23,17 +25,13 @@ export default function UmbrellaToolsLayout({
 }) {
   const navCatalog = catalogTools ?? UMBRELLA_TOOLS;
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <DevToolsShellRoot>
       <DevToolsTopBar />
 
       <div className="mx-auto flex w-full max-w-[1680px] flex-1">
-        {/* Desktop sidebar */}
-        <aside
-          className="sticky top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-[min(100%,18rem)] shrink-0 flex-col border-r border-border/50 bg-surface/50 sm:top-[3.75rem] sm:h-[calc(100vh-3.75rem)] lg:flex"
-          aria-label="Tool categories"
-        >
+        <DevToolsAside>
           <DevToolsSidebar baseTools={navCatalog} />
-        </aside>
+        </DevToolsAside>
 
         <div className="min-w-0 flex-1">
           <DevToolsMobileSection baseTools={navCatalog} />
@@ -50,6 +48,6 @@ export default function UmbrellaToolsLayout({
       <div className="shrink-0 border-t border-border/30">
         <Footer />
       </div>
-    </div>
+    </DevToolsShellRoot>
   );
 }

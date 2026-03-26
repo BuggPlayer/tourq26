@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
+import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
 import {
   DEV_TOOL_CATEGORY_LABELS,
   groupToolsByCategoryOrder,
@@ -17,15 +18,16 @@ type Props = {
 
 export function DevToolsMobileNav({ tools, query }: Props) {
   const pathname = usePathname();
+  const { messages } = useDevToolsLocale();
 
   const groups = useMemo(() => groupToolsByCategoryOrder(tools), [tools]);
 
   return (
-    <nav className="px-2 pb-4 pt-1" aria-label="Tools (mobile)">
+    <nav className="px-2 pb-4 pt-1" aria-label={messages.mobileNav.aria}>
       {groups.map(({ category, tools: catTools }) => (
         <div key={category} className="mb-4 last:mb-0">
           <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-            {DEV_TOOL_CATEGORY_LABELS[category]}
+            {messages.categoryLabels[category] ?? DEV_TOOL_CATEGORY_LABELS[category]}
           </p>
           <ul className="space-y-0.5">
             {catTools.map((tool) => {
@@ -51,7 +53,7 @@ export function DevToolsMobileNav({ tools, query }: Props) {
       ))}
       {tools.length === 0 ? (
         <p className="px-2 py-3 text-sm text-muted-foreground">
-          No tools match {query.trim() ? `“${query.trim()}”.` : "that search."}
+          {messages.mobileNav.noMatch(query)}
         </p>
       ) : null}
     </nav>

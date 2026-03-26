@@ -129,7 +129,11 @@ export function filterCodePlaygroundFromCatalog(tools: UmbrellaTool[], codePlayg
 }
 
 /** Filter tools by search query (title, description, slug, category label). */
-export function filterUmbrellaTools(query: string, catalog: UmbrellaTool[] = UMBRELLA_TOOLS): UmbrellaTool[] {
+export function filterUmbrellaTools(
+  query: string,
+  catalog: UmbrellaTool[] = UMBRELLA_TOOLS,
+  categoryLabel: (c: DevToolCategory) => string = (c) => DEV_TOOL_CATEGORY_LABELS[c],
+): UmbrellaTool[] {
   const s = query.trim().toLowerCase();
   if (!s) return catalog;
   return catalog.filter(
@@ -137,7 +141,7 @@ export function filterUmbrellaTools(query: string, catalog: UmbrellaTool[] = UMB
       t.title.toLowerCase().includes(s) ||
       t.description.toLowerCase().includes(s) ||
       t.slug.includes(s) ||
-      DEV_TOOL_CATEGORY_LABELS[t.category].toLowerCase().includes(s),
+      categoryLabel(t.category).toLowerCase().includes(s),
   );
 }
 

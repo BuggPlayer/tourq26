@@ -3,7 +3,10 @@ import { readDevToolsAdminDocument, readSiteContent } from "@/lib/content";
 import { getDevToolFaqItems } from "@/lib/umbrella-tools/dev-tool-faq";
 import { getDevToolBySlugWithAdminSeo } from "@/lib/dev-tools-admin";
 import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
-import type { DevToolCategory } from "@/lib/umbrella-tools/types";
+import type { DevToolsLocaleId } from "@/lib/dev-tools-locale";
+import { DEV_TOOL_CATEGORY_META_TAIL } from "@/lib/umbrella-tools/dev-tool-category-meta-tail";
+import { getDevToolsLocaleFromCookie } from "@/lib/dev-tools-locale-server";
+import { getDevToolsSeoMessages } from "@/lib/dev-tools-seo-messages";
 import { getSiteUrl } from "@/lib/site-url";
 
 /** Default OG/Twitter image (root layout uses metadataBase — path must be absolute on site). */
@@ -11,38 +14,20 @@ export const DEV_TOOLS_OG_IMAGE_PATH = "/opengraph-image";
 
 const DEFAULT_SUFFIX = "Developer utilities";
 
-/** Appended when `seoDescription` is absent — varies by category to reduce duplicate meta text. */
-const CATEGORY_META_TAIL: Record<DevToolCategory, string> = {
-  text: "Free online text utility — runs in your browser, no signup.",
-  url: "Free URL tool — client-side only; nothing uploaded to our servers.",
-  html: "Free HTML utility — processed locally in your browser.",
-  markdown: "Free Markdown utility — runs client-side in your browser.",
-  css: "Free CSS developer tool — works locally in your browser.",
-  javascript: "Free JavaScript utility — client-side, no server round-trip.",
-  json: "Free JSON tool — your data stays in the browser tab.",
-  xml: "Free XML utility — parse and convert locally, no upload.",
-  yaml: "Free YAML tool — runs in your browser; no account required.",
-  csv: "Free CSV / tabular data utility — client-side processing.",
-  php: "Free PHP helper — runs in your browser for quick conversions.",
-  database: "Free database utility — connection strings parsed locally in your browser.",
-  randomizers: "Free randomizer — cryptographically strong where supported; runs locally.",
-  base32: "Free Base32 tool — encode and decode in your browser.",
-  base58: "Free Base58 tool — runs locally; no data sent to our servers.",
-  base64: "Free Base64 tool — UTF-8 safe; processed entirely client-side.",
-  hash: "Free hash generator — digests computed in your browser only.",
-  hmac: "Free HMAC tool — keyed hashes for debugging; stays in this tab.",
-  bcrypt: "Free bcrypt utility — passwords never leave your browser.",
-  qrcode: "Free QR tool — generated or decoded locally in your browser.",
-  network: "Free network calculator — IPv4 and IP info without server-side storage.",
-  checksum: "Free checksum utility — integrity checks over UTF-8 in your browser.",
-  pdf: "Free PDF tool — merge or extract pages locally; files are not uploaded to our servers.",
-  pastebin: "Free pastebin — optional share links; content stays client-side or in the URL.",
-};
+export { DEV_TOOL_CATEGORY_META_TAIL } from "@/lib/umbrella-tools/dev-tool-category-meta-tail";
 
 export function getDevToolMetaDescription(tool: UmbrellaTool): string {
   if (tool.seoDescription?.trim()) return tool.seoDescription.trim();
   const base = tool.description.trim();
-  return `${base} ${CATEGORY_META_TAIL[tool.category]}`;
+  return `${base} ${DEV_TOOL_CATEGORY_META_TAIL[tool.category]}`;
+}
+
+/** Localized category tail for `<meta name="description">` when the dev-tools locale cookie is set. */
+export function getDevToolMetaDescriptionForLocale(tool: UmbrellaTool, locale: DevToolsLocaleId): string {
+  if (tool.seoDescription?.trim()) return tool.seoDescription.trim();
+  const base = tool.description.trim();
+  const seo = getDevToolsSeoMessages(locale);
+  return `${base} ${seo.categoryMetaTail[tool.category]}`;
 }
 
 /**
@@ -56,12 +41,18 @@ export async function umbrellaToolsMetadata(opts: {
   keywords?: string[];
   /** Open Graph / Twitter image path (defaults to site OG image). */
   ogImagePath?: string;
+  /**
+   * Middle segment before site name (default: "Developer utilities").
+   * Localized via dev-tools SEO messages when the locale cookie is set.
+   */
+  titleSuffix?: string;
 }): Promise<Metadata> {
   const [baseUrl, site] = await Promise.all([getSiteUrl(), readSiteContent()]);
   const path = opts.path.startsWith("/") ? opts.path : `/${opts.path}`;
   const url = `${baseUrl}${path}`;
+  const suffix = opts.titleSuffix ?? DEFAULT_SUFFIX;
   /** Segment merged with root `layout` `titleTemplate` (e.g. `%s | Torq Studio`) — do not append site name here. */
-  const titleSegment = `${opts.title} | ${DEFAULT_SUFFIX}`;
+  const titleSegment = `${opts.title} | ${suffix}`;
   const resolvedTitle = `${titleSegment} | ${site.siteName}`;
   const ogImage = opts.ogImagePath ?? DEV_TOOLS_OG_IMAGE_PATH;
   const ogAlt = `${opts.title} | ${site.siteName}`;
@@ -92,15 +83,20 @@ export async function umbrellaToolsMetadata(opts: {
 /**
  * Schema.org CollectionPage + ItemList for the /dev-tools hub (discovery + rich context).
  */
-export function devToolsHubPageJsonLd(siteUrl: string, siteName: string, tools: UmbrellaTool[]) {
+export function devToolsHubPageJsonLd(
+  siteUrl: string,
+  siteName: string,
+  tools: UmbrellaTool[],
+  locale: DevToolsLocaleId = "en",
+) {
+  const seo = getDevToolsSeoMessages(locale);
   const base = siteUrl.replace(/\/$/, "");
   const hubUrl = `${base}/dev-tools`;
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Free online developer tools",
-    description:
-      "Browse free developer utilities: JSON, Base64, hashing, QR codes, CIDR, encodings, and more. All tools run client-side in your browser — no account required.",
+    name: seo.jsonLdHub.name,
+    description: seo.jsonLdHub.description,
     url: hubUrl,
     isPartOf: {
       "@type": "WebSite",
@@ -109,7 +105,7 @@ export function devToolsHubPageJsonLd(siteUrl: string, siteName: string, tools: 
     },
     mainEntity: {
       "@type": "ItemList",
-      name: "Developer utilities",
+      name: seo.jsonLdHub.itemListName,
       numberOfItems: tools.length,
       itemListElement: tools.map((t, i) => ({
         "@type": "ListItem",
@@ -233,12 +229,15 @@ export async function devToolsPageMetadata(slug: string): Promise<Metadata> {
   if (!merged) {
     return { title: "Developer tool", robots: { index: false, follow: false } };
   }
+  const locale = await getDevToolsLocaleFromCookie();
+  const seo = getDevToolsSeoMessages(locale);
   const title = merged.seoTitle?.trim() || merged.title;
   return umbrellaToolsMetadata({
     title,
-    description: getDevToolMetaDescription(merged),
+    description: getDevToolMetaDescriptionForLocale(merged, locale),
     path: `/dev-tools/${slug}`,
     keywords: merged.keywords,
     ogImagePath: DEV_TOOLS_OG_IMAGE_PATH,
+    titleSuffix: seo.titleSuffix,
   });
 }

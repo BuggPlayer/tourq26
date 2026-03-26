@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
 import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 import { DEV_TOOL_CATEGORY_LABELS } from "@/lib/umbrella-tools/tools-config";
 
@@ -9,7 +12,8 @@ type Props = {
 };
 
 export function DevToolsToolCard({ tool, featured }: Props) {
-  const categoryLabel = DEV_TOOL_CATEGORY_LABELS[tool.category];
+  const { messages } = useDevToolsLocale();
+  const categoryLabel = messages.categoryLabels[tool.category] ?? DEV_TOOL_CATEGORY_LABELS[tool.category];
 
   return (
     <Link
@@ -18,7 +22,7 @@ export function DevToolsToolCard({ tool, featured }: Props) {
     >
       {featured ? (
         <span className="absolute left-4 top-4 rounded-full border border-amber-500/35 bg-amber-500/12 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-          Featured
+          {messages.toolCard.featured}
         </span>
       ) : null}
       {tool.badge ? (
@@ -42,7 +46,7 @@ export function DevToolsToolCard({ tool, featured }: Props) {
       </div>
       <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">{tool.description}</p>
       <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-        Open tool
+        {messages.toolCard.openTool}
         <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden>
           →
         </span>

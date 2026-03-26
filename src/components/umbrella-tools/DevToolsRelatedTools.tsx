@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { DEV_TOOL_CATEGORY_LABELS, getRelatedDevTools, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
+import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
+import {
+  DEV_TOOL_CATEGORY_LABELS,
+  getRelatedDevTools,
+  type UmbrellaTool,
+} from "@/lib/umbrella-tools/tools-config";
 
 type Props = {
   /** From server when admin has disabled tools — omits hidden slugs from suggestions. */
@@ -11,6 +16,7 @@ type Props = {
 
 export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
   const pathname = usePathname();
+  const { messages } = useDevToolsLocale();
   const segments = pathname.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
   if (segments.length !== 2 || segments[0] !== "dev-tools" || segments[1] === "about") {
     return null;
@@ -22,9 +28,9 @@ export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
   return (
     <section className="mt-14 border-t border-border/50 pt-10" aria-labelledby="dev-tools-related-heading">
       <h2 id="dev-tools-related-heading" className="font-display text-lg font-semibold tracking-tight text-foreground">
-        Related tools
+        {messages.related.title}
       </h2>
-      <p className="mt-1 text-sm text-muted-foreground">Same category first, then other utilities.</p>
+      <p className="mt-1 text-sm text-muted-foreground">{messages.related.subtitle}</p>
       <ul className="mt-5 grid gap-3 sm:grid-cols-2">
         {related.map((t) => (
           <li key={t.slug}>
@@ -40,7 +46,7 @@ export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
                 <span className="block font-medium text-foreground">{t.title}</span>
                 <span className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{t.description}</span>
                 <span className="mt-1 block text-[10px] font-semibold uppercase tracking-wider text-primary/70">
-                  {DEV_TOOL_CATEGORY_LABELS[t.category]}
+                  {messages.categoryLabels[t.category] ?? DEV_TOOL_CATEGORY_LABELS[t.category]}
                 </span>
               </span>
             </Link>

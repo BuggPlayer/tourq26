@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
 import {
   DEV_TOOL_CATEGORY_LABELS,
   filterUmbrellaTools,
@@ -14,8 +15,13 @@ import {
 export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: UmbrellaTool[] }) {
   const [q, setQ] = useState("");
   const pathname = usePathname();
+  const { messages } = useDevToolsLocale();
 
-  const filtered = useMemo(() => filterUmbrellaTools(q, baseTools), [q, baseTools]);
+  const filtered = useMemo(
+    () =>
+      filterUmbrellaTools(q, baseTools, (c) => messages.categoryLabels[c] ?? DEV_TOOL_CATEGORY_LABELS[c]),
+    [q, baseTools, messages.categoryLabels],
+  );
 
   const groups = useMemo(() => groupToolsByCategoryOrder(filtered), [filtered]);
 
@@ -23,7 +29,7 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
     <div className="flex h-full flex-col">
       <div className="border-b border-border/50 p-3">
         <label htmlFor="dev-tools-search" className="sr-only">
-          Search tools
+          {messages.sidebar.searchLabel}
         </label>
         <div className="relative">
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden>
@@ -34,12 +40,12 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search tools…"
+            placeholder={messages.sidebar.searchPlaceholder}
             className="w-full rounded-lg border border-border/60 bg-background py-2 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
-      <nav className="flex-1 overflow-y-auto p-3 pb-8" aria-label="Tools by category">
+      <nav className="flex-1 overflow-y-auto p-3 pb-8" aria-label={messages.sidebar.navAria}>
         <Link
           href="/dev-tools"
           scroll={false}
@@ -49,7 +55,7 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
               : "text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
           }`}
         >
-          All tools overview
+          {messages.sidebar.allTools}
         </Link>
         <Link
           href="/dev-tools/about"
@@ -60,13 +66,13 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
               : "text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
           }`}
         >
-          About utilities
+          {messages.sidebar.aboutUtilities}
         </Link>
 
         {groups.map(({ category, tools }) => (
           <div key={category} className="mb-6 last:mb-0">
             <p className="px-2 pb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-              {DEV_TOOL_CATEGORY_LABELS[category]}
+              {messages.categoryLabels[category] ?? DEV_TOOL_CATEGORY_LABELS[category]}
             </p>
             <ul className="space-y-0.5">
               {tools.map((tool) => {
@@ -96,7 +102,7 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
         ))}
 
         {filtered.length === 0 ? (
-          <p className="px-2 text-sm text-muted-foreground">No tools match &ldquo;{q}&rdquo;.</p>
+          <p className="px-2 text-sm text-muted-foreground">{messages.sidebar.noMatch(q)}</p>
         ) : null}
       </nav>
     </div>
