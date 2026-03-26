@@ -1,41 +1,27 @@
 /**
  * Single registry for /dev-tools — categories match the public hub (Text, URL, HTML, …).
- * Add tools here; empty categories are hidden on the index until you ship utilities.
+ * Core tools live in `tools-registry-core.ts`; extra catalog rows in `tools-registry-extra.ts` (generated).
  */
-export type DevToolCategory =
-  | "text"
-  | "url"
-  | "html"
-  | "markdown"
-  | "css"
-  | "javascript"
-  | "json"
-  | "xml"
-  | "yaml"
-  | "csv"
-  | "php"
-  | "database"
-  | "randomizers"
-  | "base32"
-  | "base58"
-  | "base64"
-  | "hash"
-  | "hmac"
-  | "bcrypt"
-  | "qrcode"
-  | "network"
-  | "checksum"
-  | "pastebin";
+import type { DevToolCategory, UmbrellaTool } from "./types";
+import { CORE_UMBRELLA_TOOLS } from "./tools-registry-core";
+import { EXTRA_UMBRELLA_TOOLS } from "./tools-registry-extra";
 
-export type UmbrellaTool = {
-  slug: string;
-  title: string;
-  description: string;
-  category: DevToolCategory;
-  icon: string;
-  keywords?: string[];
-  badge?: string;
-};
+export type { DevToolCategory, UmbrellaTool } from "./types";
+
+function mergeUmbrellaTools(): UmbrellaTool[] {
+  const map = new Map<string, UmbrellaTool>();
+  for (const t of CORE_UMBRELLA_TOOLS) map.set(t.slug, t);
+  for (const t of EXTRA_UMBRELLA_TOOLS) {
+    if (!map.has(t.slug)) map.set(t.slug, t);
+  }
+  const order = DEV_TOOL_CATEGORY_ORDER;
+  const catIndex = (c: DevToolCategory) => order.indexOf(c);
+  return [...map.values()].sort((a, b) => {
+    const d = catIndex(a.category) - catIndex(b.category);
+    if (d !== 0) return d;
+    return a.title.localeCompare(b.title);
+  });
+}
 
 /** Section titles on /dev-tools */
 export const DEV_TOOL_CATEGORY_LABELS: Record<DevToolCategory, string> = {
@@ -118,170 +104,7 @@ export const DEV_TOOL_CATEGORY_BLURB: Record<DevToolCategory, string> = {
   pastebin: "Scratch pad and shareable links — everything stays in the browser or the URL.",
 };
 
-export const UMBRELLA_TOOLS: UmbrellaTool[] = [
-  {
-    slug: "svg-to-css-background",
-    title: "SVG → CSS background",
-    description: "Turn inline SVG into a data URL and copy-ready background-image CSS.",
-    category: "css",
-    icon: "◈",
-    keywords: ["svg to css", "background-image", "data url"],
-  },
-  {
-    slug: "css-shadow-generator",
-    title: "CSS box-shadow",
-    description: "Live preview for offset, blur, spread, and color — copy the value in one click.",
-    category: "css",
-    icon: "◐",
-    keywords: ["box-shadow generator", "css shadow"],
-  },
-  {
-    slug: "json-formatter",
-    title: "JSON formatter",
-    description: "Format, minify, and validate JSON — fix payloads before APIs or configs.",
-    category: "json",
-    icon: "{}",
-    keywords: ["json formatter", "json minify", "json validator online"],
-  },
-  {
-    slug: "jwt-decoder",
-    title: "JWT decoder",
-    description: "Inspect header and payload (Base64URL). Read-only — does not verify signatures.",
-    category: "json",
-    icon: "◎",
-    keywords: ["jwt decode", "jwt parser online", "json web token"],
-  },
-  {
-    slug: "json-to-csv",
-    title: "JSON → CSV",
-    description: "Convert JSON arrays to CSV with instant preview and download.",
-    category: "csv",
-    icon: "▤",
-    keywords: ["json to csv", "export csv"],
-  },
-  {
-    slug: "base64",
-    title: "Base64 encode / decode",
-    description: "Encode or decode Base64 for UTF-8 text — handy for APIs, tokens, and debugging.",
-    category: "base64",
-    icon: "⊕",
-    keywords: ["base64 encode", "base64 decode online", "utf-8 base64"],
-  },
-  {
-    slug: "hash-generator",
-    title: "SHA hash generator",
-    description: "Compute SHA-256, SHA-384, or SHA-512 digests of any text — Web Crypto, client-side only.",
-    category: "hash",
-    icon: "#",
-    keywords: ["sha256 online", "sha512 hash", "generate hash"],
-  },
-  {
-    slug: "uuid-generator",
-    title: "UUID generator",
-    description: "Generate RFC 4122 v4 UUIDs with one click — copy individually or all at once.",
-    category: "text",
-    icon: "◇",
-    keywords: ["uuid generator", "guid generator online", "random uuid"],
-  },
-  {
-    slug: "timestamp-converter",
-    title: "Unix timestamp converter",
-    description: "Convert Unix seconds or milliseconds ↔ ISO 8601 dates in local and UTC.",
-    category: "text",
-    icon: "◷",
-    keywords: ["unix timestamp converter", "epoch converter", "iso 8601"],
-  },
-  {
-    slug: "url-encode",
-    title: "URL encode / decode",
-    description: "Percent-encode or decode query strings and path components safely in the browser.",
-    category: "url",
-    icon: "§",
-    keywords: ["url encode", "percent encode", "decodeURIComponent"],
-  },
-  {
-    slug: "database-url-parser",
-    title: "Database URL parser",
-    description:
-      "Split PostgreSQL, MySQL, MongoDB, Redis, and other connection URLs into scheme, host, port, user, and database.",
-    category: "database",
-    icon: "▢",
-    keywords: ["postgres connection string", "mysql url parser", "database url"],
-  },
-  {
-    slug: "random-string",
-    title: "Random string generator",
-    description: "Generate cryptographically random strings — length, charset, and one-click copy.",
-    category: "randomizers",
-    icon: "✧",
-    keywords: ["random string", "secure random", "token generator"],
-  },
-  {
-    slug: "base32-encode-decode",
-    title: "Base32 encode / decode",
-    description: "RFC 4648 Base32 for encoded identifiers, OTP secrets, and text-safe binary.",
-    category: "base32",
-    icon: "Ⓑ",
-    keywords: ["base32 encode", "rfc 4648", "base32 decode"],
-  },
-  {
-    slug: "base58-encode-decode",
-    title: "Base58 encode / decode",
-    description: "Bitcoin-style Base58 — compact, avoids ambiguous characters (0, O, I, l).",
-    category: "base58",
-    icon: "₿",
-    keywords: ["base58", "bitcoin encoding"],
-  },
-  {
-    slug: "hmac-generator",
-    title: "HMAC generator",
-    description: "Compute HMAC-SHA-256/384/512 hex for a secret and message — useful for webhooks and APIs.",
-    category: "hmac",
-    icon: "⌬",
-    keywords: ["hmac sha256", "hmac generator online", "webhook signature"],
-  },
-  {
-    slug: "bcrypt-hash",
-    title: "Bcrypt hash & compare",
-    description: "Hash passwords with bcrypt or verify a password against a hash — runs locally in your browser.",
-    category: "bcrypt",
-    icon: "⚿",
-    keywords: ["bcrypt online", "bcrypt compare", "password hash"],
-  },
-  {
-    slug: "qr-code-generator",
-    title: "QR code generator",
-    description: "Turn any text or URL into a QR code — PNG data URL for download or embedding.",
-    category: "qrcode",
-    icon: "▣",
-    keywords: ["qr code generator", "qr online"],
-  },
-  {
-    slug: "cidr-calculator",
-    title: "CIDR calculator",
-    description: "IPv4 CIDR — network and broadcast addresses, subnet mask, and usable host range.",
-    category: "network",
-    icon: "⬚",
-    keywords: ["cidr calculator", "subnet calculator", "ipv4 cidr"],
-  },
-  {
-    slug: "checksum-calculator",
-    title: "Checksum calculator",
-    description: "IEEE CRC-32 and Fletcher-16 over UTF-8 bytes — compare with firmware, ZIP, and network stacks.",
-    category: "checksum",
-    icon: "∑",
-    keywords: ["crc32 online", "checksum calculator", "fletcher checksum"],
-  },
-  {
-    slug: "pastebin",
-    title: "Pastebin",
-    description:
-      "Plain-text scratch pad with optional share link (base64 in the URL), clipboard copy, and .txt download — no server upload.",
-    category: "pastebin",
-    icon: "¶",
-    keywords: ["pastebin online", "text share", "client side paste"],
-  },
-];
+export const UMBRELLA_TOOLS: UmbrellaTool[] = mergeUmbrellaTools();
 
 export function toolsByCategory(category: DevToolCategory) {
   return UMBRELLA_TOOLS.filter((t) => t.category === category);
