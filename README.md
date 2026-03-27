@@ -44,7 +44,8 @@ npm start
 - **Blog posts:** BlogPosting + BreadcrumbList; optional **author** per post in admin.
 - **Breadcrumbs** on about, contact, blog, freebies, privacy, terms.
 - **`robots.txt`:** allows public pages; **disallows `/admin` and `/api/`**.
-- **`sitemap.xml`** built from Site URL + blog + freebies + **dev-tools** (`/dev-tools` and each utility slug) + **`/youtube-playlist-length`**.
+- **`/llms.txt`:** curated Markdown index for LLMs/agents ([llmstxt.org](https://llmstxt.org/) shape); built from **Site & SEO** URL + copy via `src/lib/llms-txt.ts` and `src/app/llms.txt/route.ts`. Listed in **`sitemap.xml`** for discovery.
+- **`sitemap.xml`** built from Site URL + blog + freebies + **dev-tools** (`/dev-tools` and each utility slug) + **`/youtube-playlist-length`** + **`/llms.txt`**.
 - **404** uses `noindex`.
 
 ## TorqStudio Interview Hub (`/hub`)
@@ -134,6 +135,6 @@ While `HUB_ALL_FREE_LAUNCH` is `true`, users are not charged; you can skip Strip
 
 ## Structure
 
-- `src/app/` — Layout, metadata, home, privacy, terms, **dev-tools** (`/dev-tools/**`), **`youtube-playlist-length`**, **hub** (`/hub/**`), 404, robots, sitemap
+- `src/app/` — Layout, metadata, home, privacy, terms, **dev-tools** (`/dev-tools/**`), **`youtube-playlist-length`**, **`llms.txt`**, **hub** (`/hub/**`), 404, robots, sitemap
 - `src/components/` — Header, Hero, …, **`hub/*`** (Interview Hub UI)
 - `prisma/` — Schema + seed data for the hub
