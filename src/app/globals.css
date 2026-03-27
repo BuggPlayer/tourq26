@@ -584,3 +584,24 @@ select:focus-visible {
   font-size: inherit;
   color: inherit;
 }
+
+/* YouTube playlist length — indeterminate fetch bar */
+@keyframes ytpl-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+.ytpl-indeterminate-bar {
+  animation: ytpl-indeterminate 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ytpl-indeterminate-bar {
+    animation: none;
+    transform: translateX(0);
+    width: 100% !important;
+    opacity: 0.5;
+  }
+}

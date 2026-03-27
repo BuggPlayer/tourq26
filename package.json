@@ -11,6 +11,8 @@
     "test": "vitest run",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
+    "content:build-dev-tools-seed": "python3 scripts/build_dev_tools_seed.py",
+    "content:seed-dev-tools": "python3 scripts/build_dev_tools_seed.py && cp content/dev-tools-admin.seed.json content/dev-tools-admin.json",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },
@@ -28,6 +30,7 @@
     "@vercel/kv": "^3.0.0",
     "@xyflow/react": "^12.10.1",
     "ai": "^6.0.134",
+    "axios": "^1.14.0",
     "bcryptjs": "^3.0.3",
     "crypto-js": "^4.2.0",
     "fast-xml-parser": "^5.5.9",

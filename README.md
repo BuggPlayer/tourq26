@@ -34,6 +34,7 @@ npm start
 5. **Legal** — Review `/privacy` and `/terms` for your jurisdiction.
 6. **WhatsApp (floating button)** — Set **`NEXT_PUBLIC_WHATSAPP_NUMBER`** to your WhatsApp Business / mobile number in **international format, digits only, no `+`** (example India: `919876543210`). If you use a **10-digit local** number, the app prepends **`NEXT_PUBLIC_WHATSAPP_PREFIX`** (defaults to **`91`**). Use `1` for US/Canada, `44` for UK, etc. Links use **`https://api.whatsapp.com/send`** (more reliable than `wa.me` with bad numbers). **`NEXT_PUBLIC_*` is applied at build time** — after changing env on Vercel, **redeploy**.
 7. **Developer utilities** — **`/dev-tools`** hosts client-side helpers (SVG→CSS, JSON→CSV, CSS shadows). No API key required.
+8. **YouTube playlist length** — **`/youtube-playlist-length`** totals watch time for public playlists via **YouTube Data API v3**. Set **`YOUTUBE_API_KEY`** in `.env.local` (see `docs/youtube-playlist-length.env.example`). Optional: **`NEXT_PUBLIC_PLAUSIBLE_DOMAIN`** for privacy-friendly analytics on that route only. The UI includes **pinned favorites** and **recent playlists** (local), **keyboard shortcuts** (`?`, `/`, Esc, Ctrl/⌘+Enter), **copy all visible titles**, **CSV export**, and **remembered playback speed + sort** in `localStorage`.
 
 ### Trust & SEO
 
@@ -43,7 +44,7 @@ npm start
 - **Blog posts:** BlogPosting + BreadcrumbList; optional **author** per post in admin.
 - **Breadcrumbs** on about, contact, blog, freebies, privacy, terms.
 - **`robots.txt`:** allows public pages; **disallows `/admin` and `/api/`**.
-- **`sitemap.xml`** built from Site URL + blog + freebies + **dev-tools** (`/dev-tools` and each utility slug).
+- **`sitemap.xml`** built from Site URL + blog + freebies + **dev-tools** (`/dev-tools` and each utility slug) + **`/youtube-playlist-length`**.
 - **404** uses `noindex`.
 
 ## TorqStudio Interview Hub (`/hub`)
@@ -122,9 +123,17 @@ While `HUB_ALL_FREE_LAUNCH` is `true`, users are not charged; you can skip Strip
 | `POST /api/checkout` | Stripe Checkout session |
 | `POST /api/webhooks/stripe` | Stripe events |
 | `GET,POST /api/forum`, `POST /api/forum/reply` | Discussions |
+| `POST /api/youtube/playlist` | Server-side playlist analysis (requires `YOUTUBE_API_KEY`) |
+
+### Deploying the YouTube playlist tool (Vercel)
+
+1. In [Google Cloud Console](https://console.cloud.google.com/), enable **YouTube Data API v3** and create an API key (restrict by HTTP referrer or IP if possible).
+2. In the Vercel project → **Settings → Environment Variables**, add **`YOUTUBE_API_KEY`** for Production (and Preview if needed). Redeploy so the serverless function picks it up.
+3. Optional: increase **Function max duration** for `/api/youtube/playlist` on Pro plans if you expect playlists with many hundreds of items (the route sets `maxDuration = 60` where the platform allows it).
+4. **`/youtube-playlist-length`** is static HTML with a client UI; the key never ships to the browser.
 
 ## Structure
 
-- `src/app/` — Layout, metadata, home, privacy, terms, **dev-tools** (`/dev-tools/**`), **hub** (`/hub/**`), 404, robots, sitemap
+- `src/app/` — Layout, metadata, home, privacy, terms, **dev-tools** (`/dev-tools/**`), **`youtube-playlist-length`**, **hub** (`/hub/**`), 404, robots, sitemap
 - `src/components/` — Header, Hero, …, **`hub/*`** (Interview Hub UI)
 - `prisma/` — Schema + seed data for the hub
