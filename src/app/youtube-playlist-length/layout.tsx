@@ -1,4 +1,12 @@
 import Script from "next/script";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  variable: "--font-yt-playlist",
+  display: "swap",
+});
 
 export default function YouTubePlaylistLengthLayout({ children }: { children: React.ReactNode }) {
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
@@ -12,7 +20,11 @@ export default function YouTubePlaylistLengthLayout({ children }: { children: Re
           strategy="lazyOnload"
         />
       ) : null}
-      {children}
+      <div
+        className={`yt-playlist-tool flex min-h-screen flex-col bg-background text-foreground antialiased ${roboto.variable}`}
+      >
+        {children}
+      </div>
     </>
   );
 }

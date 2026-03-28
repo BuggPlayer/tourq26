@@ -48,16 +48,16 @@ export function PlaylistLengthFaq() {
   };
 
   return (
-    <section aria-labelledby="ytpl-faq-heading" className="border-t border-border/60 pt-12">
+    <section aria-labelledby="ytpl-faq-heading">
       <JsonLd data={jsonLd} />
-      <h2 id="ytpl-faq-heading" className="font-display text-2xl font-bold text-foreground">
+      <h2 id="ytpl-faq-heading" className="font-display text-lg font-bold text-foreground sm:text-xl">
         Frequently asked questions
       </h2>
-      <dl className="mt-8 space-y-8">
+      <dl className="mt-5 space-y-5 sm:mt-6 sm:space-y-6">
         {FAQ_ITEMS.map((item) => (
-          <div key={item.question}>
-            <dt className="font-semibold text-foreground">{item.question}</dt>
-            <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</dd>
+          <div key={item.question} className="rounded-lg border border-border/40 bg-surface-elevated/40 px-3 py-3 sm:px-4 sm:py-3.5">
+            <dt className="text-sm font-semibold text-foreground">{item.question}</dt>
+            <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{item.answer}</dd>
           </div>
         ))}
       </dl>

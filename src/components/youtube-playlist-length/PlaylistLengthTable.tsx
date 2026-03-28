@@ -31,6 +31,9 @@ function SortHint({ listSort, col }: { listSort: ListSortState; col: ColumnSortK
   );
 }
 
+const sortHeaderBtnClass =
+  "inline-flex min-h-10 items-center gap-1.5 rounded-md px-2 py-1.5 -mx-1 font-semibold text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-0 sm:px-1 sm:py-0.5";
+
 function IconExternal({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
@@ -41,7 +44,9 @@ function IconExternal({ className }: { className?: string }) {
 
 export function PlaylistLengthTable({ rows, listSort, onColumnSort, className = "" }: Props) {
   return (
-    <div className={`overflow-x-auto ${className}`}>
+    <div
+      className={`overflow-x-auto overscroll-x-contain touch-pan-x [-webkit-overflow-scrolling:touch] ${className}`}
+    >
       <table className="w-full min-w-[720px] border-collapse text-left text-sm">
         <caption className="sr-only">Videos in the selected playlist range with duration and statistics</caption>
         <thead>
@@ -49,7 +54,7 @@ export function PlaylistLengthTable({ rows, listSort, onColumnSort, className = 
             <th scope="col" className="px-3 py-3.5 sm:px-4" aria-sort={headerAriaSort(listSort, "position")}>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 -mx-1 font-semibold text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className={sortHeaderBtnClass}
                 onClick={() => onColumnSort("position")}
               >
                 # <SortHint listSort={listSort} col="position" />
@@ -58,7 +63,7 @@ export function PlaylistLengthTable({ rows, listSort, onColumnSort, className = 
             <th scope="col" className="px-3 py-3.5 sm:px-4" aria-sort={headerAriaSort(listSort, "title")}>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 -mx-1 font-semibold text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className={sortHeaderBtnClass}
                 onClick={() => onColumnSort("title")}
               >
                 Title <SortHint listSort={listSort} col="title" />
@@ -67,7 +72,7 @@ export function PlaylistLengthTable({ rows, listSort, onColumnSort, className = 
             <th scope="col" className="px-3 py-3.5 sm:px-4" aria-sort={headerAriaSort(listSort, "duration")}>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 -mx-1 font-semibold text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className={sortHeaderBtnClass}
                 onClick={() => onColumnSort("duration")}
               >
                 Duration <SortHint listSort={listSort} col="duration" />
@@ -76,7 +81,7 @@ export function PlaylistLengthTable({ rows, listSort, onColumnSort, className = 
             <th scope="col" className="px-3 py-3.5 sm:px-4" aria-sort={headerAriaSort(listSort, "views")}>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 -mx-1 font-semibold text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className={sortHeaderBtnClass}
                 onClick={() => onColumnSort("views")}
               >
                 Views <SortHint listSort={listSort} col="views" />
@@ -85,7 +90,7 @@ export function PlaylistLengthTable({ rows, listSort, onColumnSort, className = 
             <th scope="col" className="px-3 py-3.5 sm:px-4" aria-sort={headerAriaSort(listSort, "likes")}>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 -mx-1 font-semibold text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className={sortHeaderBtnClass}
                 onClick={() => onColumnSort("likes")}
               >
                 Likes <SortHint listSort={listSort} col="likes" />
@@ -94,7 +99,7 @@ export function PlaylistLengthTable({ rows, listSort, onColumnSort, className = 
             <th scope="col" className="px-3 py-3.5 sm:px-4" aria-sort={headerAriaSort(listSort, "comments")}>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 -mx-1 font-semibold text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className={sortHeaderBtnClass}
                 onClick={() => onColumnSort("comments")}
               >
                 Comments <SortHint listSort={listSort} col="comments" />

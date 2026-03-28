@@ -138,6 +138,8 @@ export function devToolsItemListJsonLd(siteUrl: string, tools: UmbrellaTool[]) {
 
 /**
  * JSON-LD for individual tool URLs: WebPage + BreadcrumbList + WebApplication (free, client-side).
+ * We use `WebApplication` only — not `SoftwareApplication` — so Google does not apply Software App rich-result
+ * rules that require `aggregateRating` or `review` (we do not fabricate ratings).
  */
 export function devToolsToolPageJsonLd(opts: { siteUrl: string; siteName: string; tool: UmbrellaTool }) {
   const base = opts.siteUrl.replace(/\/$/, "");
@@ -173,14 +175,15 @@ export function devToolsToolPageJsonLd(opts: { siteUrl: string; siteName: string
         ],
       },
       {
-        "@type": ["SoftwareApplication", "WebApplication"],
+        "@type": "WebApplication",
         "@id": `${pageUrl}#webapp`,
         name: opts.tool.title,
         description: desc,
         url: pageUrl,
         applicationCategory: "DeveloperApplication",
-        operatingSystem: "Any",
+        operatingSystem: "Web browser",
         browserRequirements: "Requires JavaScript. Runs entirely in your browser; no install.",
+        isAccessibleForFree: true,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       },
     ],

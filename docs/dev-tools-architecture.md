@@ -31,7 +31,7 @@ Public **Guide** and **FAQ** blocks come from `app/dev-tools/[slug]/page.tsx` vi
 
 ## SEO and JSON-LD
 
-- `app/dev-tools/[slug]/page.tsx` calls `devToolsPageMetadata(slug)` and injects `devToolsToolFullJsonLd` (WebPage, BreadcrumbList, SoftwareApplication/WebApplication, FAQPage when FAQs exist).
+- `app/dev-tools/[slug]/page.tsx` calls `devToolsPageMetadata(slug)` and injects `devToolsToolFullJsonLd` (WebPage, BreadcrumbList, WebApplication only — not SoftwareApplication, to avoid Google Software App rich-result requirements for ratings, FAQPage when FAQs exist).
 - **FAQPage** pairs: admin `faqItems` when set; else registry/code `getDevToolFaqItems(slug)` (`dev-tool-faq.ts` + optional `tool.faq` + defaults). Legacy `faqHtml` only → no FAQPage (see above).
 
 ## Tool UI: `DevToolPageShell`

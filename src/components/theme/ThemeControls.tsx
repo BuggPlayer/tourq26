@@ -1,14 +1,21 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useIsClient } from "@/hooks/use-is-client";
 
 type FontFamily = "brand" | "system";
 
-export function ThemeControls() {
+type ThemeControlsProps = {
+  /** Stacked, full-width controls for mobile sheets / narrow toolbars */
+  layout?: "inline" | "stacked";
+  className?: string;
+};
+
+export function ThemeControls({ layout = "inline", className }: ThemeControlsProps = {}) {
   const { setTheme, resolvedTheme } = useTheme();
   const mounted = useIsClient();
+  const fontFieldId = useId();
 
   const persistedFont = useMemo((): FontFamily => {
     if (!mounted) return "brand";
@@ -44,22 +51,66 @@ export function ThemeControls() {
 
   if (!mounted) {
     return (
-      <div className="flex items-center gap-2" aria-hidden>
-        <div className="h-9 w-20 rounded-lg bg-muted/30" />
-        <div className="h-9 w-9 rounded-lg bg-muted/30" />
+      <div
+        className={
+          layout === "stacked"
+            ? "flex w-full flex-col gap-3"
+            : "flex items-center gap-2"
+        }
+        aria-hidden
+      >
+        <div className={`rounded-lg bg-muted/30 ${layout === "stacked" ? "h-11 w-full" : "h-9 w-20"}`} />
+        <div className={`rounded-lg bg-muted/30 ${layout === "stacked" ? "h-11 w-11" : "h-9 w-9"}`} />
       </div>
     );
   }
 
   const label = `Color theme: switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`;
 
+  if (layout === "stacked") {
+    return (
+      <div className={`flex w-full flex-col gap-4 ${className ?? ""}`}>
+        <div>
+          <label htmlFor={fontFieldId} className="mb-2 block text-sm font-medium text-foreground">
+            Font
+          </label>
+          <select
+            id={fontFieldId}
+            value={fontFamily}
+            onChange={(e) => onFontChange(e.target.value as FontFamily)}
+            className="min-h-12 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-base font-medium text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          >
+            <option value="brand">Brand fonts</option>
+            <option value="system">System UI</option>
+          </select>
+        </div>
+        <div>
+          <span className="mb-2 block text-sm font-medium text-foreground">Theme</span>
+          <button
+            type="button"
+            onClick={cycleTheme}
+            title={label}
+            aria-label={label}
+            className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-background text-foreground shadow-sm transition-colors active:bg-muted/40 focus:outline-none focus:ring-2 focus:ring-ring"
+          >
+            {resolvedTheme === "dark" ? (
+              <SunIcon className="h-5 w-5" />
+            ) : (
+              <MoonIcon className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-wrap items-center justify-end gap-2">
-      <label className="sr-only" htmlFor="torq-font-family">
+    <div className={`flex flex-wrap items-center justify-end gap-2 ${className ?? ""}`}>
+      <label className="sr-only" htmlFor={fontFieldId}>
         Font
       </label>
       <select
-        id="torq-font-family"
+        id={fontFieldId}
         value={fontFamily}
         onChange={(e) => onFontChange(e.target.value as FontFamily)}
         className="rounded-lg border border-border bg-background/80 px-2 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-ring"

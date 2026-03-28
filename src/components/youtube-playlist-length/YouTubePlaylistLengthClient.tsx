@@ -606,8 +606,8 @@ export function YouTubePlaylistLengthClient() {
   const currentPlaylistPinned = Boolean(result?.ok && pinnedIds.has(result.playlistId));
 
   return (
-    <div className="space-y-8 sm:space-y-10">
-      {showWelcome ? (
+    <div className="space-y-5 sm:space-y-6">
+      {/* {showWelcome ? (
         <div className="rounded-2xl border border-border/50 bg-gradient-to-br from-primary-muted/40 via-surface-elevated/30 to-accent-muted/25 p-5 sm:p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
@@ -633,31 +633,31 @@ export function YouTubePlaylistLengthClient() {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : null} */}
 
       <section
         aria-labelledby="ytpl-form-heading"
-        className="relative overflow-hidden rounded-2xl border border-border/60 bg-surface-elevated/25 shadow-[var(--shadow-card)] ring-1 ring-border/30"
+        className="relative overflow-hidden rounded-xl border border-border/60 bg-surface-elevated shadow-[var(--shadow-card)] ring-1 ring-border/25"
       >
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent"
           aria-hidden
         />
-        <div className="p-5 sm:p-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="p-4 sm:p-6">
+          {/* <div className="flex flex-row items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <h2 id="ytpl-form-heading" className="font-display text-xl font-semibold tracking-tight text-foreground">
+              <h2 id="ytpl-form-heading" className="font-display text-base font-semibold tracking-tight text-foreground sm:text-lg">
                 Analyze a playlist
               </h2>
-              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Paste a playlist or watch URL with <code className="rounded-md bg-muted/50 px-1.5 py-0.5 text-xs">list=</code>.
-                Your API key never leaves the server.
+              <p className="mt-0.5 max-w-2xl text-xs leading-snug text-muted-foreground sm:text-sm sm:leading-relaxed">
+                Paste a URL with <code className="rounded bg-muted/60 px-1 py-0.5 font-mono text-[0.7rem] sm:text-xs">list=</code>
+                . Keys stay on the server.
               </p>
             </div>
             <button
               type="button"
               onClick={() => setShortcutsOpen(true)}
-              className="inline-flex shrink-0 items-center gap-2 self-start rounded-xl border border-border bg-background px-3 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+              className="inline-flex min-h-10 shrink-0 items-center gap-1.5 self-center rounded-lg border border-border bg-background px-2.5 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground sm:min-h-0 sm:gap-2 sm:px-3 sm:text-sm"
             >
               <IconKeyboard className="h-4 w-4" />
               Shortcuts
@@ -665,16 +665,16 @@ export function YouTubePlaylistLengthClient() {
                 ?
               </kbd>
             </button>
-          </div>
+          </div> */}
 
-          <form onSubmit={onSubmit} className="mt-8 space-y-8">
+          <form onSubmit={onSubmit} className="mt-4 space-y-5 sm:mt-5 sm:space-y-5">
             <div>
-              <label htmlFor="playlistUrl" className="text-sm font-semibold text-foreground">
+              <label htmlFor="playlistUrl" className="text-sm font-semibold text-foreground sm:text-base">
                 Playlist URL
               </label>
               <div className="relative mt-2">
-                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  <IconLink className="h-4 w-4" />
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground sm:left-5">
+                  <IconLink className="h-5 w-5" />
                 </span>
                 <input
                   id="playlistUrl"
@@ -683,7 +683,7 @@ export function YouTubePlaylistLengthClient() {
                   autoComplete="url"
                   placeholder="https://www.youtube.com/playlist?list=…"
                   aria-describedby="ytpl-url-kbd-hint"
-                  className="w-full rounded-xl border border-border bg-background py-3.5 pl-11 pr-4 text-sm text-foreground shadow-sm placeholder:text-muted-foreground transition focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="min-h-14 w-full rounded-2xl border-2 border-border bg-background py-3.5 pl-12 pr-4 text-base leading-normal text-foreground shadow-sm placeholder:text-muted-foreground transition focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-16 sm:py-4 sm:pl-14 sm:pr-5 sm:text-lg"
                   {...form.register("playlistUrl")}
                 />
               </div>
@@ -700,17 +700,18 @@ export function YouTubePlaylistLengthClient() {
                   {form.formState.errors.playlistUrl.message}
                 </p>
               ) : null}
-              <p id="ytpl-url-kbd-hint" className="mt-2 text-xs text-muted-foreground">
-                <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">Ctrl</kbd>{" "}
-                <span className="text-muted-foreground/80">or</span>{" "}
-                <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">⌘</kbd>
-                <span className="text-muted-foreground/80"> + </span>
-                <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">Enter</kbd> in this
-                field runs Calculate.
+              <p id="ytpl-url-kbd-hint" className="mt-1.5 text-[0.7rem] leading-snug text-muted-foreground sm:mt-2 sm:text-xs">
+                <span className="hidden sm:inline">
+                  <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">Ctrl</kbd> or{" "}
+                  <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">⌘</kbd> +{" "}
+                  <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">Enter</kbd> to
+                  calculate.
+                </span>
+                <span className="sm:hidden">Tap Calculate when ready.</span>
               </p>
 
               {pinnedList.length > 0 ? (
-                <div className="mt-4 rounded-xl border border-accent/35 bg-accent-muted/30 p-3 sm:p-4">
+                <div className="mt-3 rounded-lg border border-accent/35 bg-accent-muted/30 p-2.5 sm:p-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
                       <IconStarFilled className="h-3.5 w-3.5 text-primary" aria-hidden />
@@ -739,7 +740,7 @@ export function YouTubePlaylistLengthClient() {
                         <button
                           type="button"
                           onClick={() => removePinnedEntry(p.playlistId)}
-                          className="absolute right-1 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground opacity-70 hover:bg-destructive/15 hover:text-destructive"
+                          className="absolute right-0.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground opacity-70 hover:bg-destructive/15 hover:text-destructive sm:right-1 sm:h-6 sm:w-6"
                           aria-label={`Unpin ${p.title || p.playlistId}`}
                         >
                           <IconTrash className="h-3.5 w-3.5" />
@@ -751,7 +752,7 @@ export function YouTubePlaylistLengthClient() {
               ) : null}
 
               {recentWithoutPinned.length > 0 ? (
-                <div className="mt-4 rounded-xl border border-border/60 bg-muted/[0.06] p-3 sm:p-4">
+                <div className="mt-3 rounded-lg border border-border/60 bg-muted/[0.06] p-2.5 sm:p-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recent</span>
                     <button
@@ -776,7 +777,7 @@ export function YouTubePlaylistLengthClient() {
                         <button
                           type="button"
                           onClick={() => removeRecentEntry(r.playlistId)}
-                          className="absolute right-1 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground opacity-70 hover:bg-destructive/15 hover:text-destructive"
+                          className="absolute right-0.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground opacity-70 hover:bg-destructive/15 hover:text-destructive sm:right-1 sm:h-6 sm:w-6"
                           aria-label={`Remove ${r.title || r.playlistId} from recent`}
                         >
                           <IconTrash className="h-3.5 w-3.5" />
@@ -788,13 +789,15 @@ export function YouTubePlaylistLengthClient() {
               ) : null}
             </div>
 
-            <fieldset className="rounded-2xl border border-dashed border-border/70 bg-muted/[0.07] p-4 sm:p-5">
-              <legend className="px-1 font-display text-sm font-semibold text-foreground">Options</legend>
-              <p className="mb-5 text-xs text-muted-foreground">All optional — leave blank to use the full playlist.</p>
+            <fieldset className="rounded-xl border border-dashed border-border/70 bg-muted/[0.07] p-3 sm:p-4">
+              <legend className="px-1 font-display text-xs font-semibold text-foreground sm:text-sm">Options</legend>
+              <p className="mb-3 text-[0.7rem] text-muted-foreground sm:mb-4 sm:text-xs">
+                Optional range and speed — leave blank for the full playlist.
+              </p>
 
-              <div className="grid gap-6 lg:grid-cols-2">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
+              <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
+                <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-4">
+                  <div className="min-w-0">
                     <label htmlFor="from" className="text-sm font-medium text-foreground">
                       From
                     </label>
@@ -803,13 +806,15 @@ export function YouTubePlaylistLengthClient() {
                       type="number"
                       min={1}
                       inputMode="numeric"
-                      placeholder="Start (e.g. 1)"
-                      className="mt-1.5 w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="e.g. 1"
+                      className="mt-1.5 min-h-12 w-full min-w-0 rounded-xl border border-border bg-background px-2.5 py-2.5 text-base tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-0 sm:px-3.5 sm:text-sm"
                       {...form.register("from")}
                     />
-                    <p className="mt-1.5 text-xs leading-snug text-muted-foreground">First playlist position to include.</p>
+                    <p className="mt-1.5 text-[0.65rem] leading-snug text-muted-foreground sm:text-xs">
+                      First slot in range.
+                    </p>
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <label htmlFor="to" className="text-sm font-medium text-foreground">
                       To
                     </label>
@@ -818,11 +823,13 @@ export function YouTubePlaylistLengthClient() {
                       type="number"
                       min={1}
                       inputMode="numeric"
-                      placeholder="End (last slot)"
-                      className="mt-1.5 w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="End"
+                      className="mt-1.5 min-h-12 w-full min-w-0 rounded-xl border border-border bg-background px-2.5 py-2.5 text-base tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-0 sm:px-3.5 sm:text-sm"
                       {...form.register("to")}
                     />
-                    <p className="mt-1.5 text-xs leading-snug text-muted-foreground">Last position to include.</p>
+                    <p className="mt-1.5 text-[0.65rem] leading-snug text-muted-foreground sm:text-xs">
+                      Last slot in range.
+                    </p>
                   </div>
                 </div>
 
@@ -845,7 +852,7 @@ export function YouTubePlaylistLengthClient() {
                           onClick={() => {
                             form.setValue("speed", s.value, { shouldValidate: true, shouldDirty: true });
                           }}
-                          className={`min-w-[3.25rem] rounded-lg px-3 py-2 text-sm font-semibold tabular-nums transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                          className={`min-h-11 min-w-[3.25rem] rounded-lg px-3 py-2 text-sm font-semibold tabular-nums transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-0 ${
                             active
                               ? "bg-primary text-primary-foreground shadow-sm"
                               : "border border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -861,11 +868,11 @@ export function YouTubePlaylistLengthClient() {
               </div>
             </fieldset>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-cta)] transition hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-55"
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-cta)] transition hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-55 sm:min-h-10 sm:w-auto sm:px-8"
               >
                 {loading ? (
                   <>
@@ -886,7 +893,7 @@ export function YouTubePlaylistLengthClient() {
                 type="button"
                 disabled={loading}
                 onClick={() => runAnalyze(form.getValues(), { skipCache: true })}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-background px-5 text-sm font-medium text-foreground transition hover:bg-muted/25 disabled:opacity-55"
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 text-sm font-medium text-foreground transition hover:bg-muted/25 disabled:opacity-55 sm:min-h-10 sm:w-auto sm:px-5"
               >
                 <IconRefresh className="h-4 w-4 text-muted-foreground" />
                 Refresh (skip cache)
@@ -905,7 +912,7 @@ export function YouTubePlaylistLengthClient() {
 
           {fetchError ? (
             <div
-              className="mt-6 flex gap-3 rounded-xl border border-destructive/35 bg-destructive/10 px-4 py-3.5"
+              className="mt-4 flex gap-2.5 rounded-lg border border-destructive/35 bg-destructive/10 px-3 py-3 sm:gap-3 sm:px-4"
               role="alert"
             >
               <span className="mt-0.5 shrink-0 text-destructive" aria-hidden>
@@ -916,7 +923,7 @@ export function YouTubePlaylistLengthClient() {
           ) : null}
 
           {loading ? (
-            <div className="mt-8 space-y-4 rounded-xl border border-border/60 bg-muted/10 p-4" aria-busy="true" aria-live="polite">
+            <div className="mt-4 space-y-3 rounded-lg border border-border/60 bg-muted/10 p-3 sm:mt-5 sm:p-4" aria-busy="true" aria-live="polite">
               <div className="flex items-center gap-3">
                 <span
                   className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-primary/25 border-t-primary motion-reduce:animate-none"
@@ -940,15 +947,15 @@ export function YouTubePlaylistLengthClient() {
           <section
             id="ytpl-results"
             aria-labelledby="ytpl-summary-heading"
-            className="scroll-mt-24 space-y-6"
+            className="scroll-mt-[4.75rem] space-y-4 sm:scroll-mt-20"
           >
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-4">
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary">Results</p>
-                <h2 id="ytpl-summary-heading" className="mt-1 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                <h2 id="ytpl-summary-heading" className="mt-0.5 font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl lg:text-3xl">
                   {result.playlistTitle || "Playlist"}
                 </h2>
-                <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+                <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.7rem] text-muted-foreground sm:text-xs">
                   <span>
                     Slots {result.rangeFrom}–{result.rangeTo} of {result.totalItemsInPlaylist}
                   </span>
@@ -973,11 +980,11 @@ export function YouTubePlaylistLengthClient() {
                   ) : null}
                 </p>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-2">
                 <button
                   type="button"
                   onClick={toggleCurrentPlaylistPin}
-                  className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium shadow-sm transition hover:border-primary/35 hover:bg-muted/20 ${
+                  className={`inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium shadow-sm transition hover:border-primary/35 hover:bg-muted/20 sm:min-h-0 sm:gap-2 sm:px-4 sm:text-sm ${
                     currentPlaylistPinned
                       ? "border-primary/50 bg-primary-muted/60 text-foreground"
                       : "border-border bg-surface-elevated/50 text-foreground"
@@ -993,7 +1000,7 @@ export function YouTubePlaylistLengthClient() {
                 <button
                   type="button"
                   onClick={() => void copySummary()}
-                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-elevated/50 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition hover:border-primary/35 hover:bg-muted/20"
+                  className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-border bg-surface-elevated/50 px-2.5 py-2 text-xs font-medium text-foreground shadow-sm transition hover:border-primary/35 hover:bg-muted/20 sm:min-h-0 sm:gap-2 sm:px-4 sm:text-sm"
                 >
                   <IconCopy className="h-4 w-4 text-muted-foreground" />
                   {copyLabel}
@@ -1002,7 +1009,7 @@ export function YouTubePlaylistLengthClient() {
                   type="button"
                   onClick={() => void copyAllTitles()}
                   disabled={filteredVideos.length === 0}
-                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-elevated/50 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition hover:border-primary/35 hover:bg-muted/20 disabled:pointer-events-none disabled:opacity-45"
+                  className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-border bg-surface-elevated/50 px-2.5 py-2 text-xs font-medium text-foreground shadow-sm transition hover:border-primary/35 hover:bg-muted/20 disabled:pointer-events-none disabled:opacity-45 sm:min-h-0 sm:gap-2 sm:px-4 sm:text-sm"
                 >
                   <IconCopy className="h-4 w-4 text-muted-foreground" />
                   {copyTitlesLabel}
@@ -1010,7 +1017,7 @@ export function YouTubePlaylistLengthClient() {
                 <button
                   type="button"
                   onClick={shareLink}
-                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-elevated/50 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition hover:border-primary/35 hover:bg-muted/20"
+                  className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-border bg-surface-elevated/50 px-2.5 py-2 text-xs font-medium text-foreground shadow-sm transition hover:border-primary/35 hover:bg-muted/20 sm:min-h-0 sm:gap-2 sm:px-4 sm:text-sm"
                 >
                   <IconShare className="h-4 w-4 text-muted-foreground" />
                   {shareLabel}
@@ -1030,41 +1037,51 @@ export function YouTubePlaylistLengthClient() {
               </div>
             ))}
 
-            <div className="grid gap-4 lg:grid-cols-12">
-              <article className="relative overflow-hidden rounded-2xl border border-primary/25 bg-gradient-to-br from-primary-muted/80 via-surface-elevated/90 to-surface p-6 shadow-sm lg:col-span-7">
-                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/10 blur-2xl" aria-hidden />
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total watch time</h3>
-                <p className="mt-3 font-display text-2xl font-bold leading-tight text-foreground sm:text-3xl">
+            <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
+              <article className="relative overflow-hidden rounded-xl border border-primary/25 bg-gradient-to-br from-primary-muted/80 via-surface-elevated/90 to-surface p-4 shadow-sm sm:p-5 lg:col-span-7">
+                <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-primary/10 blur-2xl" aria-hidden />
+                <h3 className="text-[0.65rem] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">
+                  Total watch time
+                </h3>
+                <p className="mt-2 font-display text-xl font-bold leading-tight text-foreground sm:mt-2.5 sm:text-2xl lg:text-3xl">
                   {formatDurationHuman(totals.seconds)}
                 </p>
-                <p className="mt-3 text-sm text-muted-foreground">
+                <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
                   At <strong className="text-foreground">{speedMult}×</strong> speed:{" "}
                   <strong className="text-foreground">{formatDurationHuman(totals.seconds / speedMult)}</strong>
                 </p>
               </article>
-              <div className="grid gap-4 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
-                <article className="rounded-2xl border border-border/80 bg-surface p-5 shadow-sm">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Videos counted</h3>
-                  <p className="mt-2 font-display text-3xl font-bold tabular-nums text-foreground">{totals.count}</p>
+              <div className="grid gap-3 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+                <article className="rounded-xl border border-border/80 bg-surface p-3 shadow-sm sm:p-4">
+                  <h3 className="text-[0.65rem] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">
+                    Videos counted
+                  </h3>
+                  <p className="mt-1 font-display text-2xl font-bold tabular-nums text-foreground sm:mt-1.5 sm:text-3xl">
+                    {totals.count}
+                  </p>
                 </article>
-                <article className="rounded-2xl border border-border/80 bg-surface p-5 shadow-sm">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Average length</h3>
-                  <p className="mt-2 font-display text-xl font-bold text-foreground">{formatDurationHuman(totals.avg)}</p>
+                <article className="rounded-xl border border-border/80 bg-surface p-3 shadow-sm sm:p-4">
+                  <h3 className="text-[0.65rem] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">
+                    Average length
+                  </h3>
+                  <p className="mt-1 font-display text-lg font-bold text-foreground sm:mt-1.5 sm:text-xl">
+                    {formatDurationHuman(totals.avg)}
+                  </p>
                 </article>
               </div>
             </div>
           </section>
 
-          <section aria-labelledby="ytpl-sort-heading" className="space-y-4">
+          <section aria-labelledby="ytpl-sort-heading" className="space-y-3">
             <div>
-              <h2 id="ytpl-sort-heading" className="font-display text-lg font-semibold text-foreground">
+              <h2 id="ytpl-sort-heading" className="font-display text-base font-semibold text-foreground sm:text-lg">
                 Sort videos
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
                 Quick presets below, or click a column header in the table for a custom sort.
               </p>
             </div>
-            <div className="-mx-1 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
+            <div className="-mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-pb-1 scroll-pl-3 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:snap-none sm:flex-wrap sm:overflow-visible sm:pb-1 sm:pl-0 [&::-webkit-scrollbar]:hidden">
               {PRESETS.map((p) => {
                 const active = listSort.kind === "preset" && listSort.preset === p.id;
                 return (
@@ -1073,7 +1090,7 @@ export function YouTubePlaylistLengthClient() {
                     type="button"
                     title={p.title}
                     onClick={() => onPreset(p.id)}
-                    className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                    className={`snap-start scroll-ml-3 shrink-0 rounded-full border px-4 py-2.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:scroll-ml-0 sm:py-2 ${
                       active
                         ? "border-primary bg-primary/15 text-foreground shadow-sm"
                         : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -1086,8 +1103,8 @@ export function YouTubePlaylistLengthClient() {
             </div>
           </section>
 
-          <section aria-labelledby="ytpl-table-title" className="overflow-hidden rounded-2xl border border-border/70 bg-surface-elevated/20 shadow-sm ring-1 ring-border/20">
-            <div className="flex flex-col gap-3 border-b border-border/60 bg-muted/10 p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-4 sm:px-5">
+          <section aria-labelledby="ytpl-table-title" className="overflow-hidden rounded-xl border border-border/70 bg-surface-elevated shadow-sm ring-1 ring-border/20">
+            <div className="flex flex-col gap-2 border-b border-border/60 bg-muted/10 p-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-3 sm:gap-y-2 sm:p-4">
               <div className="min-w-0 flex-1">
                 <h2 id="ytpl-table-title" className="font-display text-base font-semibold text-foreground">
                   Video list
@@ -1106,7 +1123,7 @@ export function YouTubePlaylistLengthClient() {
                   type="button"
                   onClick={() => void copyAllTitles()}
                   disabled={filteredVideos.length === 0}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/40 hover:bg-muted/20 disabled:pointer-events-none disabled:opacity-45"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/40 hover:bg-muted/20 disabled:pointer-events-none disabled:opacity-45 sm:min-h-0"
                 >
                   <IconCopy className="h-4 w-4 text-muted-foreground" />
                   {copyTitlesLabel}
@@ -1115,7 +1132,7 @@ export function YouTubePlaylistLengthClient() {
                   type="button"
                   onClick={exportCsv}
                   disabled={filteredVideos.length === 0}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/40 hover:bg-muted/20 disabled:pointer-events-none disabled:opacity-45"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/40 hover:bg-muted/20 disabled:pointer-events-none disabled:opacity-45 sm:min-h-0"
                 >
                   <IconDownload className="h-4 w-4 text-muted-foreground" />
                   {csvLabel}
@@ -1130,12 +1147,15 @@ export function YouTubePlaylistLengthClient() {
                     placeholder="Filter by title…"
                     autoComplete="off"
                     aria-label="Filter videos by title"
-                    className="w-full rounded-xl border border-border bg-background py-2.5 pl-3 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="min-h-12 w-full rounded-xl border border-border bg-background py-2.5 pl-3 pr-3 text-base text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-0 sm:text-sm"
                   />
                 </label>
               </div>
             </div>
             <PlaylistLengthTable rows={filteredVideos} listSort={listSort} onColumnSort={onColumnSort} />
+            <p className="border-t border-border/50 px-3 py-1.5 text-center text-[0.65rem] text-muted-foreground md:hidden">
+              Swipe the table sideways for all columns.
+            </p>
             {filteredVideos.length === 0 && sortedVideos.length > 0 ? (
               <p className="border-t border-border/60 px-5 py-6 text-center text-sm text-muted-foreground">
                 No titles match “{tableFilter.trim()}”. Clear the filter to see all videos.
