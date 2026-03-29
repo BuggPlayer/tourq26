@@ -43,6 +43,11 @@ const SPEEDS = [
   { value: "2", mult: 2, label: "2×" },
 ] as const;
 
+/** e.g. 1 → "1.00", 1.25 → "1.25" for "At 1.25x :" rows */
+function formatSpeedFactor(mult: number): string {
+  return mult % 1 === 0 ? `${mult}.00` : mult.toFixed(2);
+}
+
 const formSchema = z.object({
   playlistUrl: z.string().min(1, "Paste a playlist or watch URL with list="),
   from: z.string().optional(),
@@ -687,7 +692,7 @@ export function YouTubePlaylistLengthClient() {
                   {...form.register("playlistUrl")}
                 />
               </div>
-              {detectedId ? (
+              {/* {detectedId ? (
                 <p className="mt-2 flex items-center gap-2 text-xs text-success">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-success" aria-hidden />
                   Playlist ID detected — ready to calculate
@@ -701,16 +706,188 @@ export function YouTubePlaylistLengthClient() {
                 </p>
               ) : null}
               <p id="ytpl-url-kbd-hint" className="mt-1.5 text-[0.7rem] leading-snug text-muted-foreground sm:mt-2 sm:text-xs">
-                <span className="hidden sm:inline">
-                  <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">Ctrl</kbd> or{" "}
-                  <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">⌘</kbd> +{" "}
-                  <kbd className="rounded border border-border bg-muted/30 px-1 font-mono text-[0.65rem]">Enter</kbd> to
-                  calculate.
-                </span>
-                <span className="sm:hidden">Tap Calculate when ready.</span>
-              </p>
+              
+              </p> */}
 
-              {pinnedList.length > 0 ? (
+            </div>
+
+            <fieldset className="rounded-xl border border-dashed border-border/70 bg-muted/[0.07] p-3 sm:p-4">
+              <legend className="px-1 font-display text-xs font-semibold text-foreground sm:text-sm">Options</legend>
+              {/* <p className="mb-3 text-[0.7rem] text-muted-foreground sm:mb-4 sm:text-xs">
+                Optional range and speed — leave blank for the full playlist.
+              </p> */}
+
+              <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
+                <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-4">
+                  <div className="min-w-0">
+                    <label htmlFor="from" className="text-sm font-medium text-foreground">
+                      From
+                    </label>
+                    <input
+                      id="from"
+                      type="number"
+                      min={1}
+                      inputMode="numeric"
+                      placeholder="e.g. 1"
+                      className="mt-1.5 min-h-12 w-full min-w-0 rounded-xl border border-border bg-background px-2.5 py-2.5 text-base tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-0 sm:px-3.5 sm:text-sm"
+                      {...form.register("from")}
+                    />
+                    <p className="mt-1.5 text-[0.65rem] leading-snug text-muted-foreground sm:text-xs">
+                      First slot in range.
+                    </p>
+                  </div>
+                  <div className="min-w-0">
+                    <label htmlFor="to" className="text-sm font-medium text-foreground">
+                      To
+                    </label>
+                    <input
+                      id="to"
+                      type="number"
+                      min={1}
+                      inputMode="numeric"
+                      placeholder="End"
+                      className="mt-1.5 min-h-12 w-full min-w-0 rounded-xl border border-border bg-background px-2.5 py-2.5 text-base tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-0 sm:px-3.5 sm:text-sm"
+                      {...form.register("to")}
+                    />
+                    <p className="mt-1.5 text-[0.65rem] leading-snug text-muted-foreground sm:text-xs">
+                      Last slot in range.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+              <button
+                type="submit"
+                disabled={loading}
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-cta)] transition hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-55 sm:min-h-10 sm:w-auto sm:px-8"
+              >
+                {loading ? (
+                  <>
+                    <span
+                      className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground motion-reduce:animate-none"
+                      aria-hidden
+                    />
+                    Calculating…
+                  </>
+                ) : (
+                  <>
+                    <IconBarChart className="h-4 w-4 opacity-90" />
+                    Calculate length
+                  </>
+                )}
+              </button>
+              {/* <button
+                type="button"
+                disabled={loading}
+                onClick={() => runAnalyze(form.getValues(), { skipCache: true })}
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 text-sm font-medium text-foreground transition hover:bg-muted/25 disabled:opacity-55 sm:min-h-10 sm:w-auto sm:px-5"
+              >
+                <IconRefresh className="h-4 w-4 text-muted-foreground" />
+                Refresh (skip cache)
+              </button> */}
+              {/* {result?.ok ? (
+                <button
+                  type="button"
+                  onClick={clearResults}
+                  className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline sm:ml-1"
+                >
+                  Clear results
+                </button>
+              ) : null} */}
+            </div>
+                <div>
+                  <span id="speed-label" className="text-sm font-semibold text-foreground">
+                    Playback speed
+                  </span>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    Tap a row to use that speed. Times are total watch length at each rate (after you calculate).
+                  </p>
+                  <ul
+                    className="mt-3 max-w-xl space-y-0.5 border-t border-border/50 pt-3"
+                    role="listbox"
+                    aria-labelledby="speed-label"
+                  >
+                    {SPEEDS.map((s) => {
+                      const active = speedVal === s.value;
+                      const hasTotals = Boolean(result?.ok && totals.seconds > 0);
+                      const wallSec = hasTotals ? totals.seconds / s.mult : null;
+                      return (
+                        <li key={s.value}>
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={active}
+                            onClick={() => {
+                              form.setValue("speed", s.value, { shouldValidate: true, shouldDirty: true });
+                            }}
+                            className={`flex w-full items-baseline gap-x-1 rounded-md px-2 py-2 text-left text-sm transition sm:px-1 sm:py-1.5 ${
+                              active
+                                ? "bg-primary/10 ring-1 ring-inset ring-primary/35"
+                                : "hover:bg-muted/40"
+                            }`}
+                          >
+                            <span className="shrink-0 tabular-nums text-foreground text-red-600 dark:text-red-400">
+                              At {formatSpeedFactor(s.mult)}x <span aria-hidden>:</span>
+                            </span>
+                            <span
+                              // className={
+                              //   wallSec !== null
+                              //     ? "font-normal text-red-600 dark:text-red-400"
+                              //     : "font-normal text-muted-foreground"
+                              // }
+                            >
+                              {wallSec !== null ? formatDurationHuman(wallSec) : "—"}
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <input type="hidden" {...form.register("speed")} />
+                </div>
+              </div>
+            </fieldset>
+
+            
+          </form>
+
+            
+          {recentWithoutPinned.length > 0 ? (
+                <div className="mt-3 rounded-lg border border-border/60 bg-muted/[0.06] p-2.5 sm:p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recent</span>
+                    <button
+                      type="button"
+                      onClick={clearAllRecent}
+                      className="text-xs font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                  <ul className="mt-2 flex flex-wrap gap-2" aria-label="Recent playlists">
+                    {recentWithoutPinned.map((r) => (
+                      <li key={r.playlistId} className="group relative max-w-full">
+                        <button
+                          type="button"
+                          onClick={() => applyQuickPlaylist(r)}
+                          className="flex max-w-[min(100%,18rem)] items-center gap-1 rounded-full border border-border bg-background py-1.5 pl-3 pr-8 text-left text-xs font-medium text-foreground transition hover:border-primary/40"
+                          title={r.url}
+                        >
+                          <span className="truncate">{r.title || r.playlistId}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeRecentEntry(r.playlistId)}
+                          className="absolute right-0.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground opacity-70 hover:bg-destructive/15 hover:text-destructive sm:right-1 sm:h-6 sm:w-6"
+                          aria-label={`Remove ${r.title || r.playlistId} from recent`}
+                        >
+                          <IconTrash className="h-3.5 w-3.5" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+          {pinnedList.length > 0 ? (
                 <div className="mt-3 rounded-lg border border-accent/35 bg-accent-muted/30 p-2.5 sm:p-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
@@ -751,164 +928,6 @@ export function YouTubePlaylistLengthClient() {
                 </div>
               ) : null}
 
-              {recentWithoutPinned.length > 0 ? (
-                <div className="mt-3 rounded-lg border border-border/60 bg-muted/[0.06] p-2.5 sm:p-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recent</span>
-                    <button
-                      type="button"
-                      onClick={clearAllRecent}
-                      className="text-xs font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
-                    >
-                      Clear all
-                    </button>
-                  </div>
-                  <ul className="mt-2 flex flex-wrap gap-2" aria-label="Recent playlists">
-                    {recentWithoutPinned.map((r) => (
-                      <li key={r.playlistId} className="group relative max-w-full">
-                        <button
-                          type="button"
-                          onClick={() => applyQuickPlaylist(r)}
-                          className="flex max-w-[min(100%,18rem)] items-center gap-1 rounded-full border border-border bg-background py-1.5 pl-3 pr-8 text-left text-xs font-medium text-foreground transition hover:border-primary/40"
-                          title={r.url}
-                        >
-                          <span className="truncate">{r.title || r.playlistId}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => removeRecentEntry(r.playlistId)}
-                          className="absolute right-0.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground opacity-70 hover:bg-destructive/15 hover:text-destructive sm:right-1 sm:h-6 sm:w-6"
-                          aria-label={`Remove ${r.title || r.playlistId} from recent`}
-                        >
-                          <IconTrash className="h-3.5 w-3.5" />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-            </div>
-
-            <fieldset className="rounded-xl border border-dashed border-border/70 bg-muted/[0.07] p-3 sm:p-4">
-              <legend className="px-1 font-display text-xs font-semibold text-foreground sm:text-sm">Options</legend>
-              <p className="mb-3 text-[0.7rem] text-muted-foreground sm:mb-4 sm:text-xs">
-                Optional range and speed — leave blank for the full playlist.
-              </p>
-
-              <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
-                <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-4">
-                  <div className="min-w-0">
-                    <label htmlFor="from" className="text-sm font-medium text-foreground">
-                      From
-                    </label>
-                    <input
-                      id="from"
-                      type="number"
-                      min={1}
-                      inputMode="numeric"
-                      placeholder="e.g. 1"
-                      className="mt-1.5 min-h-12 w-full min-w-0 rounded-xl border border-border bg-background px-2.5 py-2.5 text-base tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-0 sm:px-3.5 sm:text-sm"
-                      {...form.register("from")}
-                    />
-                    <p className="mt-1.5 text-[0.65rem] leading-snug text-muted-foreground sm:text-xs">
-                      First slot in range.
-                    </p>
-                  </div>
-                  <div className="min-w-0">
-                    <label htmlFor="to" className="text-sm font-medium text-foreground">
-                      To
-                    </label>
-                    <input
-                      id="to"
-                      type="number"
-                      min={1}
-                      inputMode="numeric"
-                      placeholder="End"
-                      className="mt-1.5 min-h-12 w-full min-w-0 rounded-xl border border-border bg-background px-2.5 py-2.5 text-base tabular-nums shadow-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring sm:min-h-0 sm:px-3.5 sm:text-sm"
-                      {...form.register("to")}
-                    />
-                    <p className="mt-1.5 text-[0.65rem] leading-snug text-muted-foreground sm:text-xs">
-                      Last slot in range.
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  <span id="speed-label" className="text-sm font-medium text-foreground">
-                    Playback speed
-                  </span>
-                  <p className="mt-1 text-xs text-muted-foreground">Estimated watch time if you play everything at this speed.</p>
-                  <div
-                    className="mt-3 flex flex-wrap gap-2"
-                    role="group"
-                    aria-labelledby="speed-label"
-                  >
-                    {SPEEDS.map((s) => {
-                      const active = speedVal === s.value;
-                      return (
-                        <button
-                          key={s.value}
-                          type="button"
-                          onClick={() => {
-                            form.setValue("speed", s.value, { shouldValidate: true, shouldDirty: true });
-                          }}
-                          className={`min-h-11 min-w-[3.25rem] rounded-lg px-3 py-2 text-sm font-semibold tabular-nums transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-0 ${
-                            active
-                              ? "bg-primary text-primary-foreground shadow-sm"
-                              : "border border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                          }`}
-                        >
-                          {s.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <input type="hidden" {...form.register("speed")} />
-                </div>
-              </div>
-            </fieldset>
-
-            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-              <button
-                type="submit"
-                disabled={loading}
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-cta)] transition hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-55 sm:min-h-10 sm:w-auto sm:px-8"
-              >
-                {loading ? (
-                  <>
-                    <span
-                      className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground motion-reduce:animate-none"
-                      aria-hidden
-                    />
-                    Calculating…
-                  </>
-                ) : (
-                  <>
-                    <IconBarChart className="h-4 w-4 opacity-90" />
-                    Calculate length
-                  </>
-                )}
-              </button>
-              <button
-                type="button"
-                disabled={loading}
-                onClick={() => runAnalyze(form.getValues(), { skipCache: true })}
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 text-sm font-medium text-foreground transition hover:bg-muted/25 disabled:opacity-55 sm:min-h-10 sm:w-auto sm:px-5"
-              >
-                <IconRefresh className="h-4 w-4 text-muted-foreground" />
-                Refresh (skip cache)
-              </button>
-              {result?.ok ? (
-                <button
-                  type="button"
-                  onClick={clearResults}
-                  className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline sm:ml-1"
-                >
-                  Clear results
-                </button>
-              ) : null}
-            </div>
-          </form>
 
           {fetchError ? (
             <div
