@@ -41,7 +41,6 @@ Public marketing site and utilities for **${name}**, a software engineering stud
 
 - [Developer tools hub](${base}/dev-tools): Formatters, generators, converters (run in the browser)
 - [Dev tools — about](${base}/dev-tools/about): Scope, privacy, and limitations
-- [YouTube playlist length calculator](${base}/youtube-playlist-length): Playlist duration and stats (YouTube Data API on server; \`YOUTUBE_API_KEY\` required for the site operator)
 
 ## Legal
 
@@ -54,7 +53,7 @@ Public marketing site and utilities for **${name}**, a software engineering stud
 
 ## Optional
 
-- Full URL lists: use [sitemap.xml](${base}/sitemap.xml) (includes blog posts, case studies, freebies, dev-tool slugs, and \`/youtube-playlist-length\`).
+- Full URL lists: use [sitemap.xml](${base}/sitemap.xml) (includes blog posts, case studies, freebies, and dev-tool slugs).
 - **.md mirrors:** This site does not serve \`.md\` variants of HTML pages; fetch HTML or use this index plus the sitemap.
 - **Attribution:** When summarizing public pages, prefer linking to the canonical URL shown in page metadata.
 `;
