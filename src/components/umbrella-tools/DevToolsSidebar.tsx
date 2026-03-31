@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
+import { getDevToolsCanonicalSuffix, getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
 import {
   DEV_TOOL_CATEGORY_LABELS,
   filterUmbrellaTools,
@@ -15,7 +16,8 @@ import {
 export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: UmbrellaTool[] }) {
   const [q, setQ] = useState("");
   const pathname = usePathname();
-  const { messages } = useDevToolsLocale();
+  const { messages, locale } = useDevToolsLocale();
+  const pathSuffix = getDevToolsCanonicalSuffix(pathname);
 
   const filtered = useMemo(
     () =>
@@ -47,10 +49,10 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
       </div>
       <nav className="flex-1 overflow-y-auto p-3 pb-8" aria-label={messages.sidebar.navAria}>
         <Link
-          href="/dev-tools"
+          href={getDevToolsHrefForLocale("/dev-tools", locale)}
           scroll={false}
           className={`mb-4 block rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-            pathname === "/dev-tools"
+            pathSuffix === "/dev-tools"
               ? "bg-primary/15 text-primary"
               : "text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
           }`}
@@ -58,10 +60,10 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
           {messages.sidebar.allTools}
         </Link>
         <Link
-          href="/dev-tools/about"
+          href={getDevToolsHrefForLocale("/dev-tools/about", locale)}
           scroll={false}
           className={`mb-6 block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-            pathname === "/dev-tools/about"
+            pathSuffix === "/dev-tools/about"
               ? "bg-primary/15 text-primary"
               : "text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
           }`}
@@ -76,8 +78,8 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
             </p>
             <ul className="space-y-0.5">
               {tools.map((tool) => {
-                const href = `/dev-tools/${tool.slug}`;
-                const active = pathname === href;
+                const href = getDevToolsHrefForLocale(`/dev-tools/${tool.slug}`, locale);
+                const active = pathSuffix === `/dev-tools/${tool.slug}`;
                 return (
                   <li key={tool.slug}>
                     <Link

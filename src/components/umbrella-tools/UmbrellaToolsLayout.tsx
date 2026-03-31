@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
-import { DevToolsAside } from "@/components/umbrella-tools/DevToolsAside";
 import { DevToolsBreadcrumbs } from "@/components/umbrella-tools/DevToolsBreadcrumbs";
+import { DevToolsDesktopShell } from "@/components/umbrella-tools/DevToolsDesktopShell";
 import { DevToolsMobileSection } from "@/components/umbrella-tools/DevToolsMobileSection";
 import { DevToolsShellRoot } from "@/components/umbrella-tools/DevToolsShellRoot";
 import { DevToolsToolFaq } from "@/components/umbrella-tools/DevToolsToolFaq";
@@ -28,22 +28,18 @@ export default function UmbrellaToolsLayout({
     <DevToolsShellRoot>
       <DevToolsTopBar />
 
-      <div className="mx-auto flex w-full max-w-[1680px] flex-1">
-        <DevToolsAside>
-          <DevToolsSidebar baseTools={navCatalog} />
-        </DevToolsAside>
-
-        <div className="min-w-0 flex-1">
+      <DevToolsDesktopShell sidebar={<DevToolsSidebar baseTools={navCatalog} />}>
+        <div className="min-w-0 flex-1 max-w-full">
           <DevToolsMobileSection baseTools={navCatalog} />
 
-          <main className="px-4  py-6 sm:px-6 lg:px-10 lg:py-8">
+          <main className="w-full min-w-0 max-w-full py-6 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] sm:py-6 sm:ps-6 sm:pe-6 lg:py-8 lg:ps-10 lg:pe-10">
             <DevToolsBreadcrumbs />
             {children}
             {hideRegistryFaq ? null : <DevToolsToolFaq />}
             <DevToolsRelatedTools relatedToolsOverride={relatedToolsOverride} />
           </main>
         </div>
-      </div>
+      </DevToolsDesktopShell>
 
       <div className="shrink-0 border-t border-border/30">
         <Footer />

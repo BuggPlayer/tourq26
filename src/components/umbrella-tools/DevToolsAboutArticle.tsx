@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
+import { getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
 
 export function DevToolsAboutArticle() {
-  const { messages: m } = useDevToolsLocale();
+  const { messages: m, locale } = useDevToolsLocale();
 
   return (
     <>
@@ -22,7 +23,7 @@ export function DevToolsAboutArticle() {
           {m.aboutPage.p2AfterPrivacy}
         </p>
         <p>
-          <Link href="/dev-tools" className="font-medium text-primary underline-offset-2 hover:underline">
+          <Link href={getDevToolsHrefForLocale("/dev-tools", locale)} className="font-medium text-primary underline-offset-2 hover:underline">
             {m.aboutPage.backLink}
           </Link>
         </p>

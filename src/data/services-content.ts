@@ -88,7 +88,7 @@ export const servicePages: ServicePageContent[] = [
       {
         heading: "CMS and content-led sites",
         body:
-          "<p>For marketing-heavy properties we separate content from presentation so editors move fast. Technical SEO—metadata, sitemaps, structured data—is implemented in code, not left to plugins alone.</p>",
+          "<p>For marketing-heavy properties we separate content from presentation so editors move fast. Technical SEO—metadata, sitemaps, structured data—is implemented in code, not left to plugins alone.</p><p>We also publish <a href=\"/dev-tools\">free browser-based developer utilities</a> (JSON tools, hashing, converters) that teams can use alongside production codebases for quick checks.</p>",
       },
       {
         heading: "How we work with your stack",

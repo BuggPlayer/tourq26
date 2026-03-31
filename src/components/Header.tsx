@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
+import { useDevToolsHubHref } from "@/hooks/useDevToolsHubHref";
 
 const baseNavLinks = [
   { href: "/about", label: "About" },
@@ -33,6 +34,7 @@ export default function Header({
   endSlot?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const devToolsHubHref = useDevToolsHubHref();
   const navLinks = buildNavLinks(navFlags);
 
   return (
@@ -47,15 +49,18 @@ export default function Header({
 
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-4">
           <nav className="hidden items-center gap-7 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const href = link.href === "/dev-tools" ? devToolsHubHref : link.href;
+              return (
+                <Link
+                  key={link.href === "/dev-tools" ? "dev-tools" : link.href}
+                  href={href}
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
           {endSlot ? <div className="hidden shrink-0 items-center md:flex">{endSlot}</div> : null}
         </div>
@@ -83,16 +88,19 @@ export default function Header({
           <div className="flex flex-col gap-3 px-4 py-4">
             {endSlot ? <div className="flex justify-end border-b border-border/40 pb-3">{endSlot}</div> : null}
             <nav className="flex flex-col gap-0.5">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-xl px-4 py-3.5 text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground"
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const href = link.href === "/dev-tools" ? devToolsHubHref : link.href;
+                return (
+                  <Link
+                    key={link.href === "/dev-tools" ? "dev-tools" : link.href}
+                    href={href}
+                    className="rounded-xl px-4 py-3.5 text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground"
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { DevToolsToolCard } from "@/components/umbrella-tools/DevToolsToolCard";
 import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
+import { getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
 import type { DevToolsAdminDocument } from "@/lib/content";
 import { isDevToolFeatured } from "@/lib/dev-tools-admin";
 import type { DevToolCategory, UmbrellaTool } from "@/lib/umbrella-tools/types";
@@ -21,7 +22,7 @@ export function DevToolsHubBody({
   toolCount: number;
   adminDoc: DevToolsAdminDocument | null;
 }) {
-  const { messages } = useDevToolsLocale();
+  const { messages, locale } = useDevToolsLocale();
 
   return (
     <>
@@ -50,7 +51,7 @@ export function DevToolsHubBody({
               {messages.hub.toolsAvailable(toolCount)}
             </span>
             <Link
-              href="/dev-tools/about"
+              href={getDevToolsHrefForLocale("/dev-tools/about", locale)}
               className="inline-flex items-center rounded-full border border-border/60 bg-surface/50 px-4 py-2 font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
             >
               {messages.hub.howData}

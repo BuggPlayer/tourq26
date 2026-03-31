@@ -2,11 +2,17 @@
 
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
+import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
+import {
+  DEV_TOOL_PRIMARY_SURFACE_CLASS,
+  DevToolPageShell,
+} from "@/components/umbrella-tools/DevToolPageShell";
+import { getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
 
 const TOOL_SLUG = "json-formatter";
 
 export default function JsonFormatterTool() {
+  const { locale } = useDevToolsLocale();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -73,49 +79,54 @@ export default function JsonFormatterTool() {
 
   return (
     <DevToolPageShell slug={TOOL_SLUG} showTryHeading={false}>
-      <section className="border-t border-border/50 pt-10" aria-labelledby="json-try-heading">
-        <h2 id="json-try-heading" className="font-display text-lg font-semibold tracking-tight text-foreground">
+      <section className="min-w-0" aria-labelledby="json-try-heading">
+        <h2
+          id="json-try-heading"
+          className="break-words font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl md:text-3xl"
+        >
           Try it
         </h2>
-        <p className="mt-2 max-w-2xl text-sm text-foreground/85">
-          Paste JSON below, or load a <code className="font-mono text-xs">.json</code> /{" "}
-          <code className="font-mono text-xs">.txt</code> file from your device. Then use Format, Minify, or Validate.
-        </p>
+        <div className={`mt-4 sm:mt-6 ${DEV_TOOL_PRIMARY_SURFACE_CLASS}`}>
+          <p className="max-w-2xl text-foreground/90">
+            Paste JSON below, or load a <code className="font-mono text-[0.85em]">.json</code> /{" "}
+            <code className="font-mono text-[0.85em]">.txt</code> file from your device. Then use Format, Minify, or
+            Validate.
+          </p>
 
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <label className="cursor-pointer rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-surface-elevated">
-            <span className="sr-only">Upload a JSON or text file</span>
-            <span aria-hidden>Upload file</span>
-            <input type="file" accept=".json,.txt,application/json,text/plain" className="sr-only" onChange={onFile} />
-          </label>
-          <button
-            type="button"
-            onClick={() => run("format")}
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
-            aria-label="Format JSON with indentation"
-          >
-            Format
-          </button>
-          <button
-            type="button"
-            onClick={() => run("minify")}
-            className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-elevated"
-            aria-label="Minify JSON to one line"
-          >
-            Minify
-          </button>
-          <button
-            type="button"
-            onClick={() => run("validate")}
-            className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-elevated"
-            aria-label="Validate JSON and pretty-print output"
-          >
-            Validate
-          </button>
-        </div>
+          <div className="mt-5 flex flex-wrap items-center gap-2 sm:gap-3">
+            <label className="flex min-h-11 cursor-pointer items-center rounded-xl border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-surface-elevated">
+              <span className="sr-only">Upload a JSON or text file</span>
+              <span aria-hidden>Upload file</span>
+              <input type="file" accept=".json,.txt,application/json,text/plain" className="sr-only" onChange={onFile} />
+            </label>
+            <button
+              type="button"
+              onClick={() => run("format")}
+              className="min-h-11 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
+              aria-label="Format JSON with indentation"
+            >
+              Format
+            </button>
+            <button
+              type="button"
+              onClick={() => run("minify")}
+              className="min-h-11 rounded-xl border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-elevated"
+              aria-label="Minify JSON to one line"
+            >
+              Minify
+            </button>
+            <button
+              type="button"
+              onClick={() => run("validate")}
+              className="min-h-11 rounded-xl border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-elevated"
+              aria-label="Validate JSON and pretty-print output"
+            >
+              Validate
+            </button>
+          </div>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-2">
-          <div className="space-y-2">
+          <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
+          <div className="min-w-0 space-y-2">
             <label htmlFor="json-input" className="text-sm font-medium text-foreground/90">
               Input
             </label>
@@ -125,10 +136,10 @@ export default function JsonFormatterTool() {
               onChange={(e) => setInput(e.target.value)}
               rows={18}
               placeholder='{ "hello": "world" }'
-              className="w-full resize-y rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full min-w-0 resize-y rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
-          <div className="space-y-2">
+          <div className="min-w-0 space-y-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <label htmlFor="json-output" className="text-sm font-medium text-foreground/90">
                 Output
@@ -159,7 +170,7 @@ export default function JsonFormatterTool() {
               readOnly
               value={output}
               rows={18}
-              className="w-full resize-y rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm text-foreground"
+              className="w-full min-w-0 resize-y rounded-xl border border-border bg-surface/80 px-4 py-3 font-mono text-sm text-foreground"
               aria-label="Formatted or minified JSON output"
             />
             {error ? (
@@ -171,6 +182,7 @@ export default function JsonFormatterTool() {
               {copied ? "Output copied to clipboard." : ""}
             </p>
           </div>
+        </div>
         </div>
       </section>
 
@@ -211,7 +223,10 @@ export default function JsonFormatterTool() {
             <strong className="text-foreground">Minify</strong>, or <strong className="text-foreground">Validate</strong>. The
             result appears in the output panel; you can copy it or download it as a file. For validation-only with a
             larger editor area, you can also use our{" "}
-            <Link href="/dev-tools/json-validator-standalone" className="font-medium text-primary underline-offset-2 hover:underline">
+            <Link
+              href={getDevToolsHrefForLocale("/dev-tools/json-validator-standalone", locale)}
+              className="font-medium text-primary underline-offset-2 hover:underline"
+            >
               standalone JSON validator
             </Link>
             .

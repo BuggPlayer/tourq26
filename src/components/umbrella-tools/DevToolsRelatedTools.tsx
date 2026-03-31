@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
+import { getDevToolsCanonicalSuffix, getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
 import {
   DEV_TOOL_CATEGORY_LABELS,
   getRelatedDevTools,
@@ -16,12 +17,13 @@ type Props = {
 
 export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
   const pathname = usePathname();
-  const { messages } = useDevToolsLocale();
-  const segments = pathname.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
-  if (segments.length !== 2 || segments[0] !== "dev-tools" || segments[1] === "about") {
+  const { messages, locale } = useDevToolsLocale();
+  const suffix = getDevToolsCanonicalSuffix(pathname);
+  const parts = suffix.split("/").filter(Boolean);
+  if (parts.length !== 2 || parts[0] !== "dev-tools" || parts[1] === "about") {
     return null;
   }
-  const slug = segments[1]!;
+  const slug = parts[1]!;
   const related = relatedToolsOverride ?? getRelatedDevTools(slug, 6);
   if (related.length === 0) return null;
 
@@ -35,7 +37,7 @@ export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
         {related.map((t) => (
           <li key={t.slug}>
             <Link
-              href={`/dev-tools/${t.slug}`}
+              href={getDevToolsHrefForLocale(`/dev-tools/${t.slug}`, locale)}
               scroll={false}
               className="flex gap-3 rounded-xl border border-border/60 bg-surface/40 px-4 py-3 transition-colors hover:border-primary/35 hover:bg-surface-elevated/80"
             >

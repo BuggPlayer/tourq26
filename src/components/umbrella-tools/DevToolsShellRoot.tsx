@@ -10,7 +10,11 @@ export function DevToolsShellRoot({ children }: { children: ReactNode }) {
   const { htmlLang, dir } = useDevToolsLocale();
 
   return (
-    <div className="flex min-h-screen flex-col bg-background" lang={htmlLang} dir={dir}>
+    <div
+      className="flex min-h-screen min-h-[100dvh] w-full max-w-full flex-col overflow-x-clip bg-background"
+      lang={htmlLang}
+      dir={dir}
+    >
       {children}
     </div>
   );

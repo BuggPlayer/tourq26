@@ -2,11 +2,16 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
 import CodeBlock from "@/components/umbrella-tools/CodeBlock";
 import PreviewBox from "@/components/umbrella-tools/PreviewBox";
-import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
+import {
+  DEV_TOOL_PRIMARY_SURFACE_CLASS,
+  DevToolPageShell,
+} from "@/components/umbrella-tools/DevToolPageShell";
 import { buildShapeDividerSvg, normalizeSvgFill, type DividerPreset } from "@/lib/umbrella-tools/shape-divider";
 import { svgToDataURL } from "@/lib/umbrella-tools/svg";
+import { getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
 
 const TOOL_SLUG = "shape-divider-generator";
 
@@ -18,6 +23,7 @@ const PRESETS: { id: DividerPreset; label: string; hint: string }[] = [
 ];
 
 export default function ShapeDividerGeneratorTool() {
+  const { locale } = useDevToolsLocale();
   const [preset, setPreset] = useState<DividerPreset>("wave");
   const [fill, setFill] = useState("#6366f1");
   const [width, setWidth] = useState(1200);
@@ -42,16 +48,23 @@ export default function ShapeDividerGeneratorTool() {
   return (
     <DevToolPageShell slug={TOOL_SLUG} showTryHeading={false}>
       <div className="space-y-8">
-        <p className="text-sm text-muted-foreground">
-          Build SVG section dividers for landing pages. Copy raw SVG or CSS{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">background-image</code> with a data URL. See also{" "}
-          <Link href="/dev-tools/svg-to-css-background" className="font-medium text-primary underline-offset-2 hover:underline">
-            SVG → CSS background
-          </Link>{" "}
-          for any custom SVG.
-        </p>
+        <div className={DEV_TOOL_PRIMARY_SURFACE_CLASS}>
+          <p className="text-muted-foreground">
+            Build SVG section dividers for landing pages. Copy raw SVG or CSS{" "}
+            <code className="rounded bg-muted px-1 font-mono text-[0.85em]">background-image</code> with a data URL. See also{" "}
+            <Link
+              href={getDevToolsHrefForLocale("/dev-tools/svg-to-css-background", locale)}
+              className="font-medium text-primary underline-offset-2 hover:underline"
+            >
+              SVG → CSS background
+            </Link>{" "}
+            for any custom SVG.
+          </p>
 
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]" aria-labelledby="divider-controls-heading">
+          <section
+            className="mt-6 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]"
+            aria-labelledby="divider-controls-heading"
+          >
           <h2 id="divider-controls-heading" className="sr-only">
             Divider options
           </h2>
@@ -138,8 +151,9 @@ export default function ShapeDividerGeneratorTool() {
             </PreviewBox>
           </div>
         </section>
+        </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid min-w-0 gap-6 lg:grid-cols-2">
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">SVG markup</h3>
             <div className="mt-2">

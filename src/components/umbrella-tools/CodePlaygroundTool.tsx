@@ -4,7 +4,10 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import type { editor } from "monaco-editor";
-import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
+import {
+  DEV_TOOL_PRIMARY_SURFACE_CLASS,
+  DevToolPageShell,
+} from "@/components/umbrella-tools/DevToolPageShell";
 import {
   CODE_PLAYGROUND_STARTERS,
   PLAYGROUND_LANGUAGES,
@@ -190,8 +193,8 @@ export default function CodePlaygroundTool() {
 
   return (
     <DevToolPageShell slug={TOOL_SLUG} showTryHeading={false}>
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
+      <div className={`min-w-0 space-y-4 ${DEV_TOOL_PRIMARY_SURFACE_CLASS}`}>
+        <p className="text-muted-foreground">
           Monaco editor with run, console output, and HTML preview. JavaScript, TypeScript, Python, Java, C++, and Go run in a
           remote sandbox (Piston). Your code is sent to the executor service — do not paste secrets.
         </p>
@@ -247,7 +250,7 @@ export default function CodePlaygroundTool() {
           </span>
         </div>
 
-        <div className="grid min-h-[min(72vh,820px)] gap-4 lg:grid-cols-2 lg:gap-6">
+        <div className="grid min-h-[min(72vh,820px)] min-w-0 gap-4 lg:grid-cols-2 lg:gap-6">
           <div className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-border/70 bg-[#1e1e1e] shadow-inner dark:bg-[#0d1117]">
             <div className="border-b border-white/10 px-3 py-2 text-xs font-medium text-white/70">Editor</div>
             <div className="min-h-[min(50vh,480px)] flex-1 lg:min-h-0">
@@ -304,17 +307,17 @@ export default function CodePlaygroundTool() {
             )}
           </div>
         </div>
-
-        <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
-          <li>Editor: Monaco (VS Code engine) — minimap, bracket colorization, word wrap, Cmd/Ctrl+Enter to run.</li>
-          <li>
-            Execution uses the public Piston API (same stack as many online judges). Availability and language versions are
-            defined by that service.
-          </li>
-          <li>TypeScript is transpiled to JavaScript on the server, then executed as JS.</li>
-          <li>HTML mode runs only in your browser (sandboxed iframe, scripts allowed in isolation).</li>
-        </ul>
       </div>
+
+      <ul className="mt-6 list-inside list-disc space-y-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+        <li>Editor: Monaco (VS Code engine) — minimap, bracket colorization, word wrap, Cmd/Ctrl+Enter to run.</li>
+        <li>
+          Execution uses the public Piston API (same stack as many online judges). Availability and language versions are
+          defined by that service.
+        </li>
+        <li>TypeScript is transpiled to JavaScript on the server, then executed as JS.</li>
+        <li>HTML mode runs only in your browser (sandboxed iframe, scripts allowed in isolation).</li>
+      </ul>
     </DevToolPageShell>
   );
 }

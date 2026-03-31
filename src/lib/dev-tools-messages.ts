@@ -6,7 +6,13 @@ import {
 } from "@/lib/umbrella-tools/tools-config";
 
 export type DevToolsMessages = {
-  topBar: { devTools: string; siteLinks: string };
+  topBar: {
+    devTools: string;
+    siteLinks: string;
+    openSiteMenu: string;
+    closeSiteMenu: string;
+    siteMenuHeading: string;
+  };
   nav: { about: string; privacy: string; terms: string; contact: string };
   languageSelectAria: string;
   sidebar: {
@@ -17,6 +23,8 @@ export type DevToolsMessages = {
     aboutUtilities: string;
     toolsByCategory: string;
     noMatch: (q: string) => string;
+    collapseToolsMenu: string;
+    expandToolsMenu: string;
   };
   breadcrumbs: { home: string; devTools: string; about: string; aria: string };
   mobile: { browseTools: string; searchLabel: string; searchPlaceholder: string };
@@ -54,6 +62,9 @@ const en: DevToolsMessages = {
   topBar: {
     devTools: "DevTools",
     siteLinks: "Site links",
+    openSiteMenu: "Open site menu",
+    closeSiteMenu: "Close menu",
+    siteMenuHeading: "Site pages",
   },
   nav: {
     about: "About",
@@ -70,6 +81,8 @@ const en: DevToolsMessages = {
     aboutUtilities: "About utilities",
     toolsByCategory: "Tool categories",
     noMatch: (q) => `No tools match “${q}”.`,
+    collapseToolsMenu: "Collapse tools menu",
+    expandToolsMenu: "Expand tools menu",
   },
   breadcrumbs: {
     home: "Home",
@@ -159,7 +172,13 @@ function categoryLabelsAr(): Record<DevToolCategory, string> {
 
 const ar: DevToolsMessages = {
   ...en,
-  topBar: { devTools: "أدوات المطور", siteLinks: "روابط الموقع" },
+  topBar: {
+    devTools: "أدوات المطور",
+    siteLinks: "روابط الموقع",
+    openSiteMenu: "فتح قائمة الموقع",
+    closeSiteMenu: "إغلاق القائمة",
+    siteMenuHeading: "صفحات الموقع",
+  },
   nav: {
     about: "حول",
     privacy: "الخصوصية",
@@ -175,6 +194,8 @@ const ar: DevToolsMessages = {
     aboutUtilities: "حول الأدوات",
     toolsByCategory: "فئات الأدوات",
     noMatch: (q) => `لا توجد أدوات تطابق «${q}».`,
+    collapseToolsMenu: "طي قائمة الأدوات",
+    expandToolsMenu: "إظهار قائمة الأدوات",
   },
   breadcrumbs: {
     home: "الرئيسية",
@@ -236,7 +257,13 @@ const ar: DevToolsMessages = {
 
 const es: DevToolsMessages = {
   ...en,
-  topBar: { devTools: "DevTools", siteLinks: "Enlaces del sitio" },
+  topBar: {
+    devTools: "DevTools",
+    siteLinks: "Enlaces del sitio",
+    openSiteMenu: "Abrir menú del sitio",
+    closeSiteMenu: "Cerrar menú",
+    siteMenuHeading: "Páginas del sitio",
+  },
   nav: { about: "Acerca de", privacy: "Privacidad", terms: "Términos", contact: "Contacto" },
   languageSelectAria: "Idioma de la interfaz",
   sidebar: {
@@ -247,6 +274,8 @@ const es: DevToolsMessages = {
     aboutUtilities: "Acerca de las utilidades",
     toolsByCategory: "Categorías de herramientas",
     noMatch: (q) => `Ninguna herramienta coincide con «${q}».`,
+    collapseToolsMenu: "Ocultar menú de herramientas",
+    expandToolsMenu: "Mostrar menú de herramientas",
   },
   breadcrumbs: {
     home: "Inicio",
@@ -331,7 +360,13 @@ const es: DevToolsMessages = {
 
 const fr: DevToolsMessages = {
   ...en,
-  topBar: { devTools: "DevTools", siteLinks: "Liens du site" },
+  topBar: {
+    devTools: "DevTools",
+    siteLinks: "Liens du site",
+    openSiteMenu: "Ouvrir le menu du site",
+    closeSiteMenu: "Fermer le menu",
+    siteMenuHeading: "Pages du site",
+  },
   nav: { about: "À propos", privacy: "Confidentialité", terms: "Conditions", contact: "Contact" },
   languageSelectAria: "Langue d’affichage",
   sidebar: {
@@ -342,6 +377,8 @@ const fr: DevToolsMessages = {
     aboutUtilities: "À propos des utilitaires",
     toolsByCategory: "Catégories d’outils",
     noMatch: (q) => `Aucun outil ne correspond à « ${q} ».`,
+    collapseToolsMenu: "Réduire le menu des outils",
+    expandToolsMenu: "Afficher le menu des outils",
   },
   breadcrumbs: {
     home: "Accueil",
@@ -400,7 +437,13 @@ const fr: DevToolsMessages = {
 
 const de: DevToolsMessages = {
   ...en,
-  topBar: { devTools: "DevTools", siteLinks: "Seitenlinks" },
+  topBar: {
+    devTools: "DevTools",
+    siteLinks: "Seitenlinks",
+    openSiteMenu: "Seitenmenü öffnen",
+    closeSiteMenu: "Menü schließen",
+    siteMenuHeading: "Seiten",
+  },
   nav: { about: "Über uns", privacy: "Datenschutz", terms: "AGB", contact: "Kontakt" },
   languageSelectAria: "Anzeigesprache",
   sidebar: {
@@ -411,6 +454,8 @@ const de: DevToolsMessages = {
     aboutUtilities: "Über die Utilities",
     toolsByCategory: "Tool-Kategorien",
     noMatch: (q) => `Keine Tools passen zu „${q}“.`,
+    collapseToolsMenu: "Tools-Menü einklappen",
+    expandToolsMenu: "Tools-Menü ausklappen",
   },
   breadcrumbs: {
     home: "Start",
@@ -493,7 +538,13 @@ const de: DevToolsMessages = {
 
 const ptBR: DevToolsMessages = {
   ...en,
-  topBar: { devTools: "DevTools", siteLinks: "Links do site" },
+  topBar: {
+    devTools: "DevTools",
+    siteLinks: "Links do site",
+    openSiteMenu: "Abrir menu do site",
+    closeSiteMenu: "Fechar menu",
+    siteMenuHeading: "Páginas do site",
+  },
   nav: { about: "Sobre", privacy: "Privacidade", terms: "Termos", contact: "Contato" },
   languageSelectAria: "Idioma da interface",
   sidebar: {
@@ -504,6 +555,8 @@ const ptBR: DevToolsMessages = {
     aboutUtilities: "Sobre as utilidades",
     toolsByCategory: "Categorias de ferramentas",
     noMatch: (q) => `Nenhuma ferramenta corresponde a «${q}».`,
+    collapseToolsMenu: "Recolher menu de ferramentas",
+    expandToolsMenu: "Expandir menu de ferramentas",
   },
   breadcrumbs: {
     home: "Início",
@@ -562,7 +615,13 @@ const ptBR: DevToolsMessages = {
 
 const ja: DevToolsMessages = {
   ...en,
-  topBar: { devTools: "開発者ツール", siteLinks: "サイトリンク" },
+  topBar: {
+    devTools: "開発者ツール",
+    siteLinks: "サイトリンク",
+    openSiteMenu: "サイトメニューを開く",
+    closeSiteMenu: "メニューを閉じる",
+    siteMenuHeading: "サイトのページ",
+  },
   nav: { about: "概要", privacy: "プライバシー", terms: "利用規約", contact: "お問い合わせ" },
   languageSelectAria: "表示言語",
   sidebar: {
@@ -573,6 +632,8 @@ const ja: DevToolsMessages = {
     aboutUtilities: "ユーティリティについて",
     toolsByCategory: "ツールカテゴリ",
     noMatch: (q) => `「${q}」に一致するツールはありません。`,
+    collapseToolsMenu: "ツールメニューを閉じる",
+    expandToolsMenu: "ツールメニューを開く",
   },
   breadcrumbs: {
     home: "ホーム",
@@ -656,7 +717,13 @@ const ja: DevToolsMessages = {
 
 const zhCN: DevToolsMessages = {
   ...en,
-  topBar: { devTools: "开发者工具", siteLinks: "网站链接" },
+  topBar: {
+    devTools: "开发者工具",
+    siteLinks: "网站链接",
+    openSiteMenu: "打开网站菜单",
+    closeSiteMenu: "关闭菜单",
+    siteMenuHeading: "网站页面",
+  },
   nav: { about: "关于", privacy: "隐私", terms: "条款", contact: "联系" },
   languageSelectAria: "显示语言",
   sidebar: {
@@ -667,6 +734,8 @@ const zhCN: DevToolsMessages = {
     aboutUtilities: "关于实用工具",
     toolsByCategory: "工具分类",
     noMatch: (q) => `没有与「${q}」匹配的工具。`,
+    collapseToolsMenu: "收起工具菜单",
+    expandToolsMenu: "展开工具菜单",
   },
   breadcrumbs: {
     home: "首页",

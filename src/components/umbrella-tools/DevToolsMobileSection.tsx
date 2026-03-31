@@ -21,7 +21,7 @@ export function DevToolsMobileSection({ baseTools = UMBRELLA_TOOLS }: { baseTool
 
   return (
     <div className="border-b border-border/50 bg-surface/30 lg:hidden">
-      <div className="border-b border-border/40 px-4 py-3">
+      <div className="border-b border-border/40 px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] py-3">
         <label htmlFor="dev-tools-search-mobile" className="sr-only">
           {messages.mobile.searchLabel}
         </label>
@@ -35,19 +35,19 @@ export function DevToolsMobileSection({ baseTools = UMBRELLA_TOOLS }: { baseTool
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={messages.mobile.searchPlaceholder}
-            className="w-full rounded-lg border border-border/60 bg-background py-2.5 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="min-h-11 w-full rounded-lg border border-border/60 bg-background py-2.5 pl-9 pr-3 text-base text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm"
             autoComplete="off"
           />
         </div>
       </div>
       <details className="group">
-        <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-12 cursor-pointer list-none touch-manipulation items-center px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] py-3 text-sm font-semibold text-foreground [-webkit-tap-highlight-color:transparent] [&::-webkit-details-marker]:hidden">
           <span className="flex items-center justify-between gap-2">
             {messages.mobile.browseTools}
             <span className="text-muted-foreground transition-transform group-open:rotate-180">▼</span>
           </span>
         </summary>
-        <div className="max-h-[min(55vh,480px)] overflow-y-auto border-t border-border/40">
+        <div className="max-h-[min(55dvh,480px)] overflow-y-auto overscroll-y-contain border-t border-border/40 [-webkit-overflow-scrolling:touch]">
           <DevToolsMobileNav tools={filtered} query={q} />
         </div>
       </details>

@@ -5,7 +5,10 @@ import JsonLd from "@/components/JsonLd";
 import UmbrellaToolsLayout from "@/components/umbrella-tools/UmbrellaToolsLayout";
 import { DevToolsToolRouter } from "@/components/umbrella-tools/DevToolsToolRouter";
 import { readDevToolsAdminDocument, readSiteContent } from "@/lib/content";
-import { getDevToolsLocaleFromCookie } from "@/lib/dev-tools-locale-server";
+import {
+  getAllNonEnLocalePathSegments,
+  pathSegmentToLocale,
+} from "@/lib/dev-tools-locale-path";
 import { devToolsPageMetadata, devToolsToolFullJsonLd } from "@/lib/umbrella-tools/seo";
 import { getDevToolBySlug, UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
 import { getSiteUrl } from "@/lib/site-url";
@@ -23,16 +26,22 @@ import {
   isDevToolEnabled,
 } from "@/lib/dev-tools-admin";
 
-/** Admin can disable tools without redeploy; re-evaluate visibility per request. */
 export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
-  return UMBRELLA_TOOLS.map((t) => ({ slug: t.slug }));
+  return getAllNonEnLocalePathSegments().flatMap((locale) =>
+    UMBRELLA_TOOLS.map((t) => ({ locale, slug: t.slug })),
+  );
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const locale = await getDevToolsLocaleFromCookie();
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale: segment, slug } = await params;
+  const locale = pathSegmentToLocale(segment);
+  if (!locale) return { title: "Developer tool" };
   return devToolsPageMetadata(slug, locale);
 }
 
@@ -40,14 +49,17 @@ function ToolFallback() {
   return <p className="text-sm text-muted-foreground">Loading…</p>;
 }
 
-export default async function DevToolBySlugPage({
+export default async function DevToolPrefixedSlugPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
   searchParams: Promise<{ adminPreview?: string }>;
 }) {
-  const { slug } = await params;
+  const { locale: segment, slug } = await params;
+  const locale = pathSegmentToLocale(segment);
+  if (!locale) notFound();
+
   const { adminPreview } = await searchParams;
   const tool = getDevToolBySlug(slug);
   if (!tool) notFound();
@@ -55,11 +67,7 @@ export default async function DevToolBySlugPage({
   const adminBypass = adminPreview === "1" && (await isAdmin());
   if (!adminBypass && !isDevToolEnabled(slug, adminDoc)) notFound();
 
-  const [siteUrl, site, locale] = await Promise.all([
-    getSiteUrl(),
-    readSiteContent(),
-    getDevToolsLocaleFromCookie(),
-  ]);
+  const [siteUrl, site] = await Promise.all([getSiteUrl(), readSiteContent()]);
   const registryFaqs = getDevToolFaqItems(slug);
   const faqSchemaPairs = getDevToolFaqSchemaPairs(adminDoc, slug, registryFaqs);
   const structuredData = devToolsToolFullJsonLd({

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useDevToolsLocale } from "@/components/umbrella-tools/DevToolsLocaleProvider";
+import { getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
 import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 import { DEV_TOOL_CATEGORY_LABELS } from "@/lib/umbrella-tools/tools-config";
 
@@ -12,12 +13,12 @@ type Props = {
 };
 
 export function DevToolsToolCard({ tool, featured }: Props) {
-  const { messages } = useDevToolsLocale();
+  const { messages, locale } = useDevToolsLocale();
   const categoryLabel = messages.categoryLabels[tool.category] ?? DEV_TOOL_CATEGORY_LABELS[tool.category];
 
   return (
     <Link
-      href={`/dev-tools/${tool.slug}`}
+      href={getDevToolsHrefForLocale(`/dev-tools/${tool.slug}`, locale)}
       className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border/70 bg-surface-elevated/90 p-5 shadow-[0_1px_0_0_rgb(255_255_255/0.04)_inset] transition-all duration-200 hover:border-primary/30 hover:shadow-md sm:p-6"
     >
       {featured ? (

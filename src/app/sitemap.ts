@@ -6,6 +6,7 @@ import { servicePages } from "@/data/services-content";
 import { techNewsDemoItems } from "@/data/tech-news-demo";
 import { readDevToolsAdminDocument } from "@/lib/content";
 import { filterUmbrellaToolsByAdmin } from "@/lib/dev-tools-admin";
+import { getAllNonEnLocalePathSegments } from "@/lib/dev-tools-locale-path";
 import { UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -31,6 +32,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
+    ...getAllNonEnLocalePathSegments().flatMap((seg) => [
+      { url: `${baseUrl}/${seg}/dev-tools`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.88 },
+      {
+        url: `${baseUrl}/${seg}/dev-tools/about`,
+        lastModified: new Date(),
+        changeFrequency: "yearly" as const,
+        priority: 0.5,
+      },
+      ...toolsForSitemap.map((t) => ({
+        url: `${baseUrl}/${seg}/dev-tools/${t.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      })),
+    ]),
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     {

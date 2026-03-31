@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 import {
   DEFAULT_DEV_TOOLS_LOCALE,
   DEV_TOOLS_LOCALE_COOKIE,
@@ -17,6 +18,7 @@ import {
   isDevToolsLocaleId,
   type DevToolsLocaleId,
 } from "@/lib/dev-tools-locale";
+import { getLocaleFromDevToolsPathname } from "@/lib/dev-tools-locale-path";
 import { getDevToolsMessages, type DevToolsMessages } from "@/lib/dev-tools-messages";
 
 type DevToolsLocaleContextValue = {
@@ -61,16 +63,24 @@ export function DevToolsLocaleProvider({
   /** From `cookies()` on the server so first paint matches returning visitors. */
   initialLocale?: DevToolsLocaleId;
 }) {
+  const pathname = usePathname();
   const [locale, setLocaleState] = useState<DevToolsLocaleId>(
     () => initialLocale ?? DEFAULT_DEV_TOOLS_LOCALE,
   );
 
-  /* After mount, prefer localStorage so client-only preference wins over cookie-less SSR. */
+  /* URL prefix (/es/dev-tools) wins; else localStorage for unprefixed /dev-tools. */
   useEffect(() => {
+    const fromPath = getLocaleFromDevToolsPathname(pathname);
+    if (fromPath !== null) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sync UI to locale segment in URL
+      setLocaleState(fromPath);
+      persistLocale(fromPath);
+      return;
+    }
     const stored = readStoredLocale();
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot sync from localStorage post-hydration
     setLocaleState((prev) => (stored !== prev ? stored : prev));
-  }, []);
+  }, [pathname]);
 
   const setLocale = useCallback((id: DevToolsLocaleId) => {
     setLocaleState(id);

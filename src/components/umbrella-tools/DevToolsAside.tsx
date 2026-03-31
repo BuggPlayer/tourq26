@@ -8,7 +8,7 @@ export function DevToolsAside({ children }: { children: ReactNode }) {
 
   return (
     <aside
-      className="sticky top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-[min(100%,18rem)] shrink-0 flex-col border-r border-border/50 bg-surface/50 sm:top-[3.75rem] sm:h-[calc(100vh-3.75rem)] lg:flex"
+      className="sticky top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full min-w-0 shrink-0 flex-col sm:top-[3.75rem] sm:h-[calc(100vh-3.75rem)] lg:flex"
       aria-label={messages.sidebar.toolsByCategory}
     >
       {children}

@@ -1,7 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { DevToolPageShell } from "@/components/umbrella-tools/DevToolPageShell";
+import {
+  DEV_TOOL_PRIMARY_SURFACE_CLASS,
+  DevToolPageShell,
+} from "@/components/umbrella-tools/DevToolPageShell";
 
 export function UrlParserTool() {
   const [input, setInput] = useState("https://user:pass@example.com:8080/path?q=1#h");
@@ -129,41 +132,48 @@ export function SlugGeneratorTool() {
 
   return (
     <DevToolPageShell slug="slug-generator" showTryHeading={false}>
-      <section className="border-t border-border/50 pt-10" aria-labelledby="slug-try-heading">
-      <h2 id="slug-try-heading" className="font-display text-lg font-semibold tracking-tight text-foreground">Try it</h2>
-      <p className="mt-2 mb-4 text-sm text-foreground/85">
-        Paste a title or headline — we lowercase it, strip accents, replace spaces and punctuation with hyphens, and trim
-        extra dashes. Everything runs in your browser.
-      </p>
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        rows={6}
-        className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm"
-        aria-label="Title or phrase to convert into a URL slug"
-      />
-      <div className="mt-4 flex flex-wrap items-center gap-3">
-        <p
-          className={`min-w-0 flex-1 break-all font-mono text-lg font-semibold motion-safe:transition-colors motion-safe:duration-200 ${
-            copied ? "text-primary" : "text-foreground"
-          }`}
-          aria-live="polite"
+      <section className="min-w-0" aria-labelledby="slug-try-heading">
+        <h2
+          id="slug-try-heading"
+          className="break-words font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl md:text-3xl"
         >
-          {slug || "—"}
-        </p>
-        <button
-          type="button"
-          onClick={copySlug}
-          disabled={!slug}
-          aria-label={copied ? "Slug copied to clipboard" : "Copy generated slug to clipboard"}
-          className="shrink-0 rounded-lg border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:border-primary/50 disabled:opacity-50"
-        >
-          {copied ? "Copied" : "Copy slug"}
-        </button>
-      </div>
-      <p role="status" aria-live="polite" className="sr-only">
-        {copied ? "Slug copied to clipboard." : ""}
-      </p>
+          Try it
+        </h2>
+        <div className={`mt-4 sm:mt-6 ${DEV_TOOL_PRIMARY_SURFACE_CLASS}`}>
+          <p className="text-foreground/90">
+            Paste a title or headline — we lowercase it, strip accents, replace spaces and punctuation with hyphens, and
+            trim extra dashes. Everything runs in your browser.
+          </p>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            rows={6}
+            className="mt-4 w-full min-w-0 rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm"
+            aria-label="Title or phrase to convert into a URL slug"
+          />
+          <div className="mt-4 flex min-w-0 flex-wrap items-center gap-3">
+            <p
+              className={`min-w-0 flex-1 break-all font-mono text-base font-semibold motion-safe:transition-colors motion-safe:duration-200 sm:text-lg ${
+                copied ? "text-primary" : "text-foreground"
+              }`}
+              aria-live="polite"
+            >
+              {slug || "—"}
+            </p>
+            <button
+              type="button"
+              onClick={copySlug}
+              disabled={!slug}
+              aria-label={copied ? "Slug copied to clipboard" : "Copy generated slug to clipboard"}
+              className="min-h-11 shrink-0 rounded-xl border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:border-primary/50 disabled:opacity-50"
+            >
+              {copied ? "Copied" : "Copy slug"}
+            </button>
+          </div>
+          <p role="status" aria-live="polite" className="sr-only">
+            {copied ? "Slug copied to clipboard." : ""}
+          </p>
+        </div>
       </section>
 
       <section className="mt-10 border-t border-border/50 pt-10" aria-labelledby="slug-best-practices-heading">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
+import { PrivacyDevToolsLink } from "@/components/PrivacyDevToolsLink";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
 
@@ -74,9 +75,7 @@ export default async function PrivacyPage() {
           </h2>
           <p className="mt-2 text-muted-foreground leading-relaxed">
             The utilities at{" "}
-            <Link href="/dev-tools" className="text-primary hover:underline">
-              /dev-tools
-            </Link>{" "}
+            <PrivacyDevToolsLink className="text-primary hover:underline" />{" "}
             (SVG to CSS, JSON to CSV, CSS shadow preview) run in your browser. Your inputs are not sent to our servers
             for those pages.
           </p>
