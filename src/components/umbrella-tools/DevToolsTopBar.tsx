@@ -26,14 +26,14 @@ export function DevToolsTopBar() {
   const toggleMenu = useCallback(() => setMenuOpen((o) => !o), []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/90 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-50 border-b border-border/40 bg-background/65 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.04)] backdrop-blur-2xl supports-[backdrop-filter]:bg-background/55 dark:border-white/[0.06] dark:shadow-[inset_0_1px_0_0_rgb(255_255_255/0.06)]">
       <div
-        className="mx-auto grid max-w-[1680px] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pb-2 pt-[max(0.5rem,env(safe-area-inset-top,0px))] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-x-3 sm:px-6 sm:pb-0 sm:pt-0 sm:h-[3.75rem] lg:px-8"
+        className="mx-auto grid max-w-[1680px] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 px-[max(0.75rem,env(safe-area-inset-left,0px))] pe-[max(0.75rem,env(safe-area-inset-right,0px))] pb-1.5 pt-[max(0.35rem,env(safe-area-inset-top,0px))] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-x-2 sm:px-4 sm:pb-0 sm:pt-0 sm:h-[3.25rem] lg:px-6"
       >
         <div className="col-start-1 row-start-1 flex min-w-0 items-center gap-1.5 sm:gap-3">
           <Link
             href="/"
-            className="min-w-0 truncate font-display text-base font-bold tracking-tight text-foreground transition-opacity hover:opacity-90 sm:text-lg lg:text-xl"
+            className="min-w-0 truncate font-display text-sm font-bold tracking-tight text-foreground transition-opacity hover:opacity-90 sm:text-base lg:text-lg"
           >
             torq <span className="text-primary">studio</span>
           </Link>
@@ -42,14 +42,14 @@ export function DevToolsTopBar() {
           </span>
           <Link
             href={getDevToolsHrefForLocale("/dev-tools", locale)}
-            className="shrink-0 rounded-md border border-border/60 bg-surface px-2 py-1.5 font-sans text-[10px] font-semibold uppercase leading-none tracking-[0.12em] text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary sm:px-2 sm:py-1 sm:text-xs sm:tracking-[0.14em]"
+            className="shrink-0 rounded-lg border border-border/50 bg-surface-elevated/80 px-2 py-1.5 font-sans text-[10px] font-semibold uppercase leading-none tracking-[0.14em] text-muted-foreground shadow-sm ring-1 ring-inset ring-white/[0.04] transition-all hover:border-primary/35 hover:text-primary hover:shadow-[0_0_20px_-8px_rgb(245_158_11/0.35)] sm:px-2.5 sm:py-1 sm:text-xs sm:tracking-[0.14em]"
           >
             {messages.topBar.devTools}
           </Link>
         </div>
 
         <nav
-          className="hidden min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-1 text-sm sm:col-start-2 sm:row-start-1 sm:flex lg:gap-x-5"
+          className="hidden min-w-0 flex-wrap items-center justify-end gap-x-3 gap-y-1 text-xs sm:col-start-2 sm:row-start-1 sm:flex sm:text-sm lg:gap-x-4"
           aria-label={messages.topBar.siteLinks}
         >
           {links.map((item) => (
@@ -63,7 +63,7 @@ export function DevToolsTopBar() {
           ))}
         </nav>
 
-        <div className="col-start-2 row-start-1 flex shrink-0 items-center justify-end gap-1.5 sm:col-start-3 sm:gap-3 sm:border-l sm:border-border/50 sm:pl-4 [&_button]:h-11 [&_button]:w-11 [&_button]:shrink-0 sm:[&_button]:h-9 sm:[&_button]:w-9 [&_select]:min-h-11 [&_select]:py-2 sm:[&_select]:min-h-0 sm:[&_select]:py-1.5">
+        <div className="col-start-2 row-start-1 flex shrink-0 items-center justify-end gap-1 sm:col-start-3 sm:gap-2 sm:border-l sm:border-border/50 sm:pl-3 [&_button]:h-10 [&_button]:w-10 [&_button]:shrink-0 sm:[&_button]:h-8 sm:[&_button]:w-8 [&_select]:min-h-10 [&_select]:py-1.5 sm:[&_select]:min-h-0 sm:[&_select]:py-1">
           <DevToolsSiteLinksMenuTrigger
             open={menuOpen}
             onToggle={toggleMenu}

@@ -40,7 +40,7 @@ export default function ToolHeader({
   const backLink = (
     <Link
       href={getDevToolsHrefForLocale("/dev-tools", locale)}
-      className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      className="inline-flex items-center gap-1.5 rounded-lg px-1 -mx-1 py-0.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-elevated/80 hover:text-primary"
     >
       <span aria-hidden>←</span> {messages.toolHeader.backToTools}
     </Link>
@@ -48,14 +48,14 @@ export default function ToolHeader({
 
   const categoryLine =
     category ? (
-      <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary/90">
+      <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary/90">
         {messages.categoryLabels[category] ?? DEV_TOOL_CATEGORY_LABELS[category]}
       </p>
     ) : null;
 
   const titleBlock = (
     <h1
-      className={`break-words text-balance font-display text-2xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[2.5rem] lg:leading-tight ${category ? "mt-2" : "mt-5"}`}
+      className={`break-words text-balance font-display text-xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-[2rem] lg:leading-[1.15] ${category ? "mt-1.5" : "mt-3"}`}
     >
       {title}
     </h1>
@@ -64,7 +64,7 @@ export default function ToolHeader({
   const introBlock =
     introParagraphs.length > 0 ? (
       <div
-        className="mt-6 max-w-2xl space-y-3 border-l-2 border-primary/30 pl-4 text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]"
+        className="mt-4 max-w-2xl space-y-2 border-l-2 border-primary/30 pl-3 text-sm leading-relaxed text-muted-foreground"
         role="region"
         aria-label={messages.toolHeader.aboutRegion}
       >
@@ -76,7 +76,7 @@ export default function ToolHeader({
 
   if (segment === "lead") {
     return (
-      <header className="mb-3 sm:mb-4">
+      <header className="mb-2 sm:mb-3">
         {backLink}
         {categoryLine}
         {titleBlock}
@@ -86,19 +86,19 @@ export default function ToolHeader({
 
   if (segment === "trail") {
     return (
-      <div className="mt-10 min-w-0 border-t border-border/40 pt-8 sm:mt-12 sm:pt-10">
-        <p className="max-w-2xl break-words text-base leading-relaxed text-muted-foreground sm:text-lg">{description}</p>
+      <div className="mt-8 min-w-0 border-t border-border/40 pt-6 sm:mt-10 sm:pt-8">
+        <p className="max-w-2xl break-words text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>
         {introBlock}
       </div>
     );
   }
 
   return (
-    <header className="mb-8 border-b border-border/40 pb-8">
+    <header className="mb-6 border-b border-border/40 pb-6">
       {backLink}
       {categoryLine}
       {titleBlock}
-      <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">{description}</p>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>
       {introBlock}
     </header>
   );

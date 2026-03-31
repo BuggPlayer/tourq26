@@ -29,7 +29,7 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b border-border/50 p-3">
+      <div className="border-b border-border/50 p-2.5">
         <label htmlFor="dev-tools-search" className="sr-only">
           {messages.sidebar.searchLabel}
         </label>
@@ -47,11 +47,11 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
           />
         </div>
       </div>
-      <nav className="flex-1 overflow-y-auto p-3 pb-8" aria-label={messages.sidebar.navAria}>
+      <nav className="flex-1 overflow-y-auto p-2.5 pb-6" aria-label={messages.sidebar.navAria}>
         <Link
           href={getDevToolsHrefForLocale("/dev-tools", locale)}
           scroll={false}
-          className={`mb-4 block rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`mb-3 block rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors sm:text-sm ${
             pathSuffix === "/dev-tools"
               ? "bg-primary/15 text-primary"
               : "text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
@@ -62,7 +62,7 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
         <Link
           href={getDevToolsHrefForLocale("/dev-tools/about", locale)}
           scroll={false}
-          className={`mb-6 block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+          className={`mb-4 block rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm ${
             pathSuffix === "/dev-tools/about"
               ? "bg-primary/15 text-primary"
               : "text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
@@ -72,8 +72,8 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
         </Link>
 
         {groups.map(({ category, tools }) => (
-          <div key={category} className="mb-6 last:mb-0">
-            <p className="px-2 pb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+          <div key={category} className="mb-4 last:mb-0">
+            <p className="px-1.5 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               {messages.categoryLabels[category] ?? DEV_TOOL_CATEGORY_LABELS[category]}
             </p>
             <ul className="space-y-0.5">
@@ -85,7 +85,7 @@ export function DevToolsSidebar({ baseTools = UMBRELLA_TOOLS }: { baseTools?: Um
                     <Link
                       href={href}
                       scroll={false}
-                      className={`flex items-start gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors ${
+                      className={`flex items-start gap-1.5 rounded-md px-1.5 py-1 text-xs transition-colors sm:text-sm ${
                         active
                           ? "bg-primary/12 font-medium text-primary"
                           : "text-foreground/90 hover:bg-surface-elevated"

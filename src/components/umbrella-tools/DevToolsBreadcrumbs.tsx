@@ -38,7 +38,7 @@ export function DevToolsBreadcrumbs() {
   }
 
   return (
-    <nav aria-label={messages.breadcrumbs.aria} className="mb-6 min-w-0 text-sm text-muted-foreground">
+    <nav aria-label={messages.breadcrumbs.aria} className="mb-4 min-w-0 text-xs text-muted-foreground/85 sm:text-[13px]">
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
         {crumbs.map((c, i) => (
           <li key={`${c.href}-${i}`} className="flex min-w-0 max-w-full items-center gap-2">

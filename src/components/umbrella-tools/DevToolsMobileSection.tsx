@@ -20,8 +20,8 @@ export function DevToolsMobileSection({ baseTools = UMBRELLA_TOOLS }: { baseTool
   );
 
   return (
-    <div className="border-b border-border/50 bg-surface/30 lg:hidden">
-      <div className="border-b border-border/40 px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] py-3">
+    <div className="border-b border-border/40 bg-surface/30 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.04)] backdrop-blur-md supports-[backdrop-filter]:bg-surface/20 lg:hidden">
+      <div className="border-b border-border/40 px-[max(0.75rem,env(safe-area-inset-left,0px))] pe-[max(0.75rem,env(safe-area-inset-right,0px))] py-2">
         <label htmlFor="dev-tools-search-mobile" className="sr-only">
           {messages.mobile.searchLabel}
         </label>
@@ -35,13 +35,13 @@ export function DevToolsMobileSection({ baseTools = UMBRELLA_TOOLS }: { baseTool
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={messages.mobile.searchPlaceholder}
-            className="min-h-11 w-full rounded-lg border border-border/60 bg-background py-2.5 pl-9 pr-3 text-base text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm"
+            className="min-h-10 w-full rounded-lg border border-border/60 bg-background py-2 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
             autoComplete="off"
           />
         </div>
       </div>
       <details className="group">
-        <summary className="flex min-h-12 cursor-pointer list-none touch-manipulation items-center px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] py-3 text-sm font-semibold text-foreground [-webkit-tap-highlight-color:transparent] [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-11 cursor-pointer list-none touch-manipulation items-center px-[max(0.75rem,env(safe-area-inset-left,0px))] pe-[max(0.75rem,env(safe-area-inset-right,0px))] py-2.5 text-xs font-semibold text-foreground [-webkit-tap-highlight-color:transparent] [&::-webkit-details-marker]:hidden sm:text-sm">
           <span className="flex items-center justify-between gap-2">
             {messages.mobile.browseTools}
             <span className="text-muted-foreground transition-transform group-open:rotate-180">▼</span>

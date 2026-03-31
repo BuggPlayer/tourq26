@@ -131,7 +131,12 @@ export function HtmlValidatorTool() {
   }, [input]);
   return (
     <DevToolPageShell slug="html-validator">
-      <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={14} className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm" />
+      <textarea
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        rows={8}
+        className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm"
+      />
       <p className={`mt-4 text-sm font-medium ${result.ok ? "text-success" : "text-destructive"}`}>{result.msg}</p>
     </DevToolPageShell>
   );

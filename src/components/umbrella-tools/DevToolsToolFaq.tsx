@@ -33,14 +33,14 @@ export function DevToolsToolFaq() {
   if (!slug || items.length === 0) return null;
 
   return (
-    <section className="mt-14 border-t border-border/50 pt-10" aria-labelledby={`${baseId}-faq-heading`}>
-      <h2 id={`${baseId}-faq-heading`} className="font-display text-lg font-semibold tracking-tight text-foreground">
+    <section className="mt-10 border-t border-border/50 pt-7 sm:mt-12 sm:pt-8" aria-labelledby={`${baseId}-faq-heading`}>
+      <h2 id={`${baseId}-faq-heading`} className="font-display text-base font-semibold tracking-tight text-foreground sm:text-lg">
         Frequently asked questions
       </h2>
-      <p className="mt-1 text-sm text-foreground/80">
+      <p className="mt-1 text-xs text-foreground/80 sm:text-sm">
         Common questions about privacy and how these tools work.
       </p>
-      <div className="mt-6 divide-y divide-border/60 rounded-xl border border-border/60 bg-surface/30">
+      <div className="mt-4 divide-y divide-border/60 rounded-lg border border-border/60 bg-surface/30">
         {items.map((item, index) => {
           const panelId = `${baseId}-faq-panel-${index}`;
           const buttonId = `${baseId}-faq-trigger-${index}`;

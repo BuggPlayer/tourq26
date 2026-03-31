@@ -26,12 +26,12 @@ export function DevToolsMobileNav({ tools, query }: Props) {
 
   return (
     <nav
-      className="px-[max(0.5rem,env(safe-area-inset-left,0px))] pe-[max(0.5rem,env(safe-area-inset-right,0px))] pb-4 pt-1"
+      className="px-[max(0.5rem,env(safe-area-inset-left,0px))] pe-[max(0.5rem,env(safe-area-inset-right,0px))] pb-3 pt-0.5"
       aria-label={messages.mobileNav.aria}
     >
       {groups.map(({ category, tools: catTools }) => (
-        <div key={category} className="mb-4 last:mb-0">
-          <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+        <div key={category} className="mb-3 last:mb-0">
+          <p className="px-2 pb-1 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
             {messages.categoryLabels[category] ?? DEV_TOOL_CATEGORY_LABELS[category]}
           </p>
           <ul className="space-y-0.5">
@@ -43,7 +43,7 @@ export function DevToolsMobileNav({ tools, query }: Props) {
                   <Link
                     href={href}
                     scroll={false}
-                    className={`flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm ${
+                    className={`flex min-h-9 items-center gap-1.5 rounded-md px-2 py-1.5 text-xs sm:text-sm ${
                       active ? "bg-primary/12 font-medium text-primary" : "text-foreground hover:bg-surface-elevated"
                     }`}
                   >

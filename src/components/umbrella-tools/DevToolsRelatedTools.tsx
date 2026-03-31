@@ -28,18 +28,18 @@ export function DevToolsRelatedTools({ relatedToolsOverride }: Props) {
   if (related.length === 0) return null;
 
   return (
-    <section className="mt-14 border-t border-border/50 pt-10" aria-labelledby="dev-tools-related-heading">
-      <h2 id="dev-tools-related-heading" className="font-display text-lg font-semibold tracking-tight text-foreground">
+    <section className="mt-10 border-t border-border/50 pt-7 sm:mt-12 sm:pt-8" aria-labelledby="dev-tools-related-heading">
+      <h2 id="dev-tools-related-heading" className="font-display text-base font-semibold tracking-tight text-foreground sm:text-lg">
         {messages.related.title}
       </h2>
-      <p className="mt-1 text-sm text-muted-foreground">{messages.related.subtitle}</p>
-      <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+      <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{messages.related.subtitle}</p>
+      <ul className="mt-4 grid gap-2 sm:grid-cols-2 sm:gap-3">
         {related.map((t) => (
           <li key={t.slug}>
             <Link
               href={getDevToolsHrefForLocale(`/dev-tools/${t.slug}`, locale)}
               scroll={false}
-              className="flex gap-3 rounded-xl border border-border/60 bg-surface/40 px-4 py-3 transition-colors hover:border-primary/35 hover:bg-surface-elevated/80"
+              className="flex gap-2 rounded-lg border border-border/60 bg-surface/40 px-3 py-2.5 transition-colors hover:border-primary/35 hover:bg-surface-elevated/80"
             >
               <span className="font-mono text-sm text-primary/80" aria-hidden>
                 {t.icon}

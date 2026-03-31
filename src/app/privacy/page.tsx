@@ -65,6 +65,34 @@ export default async function PrivacyPage() {
             We may collect contact details (e.g. name, email, company) when you get in touch, and usage data (e.g. pages visited) via cookies or similar technologies where applicable.
           </p>
           <h2 className="mt-8 font-display text-lg font-semibold text-foreground">
+            Cookies, analytics, and session recordings
+          </h2>
+          <p className="mt-2 text-muted-foreground leading-relaxed">
+            Where we use Google Analytics or Microsoft Clarity, those tools may set cookies or use similar technologies to
+            help us understand how the site is used (for example, page views, approximate location, and session replays or
+            heatmaps). We ask for your consent via the cookie banner before loading these services. Your choice is stored
+            in your browser (for example in localStorage) so we do not have to ask on every visit. You can withdraw consent
+            by clearing site data for this domain or using your browser controls. See{" "}
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Google’s privacy policy
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://privacy.microsoft.com/privacystatement"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Microsoft’s privacy statement
+            </a>{" "}
+            for how those services process data.
+          </p>
+          <h2 className="mt-8 font-display text-lg font-semibold text-foreground">
             How we use it
           </h2>
           <p className="mt-2 text-muted-foreground leading-relaxed">

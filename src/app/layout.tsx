@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { readSiteContent } from "@/lib/content";
+import { ConsentAndAnalytics } from "@/components/consent/ConsentAndAnalytics";
+import { ConsentDefaultScript } from "@/components/consent/ConsentDefaultScript";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { ThemeShell } from "@/components/theme/ThemeShell";
 import { isFeatureEnabled } from "@/lib/feature-flags";
@@ -87,6 +89,11 @@ export default async function RootLayout({
   ]);
   const siteUrl = site.siteUrl.replace(/\/$/, "");
 
+  const showConsentAndTracking = Boolean(
+    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() ||
+      process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID?.trim(),
+  );
+
   const organizationJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -116,6 +123,7 @@ export default async function RootLayout({
             __html: `(function(){try{var k=${JSON.stringify(SITE_THEME_STORAGE_KEY)};var t=localStorage.getItem(k);var d=document.documentElement;if(t==='light'||t==='dark'){d.classList.add(t);}else{if(window.matchMedia('(prefers-color-scheme: light)').matches)d.classList.add('light');else d.classList.add('dark');}}catch(e){}})();`,
           }}
         />
+        {showConsentAndTracking ? <ConsentDefaultScript /> : null}
       </head>
       <body className={`${dmSans.variable} ${outfit.variable} font-sans antialiased`}>
         <script
@@ -129,6 +137,7 @@ export default async function RootLayout({
         <ThemeShell>
           {children}
           {showWhatsApp ? <FloatingWhatsApp /> : null}
+          {showConsentAndTracking ? <ConsentAndAnalytics /> : null}
         </ThemeShell>
       </body>
     </html>

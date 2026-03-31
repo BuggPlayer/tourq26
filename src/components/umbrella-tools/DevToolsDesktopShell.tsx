@@ -86,7 +86,9 @@ export function DevToolsDesktopShell({
         id={panelId}
         className={[
           "relative hidden shrink-0 overflow-hidden transition-[width] duration-200 ease-out lg:block",
-          collapsed ? "w-0 border-transparent" : "w-[min(100%,18rem)] border-r border-border/50 bg-surface/50",
+          collapsed
+            ? "w-0 border-transparent"
+            : "w-[min(100%,16rem)] border-r border-border/40 bg-surface/35 shadow-[inset_-1px_0_0_0_rgb(255_255_255/0.03)] backdrop-blur-md supports-[backdrop-filter]:bg-surface/25 dark:border-white/[0.05]",
         ].join(" ")}
         aria-hidden={collapsed}
       >
@@ -100,7 +102,7 @@ export function DevToolsDesktopShell({
           aria-expanded={!collapsed}
           aria-controls={panelId}
           title={collapsed ? messages.sidebar.expandToolsMenu : messages.sidebar.collapseToolsMenu}
-          className="absolute left-1/2 top-[5.5rem] z-40 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-md border border-border/60 bg-background shadow-sm transition-[color,box-shadow,background-color] hover:bg-surface-elevated hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="absolute left-1/2 top-[4.75rem] z-40 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-md border border-border/60 bg-background text-[13px] shadow-sm transition-[color,box-shadow,background-color] hover:bg-surface-elevated hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <span className="sr-only">
             {collapsed ? messages.sidebar.expandToolsMenu : messages.sidebar.collapseToolsMenu}

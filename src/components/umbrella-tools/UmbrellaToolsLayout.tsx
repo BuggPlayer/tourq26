@@ -5,6 +5,7 @@ import { DevToolsMobileSection } from "@/components/umbrella-tools/DevToolsMobil
 import { DevToolsShellRoot } from "@/components/umbrella-tools/DevToolsShellRoot";
 import { DevToolsToolFaq } from "@/components/umbrella-tools/DevToolsToolFaq";
 import { DevToolsRelatedTools } from "@/components/umbrella-tools/DevToolsRelatedTools";
+import { DevToolsBuyMeACoffee } from "@/components/umbrella-tools/DevToolsBuyMeACoffee";
 import { DevToolsSidebar } from "@/components/umbrella-tools/DevToolsSidebar";
 import { DevToolsTopBar } from "@/components/umbrella-tools/DevToolsTopBar";
 import { UMBRELLA_TOOLS, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
@@ -32,9 +33,10 @@ export default function UmbrellaToolsLayout({
         <div className="min-w-0 flex-1 max-w-full">
           <DevToolsMobileSection baseTools={navCatalog} />
 
-          <main className="w-full min-w-0 max-w-full py-6 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] sm:py-6 sm:ps-6 sm:pe-6 lg:py-8 lg:ps-10 lg:pe-10">
+          <main className="w-full min-w-0 max-w-full py-4 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pb-[max(1rem,env(safe-area-inset-bottom,0px))] sm:py-5 sm:ps-5 sm:pe-5 lg:py-6 lg:ps-8 lg:pe-8">
             <DevToolsBreadcrumbs />
             {children}
+            <DevToolsBuyMeACoffee />
             {hideRegistryFaq ? null : <DevToolsToolFaq />}
             <DevToolsRelatedTools relatedToolsOverride={relatedToolsOverride} />
           </main>

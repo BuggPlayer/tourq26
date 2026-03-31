@@ -86,7 +86,7 @@ export default function JsonFormatterTool() {
         >
           Try it
         </h2>
-        <div className={`mt-4 sm:mt-6 ${DEV_TOOL_PRIMARY_SURFACE_CLASS}`}>
+        <div className={`mt-3 sm:mt-4 ${DEV_TOOL_PRIMARY_SURFACE_CLASS}`}>
           <p className="max-w-2xl text-foreground/90">
             Paste JSON below, or load a <code className="font-mono text-[0.85em]">.json</code> /{" "}
             <code className="font-mono text-[0.85em]">.txt</code> file from your device. Then use Format, Minify, or

@@ -139,7 +139,7 @@ export function SlugGeneratorTool() {
         >
           Try it
         </h2>
-        <div className={`mt-4 sm:mt-6 ${DEV_TOOL_PRIMARY_SURFACE_CLASS}`}>
+        <div className={`mt-3 sm:mt-4 ${DEV_TOOL_PRIMARY_SURFACE_CLASS}`}>
           <p className="text-foreground/90">
             Paste a title or headline — we lowercase it, strip accents, replace spaces and punctuation with hyphens, and
             trim extra dashes. Everything runs in your browser.
