@@ -5,16 +5,17 @@ import { caseStudies } from "@/data/case-studies";
 import { servicePages } from "@/data/services-content";
 import { techNewsDemoItems } from "@/data/tech-news-demo";
 import { readDevToolsAdminDocument } from "@/lib/content";
-import { filterUmbrellaToolsByAdmin } from "@/lib/dev-tools-admin";
+import { getDevToolsNavCatalogTools } from "@/lib/dev-tools-admin";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 import { getAllNonEnLocalePathSegments } from "@/lib/dev-tools-locale-path";
-import { UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
 import { getSiteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = await getSiteUrl();
   const blogPosts = await readBlogPosts();
   const adminDoc = await readDevToolsAdminDocument();
-  const toolsForSitemap = filterUmbrellaToolsByAdmin(UMBRELLA_TOOLS, adminDoc);
+  const playgroundOn = await isFeatureEnabled("dev_tools_code_playground");
+  const toolsForSitemap = getDevToolsNavCatalogTools(adminDoc, playgroundOn);
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },

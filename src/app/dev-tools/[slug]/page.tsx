@@ -10,6 +10,7 @@ import { devToolsPageMetadata, devToolsToolFullJsonLd } from "@/lib/umbrella-too
 import { getDevToolBySlug, UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
 import { getSiteUrl } from "@/lib/site-url";
 import { isAdmin } from "@/lib/auth";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 import { DevToolAccordionContent } from "@/components/umbrella-tools/DevToolAccordionContent";
 import {
   getDevToolFaqSchemaPairs,
@@ -19,6 +20,7 @@ import {
 import { getDevToolFaqItems } from "@/lib/umbrella-tools/dev-tool-faq";
 import {
   applyDevToolAdminSeoToTool,
+  getDevToolsNavCatalogSorted,
   getRelatedDevToolsFiltered,
   isDevToolEnabled,
 } from "@/lib/dev-tools-admin";
@@ -55,6 +57,9 @@ export default async function DevToolBySlugPage({
   const adminBypass = adminPreview === "1" && (await isAdmin());
   if (!adminBypass && !isDevToolEnabled(slug, adminDoc)) notFound();
 
+  const playgroundOn = await isFeatureEnabled("dev_tools_code_playground");
+  const navCatalogTools = getDevToolsNavCatalogSorted(adminDoc, playgroundOn);
+
   const [siteUrl, site, locale] = await Promise.all([
     getSiteUrl(),
     readSiteContent(),
@@ -75,7 +80,11 @@ export default async function DevToolBySlugPage({
   const hideRegistryFaq = shouldHideRegistryDevToolFaq(belowFold);
 
   return (
-    <UmbrellaToolsLayout relatedToolsOverride={relatedToolsOverride} hideRegistryFaq={hideRegistryFaq}>
+    <UmbrellaToolsLayout
+      catalogTools={navCatalogTools}
+      relatedToolsOverride={relatedToolsOverride}
+      hideRegistryFaq={hideRegistryFaq}
+    >
       <>
         <JsonLd data={structuredData} />
         {adminBypass ? (
@@ -86,8 +95,8 @@ export default async function DevToolBySlugPage({
             <strong className="font-semibold">Admin preview</strong>
             <span className="text-amber-900/90 dark:text-amber-100/90">
               {" "}
-              — This URL is only for operators. If the tool is disabled, visitors still get 404; the hub and sitemap stay
-              in sync with admin settings.
+              — This URL is only for operators. If the tool is disabled, visitors still get 404; the hub, sidebar, and
+              sitemap stay in sync with admin settings.
             </span>
           </div>
         ) : null}

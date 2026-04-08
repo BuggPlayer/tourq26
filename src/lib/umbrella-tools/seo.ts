@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { readDevToolsAdminDocument, readSiteContent } from "@/lib/content";
 import { getDevToolFaqItems } from "@/lib/umbrella-tools/dev-tool-faq";
-import { getDevToolBySlugWithAdminSeo } from "@/lib/dev-tools-admin";
+import { getDevToolBySlugWithAdminSeo, isDevToolEnabled } from "@/lib/dev-tools-admin";
 import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 import { DEV_TOOLS_LOCALE_OPTIONS, type DevToolsLocaleId } from "@/lib/dev-tools-locale";
 import { getDevToolsHrefForLocale } from "@/lib/dev-tools-locale-path";
@@ -274,6 +274,9 @@ export async function devToolsPageMetadata(
   const adminDoc = await readDevToolsAdminDocument();
   const merged = getDevToolBySlugWithAdminSeo(slug, adminDoc);
   if (!merged) {
+    return { title: "Developer tool", robots: { index: false, follow: false } };
+  }
+  if (!isDevToolEnabled(slug, adminDoc)) {
     return { title: "Developer tool", robots: { index: false, follow: false } };
   }
   const locale = localeOverride ?? (await getDevToolsLocaleFromCookie());

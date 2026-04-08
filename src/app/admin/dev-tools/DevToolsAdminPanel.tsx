@@ -1,9 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { DevToolAdminOverride, DevToolsAdminDocument } from "@/lib/content";
 import { applyDevToolOverridePatch } from "@/lib/dev-tool-admin-override-merge";
+import { resolveHubSlugOrderForCategory } from "@/lib/dev-tools-admin";
 import { DEV_TOOL_CATEGORY_LABELS, type DevToolCategory } from "@/lib/umbrella-tools/tools-config";
+
+function hubOrderDocStub(hub: Partial<Record<DevToolCategory, string[]>>): DevToolsAdminDocument {
+  return { overrides: {}, hubSlugOrderByCategory: hub, updatedAt: "" };
+}
 
 type CatalogRow = {
   slug: string;
@@ -16,12 +21,16 @@ type CatalogRow = {
 export function DevToolsAdminPanel() {
   const [catalog, setCatalog] = useState<CatalogRow[]>([]);
   const [overrides, setOverrides] = useState<Record<string, DevToolAdminOverride>>({});
+  const [hubSlugOrderByCategory, setHubSlugOrderByCategory] = useState<
+    Partial<Record<DevToolCategory, string[]>>
+  >({});
   const [updatedAt, setUpdatedAt] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [message, setMessage] = useState<{ type: "ok" | "err"; text: string } | null>(null);
+  const hubOrderTouchedRef = useRef(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -33,6 +42,8 @@ export function DevToolsAdminPanel() {
       setCatalog(data.catalog ?? []);
       const doc = data.document as DevToolsAdminDocument;
       setOverrides(doc?.overrides ?? {});
+      setHubSlugOrderByCategory(doc?.hubSlugOrderByCategory ?? {});
+      hubOrderTouchedRef.current = false;
       setUpdatedAt(doc?.updatedAt ?? "");
     } catch (e) {
       setMessage({ type: "err", text: e instanceof Error ? e.message : "Load failed" });
@@ -85,11 +96,15 @@ export function DevToolsAdminPanel() {
       const res = await fetch("/api/admin/dev-tools", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ overrides }),
+        body: JSON.stringify(
+          hubOrderTouchedRef.current ? { overrides, hubSlugOrderByCategory } : { overrides },
+        ),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Save failed");
       setOverrides(data.document?.overrides ?? overrides);
+      setHubSlugOrderByCategory(data.document?.hubSlugOrderByCategory ?? hubSlugOrderByCategory);
+      hubOrderTouchedRef.current = false;
       setUpdatedAt(data.document?.updatedAt ?? new Date().toISOString());
       setMessage({ type: "ok", text: "Saved. Hub, tool pages, and sitemap will reflect changes on the next request." });
     } catch (e) {
@@ -104,6 +119,19 @@ export function DevToolsAdminPanel() {
       const next = { ...prev };
       delete next[slug];
       return next;
+    });
+  }
+
+  function moveSlugInCategory(category: DevToolCategory, slug: string, delta: -1 | 1) {
+    hubOrderTouchedRef.current = true;
+    setHubSlugOrderByCategory((prev) => {
+      const order = resolveHubSlugOrderForCategory(category, hubOrderDocStub(prev));
+      const i = order.indexOf(slug);
+      const j = i + delta;
+      if (i < 0 || j < 0 || j >= order.length) return prev;
+      const nextOrder = [...order];
+      [nextOrder[i], nextOrder[j]] = [nextOrder[j], nextOrder[i]];
+      return { ...prev, [category]: nextOrder };
     });
   }
 
@@ -137,11 +165,13 @@ export function DevToolsAdminPanel() {
       <p className="text-sm text-muted-foreground">
         Tools are defined in code (registry). Here you can <strong className="text-foreground">disable</strong> a tool
         (removes it from the hub, related tools, and sitemap; direct URLs return 404), add operator{" "}
-        <strong className="text-foreground">notes</strong>, and mark{" "}
-        <strong className="text-foreground">featured</strong> (featured badge and first within each category on the hub).
-        Open a tool&apos;s <strong className="text-foreground">detail page</strong> for a full preview and the same
-        controls. Changes persist in Vercel KV (production) or{" "}
-        <code className="text-primary/90">content/dev-tools-admin.json</code> locally.
+        <strong className="text-foreground">notes</strong>, mark{" "}
+        <strong className="text-foreground">featured</strong> (badge + listed before non-featured in each category),
+        and <strong className="text-foreground">move</strong> tools up or down within their category (hub + sidebar
+        order; featured items still appear above non-featured). Open a tool&apos;s{" "}
+        <strong className="text-foreground">detail page</strong> for a full preview and editorial controls. Changes
+        persist in Vercel KV (production) or <code className="text-primary/90">content/dev-tools-admin.json</code>{" "}
+        locally.
       </p>
 
       {message && (
@@ -191,11 +221,12 @@ export function DevToolsAdminPanel() {
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-border/50">
-        <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+        <table className="w-full min-w-[820px] border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-border/60 bg-muted/40">
               <th className="px-3 py-3 font-semibold text-foreground">Tool</th>
               <th className="px-3 py-3 font-semibold text-foreground">Category</th>
+              <th className="px-3 py-3 font-semibold text-foreground">Order</th>
               <th className="px-3 py-3 font-semibold text-foreground">Enabled</th>
               <th className="px-3 py-3 font-semibold text-foreground">Featured</th>
               <th className="px-3 py-3 font-semibold text-foreground">Notes</th>
@@ -206,6 +237,11 @@ export function DevToolsAdminPanel() {
             {filtered.map((row) => {
               const o = overrides[row.slug] ?? {};
               const enabled = o.enabled !== false;
+              const cat = row.category as DevToolCategory;
+              const order = resolveHubSlugOrderForCategory(cat, hubOrderDocStub(hubSlugOrderByCategory));
+              const pos = order.indexOf(row.slug);
+              const canUp = pos > 0;
+              const canDown = pos >= 0 && pos < order.length - 1;
               return (
                 <tr key={row.slug} className="border-b border-border/40 hover:bg-muted/20">
                   <td className="px-3 py-3 align-top">
@@ -222,6 +258,33 @@ export function DevToolsAdminPanel() {
                   </td>
                   <td className="px-3 py-3 align-top text-xs text-muted-foreground">
                     {DEV_TOOL_CATEGORY_LABELS[row.category]}
+                  </td>
+                  <td className="px-3 py-3 align-top">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex gap-1">
+                        <button
+                          type="button"
+                          disabled={!canUp}
+                          title="Move up in category (hub & sidebar)"
+                          aria-label={`Move ${row.title} up in category`}
+                          onClick={() => moveSlugInCategory(cat, row.slug, -1)}
+                          className="rounded border border-border bg-muted/40 px-2 py-0.5 text-xs font-medium text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+                        >
+                          Up
+                        </button>
+                        <button
+                          type="button"
+                          disabled={!canDown}
+                          title="Move down in category (hub & sidebar)"
+                          aria-label={`Move ${row.title} down in category`}
+                          onClick={() => moveSlugInCategory(cat, row.slug, 1)}
+                          className="rounded border border-border bg-muted/40 px-2 py-0.5 text-xs font-medium text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+                        >
+                          Down
+                        </button>
+                      </div>
+                      <span className="text-[10px] text-muted-foreground">Within {DEV_TOOL_CATEGORY_LABELS[cat]}</span>
+                    </div>
                   </td>
                   <td className="px-3 py-3 align-top">
                     <label className="flex cursor-pointer items-center gap-2">

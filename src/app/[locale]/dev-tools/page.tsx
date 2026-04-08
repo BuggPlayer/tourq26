@@ -5,17 +5,12 @@ import { DevToolsHubBody } from "@/components/umbrella-tools/DevToolsHubBody";
 import JsonLd from "@/components/JsonLd";
 import { readDevToolsAdminDocument, readSiteContent } from "@/lib/content";
 import { isFeatureEnabled } from "@/lib/feature-flags";
-import { filterUmbrellaToolsByAdmin, sortUmbrellaToolsForHub } from "@/lib/dev-tools-admin";
+import { getDevToolsNavCatalogSorted } from "@/lib/dev-tools-admin";
 import {
   getAllNonEnLocalePathSegments,
   pathSegmentToLocale,
 } from "@/lib/dev-tools-locale-path";
-import {
-  DEV_TOOL_CATEGORY_ORDER,
-  filterCodePlaygroundFromCatalog,
-  UMBRELLA_TOOLS,
-  toolsByCategory,
-} from "@/lib/umbrella-tools/tools-config";
+import { DEV_TOOL_CATEGORY_ORDER } from "@/lib/umbrella-tools/tools-config";
 import { devToolsHubIndexMetadata, devToolsHubPageJsonLd } from "@/lib/umbrella-tools/seo";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -47,23 +42,20 @@ export default async function DevToolsPrefixedHubPage({
 
   const adminDoc = await readDevToolsAdminDocument();
   const playgroundOn = await isFeatureEnabled("dev_tools_code_playground");
-  const catalogTools = filterCodePlaygroundFromCatalog(UMBRELLA_TOOLS, playgroundOn);
-  const toolsForHub = sortUmbrellaToolsForHub(filterUmbrellaToolsByAdmin(catalogTools, adminDoc), adminDoc);
-  const toolCount = filterUmbrellaToolsByAdmin(catalogTools, adminDoc).length;
+  const navCatalogTools = getDevToolsNavCatalogSorted(adminDoc, playgroundOn);
+  const toolsForHub = navCatalogTools;
+  const toolCount = navCatalogTools.length;
   const [siteUrl, site] = await Promise.all([getSiteUrl(), readSiteContent()]);
   const hubLd = devToolsHubPageJsonLd(siteUrl, site.siteName, toolsForHub, locale);
 
   const sections: { category: (typeof DEV_TOOL_CATEGORY_ORDER)[number]; tools: typeof toolsForHub }[] = [];
   for (const category of DEV_TOOL_CATEGORY_ORDER) {
-    const tools = sortUmbrellaToolsForHub(
-      filterUmbrellaToolsByAdmin(toolsByCategory(category), adminDoc),
-      adminDoc,
-    );
+    const tools = navCatalogTools.filter((t) => t.category === category);
     if (tools.length > 0) sections.push({ category, tools });
   }
 
   return (
-    <UmbrellaToolsLayout catalogTools={catalogTools}>
+    <UmbrellaToolsLayout catalogTools={navCatalogTools}>
       <JsonLd data={hubLd} />
       <DevToolsHubBody sections={sections} toolCount={toolCount} adminDoc={adminDoc} />
     </UmbrellaToolsLayout>

@@ -10,6 +10,7 @@ import {
   type DevToolsAdminDocument,
 } from "@/lib/content";
 import { sanitizeDevToolEditorialHtml, sanitizeDevToolSectionTitle } from "@/lib/dev-tool-html-sanitize";
+import { sanitizeHubSlugOrderByCategory } from "@/lib/dev-tools-admin";
 import { UMBRELLA_TOOLS } from "@/lib/umbrella-tools/tools-config";
 
 const VALID_SLUGS = new Set(UMBRELLA_TOOLS.map((t) => t.slug));
@@ -43,13 +44,19 @@ export async function PUT(request: NextRequest) {
   const ok = await requireAdmin();
   if (!ok) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const existing = await readDevToolsAdminDocument();
+
   const body = (await request.json().catch(() => null)) as {
     overrides?: Record<string, DevToolAdminOverride>;
+    hubSlugOrderByCategory?: unknown;
   } | null;
 
   if (!body?.overrides || typeof body.overrides !== "object") {
     return NextResponse.json(
-      { error: "Expected { overrides: { [slug]: { enabled?, featured?, notes?, featuresHtml?, … } } }" },
+      {
+        error:
+          "Expected { overrides: { [slug]: { enabled?, featured?, notes?, … } }, hubSlugOrderByCategory?: { [category]: slug[] } }",
+      },
       { status: 400 },
     );
   }
@@ -147,8 +154,21 @@ export async function PUT(request: NextRequest) {
     if (Object.keys(o).length) next[slug] = o;
   }
 
+  let hubSlugOrderByCategory = existing?.hubSlugOrderByCategory;
+  if (body && "hubSlugOrderByCategory" in body) {
+    const sanitized = sanitizeHubSlugOrderByCategory(body.hubSlugOrderByCategory);
+    if (sanitized === undefined) {
+      hubSlugOrderByCategory = existing?.hubSlugOrderByCategory;
+    } else if (Object.keys(sanitized).length === 0) {
+      hubSlugOrderByCategory = undefined;
+    } else {
+      hubSlugOrderByCategory = sanitized;
+    }
+  }
+
   const document: DevToolsAdminDocument = {
     overrides: next,
+    ...(hubSlugOrderByCategory ? { hubSlugOrderByCategory } : {}),
     updatedAt: new Date().toISOString(),
   };
   await writeDevToolsAdminDocument(document);

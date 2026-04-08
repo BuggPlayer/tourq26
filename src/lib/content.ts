@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { FEATURE_FLAGS_KV_KEY } from "@/lib/feature-flags-constants";
+import type { DevToolCategory } from "@/lib/umbrella-tools/types";
 
 export type BlogPost = {
   slug: string;
@@ -108,6 +109,11 @@ export type DevToolAdminFaqItem = {
 
 export type DevToolsAdminDocument = {
   overrides: Record<string, DevToolAdminOverride>;
+  /**
+   * Optional per-category slug order for the public hub and dev-tools sidebar (registry slugs only).
+   * Omitted categories follow code registry order within that category.
+   */
+  hubSlugOrderByCategory?: Partial<Record<DevToolCategory, string[]>>;
   updatedAt: string;
 };
 
