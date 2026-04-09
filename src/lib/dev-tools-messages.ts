@@ -815,15 +815,11 @@ const zhCN: DevToolsMessages = {
   categoryBlurbs: DEV_TOOL_CATEGORY_BLURB,
 };
 
+/** Keep compiled while English-only; re-add to `bundles` when restoring locales in `dev-tools-locale.ts`. */
+void [ar, es, fr, de, ptBR, ja, zhCN];
+
 const bundles: Record<DevToolsLocaleId, DevToolsMessages> = {
   en,
-  ar,
-  es,
-  fr,
-  de,
-  "pt-BR": ptBR,
-  ja,
-  "zh-CN": zhCN,
 };
 
 export function getDevToolsMessages(locale: DevToolsLocaleId): DevToolsMessages {

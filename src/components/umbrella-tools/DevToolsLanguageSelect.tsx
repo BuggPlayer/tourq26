@@ -13,6 +13,10 @@ export function DevToolsLanguageSelect() {
   const pathname = usePathname();
   const router = useRouter();
 
+  if (DEV_TOOLS_LOCALE_OPTIONS.length <= 1) {
+    return null;
+  }
+
   return (
     <>
       <label className="sr-only" htmlFor="dev-tools-display-language">

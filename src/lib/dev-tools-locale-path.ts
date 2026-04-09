@@ -3,22 +3,28 @@ import type { DevToolsLocaleId } from "@/lib/dev-tools-locale";
 /**
  * URL segment ↔ locale (non-English only). English uses unprefixed `/dev-tools/...`.
  * `pt-BR` → `pt-br`, `zh-CN` → `zh-cn` (lowercase in paths).
+ *
+ * Temporary: empty while only English is active — uncomment entries together with `dev-tools-locale.ts` locales.
  */
-export const LOCALE_TO_PATH_SEGMENT: Record<Exclude<DevToolsLocaleId, "en">, string> = {
-  ar: "ar",
-  es: "es",
-  fr: "fr",
-  de: "de",
-  "pt-BR": "pt-br",
-  ja: "ja",
-  "zh-CN": "zh-cn",
-};
+export const LOCALE_TO_PATH_SEGMENT = {} as Record<Exclude<DevToolsLocaleId, "en">, string>;
+// {
+//   ar: "ar",
+//   es: "es",
+//   fr: "fr",
+//   de: "de",
+//   "pt-BR": "pt-br",
+//   ja: "ja",
+//   "zh-CN": "zh-cn",
+// };
 
 const PATH_SEGMENT_TO_LOCALE = Object.fromEntries(
-  Object.entries(LOCALE_TO_PATH_SEGMENT).map(([loc, seg]) => [seg.toLowerCase(), loc as DevToolsLocaleId]),
+  (Object.entries(LOCALE_TO_PATH_SEGMENT) as [Exclude<DevToolsLocaleId, "en">, string][]).map(([loc, seg]) => [
+    seg.toLowerCase(),
+    loc as DevToolsLocaleId,
+  ]),
 ) as Record<string, DevToolsLocaleId>;
 
-export function localeToPathSegment(locale: Exclude<DevToolsLocaleId, "en">): string {
+export function localeToPathSegment(locale: Exclude<DevToolsLocaleId, "en">): string | undefined {
   return LOCALE_TO_PATH_SEGMENT[locale];
 }
 
@@ -77,7 +83,8 @@ export function getLocaleFromDevToolsPathname(pathname: string): DevToolsLocaleI
  */
 export function getDevToolsHrefForLocale(suffix: string, locale: DevToolsLocaleId): string {
   if (locale === "en") return suffix;
-  const seg = localeToPathSegment(locale);
+  const seg = localeToPathSegment(locale as Exclude<DevToolsLocaleId, "en">);
+  if (!seg) return suffix;
   return `/${seg}${suffix}`;
 }
 

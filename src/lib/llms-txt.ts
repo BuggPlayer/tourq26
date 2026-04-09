@@ -47,10 +47,6 @@ Public marketing site and utilities for **${name}**, a software engineering stud
 - [Privacy policy](${base}/privacy)
 - [Terms of use](${base}/terms)
 
-## TorqStudio Interview Hub
-
-- [Hub](${base}/hub): Interview preparation and hiring workflows; **many routes require authentication**. Use for product context only—not a substitute for marketing pages above.
-
 ## Optional
 
 - Full URL lists: use [sitemap.xml](${base}/sitemap.xml) (includes blog posts, case studies, freebies, and dev-tool slugs).

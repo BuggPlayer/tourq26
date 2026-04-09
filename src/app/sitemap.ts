@@ -1,53 +1,60 @@
 import type { MetadataRoute } from "next";
-import { readBlogPosts } from "@/lib/content";
+import { readBlogPosts, readDevToolsAdminDocument } from "@/lib/content";
 import { freebies } from "@/data/freebies";
-import { caseStudies } from "@/data/case-studies";
+// import { caseStudies } from "@/data/case-studies";
 import { servicePages } from "@/data/services-content";
-import { techNewsDemoItems } from "@/data/tech-news-demo";
-import { readDevToolsAdminDocument } from "@/lib/content";
-import { getDevToolsNavCatalogTools } from "@/lib/dev-tools-admin";
+// import { techNewsDemoItems } from "@/data/tech-news-demo";
+import { getDevToolsNavCatalogSorted } from "@/lib/dev-tools-admin";
 import { isFeatureEnabled } from "@/lib/feature-flags";
 import { getAllNonEnLocalePathSegments } from "@/lib/dev-tools-locale-path";
+import type { UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
 import { getSiteUrl } from "@/lib/site-url";
+
+function devToolsLocalePrefixEntries(baseUrl: string, localePrefix: string, tools: UmbrellaTool[]): MetadataRoute.Sitemap {
+  const root = `${baseUrl}${localePrefix}`;
+  return [
+    { url: `${root}/dev-tools`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.88 },
+    {
+      url: `${root}/dev-tools/about`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    },
+    ...tools.map((t) => ({
+      url: `${root}/dev-tools/${t.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+  ];
+}
+
+function allDevToolsSitemapEntries(baseUrl: string, tools: UmbrellaTool[]): MetadataRoute.Sitemap {
+  return [
+    ...devToolsLocalePrefixEntries(baseUrl, "", tools),
+    ...getAllNonEnLocalePathSegments().flatMap((seg) => devToolsLocalePrefixEntries(baseUrl, `/${seg}`, tools)),
+  ];
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = await getSiteUrl();
-  const blogPosts = await readBlogPosts();
-  const adminDoc = await readDevToolsAdminDocument();
-  const playgroundOn = await isFeatureEnabled("dev_tools_code_playground");
-  const toolsForSitemap = getDevToolsNavCatalogTools(adminDoc, playgroundOn);
+  const [blogPosts, adminDoc, playgroundOn] = await Promise.all([
+    readBlogPosts(),
+    readDevToolsAdminDocument(),
+    isFeatureEnabled("dev_tools_code_playground"),
+  ]);
+  const toolsForSitemap = getDevToolsNavCatalogSorted(adminDoc, playgroundOn);
+
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/tech-news`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.82 },
+    // { url: `${baseUrl}/tech-news`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.82 },
     { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/case-studies`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
     { url: `${baseUrl}/freebies`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/dev-tools`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.88 },
-    { url: `${baseUrl}/dev-tools/about`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
-    ...toolsForSitemap.map((t) => ({
-      url: `${baseUrl}/dev-tools/${t.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
-    ...getAllNonEnLocalePathSegments().flatMap((seg) => [
-      { url: `${baseUrl}/${seg}/dev-tools`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.88 },
-      {
-        url: `${baseUrl}/${seg}/dev-tools/about`,
-        lastModified: new Date(),
-        changeFrequency: "yearly" as const,
-        priority: 0.5,
-      },
-      ...toolsForSitemap.map((t) => ({
-        url: `${baseUrl}/${seg}/dev-tools/${t.slug}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      })),
-    ]),
+    ...allDevToolsSitemapEntries(baseUrl, toolsForSitemap),
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     {
@@ -79,26 +86,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }));
 
-  const caseStudyUrls: MetadataRoute.Sitemap = caseStudies.map((c) => ({
-    url: `${baseUrl}/case-studies/${c.slug}`,
-    lastModified: new Date(c.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.75,
-  }));
+  // const caseStudyUrls: MetadataRoute.Sitemap = caseStudies.map((c) => ({
+  //   url: `${baseUrl}/case-studies/${c.slug}`,
+  //   lastModified: new Date(c.date),
+  //   changeFrequency: "monthly" as const,
+  //   priority: 0.75,
+  // }));
 
-  const techNewsUrls: MetadataRoute.Sitemap = techNewsDemoItems.map((item) => ({
-    url: `${baseUrl}/tech-news/${item.slug}`,
-    lastModified: new Date(item.datePublished),
-    changeFrequency: "weekly" as const,
-    priority: 0.72,
-  }));
+  // const techNewsUrls: MetadataRoute.Sitemap = techNewsDemoItems.map((item) => ({
+  //   url: `${baseUrl}/tech-news/${item.slug}`,
+  //   lastModified: new Date(item.datePublished),
+  //   changeFrequency: "weekly" as const,
+  //   priority: 0.72,
+  // }));
 
   return [
     ...staticPages,
     ...serviceUrls,
-    ...caseStudyUrls,
+    // ...caseStudyUrls,
     ...freebieUrls,
     ...blogUrls,
-    ...techNewsUrls,
+    // ...techNewsUrls,
   ];
 }
