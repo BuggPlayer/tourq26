@@ -1,7 +1,7 @@
 {
   "overrides": {
     "json-escape": {
-      "enabled": true,
+      "enabled": false,
       "seoTitle": "JSON Escape — Free Online JSON String Escaper | Torq Studio",
       "seoDescription": "Escape special characters in any string for safe use inside JSON. Runs entirely in your browser. No signup, no server upload. Free.",
       "blogHtml": "<h2>How to Use the JSON Escape Tool</h2><p>Paste your raw string into the input field.</p><p>The tool instantly escapes all characters that would break valid JSON — backslashes, double quotes, newlines, tabs, and control characters.</p><p>Copy the escaped output and embed it directly into your JSON payload.</p><h2>What Is JSON Escaping?</h2><p>JSON has a strict syntax for string values. Certain characters — double quotes (\"), backslashes (\\), and control characters like newlines (\\n) and tabs (\\t) — must be escaped with a backslash prefix before they can appear inside a JSON string. Without escaping, these characters break JSON parsing and cause hard-to-debug errors. JSON escaping is the process of transforming a raw string so it's safe to use as a JSON value. This is distinct from URL encoding or HTML encoding — JSON has its own escape rules defined in RFC 8259.</p><h2>When to Use This Tool</h2><p>Embedding raw text in JSON payloads — When you need to include multi-line strings, file contents, or user-generated text as a JSON value.</p><p>Debugging JSON parse errors — When a JSON string containing quotes or backslashes is silently breaking your parser.</p><p>Preparing strings for API requests — When constructing JSON request bodies manually and including dynamic content.</p><p>Working with regex patterns in JSON — Regex strings are full of backslashes that need double-escaping inside JSON.</p><h2>Related Tools</h2><ul><li>JSON unescape</li><li>JSON formatter &amp; validator</li><li>JSON validator</li><li>XML escape</li><li>JavaScript escape</li></ul>",
@@ -34,7 +34,7 @@
       ]
     },
     "json-minifier": {
-      "enabled": true,
+      "enabled": false,
       "seoTitle": "JSON Minifier — Free Online JSON Minify Tool | Torq Studio",
       "seoDescription": "Remove whitespace from JSON instantly to reduce payload size. Runs entirely in your browser. No signup, no server upload. Free.",
       "blogHtml": "<h2>How to Use the JSON Minifier</h2><p>Paste your formatted or pretty-printed JSON into the input field.</p><p>The tool removes all non-essential whitespace — spaces, tabs, and newlines — while preserving the data structure exactly.</p><p>Copy the minified JSON for use in production builds, API responses, or config files.</p><h2>What Is JSON Minification?</h2><p>JSON minification removes all whitespace that exists solely for human readability — indentation, line breaks, and spaces between keys and values. The resulting output is functionally identical to the original but takes up less space. For large API responses or bundled config files, minification can meaningfully reduce payload size and parse time. The trade-off is readability — minified JSON is not intended to be read or edited by hand. Use the JSON formatter &amp; validator to restore readable formatting.</p><h2>When to Use This Tool</h2><p>Reducing API response size — Minify large JSON payloads before serving them over the wire.</p><p>Optimizing config files for production — Strip formatting from config files that ship with a build artifact.</p><p>Preparing data for embedding — Embed minified JSON in HTML, scripts, or environment variables without unnecessary whitespace.</p><p>Comparing JSON output — Minify two JSON blobs before diffing them to eliminate whitespace noise.</p><h2>Related Tools</h2><ul><li>JSON formatter &amp; validator</li><li>JSON validator</li><li>JSON escape</li><li>CSS minifier</li><li>JavaScript minifier</li></ul>",
@@ -67,7 +67,7 @@
       ]
     },
     "json-unescape": {
-      "enabled": true,
+      "enabled": false,
       "seoTitle": "JSON Unescape — Free Online JSON String Unescaper | Torq Studio",
       "seoDescription": "Decode escaped JSON strings back to readable text instantly. Runs entirely in your browser. No signup, no server upload. Free.",
       "blogHtml": "<h2>How to Use the JSON Unescape Tool</h2><p>Paste your escaped JSON string into the input field (e.g., a string containing \\\", \\\\, or \\n).</p><p>The tool processes all JSON escape sequences and returns the original, human-readable string.</p><p>Copy the unescaped output for inspection, editing, or further processing.</p><h2>What Is JSON Unescaping?</h2><p>When a string is stored or transmitted inside a JSON payload, special characters are represented as escape sequences — \\\" for a double quote, \\\\ for a backslash, \\n for a newline. JSON unescaping reverses this process, converting those sequences back into their literal characters. This is useful when you've received or extracted an escaped string and need to read or work with its original content. It's the direct inverse of JSON escaping.</p><h2>When to Use This Tool</h2><p>Inspecting escaped API responses — When a JSON response contains a string-encoded payload (e.g., a nested JSON object stored as a string value).</p><p>Debugging double-escaped data — When data has been escaped multiple times and you need to peel back one layer.</p><p>Extracting readable content from logs — Log entries often contain JSON-escaped strings that are difficult to read as-is.</p><p>Reversing programmatic escaping — When a library or serializer has escaped a string and you need the original value back.</p><h2>Related Tools</h2><ul><li>JSON escape</li><li>JSON formatter &amp; validator</li><li>JSON validator</li><li>JavaScript unescape</li><li>XML unescape</li></ul>",
@@ -100,7 +100,7 @@
       ]
     },
     "json-validator-standalone": {
-      "enabled": true,
+      "enabled": false,
       "seoTitle": "JSON Validator — Free Online JSON Syntax Checker | Torq Studio",
       "seoDescription": "Validate JSON syntax instantly and get precise error locations. Runs entirely in your browser. No signup, no server upload. Free.",
       "blogHtml": "<h2>How to Use the JSON Validator</h2><p>Paste your JSON into the input field.</p><p>The tool parses it immediately and returns either a valid confirmation or a precise error message indicating the line and position of the problem.</p><p>Fix the flagged issue, re-paste, and validate again until the document is clean.</p><h2>What Is JSON Validation?</h2><p>JSON validation checks a document against the JSON specification (RFC 8259) to confirm it is syntactically correct. Common issues include trailing commas, unquoted keys, mismatched brackets, single-quoted strings, and comments — none of which are permitted in standard JSON. A validator parses the document and reports the first error it encounters along with its location, so you can fix problems precisely rather than scanning the document manually. This tool validates syntax only — it does not validate against a JSON Schema. For formatting valid JSON, use the JSON formatter &amp; validator.</p><h2>When to Use This Tool</h2><p>Before sending API requests — Catch syntax errors in request bodies before they hit your endpoint and return a cryptic 400 error.</p><p>Debugging config file errors — Validate JSON config files (package.json, tsconfig.json, etc.) that fail to parse at runtime.</p><p>Checking third-party data — Verify that JSON received from an external source is well-formed before processing it.</p><p>Learning JSON syntax — Use the error messages to understand exactly which JSON syntax rules are being violated.</p><h2>Related Tools</h2><ul><li>JSON formatter &amp; validator</li><li>JSON minifier</li><li>JSON escape</li><li>YAML validator</li><li>XML validator</li></ul>",
@@ -133,7 +133,7 @@
       ]
     },
     "csv-to-json": {
-      "enabled": true,
+      "enabled": false,
       "seoTitle": "CSV to JSON — Free Online CSV Converter | Torq Studio",
       "seoDescription": "Convert CSV data to a JSON array instantly. Runs entirely in your browser. No signup, no server upload. Free.",
       "blogHtml": "<h2>How to Use the CSV to JSON Tool</h2><p>Paste your CSV data into the input field, or upload a .csv file.</p><p>The tool reads the first row as column headers and maps each subsequent row to a JSON object with those headers as keys.</p><p>Review the JSON output, then copy or download it for use in your application.</p><h2>What Is CSV to JSON Conversion?</h2><p>CSV (Comma-Separated Values) is a plain-text tabular format — rows of data with fields separated by commas or other delimiters. JSON is a structured, hierarchical format used widely in APIs and web applications. Converting CSV to JSON transforms each row into a JSON object, using the header row as property names, and wraps all objects in an array. This makes CSV data directly consumable by JavaScript, APIs, and most modern data tooling without writing a parser yourself.</p><h2>When to Use This Tool</h2><p>Importing spreadsheet data into an API — Export from Excel or Google Sheets as CSV, then convert to JSON for use in a POST request or data migration script.</p><p>Seeding a database — Convert a CSV data dump to JSON for use with a database seeding script or ORM fixture.</p><p>Prototyping with static data — Turn a CSV dataset into a JSON array to use as mock data in a front-end prototype.</p><p>ETL pipelines — Use as a quick transformation step when building a data pipeline that requires JSON input.</p><h2>Related Tools</h2><ul><li>JSON to CSV</li><li>JSON formatter &amp; validator</li><li>JSON to YAML</li><li>JSON validator</li><li>XML to JSON</li></ul>",
@@ -166,7 +166,7 @@
       ]
     },
     "json-to-csv": {
-      "enabled": true,
+      "enabled": false,
       "seoTitle": "JSON to CSV — Free Online JSON to CSV Converter | Torq Studio",
       "seoDescription": "Convert a JSON array to CSV format instantly for spreadsheets or data pipelines. Runs in your browser. No signup, no server upload. Free.",
       "blogHtml": "<h2>How to Use the JSON to CSV Tool</h2><p>Paste a JSON array of objects into the input field.</p><p>The tool extracts all unique keys from the objects and uses them as column headers.</p><p>Each object becomes a row. Copy or download the resulting CSV.</p><h2>What Is JSON to CSV Conversion?</h2><p>JSON to CSV conversion flattens a JSON array of objects into a tabular format. Each object in the array becomes a row, and the union of all keys across all objects becomes the column headers. This is the standard transformation for exporting structured JSON data — from an API response, database query result, or log file — into a format compatible with Excel, Google Sheets, pandas, or any data analysis tool that accepts CSV.</p><h2>When to Use This Tool</h2><p>Exporting API data for analysis — Pull a JSON response from an API and convert it to CSV for analysis in a spreadsheet.</p><p>Sharing data with non-developers — CSV is universally readable; JSON is not. Convert before handing data to stakeholders.</p><p>Preparing data for import — Many databases, CRMs, and SaaS tools accept CSV imports but not JSON.</p><p>Inspecting large datasets visually — Tabular CSV is easier to scan than deeply nested JSON when you're exploring a dataset.</p><h2>Related Tools</h2><ul><li>CSV to JSON</li><li>JSON formatter &amp; validator</li><li>JSON to YAML</li><li>JSON minifier</li><li>XML to JSON</li></ul>",
@@ -562,7 +562,7 @@
       ]
     },
     "jwt-decoder": {
-      "enabled": true,
+      "enabled": false,
       "seoTitle": "JWT Decoder — Free Online JSON Web Token Inspector | Torq Studio",
       "seoDescription": "Decode and inspect JWT header and payload claims instantly. Read-only — no signature verification. Runs in your browser. No signup. Free.",
       "blogHtml": "<h2>How to Use the JWT Decoder</h2><p>Paste your JWT — the full xxxxx.yyyyy.zzzzz string — into the input field.</p><p>The tool splits the token into its three parts, Base64URL-decodes the header and payload, and displays them as formatted JSON.</p><p>Inspect the claims, expiry, issuer, and any other fields in the payload.</p><h2>What Is a JWT?</h2><p>A JSON Web Token (JWT) is a compact, URL-safe token format defined in RFC 7519, used to transmit claims between parties. A JWT consists of three Base64URL-encoded parts separated by dots: a header (specifying the algorithm), a payload (containing the claims), and a signature. The header and payload are plain JSON — only the signature is cryptographic. JWTs are widely used in authentication systems, OAuth 2.0 flows, and API authorization, typically passed as a Bearer token in the Authorization header.</p><h2>When to Use This Tool</h2><p>Debugging authentication flows — Inspect the claims in a JWT to verify the issuer, subject, expiry time, and custom claims without writing decode logic.</p><p>Checking token expiry — Decode the exp claim to confirm whether a token has expired or is still valid.</p><p>Understanding third-party tokens — Decode JWTs from OAuth providers, identity platforms, or APIs to understand their structure and claims.</p><p>Development and testing — Quickly inspect tokens during local development without needing a library or debugger.</p><h2>Related Tools</h2><ul><li>Base64 decoder</li><li>JSON formatter &amp; validator</li><li>HMAC generator</li><li>Base64 encode / decode</li><li>JSON validator</li></ul>",
@@ -1731,7 +1731,55 @@
     },
     "pdf-merge": {
       "enabled": false
+    },
+    "html-to-markdown": {
+      "enabled": false
+    },
+    "markdown-editor": {
+      "enabled": false
+    },
+    "markdown-to-html": {
+      "enabled": false
+    },
+    "css-beautifier": {
+      "enabled": false
+    },
+    "css-shadow-generator": {
+      "enabled": false
+    },
+    "css-minifier": {
+      "enabled": false
+    },
+    "css-validator": {
+      "enabled": false
+    },
+    "shape-divider-generator": {
+      "enabled": false
+    },
+    "svg-to-css-background": {
+      "enabled": false
+    },
+    "svg-generators": {
+      "enabled": false
+    },
+    "js-beautifier": {
+      "enabled": false
+    },
+    "js-escape": {
+      "enabled": false
+    },
+    "js-minifier": {
+      "enabled": false
+    },
+    "js-unescape": {
+      "enabled": false
+    },
+    "json-formatter": {
+      "enabled": false
+    },
+    "yaml-validator": {
+      "enabled": false
     }
   },
-  "updatedAt": "2026-04-08T07:32:33.832Z"
+  "updatedAt": "2026-04-09T12:30:23.994Z"
 }
