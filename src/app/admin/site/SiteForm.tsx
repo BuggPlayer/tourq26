@@ -117,7 +117,7 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
           />
           <p className="mt-1 text-xs text-muted-foreground">
             Inner pages merge this with the root template so the final tab title is typically{" "}
-            <span className="font-mono">page segment | Developer utilities | site name</span> for dev tools.
+            <span className="font-mono">page segment | Dev tools | site name</span> for dev tools.
           </p>
         </div>
       </section>

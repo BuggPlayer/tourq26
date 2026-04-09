@@ -31,7 +31,7 @@ Public **Guide** and **FAQ** blocks come from `app/dev-tools/[slug]/page.tsx` vi
 
 ## SEO and JSON-LD
 
-- `app/dev-tools/[slug]/page.tsx` calls `devToolsPageMetadata(slug)` and injects `devToolsToolFullJsonLd` (WebPage, BreadcrumbList, **SoftwareApplication**, **HowTo**, **FAQPage** when FAQ pairs exist). On-page layout: H1 + category function line, 40–70w intro, “Try it”, then **Features** / **How to use** / **Benefits** (`DevToolEditorialSections` from `resolveDevToolPageStructure`), optional long `seoIntro`, then hub FAQ / admin accordions.
+- `app/dev-tools/[slug]/page.tsx` calls `devToolsPageMetadata(slug)` and injects `devToolsToolFullJsonLd` (WebPage, BreadcrumbList, **CreativeWork** for the tool—not `SoftwareApplication` (validators require ratings)—**HowTo**, **FAQPage** when FAQ pairs exist). On-page layout: H1 + category function line, 40–70w intro, “Try it”, then **Features** / **How to use** / **Benefits** (`DevToolEditorialSections` from `resolveDevToolPageStructure`), optional long `seoIntro`, then hub FAQ / admin accordions.
 - **FAQPage** pairs: admin `faqItems` when set; else registry/code `getDevToolFaqItems(slug)` (`dev-tool-faq.ts` + optional `tool.faq` + defaults). Legacy `faqHtml` only → no FAQPage (see above).
 
 ## Tool UI: `DevToolPageShell`

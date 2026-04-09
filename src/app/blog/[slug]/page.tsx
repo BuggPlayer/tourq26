@@ -16,6 +16,7 @@ import {
   formatBlogDate,
   sortBlogPostsByDateDesc,
 } from "@/lib/blog-display";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateStaticParams() {
   const posts = await readBlogPosts();
@@ -31,23 +32,24 @@ export async function generateMetadata({
   const [posts, site] = await Promise.all([readBlogPosts(), readSiteContent()]);
   const post = posts.find((p) => p.slug === slug);
   if (!post) return { title: "Post not found", robots: { index: false, follow: false } };
+  const metaTitle = post.seoTitle?.trim() || post.title;
   const baseUrl = site.siteUrl.replace(/\/$/, "");
   const ogImage = `/blog/${post.slug}/opengraph-image`;
   return {
-    title: post.title,
+    title: metaTitle,
     description: post.description,
     alternates: { canonical: `${baseUrl}/blog/${post.slug}` },
     openGraph: {
-      title: `${post.title} | Torq Studio Blog`,
+      title: `${metaTitle} | Torq Studio Blog`,
       description: post.description,
       url: `${baseUrl}/blog/${post.slug}`,
       type: "article",
       publishedTime: post.date,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: metaTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${post.title} | Torq Studio Blog`,
+      title: `${metaTitle} | Torq Studio Blog`,
       description: post.description,
       images: [ogImage],
       ...(site.twitterSite
@@ -153,6 +155,16 @@ export default async function BlogPostPage({
             <div
               className="blog-article mx-auto"
               dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.body || "") }}
+            />
+
+            <SupportingProseSection
+              id="blog-torq-context"
+              className="mt-12"
+              heading="About Torq Studio"
+              paragraphs={[
+                "Torq Studio helps product and engineering organisations ship mobile apps, web platforms, APIs, and AI-assisted workflows with senior ownership end to end. We combine hands-on delivery with advisory work when you need estimates, architecture review, or vendor diligence before committing to a build.",
+                "If this article raised questions about your own roadmap—procurement, security, team shape, or launch strategy—you can explore our services overview, read anonymised case studies, or start with a free consultation. We reply to thoughtful enquiries within one business day.",
+              ]}
             />
 
             <BlogRelatedPosts posts={related} />

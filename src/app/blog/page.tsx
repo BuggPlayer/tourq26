@@ -8,6 +8,7 @@ import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
 import { sortBlogPostsByDateDesc } from "@/lib/blog-display";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getSiteUrl();
@@ -90,6 +91,16 @@ export default async function BlogPage() {
             </>
           )}
         </section>
+
+        <SupportingProseSection
+          id="blog-editorial"
+          heading="Who these articles are for"
+          paragraphs={[
+            "Our blog is written for founders, product managers, and engineering leaders who need clear language about delivery risk: fixed-price versus phased work, outsourcing security, mobile partner selection, and when to ship an MVP versus a broader release.",
+            "Posts are grounded in how senior engineers actually scope, test, and hand over systems—not generic marketing claims. We link to services and case studies when you want deeper detail, but each article should stand alone as a practical reference.",
+            "New guides are added as we see recurring questions from clients and prospects. Subscribe to updates by bookmarking the blog or following Torq Studio on social channels listed in the site footer.",
+          ]}
+        />
       </main>
       <Footer />
     </div>

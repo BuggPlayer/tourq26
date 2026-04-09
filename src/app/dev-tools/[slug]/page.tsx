@@ -24,6 +24,7 @@ import {
   getRelatedDevToolsFiltered,
   isDevToolEnabled,
 } from "@/lib/dev-tools-admin";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 /** Admin can disable tools without redeploy; re-evaluate visibility per request. */
 export const dynamic = "force-dynamic";
@@ -104,6 +105,14 @@ export default async function DevToolBySlugPage({
           <DevToolsToolRouter slug={slug} />
         </Suspense>
         <DevToolAccordionContent below={belowFold} />
+        <SupportingProseSection
+          id="dev-tool-publisher-context"
+          heading="Built and maintained by Torq Studio"
+          paragraphs={[
+            `${tool.title} is one of our free, browser-based developer utilities. Torq Studio delivers mobile apps, web platforms, APIs, and practical AI automation for product teams; this catalog exists so engineers can handle everyday formatting, encoding, inspection, and conversion tasks without installing extra software.`,
+            "Most tools process your input locally in the tab. When you need senior ownership for a roadmap or production system—not just a one-off script—see our services overview or book a free consultation. We apply the same rigour to client delivery and to keeping these utilities reliable and privacy-conscious.",
+          ]}
+        />
       </>
     </UmbrellaToolsLayout>
   );

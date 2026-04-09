@@ -53,6 +53,11 @@ export type DevToolsMessages = {
     p2BeforePrivacy: string;
     p2AfterPrivacy: string;
     backLink: string;
+    /** Extra crawlable copy (English); optional for translated bundles that omit it. */
+    p3?: string;
+    p4?: string;
+    p5?: string;
+    p6?: string;
   };
   categoryLabels: Record<DevToolCategory, string>;
   categoryBlurbs: Record<DevToolCategory, string>;
@@ -136,6 +141,14 @@ const en: DevToolsMessages = {
     p2BeforePrivacy: "Processing happens in your browser. We do not send your pasted or uploaded content to our servers for these utilities. See the",
     p2AfterPrivacy: "for how we handle data elsewhere on the site.",
     backLink: "← Back to all tools",
+    p3:
+      "We publish utilities so you can validate JSON, convert encodings, inspect tokens, generate test data, and sketch CSS or SVG ideas without leaving the browser. The hub is organised by category so you can discover adjacent tools once you land on a page.",
+    p4:
+      "Torq Studio also delivers production software for clients: mobile applications, customer-facing websites, internal platforms, APIs, and AI-assisted workflows with logging and review. If a tool saves you time but you need engineering ownership for a product roadmap, use the main site contact form—we reply to serious enquiries within one business day.",
+    p5:
+      "We refresh and extend the catalog based on real usage patterns and security best practices. When a browser API changes or a dependency needs an upgrade, we patch tools so you are not stuck on abandoned one-off scripts. Featured tools on the hub reflect combinations teams use most often in production support and release prep.",
+    p6:
+      "If you are evaluating Torq Studio for a client project, pair this utilities hub with our services pages and case studies. The same engineering standards that keep these tools fast and predictable apply to mobile, web, and AI delivery—documented scope, observable systems, and clear handover when your in-house team takes over.",
   },
   categoryLabels: DEV_TOOL_CATEGORY_LABELS,
   categoryBlurbs: DEV_TOOL_CATEGORY_BLURB,

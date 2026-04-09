@@ -8,6 +8,7 @@ import { getServicePage, servicePages } from "@/data/services-content";
 import { readBlogPosts, readSiteContent } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd, faqPageJsonLd, webPageJsonLd } from "@/lib/seo";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateStaticParams() {
   return servicePages.map((p) => ({ slug: p.slug }));
@@ -127,6 +128,16 @@ export default async function ServiceDetailPage({
               </ul>
             </section>
           )}
+
+          <SupportingProseSection
+            id="service-next-step"
+            className="mt-14"
+            heading={`Next steps for ${page.title}`}
+            paragraphs={[
+              `The sections above summarise how Torq Studio approaches ${page.title.toLowerCase()} engagements: scope, delivery habits, and common questions from clients. Every organisation has different compliance, team capacity, and timeline pressure—we use discovery to align on those before locking a long-term commitment.`,
+              "Browse related reading from the blog when you want deeper essays on estimation, outsourcing security, or launch strategy. When you are ready to talk specifics, the consultation link below is the fastest path to a senior engineer who can respond with honest fit and sequencing.",
+            ]}
+          />
 
           <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <Link

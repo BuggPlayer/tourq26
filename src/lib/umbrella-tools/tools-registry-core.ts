@@ -257,6 +257,6 @@ export const CORE_UMBRELLA_TOOLS: UmbrellaTool[] = [
     category: "pastebin",
     icon: "¶",
     keywords: ["pastebin online", "text share", "client side paste"],
-    seoTitle: "Pastebin — share plain text with a browser link",
+    seoTitle: "Pastebin — share text via browser link",
   },
 ];

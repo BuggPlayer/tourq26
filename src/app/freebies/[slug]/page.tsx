@@ -9,6 +9,8 @@ import { getFreebieContentNode } from "@/data/freebie-content";
 import { readSiteContent } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
+import { getFreebieExtraProseParagraphs } from "@/data/freebie-page-extra-prose";
 
 export async function generateStaticParams() {
   return freebies.map((f) => ({ slug: f.slug }));
@@ -90,6 +92,18 @@ export default async function FreebiePage({
           <div className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-10 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-6 [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_input]:rounded [&_input]:border [&_input]:border-border [&_input]:bg-surface [&_input]:px-2 [&_input]:py-1">
             {getFreebieContentNode(slug)}
           </div>
+
+          <SupportingProseSection
+            id="freebie-how-we-help"
+            className="mt-12"
+            heading="How Torq Studio can help beyond this resource"
+            paragraphs={[
+              `${freebie.title} is meant to accelerate alignment with stakeholders and vendors. When you are ready to turn a checklist or template into an engineered solution—mobile apps, web platforms, APIs, or AI workflows—our team can own delivery or advise alongside your in-house engineers.`,
+              "We offer fixed-scope MVPs, retainers, embedded squads, and short discovery blocks so you can validate risk before a large budget commitment. Use the consultation link below to share context; we respond with a clear suggested next step.",
+              ...getFreebieExtraProseParagraphs(slug),
+            ]}
+          />
+
           <div className="mt-14 flex flex-wrap items-center gap-4 border-t border-border/50 pt-8">
             <p className="text-sm text-muted-foreground">
               Use Ctrl+P / Cmd+P to print or save as PDF.

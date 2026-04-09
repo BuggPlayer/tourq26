@@ -9,6 +9,7 @@ import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
 import { readSiteContent } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd, caseStudyArticleJsonLd } from "@/lib/seo";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
@@ -23,23 +24,24 @@ export async function generateMetadata({
   const study = getCaseStudyBySlug(slug);
   if (!study) return { title: "Case study not found", robots: { index: false, follow: false } };
   const site = await readSiteContent();
+  const metaTitle = study.seoTitle?.trim() || study.title;
   const baseUrl = site.siteUrl.replace(/\/$/, "");
   const ogImage = `/case-studies/${study.slug}/opengraph-image`;
   return {
-    title: study.title,
+    title: metaTitle,
     description: study.description,
     alternates: { canonical: `${baseUrl}/case-studies/${study.slug}` },
     openGraph: {
-      title: `${study.title} | Torq Studio`,
+      title: `${metaTitle} | Torq Studio`,
       description: study.description,
       url: `${baseUrl}/case-studies/${study.slug}`,
       type: "article",
       publishedTime: study.date,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: study.title }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: metaTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title: study.title,
+      title: metaTitle,
       description: study.description,
       images: [ogImage],
       ...(site.twitterSite
@@ -143,6 +145,17 @@ export default async function CaseStudyDetailPage({
             className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-10 [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_strong]:text-foreground/95"
             dangerouslySetInnerHTML={{ __html: study.body }}
           />
+
+          <SupportingProseSection
+            id="case-study-related-help"
+            className="mt-12"
+            heading="Planning something similar?"
+            paragraphs={[
+              `This overview reflects delivery patterns we use with teams in ${study.industry.toLowerCase()} and adjacent sectors—balancing speed, risk, and maintainability. Names and figures are adjusted where needed, but the engineering and collaboration lessons are representative of how we work.`,
+              "If you are comparing partners for mobile, web, AI, or API work, start with the relevant service page for scope models and FAQs, then use the contact form to share constraints. We will suggest a proportionate next step rather than a one-size-fits-all proposal.",
+            ]}
+          />
+
           <div className="mt-14 flex flex-col gap-4 border-t border-border/40 pt-8 sm:flex-row sm:items-center sm:justify-between">
             <Link
               href="/contact"

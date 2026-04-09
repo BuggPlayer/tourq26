@@ -3,6 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      // Canonical host (matches content `siteUrl`). Requires `www.torqstudio.com` as a domain in Vercel with valid SSL.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.torqstudio.com" }],
+        destination: "https://torqstudio.com/:path*",
+        permanent: true,
+      },
       {
         source: "/tools",
         destination: "/dev-tools",

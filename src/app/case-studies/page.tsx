@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import { caseStudies } from "@/data/case-studies";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd, webPageJsonLd } from "@/lib/seo";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getSiteUrl();
@@ -59,6 +60,16 @@ export default async function CaseStudiesIndexPage() {
             </p>
           </div>
         </section>
+
+        <SupportingProseSection
+          id="case-studies-method"
+          heading="How we document client work"
+          paragraphs={[
+            "These case studies describe real delivery patterns—architecture choices, team shape, and outcomes—while respecting confidentiality. You will see anonymised industries and composite timelines where needed, but the technical and organisational lessons are faithful to how we operate.",
+            "We work with fintech, logistics, e-commerce, B2B SaaS, and other regulated or high-scale environments. Common threads include shipping production mobile apps, rebuilding web platforms, introducing AI-assisted support without losing human oversight, and modernising APIs without breaking long-tail integrations.",
+            "If a story resonates with your roadmap, start from the services overview or book a consultation. We are happy to map a similar engagement model to your constraints, risk tolerance, and internal skills.",
+          ]}
+        />
 
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-8 md:grid-cols-2">
@@ -117,6 +128,16 @@ export default async function CaseStudiesIndexPage() {
             ))}
           </div>
         </section>
+
+        <SupportingProseSection
+          id="case-studies-outcomes"
+          heading="Themes across our delivery work"
+          paragraphs={[
+            "Across fintech, logistics, retail, and B2B SaaS we see recurring needs: hardening mobile apps for multi-market releases, replacing legacy web stacks without freezing product roadmaps, and introducing automation where support teams drown in repetitive tickets. Each case study highlights the constraint we optimised for—not generic buzzwords.",
+            "API and integration modernisation often means strangling monoliths gradually, versioning public endpoints, and communicating sunset timelines to partners. AI-assisted workflows focus on measurable deflection or triage quality, with logging and escalation paths so humans stay accountable.",
+            "If your organisation is evaluating a similar trajectory, use these stories as conversation starters with your internal stakeholders, then bring your specifics to a consultation. We can map a phased plan that matches your risk appetite and existing team skills.",
+          ]}
+        />
       </main>
       <Footer />
     </div>

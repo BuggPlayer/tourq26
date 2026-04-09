@@ -6,6 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import { freebies } from "@/data/freebies";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getSiteUrl();
@@ -51,6 +52,11 @@ export default async function FreebiesPage() {
             <p className="mt-6 text-lg text-muted-foreground">
               Checklists, templates, and short guides to help you choose the right partner, brief projects, and launch with confidence.
             </p>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Use them in vendor workshops, internal steering meetings, or investor updates—they are written in plain language
+              so non-technical stakeholders can follow. Nothing here requires an account; you can print or save as PDF from
+              your browser.
+            </p>
           </div>
         </section>
 
@@ -82,6 +88,17 @@ export default async function FreebiesPage() {
             No sign-up required. Use them in your projects and share with your team.
           </p>
         </section>
+
+        <SupportingProseSection
+          id="freebies-editorial"
+          heading="Why we publish free templates and checklists"
+          paragraphs={[
+            "Product and engineering teams repeatedly ask similar questions before kickoff: how to brief an agency, how to compare build versus buy versus partner, and what to verify before app store submission. These resources distil patterns we have seen across mobile, web, and API engagements.",
+            "Each item is designed to be actionable in a meeting or workshop—you can print to PDF, duplicate sections into your own wiki, or share a link with stakeholders. They do not replace legal or compliance review, but they do align vocabulary and expectations before you invest in a long contract cycle.",
+            "Torq Studio also ships open developer utilities under Dev tools for formatting, encoding, and quick technical checks. Combine those with the resources here when you are preparing a specification, reviewing a vendor proposal, or planning a launch checklist.",
+            "The mobile partner checklist helps you score vendors on delivery, security, and communication habits. The project brief template captures goals, users, constraints, and success metrics in one place. The pre-launch checklist covers store policies, analytics, crash reporting, and rollback. The build-versus-buy guide frames decision criteria for executives who need a short, balanced summary.",
+          ]}
+        />
       </main>
       <Footer />
     </div>

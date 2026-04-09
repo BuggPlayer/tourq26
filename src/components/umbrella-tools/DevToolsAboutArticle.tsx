@@ -27,6 +27,10 @@ export function DevToolsAboutArticle() {
             {m.aboutPage.backLink}
           </Link>
         </p>
+        {m.aboutPage.p3 ? <p>{m.aboutPage.p3}</p> : null}
+        {m.aboutPage.p4 ? <p>{m.aboutPage.p4}</p> : null}
+        {m.aboutPage.p5 ? <p>{m.aboutPage.p5}</p> : null}
+        {m.aboutPage.p6 ? <p>{m.aboutPage.p6}</p> : null}
       </article>
     </>
   );

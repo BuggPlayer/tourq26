@@ -3,7 +3,7 @@ import { DEV_TOOL_CATEGORY_META_TAIL } from "@/lib/umbrella-tools/dev-tool-categ
 import type { DevToolCategory } from "@/lib/umbrella-tools/types";
 
 export type DevToolsSeoMessages = {
-  /** Title segment between page title and site name (e.g. "Developer utilities"). */
+  /** Title segment between page title and site name (e.g. "Dev tools"). */
   titleSuffix: string;
   hub: { title: string; description: string; keywords: string[] };
   about: { title: string; description: string };
@@ -12,7 +12,7 @@ export type DevToolsSeoMessages = {
 };
 
 const en: DevToolsSeoMessages = {
-  titleSuffix: "Developer utilities",
+    titleSuffix: "Dev tools",
   hub: {
     title: "Free dev tools online",
     description:

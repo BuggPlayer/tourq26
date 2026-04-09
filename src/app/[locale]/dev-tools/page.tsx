@@ -13,6 +13,7 @@ import {
 import { DEV_TOOL_CATEGORY_ORDER } from "@/lib/umbrella-tools/tools-config";
 import { devToolsHubIndexMetadata, devToolsHubPageJsonLd } from "@/lib/umbrella-tools/seo";
 import { getSiteUrl } from "@/lib/site-url";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export const dynamic = "force-dynamic";
 
@@ -57,6 +58,16 @@ export default async function DevToolsPrefixedHubPage({
   return (
     <UmbrellaToolsLayout catalogTools={navCatalogTools}>
       <JsonLd data={hubLd} />
+      <SupportingProseSection
+        id="dev-tools-editorial"
+        className="mb-2"
+        heading="Browser-based utilities for everyday engineering"
+        paragraphs={[
+          "Torq Studio maintains this catalog so developers and product teams can format data, debug encodings, generate secrets, inspect tokens, and run quick conversions without installing desktop software. Each tool is designed to be obvious in purpose: paste or upload input, adjust options when needed, then copy or download the result.",
+          "Most utilities execute entirely in your browser, which keeps drafts and payloads off our servers for those flows. A small number of helpers may perform a minimal network request when the feature requires it—for example resolving your public IP—and those cases are called out in the FAQ on each page.",
+          "We group tools by category so you can skim JSON and YAML formatters, Base32, Base58, and Base64 conversions, cryptographic hashes, HMAC and bcrypt helpers, QR generators, network calculators, PDF utilities, and text helpers in one place. If you need a capability we have not shipped yet, use the contact page to suggest it.",
+        ]}
+      />
       <DevToolsHubBody sections={sections} toolCount={toolCount} adminDoc={adminDoc} />
     </UmbrellaToolsLayout>
   );

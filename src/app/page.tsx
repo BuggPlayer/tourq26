@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { readTestimonials, readSiteContent } from "@/lib/content";
 import { webPageJsonLd } from "@/lib/seo";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await readSiteContent();
@@ -60,6 +61,15 @@ export default async function Home() {
         <CaseStudies />
         <Testimonials items={testimonials} />
         <HomePageContent />
+        <SupportingProseSection
+          id="home-snapshot"
+          heading="Snapshot for technical decision-makers"
+          paragraphs={[
+            "Torq Studio is a senior-engineering-led practice: we build and advise on mobile applications, customer-facing websites, internal web platforms, public and partner APIs, and practical AI automation where there is a measurable workflow to improve.",
+            "Clients choose us when delivery risk is high—store review, traffic spikes, integration breakage, or governance—and they want direct access to the people doing the work. We document scope, acceptance criteria, and milestone checkpoints so finance and leadership see steady progress, not black-box development.",
+            "Engagement models span fixed-scope MVPs, ongoing retainers, embedded squads, and paid discovery or architecture reviews when you need confidence before funding a larger build. Explore services for discipline-specific detail, case studies for comparable contexts, or contact us for a free 30-minute consultation.",
+          ]}
+        />
         <CTA />
         <Footer />
       </main>

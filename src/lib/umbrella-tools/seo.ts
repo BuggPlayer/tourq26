@@ -15,7 +15,28 @@ import { resolveDevToolPageStructure, type DevToolHowToStep } from "@/lib/umbrel
 /** Default OG/Twitter image (root layout uses metadataBase — path must be absolute on site). */
 export const DEV_TOOLS_OG_IMAGE_PATH = "/opengraph-image";
 
-const DEFAULT_SUFFIX = "Developer utilities";
+const DEFAULT_SUFFIX = "Dev tools";
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Admin `seoTitle` values often end with `| Site name`; root `titleTemplate` adds the site again.
+ * Strip trailing site segments so the final `<title>` is `… | Dev tools | Torq Studio` once.
+ */
+export function stripRedundantToolTitleSuffixes(title: string, siteName: string): string {
+  let t = title.trim();
+  const name = siteName.trim();
+  if (!name) return t;
+  const re = new RegExp(`\\s*\\|\\s*${escapeRegExp(name)}\\s*$`, "i");
+  for (let i = 0; i < 4; i++) {
+    const next = t.replace(re, "").trim();
+    if (next === t) break;
+    t = next;
+  }
+  return t;
+}
 
 export { DEV_TOOL_CATEGORY_META_TAIL } from "@/lib/umbrella-tools/dev-tool-category-meta-tail";
 
@@ -62,7 +83,7 @@ export async function umbrellaToolsMetadata(opts: {
   /** Open Graph / Twitter image path (defaults to site OG image). */
   ogImagePath?: string;
   /**
-   * Middle segment before site name (default: "Developer utilities").
+   * Middle segment before site name (default: "Dev tools").
    * Localized via dev-tools SEO messages when the locale cookie is set.
    */
   titleSuffix?: string;
@@ -166,8 +187,10 @@ export function devToolsItemListJsonLd(siteUrl: string, tools: UmbrellaTool[]) {
 }
 
 /**
- * JSON-LD for individual tool URLs: WebPage + BreadcrumbList + SoftwareApplication.
- * Rich-result validators may expect `aggregateRating` or `review` for app-like types; we omit fabricated ratings.
+ * JSON-LD for individual tool URLs: WebPage + BreadcrumbList + CreativeWork for the utility.
+ * `SoftwareApplication` (and `WebApplication`, a subtype) is treated as “Software App” by many validators and requires
+ * `aggregateRating` or `review`. `browserRequirements` is also rejected by some checkers. We describe the browser/JS
+ * context in `description` instead and keep HowTo + FAQPage on the same page for structured Q&A and steps.
  */
 export function devToolsToolPageJsonLd(opts: {
   siteUrl: string;
@@ -183,6 +206,7 @@ export function devToolsToolPageJsonLd(opts: {
   const desc = getDevToolMetaDescriptionForLocale(opts.tool, locale);
   const messages = getDevToolsMessages(locale);
   const devToolsHubHref = `${base}${getDevToolsHrefForLocale("/dev-tools", locale)}`;
+  const appDescription = `${desc} Requires JavaScript; runs in your browser without install.`;
 
   return {
     "@context": "https://schema.org",
@@ -213,17 +237,13 @@ export function devToolsToolPageJsonLd(opts: {
         ],
       },
       {
-        "@type": "SoftwareApplication",
+        "@type": "CreativeWork",
         "@id": `${pageUrl}#webapp`,
         name: opts.tool.title,
-        description: desc,
+        description: appDescription,
         url: pageUrl,
         inLanguage: locale,
-        applicationCategory: "DeveloperApplication",
-        operatingSystem: "Web browser",
-        browserRequirements: "Requires JavaScript. Runs entirely in your browser; no install.",
         isAccessibleForFree: true,
-        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         ...(opts.tool.keywords?.length ? { keywords: opts.tool.keywords.join(", ") } : {}),
       },
     ],
@@ -301,7 +321,10 @@ export async function devToolsPageMetadata(
   slug: string,
   localeOverride?: DevToolsLocaleId,
 ): Promise<Metadata> {
-  const adminDoc = await readDevToolsAdminDocument();
+  const [adminDoc, site] = await Promise.all([
+    readDevToolsAdminDocument(),
+    readSiteContent(),
+  ]);
   const merged = getDevToolBySlugWithAdminSeo(slug, adminDoc);
   if (!merged) {
     return { title: "Developer tool", robots: { index: false, follow: false } };
@@ -311,7 +334,8 @@ export async function devToolsPageMetadata(
   }
   const locale = localeOverride ?? (await getDevToolsLocaleFromCookie());
   const seo = getDevToolsSeoMessages(locale);
-  const title = merged.seoTitle?.trim() || merged.title;
+  const rawTitle = merged.seoTitle?.trim() || merged.title;
+  const title = stripRedundantToolTitleSuffixes(rawTitle, site.siteName);
   const pathSuffix = `/dev-tools/${slug}`;
   return umbrellaToolsMetadata({
     title,

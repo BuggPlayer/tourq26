@@ -8,6 +8,7 @@ import ContactForm from "./ContactForm";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
 import { sitePhotos } from "@/data/site-photos";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getSiteUrl();
@@ -48,6 +49,11 @@ export default async function ContactPage() {
             </h1>
             <p className="mt-6 text-muted-foreground">
               Tell us your goals—mobile, web, AI, or remote team. Free 30-min consultation, no commitment.
+            </p>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Use the form for structured enquiries, or email hello@torqstudio.com with attachments and background links.
+              We work with founders, product owners, and engineering leads across time zones; mention your preferred
+              overlap hours and any NDA or vendor process we should know about up front.
             </p>
           </div>
         </section>
@@ -108,6 +114,27 @@ export default async function ContactPage() {
             </div>
           </div>
         </section>
+
+        <SupportingProseSection
+          id="contact-next-steps"
+          heading="What happens after you reach out"
+          paragraphs={[
+            "Share a short note about your product, stack, and timeline. We read every message and reply with a concrete next step—whether that is a discovery call, a written scope review, or a polite redirect if we are not the right fit.",
+            "Typical engagements include mobile apps (iOS and Android), web platforms and APIs, practical AI automation, and remote engineering squads. We also take on advisory work: architecture reviews, vendor diligence, rescue assessments, and estimation sanity checks before you commit budget.",
+            "The free consultation is a working session, not a sales script. Bring questions about risk, team shape, delivery model, and security expectations. We respond within one business day for most enquiries.",
+            "Helpful context in your first message includes: current stage (idea, MVP, scale), tech stack or constraints, target users or regions, budget band if you know it, and whether you need full delivery, staff augmentation, or advice only. You do not need a perfect brief—we will ask clarifying questions.",
+          ]}
+        />
+
+        <SupportingProseSection
+          id="contact-locations-models"
+          heading="Engagement models and collaboration"
+          paragraphs={[
+            "Fixed-price or milestone work suits bounded scope with clear acceptance criteria. Retainers and embedded squads fit ongoing roadmaps, incident support, and continuous delivery. Discovery engagements are short, paid blocks when you need a written assessment, risk register, or vendor comparison before funding a larger build.",
+            "We document decisions in writing, use your issue tracker and repositories when appropriate, and align on security expectations (access, secrets, data residency) from day one. For regulated industries we respect your vendor questionnaires, NDAs, and procurement steps.",
+            "Torq Studio is based in Mumbai; we routinely overlap with teams in India, the Gulf, and Western Europe. If you are unsure whether remote collaboration fits your governance rules, mention it in the form and we will outline how we have handled similar clients.",
+          ]}
+        />
       </main>
       <Footer />
     </div>

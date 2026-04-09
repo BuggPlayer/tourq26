@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import { servicePages } from "@/data/services-content";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd, webPageJsonLd } from "@/lib/seo";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 const iconMap: Record<string, string> = {
   "mobile-app-development": "/images/icons/mobile.svg",
   "web-development": "/images/icons/web.svg",
@@ -67,6 +68,16 @@ export default async function ServicesIndexPage() {
           </div>
         </section>
 
+        <SupportingProseSection
+          id="services-how-to-choose"
+          heading="Choosing the right engagement"
+          paragraphs={[
+            "Each service page explains how Torq Studio delivers outcomes—not just a feature list. You will find typical engagement shapes (MVP, retainer, advisory), what good looks like for that discipline, and FAQs drawn from real client conversations.",
+            "Mobile and web delivery pages cover store submission, performance, SEO-adjacent concerns for marketing sites, and API stability for partner integrations. AI and automation pages emphasise evaluation, logging, and human review rather than one-off demos. Remote IT and consulting pages describe how embedded squads and short advisory blocks differ from traditional staff aug.",
+            "If you are unsure where to start, contact us with your constraints. We will recommend a sensible first step—often a short discovery or architecture review—before proposing a long build contract.",
+          ]}
+        />
+
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-6 md:grid-cols-2">
             {servicePages.map((p) => (
@@ -96,6 +107,16 @@ export default async function ServicesIndexPage() {
             ))}
           </div>
         </section>
+
+        <SupportingProseSection
+          id="services-after-cards"
+          heading="From first conversation to production"
+          paragraphs={[
+            "Every service line on this page links to a deeper overview: typical timelines, tooling, testing expectations, and questions buyers forget to ask until late in procurement. We encourage you to read the FAQ blocks—they reflect real objections and edge cases from past engagements.",
+            "Mobile and web pages describe how we handle design handoffs, accessibility, performance budgets, and release governance. AI pages stress evaluation datasets, monitoring, and rollback. Remote IT and consulting pages explain squad composition, communication rhythms, and how we measure velocity without gaming story points.",
+            "When you are ready to compare Torq Studio with other options, combine these overviews with our case studies and blog. Then use the contact form with a short problem statement—we will reply with a suggested workshop, estimate range, or referral if another partner is a better match.",
+          ]}
+        />
       </main>
       <Footer />
     </div>

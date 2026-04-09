@@ -6,6 +6,8 @@ import type { DevToolCategory } from "@/lib/umbrella-tools/types";
 export type BlogPost = {
   slug: string;
   title: string;
+  /** Shorter `<title>` / social title when `title` is long for on-page H1 */
+  seoTitle?: string;
   description: string;
   date: string;
   readTime: string;

@@ -1,6 +1,8 @@
 export type CaseStudy = {
   slug: string;
   title: string;
+  /** Optional shorter title for `<title>` / OG when `title` is long for the article H1 */
+  seoTitle?: string;
   client: string;
   industry: string;
   challenge: string;
@@ -86,6 +88,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "ecommerce-platform-remote-team",
     title: "E-commerce scale-up: new platform plus embedded remote engineering team",
+    seoTitle: "E-commerce rebuild & remote engineering team",
     client: "Confidential · E-commerce",
     industry: "Retail · DACH",
     challenge: "Replace a limiting legacy stack and grow engineering capacity without long local hiring cycles.",
@@ -116,6 +119,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "b2b-saas-api-modernization",
     title: "B2B SaaS: API modernisation without breaking hundreds of integrations",
+    seoTitle: "B2B API modernisation without breaking integrations",
     client: "Confidential · SaaS",
     industry: "B2B software · Europe",
     challenge: "A decade-old public API was slowing product innovation and worrying enterprise prospects during security reviews.",

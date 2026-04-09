@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
 import { sitePhotos } from "@/data/site-photos";
+import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getSiteUrl();
@@ -122,6 +123,27 @@ export default async function AboutPage() {
             </div>
           </div>
         </section>
+
+        <SupportingProseSection
+          id="about-capabilities"
+          heading="What we ship and advise on"
+          paragraphs={[
+            "Our teams routinely own consumer and B2B mobile applications end to end: store submission, push notifications, offline behaviour, analytics hooks, and release trains. On the web we build marketing sites, authenticated customer portals, and internal admin tools—with attention to performance, accessibility, and SEO where they affect your funnel.",
+            "API and integration work is a core strength: versioning strategies, partner-facing documentation, rate limits, authentication, and observability so you are not blind after launch. When AI is in scope, we focus on grounded workflows—retrieval, tool use, evaluation metrics, and human review—rather than one-off demos that fail in production.",
+            "Many clients combine delivery with periodic architecture or roadmap reviews. That hybrid keeps your in-house team unblocked while an experienced engineer sanity-checks estimates, dependency risk, and security assumptions before you sign major contracts or hire permanently.",
+          ]}
+        />
+
+        <SupportingProseSection
+          id="about-delivery-philosophy"
+          heading="How we work with your team"
+          paragraphs={[
+            "Torq Studio is structured so you speak with engineers who still write and review production code. That keeps estimates grounded, reduces telephone-game miscommunication, and makes handover documentation trustworthy because the same people who build also explain trade-offs.",
+            "We are comfortable joining your rituals—stand-ups, design reviews, incident channels—when embedded, and we are equally comfortable owning a bounded milestone with written acceptance criteria when you prefer a fixed scope. Security, privacy, and compliance expectations are surfaced early, especially for apps that handle accounts, payments, or regulated data.",
+            "Based in Mumbai with overlap for India, Europe, and MENA time zones, we collaborate remotely by default. Whether you need a mobile release owner, a web platform rebuild, API hardening, or practical AI workflows, we align on overlap hours and written decisions so progress survives team changes on your side.",
+            "If you are comparing agencies, freelancers, and in-house hiring, our case studies and blog explain how we think about trade-offs before the first invoice. When you are ready, the contact page is the fastest way to get a senior engineer on a short call.",
+          ]}
+        />
 
         <section className="border-t border-border/40 px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">

@@ -58,6 +58,12 @@ export default async function PrivacyPage() {
           <p className="text-muted-foreground leading-relaxed">
             Torq Studio (“we”, “us”) is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information when you use our website or services.
           </p>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            The site combines marketing pages, a contact form, optional analytics with consent, and client-side developer utilities. We minimise data collection to what is needed to respond to enquiries, run the site securely, and understand aggregate usage when you opt in.
+          </p>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            If you use only the browser-based tools under Dev tools, your inputs typically stay on your device; marketing sections may still set essential cookies or read aggregate server logs as described below. For any privacy request—access, correction, deletion, or objection—email hello@torqstudio.com and we will respond within a reasonable timeframe.
+          </p>
           <h2 className="mt-8 font-display text-lg font-semibold text-foreground">
             Information we collect
           </h2>
@@ -98,6 +104,25 @@ export default async function PrivacyPage() {
           <p className="mt-2 text-muted-foreground leading-relaxed">
             We use your information to respond to enquiries, deliver services, improve our website, and comply with legal obligations. We do not sell your data to third parties.
           </p>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            Contact form submissions are used to follow up on your request and, if you become a client, to administer the
+            relationship. We retain enquiry data only as long as needed for those purposes or as required by law. You may
+            ask us to delete or export correspondence subject to legitimate business or legal retention needs.
+          </p>
+          <h2 className="mt-8 font-display text-lg font-semibold text-foreground">
+            Sharing, processors, and transfers
+          </h2>
+          <p className="mt-2 text-muted-foreground leading-relaxed">
+            We use reputable infrastructure and service providers (for example hosting and email) who process data on our
+            instructions. Where analytics or session tools run, they operate under your consent choice and their own
+            privacy terms. We do not allow those vendors to use your personal data for their own advertising unrelated
+            to providing the service.
+          </p>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            If data is processed in countries other than your own, we rely on appropriate safeguards where required by law
+            (such as standard contractual clauses or equivalent mechanisms). Ask hello@torqstudio.com for detail if your
+            organisation needs a data processing record for vendor review.
+          </p>
           <h2 className="mt-8 font-display text-lg font-semibold text-foreground">
             Developer utilities on this website
           </h2>
@@ -116,6 +141,19 @@ export default async function PrivacyPage() {
               hello@torqstudio.com
             </a>{" "}
             for any privacy requests.
+          </p>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            Rights vary by jurisdiction (for example GDPR in the EEA, UK GDPR, or similar laws elsewhere). We will verify
+            requests where needed to protect your account from impersonation. If you are not satisfied with our response,
+            you may lodge a complaint with your local supervisory authority where applicable.
+          </p>
+          <h2 className="mt-8 font-display text-lg font-semibold text-foreground">
+            Children
+          </h2>
+          <p className="mt-2 text-muted-foreground leading-relaxed">
+            Our website and services are directed at businesses and professionals. We do not knowingly collect personal
+            information from children. If you believe a child has provided data to us, contact hello@torqstudio.com and we
+            will take appropriate steps to delete it.
           </p>
           <p className="mt-8 text-muted-foreground leading-relaxed">
             We may update this policy from time to time. Continued use of our site after changes constitutes acceptance.
