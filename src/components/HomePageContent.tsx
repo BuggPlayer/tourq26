@@ -149,7 +149,11 @@ export default function HomePageContent() {
           <Link className="font-medium text-primary hover:underline" href="/blog">
             blog
           </Link>{" "}
-          for longer-form guides, or{" "}
+          for longer-form guides, download{" "}
+          <Link className="font-medium text-primary hover:underline" href="/freebies">
+            free checklists and templates
+          </Link>
+          , or{" "}
           <Link className="font-medium text-primary hover:underline" href="/contact">
             book a free consultation
           </Link>{" "}

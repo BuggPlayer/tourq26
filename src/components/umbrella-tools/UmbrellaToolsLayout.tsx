@@ -5,7 +5,7 @@ import { DevToolsMobileSection } from "@/components/umbrella-tools/DevToolsMobil
 import { DevToolsShellRoot } from "@/components/umbrella-tools/DevToolsShellRoot";
 import { DevToolsToolFaq } from "@/components/umbrella-tools/DevToolsToolFaq";
 import { DevToolsRelatedTools } from "@/components/umbrella-tools/DevToolsRelatedTools";
-import { DevToolsBuyMeACoffee } from "@/components/umbrella-tools/DevToolsBuyMeACoffee";
+// import { DevToolsBuyMeACoffee } from "@/components/umbrella-tools/DevToolsBuyMeACoffee";
 import { DevToolsSidebar } from "@/components/umbrella-tools/DevToolsSidebar";
 import { DevToolsTopBar } from "@/components/umbrella-tools/DevToolsTopBar";
 import { UMBRELLA_TOOLS, type UmbrellaTool } from "@/lib/umbrella-tools/tools-config";
@@ -36,7 +36,7 @@ export default function UmbrellaToolsLayout({
           <main className="w-full min-w-0 max-w-full py-4 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pb-[max(1rem,env(safe-area-inset-bottom,0px))] sm:py-5 sm:ps-5 sm:pe-5 lg:py-6 lg:ps-8 lg:pe-8">
             <DevToolsBreadcrumbs />
             {children}
-            <DevToolsBuyMeACoffee />
+            {/* <DevToolsBuyMeACoffee /> */}
             {hideRegistryFaq ? null : <DevToolsToolFaq />}
             <DevToolsRelatedTools relatedToolsOverride={relatedToolsOverride} />
           </main>

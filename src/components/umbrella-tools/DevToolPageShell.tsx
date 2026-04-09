@@ -1,4 +1,6 @@
 import ToolHeader from "@/components/umbrella-tools/ToolHeader";
+import { DevToolEditorialSections } from "@/components/umbrella-tools/DevToolEditorialSections";
+import { resolveDevToolPageStructure } from "@/lib/umbrella-tools/dev-tool-page-structure";
 import { getDevToolBySlug } from "@/lib/umbrella-tools/tools-config";
 
 export type DevToolPageShellProps = {
@@ -37,18 +39,32 @@ export function DevToolPageShell({
   tryHeading = "Try it",
 }: DevToolPageShellProps) {
   const meta = getDevToolBySlug(slug);
+  const structure = meta ? resolveDevToolPageStructure(meta) : null;
   const headerProps = {
     title: meta?.title ?? "Developer tool",
     description: meta?.description ?? "",
     category: meta?.category,
     seoIntro: meta?.seoIntro,
+    functionPart: structure?.h1Function,
+    introBlurb: structure?.introBlurb,
   };
+
+  const editorial =
+    structure !== null ? (
+      <DevToolEditorialSections
+        features={structure.features}
+        howToSteps={structure.howToSteps}
+        benefits={structure.benefits}
+      />
+    ) : null;
 
   if (!showTryHeading) {
     return (
       <article className="w-full min-w-0 max-w-full">
         <ToolHeader {...headerProps} segment="full" />
         {children}
+        {editorial}
+        <ToolHeader {...headerProps} segment="trail" />
       </article>
     );
   }
@@ -67,6 +83,7 @@ export function DevToolPageShell({
           {children}
         </div>
       </section>
+      {editorial}
       <ToolHeader {...headerProps} segment="trail" />
     </article>
   );

@@ -43,4 +43,14 @@ export type UmbrellaTool = {
   seoIntro?: string;
   /** Optional FAQ for the tool page (accordion + FAQPage JSON-LD). */
   faq?: { question: string; answer: string }[];
+  /** Short phrase shown after the title in the H1 (e.g. “Encode & decode in your browser”). */
+  h1Function?: string;
+  /** 40–70 word intro above the tool; if omitted, derived from `description`. */
+  introBlurb?: string;
+  /** Feature bullets for the Features section (min ~3 for custom list). */
+  features?: string[];
+  /** How-to steps for the page and HowTo JSON-LD (min ~3 for custom list). */
+  howToSteps?: { name: string; text: string }[];
+  /** Benefit bullets for the Benefits section. */
+  benefits?: string[];
 };

@@ -31,14 +31,14 @@ Public **Guide** and **FAQ** blocks come from `app/dev-tools/[slug]/page.tsx` vi
 
 ## SEO and JSON-LD
 
-- `app/dev-tools/[slug]/page.tsx` calls `devToolsPageMetadata(slug)` and injects `devToolsToolFullJsonLd` (WebPage, BreadcrumbList, WebApplication only — not SoftwareApplication, to avoid Google Software App rich-result requirements for ratings, FAQPage when FAQs exist).
+- `app/dev-tools/[slug]/page.tsx` calls `devToolsPageMetadata(slug)` and injects `devToolsToolFullJsonLd` (WebPage, BreadcrumbList, **SoftwareApplication**, **HowTo**, **FAQPage** when FAQ pairs exist). On-page layout: H1 + category function line, 40–70w intro, “Try it”, then **Features** / **How to use** / **Benefits** (`DevToolEditorialSections` from `resolveDevToolPageStructure`), optional long `seoIntro`, then hub FAQ / admin accordions.
 - **FAQPage** pairs: admin `faqItems` when set; else registry/code `getDevToolFaqItems(slug)` (`dev-tool-faq.ts` + optional `tool.faq` + defaults). Legacy `faqHtml` only → no FAQPage (see above).
 
 ## Tool UI: `DevToolPageShell`
 
 Use `DevToolPageShell` from `src/components/umbrella-tools/DevToolPageShell.tsx` for every tool:
 
-- Renders `<article>`, `ToolHeader` (title, description, category, optional `seoIntro` from registry), and by default a **“Try it”** section with a top border.
+- Renders `<article>`, `ToolHeader` (H1 with optional function phrase, short intro, category), **“Try it”** (or full-width tool UI when `showTryHeading={false}`), then **Features / How to use / Benefits**, then optional long `seoIntro` below that.
 - Props: `slug` (must exist in `UMBRELLA_TOOLS`), `children`, optional `showTryHeading` (default `true`), optional `tryHeading` (default `"Try it"`).
 
 **Long-form pages** (extra sections below the primary UI, e.g. JSON formatter, slug generator): pass `showTryHeading={false}` and place your own sections (still include a “Try it” block inside `children` if you want that heading).

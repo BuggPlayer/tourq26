@@ -10,6 +10,7 @@ import { getDevToolsLocaleFromCookie } from "@/lib/dev-tools-locale-server";
 import { getDevToolsMessages } from "@/lib/dev-tools-messages";
 import { getDevToolsSeoMessages } from "@/lib/dev-tools-seo-messages";
 import { getSiteUrl } from "@/lib/site-url";
+import { resolveDevToolPageStructure, type DevToolHowToStep } from "@/lib/umbrella-tools/dev-tool-page-structure";
 
 /** Default OG/Twitter image (root layout uses metadataBase — path must be absolute on site). */
 export const DEV_TOOLS_OG_IMAGE_PATH = "/opengraph-image";
@@ -165,9 +166,8 @@ export function devToolsItemListJsonLd(siteUrl: string, tools: UmbrellaTool[]) {
 }
 
 /**
- * JSON-LD for individual tool URLs: WebPage + BreadcrumbList + WebApplication (free, client-side).
- * We use `WebApplication` only — not `SoftwareApplication` — so Google does not apply Software App rich-result
- * rules that require `aggregateRating` or `review` (we do not fabricate ratings).
+ * JSON-LD for individual tool URLs: WebPage + BreadcrumbList + SoftwareApplication.
+ * Rich-result validators may expect `aggregateRating` or `review` for app-like types; we omit fabricated ratings.
  */
 export function devToolsToolPageJsonLd(opts: {
   siteUrl: string;
@@ -213,22 +213,24 @@ export function devToolsToolPageJsonLd(opts: {
         ],
       },
       {
-        "@type": "WebApplication",
+        "@type": "SoftwareApplication",
         "@id": `${pageUrl}#webapp`,
         name: opts.tool.title,
         description: desc,
         url: pageUrl,
+        inLanguage: locale,
         applicationCategory: "DeveloperApplication",
         operatingSystem: "Web browser",
         browserRequirements: "Requires JavaScript. Runs entirely in your browser; no install.",
         isAccessibleForFree: true,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        ...(opts.tool.keywords?.length ? { keywords: opts.tool.keywords.join(", ") } : {}),
       },
     ],
   };
 }
 
-/** Merges tool WebPage graph + optional FAQPage for rich results. */
+/** Merges tool WebPage graph + HowTo + optional FAQPage for rich results. */
 export function devToolsToolFullJsonLd(opts: {
   siteUrl: string;
   siteName: string;
@@ -237,6 +239,8 @@ export function devToolsToolFullJsonLd(opts: {
   locale?: DevToolsLocaleId;
   /** When omitted, uses registry/code FAQs from `getDevToolFaqItems`. Pass admin-driven pairs for structured FAQs. */
   faqSchemaPairs?: { question: string; answerPlain: string }[];
+  /** Overrides HowTo steps in JSON-LD; defaults match on-page “How to use” from `resolveDevToolPageStructure`. */
+  howToSteps?: DevToolHowToStep[];
 }) {
   const locale = opts.locale ?? "en";
   const base = devToolsToolPageJsonLd({ ...opts, locale }) as { "@context": string; "@graph": object[] };
@@ -244,26 +248,52 @@ export function devToolsToolFullJsonLd(opts: {
     opts.faqSchemaPairs !== undefined
       ? opts.faqSchemaPairs
       : getDevToolFaqItems(opts.slug).map((f) => ({ question: f.question, answerPlain: f.answer }));
-  if (pairs.length === 0) return base;
+
   const baseUrl = opts.siteUrl.replace(/\/$/, "");
   const pageUrl = `${baseUrl}${getDevToolsHrefForLocale(`/dev-tools/${opts.slug}`, locale)}`;
-  const faqPage = {
-    "@type": "FAQPage",
-    "@id": `${pageUrl}#faq`,
-    url: pageUrl,
-    inLanguage: locale,
-    mainEntity: pairs.map((f) => ({
-      "@type": "Question",
-      name: f.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: f.answerPlain,
-      },
+  const desc = getDevToolMetaDescriptionForLocale(opts.tool, locale);
+
+  const howToSteps =
+    opts.howToSteps?.length && opts.howToSteps.length >= 2
+      ? opts.howToSteps
+      : resolveDevToolPageStructure(opts.tool).howToSteps;
+
+  const howToPage = {
+    "@type": "HowTo",
+    "@id": `${pageUrl}#howto`,
+    name: `How to use ${opts.tool.title}`,
+    description: desc,
+    totalTime: "PT1M",
+    step: howToSteps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
     })),
   };
+
+  const graph = [...base["@graph"], howToPage];
+
+  if (pairs.length > 0) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${pageUrl}#faq`,
+      url: pageUrl,
+      inLanguage: locale,
+      mainEntity: pairs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: f.answerPlain,
+        },
+      })),
+    });
+  }
+
   return {
     ...base,
-    "@graph": [...base["@graph"], faqPage],
+    "@graph": graph,
   };
 }
 

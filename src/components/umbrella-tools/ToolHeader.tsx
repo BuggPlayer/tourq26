@@ -12,12 +12,16 @@ type Props = {
   title: string;
   description: string;
   category?: DevToolCategory;
-  /** Plain text; use `\\n\\n` between paragraphs. Renders visible copy for users & search. */
+  /** Shown in the H1 after an em dash (what the tool does). */
+  functionPart?: string;
+  /** 40–70 word intro above the tool (`lead` / `full`); falls back to `description` in `full` when omitted. */
+  introBlurb?: string;
+  /** Plain text; use `\\n\\n` between paragraphs. Renders below Features / How to / Benefits (or after long-form tool UI). */
   seoIntro?: string;
   /**
-   * `full` — back link, title, description, intro (default).
-   * `lead` — back link, category, title only (for placing the tool UI directly under the name).
-   * `trail` — description and intro only (rendered below the primary tool block).
+   * `full` — back link, title, lead copy, then optional long intro after editorial (via separate `trail` pass).
+   * `lead` — back link, category, H1 + function, intro blurb.
+   * `trail` — long `seoIntro` only (below editorial sections).
    */
   segment?: ToolHeaderSegment;
 };
@@ -26,6 +30,8 @@ export default function ToolHeader({
   title,
   description,
   category,
+  functionPart,
+  introBlurb,
   seoIntro,
   segment = "full",
 }: Props) {
@@ -58,8 +64,19 @@ export default function ToolHeader({
       className={`break-words text-balance font-display text-xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-[2rem] lg:leading-[1.15] ${category ? "mt-1.5" : "mt-3"}`}
     >
       {title}
+      {functionPart?.trim() ? (
+        <>
+          {" "}
+          <span className="text-muted-foreground">— {functionPart.trim()}</span>
+        </>
+      ) : null}
     </h1>
   );
+
+  const introBlurbBlock =
+    introBlurb?.trim() && (segment === "lead" || segment === "full") ? (
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{introBlurb.trim()}</p>
+    ) : null;
 
   const introBlock =
     introParagraphs.length > 0 ? (
@@ -80,26 +97,28 @@ export default function ToolHeader({
         {backLink}
         {categoryLine}
         {titleBlock}
+        {introBlurbBlock}
       </header>
     );
   }
 
   if (segment === "trail") {
+    if (!seoIntro?.trim()) return null;
     return (
       <div className="mt-8 min-w-0 border-t border-border/40 pt-6 sm:mt-10 sm:pt-8">
-        <p className="max-w-2xl break-words text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>
         {introBlock}
       </div>
     );
   }
+
+  const fullLead = introBlurb?.trim() || description;
 
   return (
     <header className="mb-6 border-b border-border/40 pb-6">
       {backLink}
       {categoryLine}
       {titleBlock}
-      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>
-      {introBlock}
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{fullLead}</p>
     </header>
   );
 }

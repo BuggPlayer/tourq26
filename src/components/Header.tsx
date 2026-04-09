@@ -9,6 +9,7 @@ const baseNavLinks = [
   { href: "/services", label: "Services" },
   { href: "/#why-us", label: "Why Us" },
   { href: "/blog", label: "Blog" },
+  { href: "/freebies", label: "Freebies" },
   { href: "/dev-tools", label: "Dev tools", flag: "tools" as const },
   { href: "/#testimonials", label: "Testimonials" },
 ];

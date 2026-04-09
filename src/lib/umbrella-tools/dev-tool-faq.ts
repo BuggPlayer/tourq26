@@ -10,6 +10,21 @@ const DEFAULT_FAQ: { question: string; answer: string }[] = [
     question: "Do I need an account to use this tool?",
     answer: "No account or sign-up is required. Open the tool and use it directly.",
   },
+  {
+    question: "Is this developer tool free to use?",
+    answer:
+      "Yes. Standard use is free in the browser. We may show optional support links, but core formatting, conversion, and generation features do not require payment.",
+  },
+  {
+    question: "Which browsers work best?",
+    answer:
+      "Use a current version of Chrome, Firefox, Safari, or Edge. Very old browsers may lack APIs some tools need (for example secure clipboard or file reading).",
+  },
+  {
+    question: "Can I use a tool offline after the page loads?",
+    answer:
+      "Many tools run entirely in your browser after load, so they can work without further network access. Anything that fetches remote data (such as a public IP lookup) needs a connection only for that request.",
+  },
 ];
 
 /** Per-slug FAQ merged after defaults (tool-specific questions first when provided). */

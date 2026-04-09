@@ -9,8 +9,11 @@ export function DevToolsToolFaq() {
   const baseId = useId();
   const slug = useMemo(() => {
     const segments = pathname.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
-    if (segments.length !== 2 || segments[0] !== "dev-tools" || segments[1] === "about") return null;
-    return segments[1]!;
+    const idx = segments.lastIndexOf("dev-tools");
+    if (idx < 0 || idx >= segments.length - 1) return null;
+    const s = segments[idx + 1]!;
+    if (s === "about") return null;
+    return s;
   }, [pathname]);
 
   const items = slug ? getDevToolFaqItems(slug) : [];
@@ -34,11 +37,11 @@ export function DevToolsToolFaq() {
 
   return (
     <section className="mt-10 border-t border-border/50 pt-7 sm:mt-12 sm:pt-8" aria-labelledby={`${baseId}-faq-heading`}>
-      <h2 id={`${baseId}-faq-heading`} className="font-display text-base font-semibold tracking-tight text-foreground sm:text-lg">
-        Frequently asked questions
+      <h2 id={`${baseId}-faq-heading`} className="font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+        FAQs
       </h2>
-      <p className="mt-1 text-xs text-foreground/80 sm:text-sm">
-        Common questions about privacy and how these tools work.
+      <p className="mt-2 text-sm text-muted-foreground">
+        Common questions about privacy, browsers, and how these tools work.
       </p>
       <div className="mt-4 divide-y divide-border/60 rounded-lg border border-border/60 bg-surface/30">
         {items.map((item, index) => {

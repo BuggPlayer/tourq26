@@ -50,7 +50,7 @@ export function DevToolAccordionContent({ below }: { below: DevToolPublicBelowFo
             id="dev-tool-faq-heading"
             className="font-display text-2xl font-bold tracking-tight text-foreground"
           >
-            FAQ
+            FAQs
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Answers about this tool and how your data is handled.
