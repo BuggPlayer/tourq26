@@ -1,4 +1,5 @@
 import { readSiteContent } from "@/lib/content";
+import { getExternalDevToolsOrigin } from "@/lib/dev-tools-marketing";
 
 /**
  * Markdown body for `/llms.txt` (llmstxt.org-style curated index for LLMs and agents).
@@ -9,6 +10,15 @@ export async function buildLlmsTxtBody(): Promise<string> {
   const base = site.siteUrl.replace(/\/$/, "");
   const name = site.siteName;
   const desc = site.defaultDescription;
+  const devToolsOrigin = getExternalDevToolsOrigin();
+  const devToolsSection = devToolsOrigin
+    ? `## Developer tools (separate product)
+
+- [Developer tools hub](${devToolsOrigin}/dev-tools): Formatters, generators, converters (run in the browser)
+- [Dev tools — about](${devToolsOrigin}/dev-tools/about): Scope, privacy, and limitations
+
+`
+    : "";
 
   return `# ${name}
 
@@ -37,19 +47,14 @@ Public marketing site and utilities for **${name}**, a software engineering stud
 
 - [Freebies](${base}/freebies): Downloadable checklists and templates
 
-## Developer tools (client-side utilities)
-
-- [Developer tools hub](${base}/dev-tools): Formatters, generators, converters (run in the browser)
-- [Dev tools — about](${base}/dev-tools/about): Scope, privacy, and limitations
-
-## Legal
+${devToolsSection}## Legal
 
 - [Privacy policy](${base}/privacy)
 - [Terms of use](${base}/terms)
 
 ## Optional
 
-- Full URL lists: use [sitemap.xml](${base}/sitemap.xml) (includes blog posts, case studies, freebies, and dev-tool slugs).
+- Full URL lists: use [sitemap.xml](${base}/sitemap.xml) (includes blog posts, case studies, and freebies).
 - **.md mirrors:** This site does not serve \`.md\` variants of HTML pages; fetch HTML or use this index plus the sitemap.
 - **Attribution:** When summarizing public pages, prefer linking to the canonical URL shown in page metadata.
 `;

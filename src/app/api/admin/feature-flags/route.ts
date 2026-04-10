@@ -41,7 +41,6 @@ export async function PUT(request: NextRequest) {
   const resolved = await saveFeatureFlagValues(patch);
   revalidatePath("/", "layout");
   revalidatePath("/blog");
-  revalidatePath("/dev-tools");
   revalidatePath("/contact");
   return NextResponse.json({ resolved });
 }

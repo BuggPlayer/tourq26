@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useDevToolsHubHref } from "@/hooks/useDevToolsHubHref";
+import { useExternalDevToolsHubHref } from "@/hooks/useExternalDevToolsHubHref";
 
-/** Resolves /dev-tools vs /{locale}/dev-tools from the same cookie preference as the dev-tools area. */
+/** Link to the standalone Torq DevTools hub when `NEXT_PUBLIC_DEV_TOOLS_URL` is configured. */
 export function PrivacyDevToolsLink({ className }: { className?: string }) {
-  const href = useDevToolsHubHref();
+  const href = useExternalDevToolsHubHref();
+  if (!href) {
+    return <span className={className}>Torq DevTools</span>;
+  }
   return (
     <Link href={href} className={className}>
-      /dev-tools
+      Torq DevTools
     </Link>
   );
 }

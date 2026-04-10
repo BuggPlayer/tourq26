@@ -32,7 +32,6 @@ export async function PUT(request: NextRequest) {
   };
   await writeSiteContent(data);
   revalidatePath("/");
-  revalidatePath("/dev-tools");
   revalidatePath("/blog");
   return NextResponse.json(data);
 }

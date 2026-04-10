@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { useDevToolsHubHref } from "@/hooks/useDevToolsHubHref";
+import { useExternalDevToolsHubHref } from "@/hooks/useExternalDevToolsHubHref";
 
 const baseNavLinks = [
   { href: "/about", label: "About" },
@@ -18,10 +18,12 @@ export type HeaderNavFlags = {
   showTools?: boolean;
 };
 
-function buildNavLinks(flags?: HeaderNavFlags) {
+function buildNavLinks(flags: HeaderNavFlags | undefined, devToolsExternalHref: string | null) {
   const showTools = flags?.showTools !== false;
   return baseNavLinks.filter((link) => {
-    if ("flag" in link && link.flag === "tools" && !showTools) return false;
+    if ("flag" in link && link.flag === "tools") {
+      if (!showTools || !devToolsExternalHref) return false;
+    }
     return true;
   });
 }
@@ -35,8 +37,11 @@ export default function Header({
   endSlot?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
-  const devToolsHubHref = useDevToolsHubHref();
-  const navLinks = buildNavLinks(navFlags);
+  const devToolsExternalHref = useExternalDevToolsHubHref();
+  const navLinks = useMemo(
+    () => buildNavLinks(navFlags, devToolsExternalHref),
+    [navFlags, devToolsExternalHref],
+  );
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-panel">
@@ -51,12 +56,13 @@ export default function Header({
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-4">
           <nav className="hidden items-center gap-7 md:flex">
             {navLinks.map((link) => {
-              const href = link.href === "/dev-tools" ? devToolsHubHref : link.href;
+              const href = link.href === "/dev-tools" ? devToolsExternalHref! : link.href;
               return (
                 <Link
                   key={link.href === "/dev-tools" ? "dev-tools" : link.href}
                   href={href}
                   className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  {...(link.href === "/dev-tools" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   {link.label}
                 </Link>
@@ -90,13 +96,14 @@ export default function Header({
             {endSlot ? <div className="flex justify-end border-b border-border/40 pb-3">{endSlot}</div> : null}
             <nav className="flex flex-col gap-0.5">
               {navLinks.map((link) => {
-                const href = link.href === "/dev-tools" ? devToolsHubHref : link.href;
+                const href = link.href === "/dev-tools" ? devToolsExternalHref! : link.href;
                 return (
                   <Link
                     key={link.href === "/dev-tools" ? "dev-tools" : link.href}
                     href={href}
                     className="rounded-xl px-4 py-3.5 text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground"
                     onClick={() => setOpen(false)}
+                    {...(link.href === "/dev-tools" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   >
                     {link.label}
                   </Link>

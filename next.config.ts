@@ -11,16 +11,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/tools",
-        destination: "/dev-tools",
-        permanent: true,
-      },
-      {
-        source: "/tools/:path*",
-        destination: "/dev-tools",
-        permanent: true,
-      },
-      {
         source: "/hub/candidate/nodejs-interview",
         destination: "/hub/candidate/interview/nodejs",
         permanent: false,
@@ -47,7 +37,7 @@ const nextConfig: NextConfig = {
         // Skip `/_next/*` so hashed CSS/JS chunks keep Next’s `Content-Type` (avoids nosniff + wrong MIME in dev).
         source: "/((?!_next/).*)",
         headers: [
-          // SAMEORIGIN allows same-site iframes (e.g. admin live preview of /dev-tools/*) while blocking embeds on other domains.
+          // SAMEORIGIN allows same-site iframes while blocking embeds on other domains.
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

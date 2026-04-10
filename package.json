@@ -11,8 +11,6 @@
     "test": "vitest run",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
-    "content:build-dev-tools-seed": "python3 scripts/build_dev_tools_seed.py",
-    "content:seed-dev-tools": "python3 scripts/build_dev_tools_seed.py && cp content/dev-tools-admin.seed.json content/dev-tools-admin.json",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },

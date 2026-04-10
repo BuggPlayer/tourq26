@@ -47,7 +47,8 @@ export const FEATURE_FLAG_DEFINITIONS: readonly FeatureFlagDefinition[] = [
   {
     key: "nav_tools",
     label: "Nav: Dev tools link",
-    description: "Header link to /dev-tools (browser utilities).",
+    description:
+      "Header link to the standalone Torq DevTools app. Requires NEXT_PUBLIC_DEV_TOOLS_URL (origin) to be set in env.",
     category: "Marketing",
     defaultEnabled: true,
     envOverride: "FF_NAV_TOOLS",
@@ -62,9 +63,9 @@ export const FEATURE_FLAG_DEFINITIONS: readonly FeatureFlagDefinition[] = [
   },
   {
     key: "dev_tools_code_playground",
-    label: "Dev tools: Code playground",
+    label: "API: Playground runs on /api/run",
     description:
-      "Public /dev-tools/code-playground (Monaco IDE + Piston runs). When off, the page is hidden, hub links removed, and playground runs return 403. Hub /api/run for interviews is unchanged.",
+      "When off, POST /api/run with source=playground returns 403 (legacy clients). Interview hub runs without source=playground are unchanged. The public playground lives on the standalone Torq DevTools deployment.",
     category: "Site",
     defaultEnabled: true,
     envOverride: "FF_DEV_TOOLS_CODE_PLAYGROUND",

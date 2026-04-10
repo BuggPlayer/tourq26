@@ -34,7 +34,6 @@ export default async function AdminLayout({
               <NavLink href="/admin/testimonials">Testimonials</NavLink>
               <NavLink href="/admin/site">Site & SEO</NavLink>
               <NavLink href="/admin/feature-flags">Feature flags</NavLink>
-              <NavLink href="/admin/dev-tools">Dev tools</NavLink>
             </aside>
             <main className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain">{children}</main>
           </div>

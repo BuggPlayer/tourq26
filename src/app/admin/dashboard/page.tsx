@@ -59,13 +59,6 @@ export default async function AdminDashboardPage() {
           <h2 className="font-semibold text-foreground">Feature flags</h2>
           <p className="mt-1 text-sm text-muted-foreground">Maintenance, marketing routes, and nav toggles</p>
         </Link>
-        <Link
-          href="/admin/dev-tools"
-          className="rounded-xl border border-border/50 bg-muted/30 p-6 transition hover:border-primary/50 hover:bg-muted/50"
-        >
-          <h2 className="font-semibold text-foreground">Dev tools</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Enable or hide tools, notes, featured flags</p>
-        </Link>
       </div>
       <div className="mt-8 rounded-xl border border-border/50 bg-muted/30 p-6">
         <h2 className="font-semibold text-foreground">Storage</h2>
