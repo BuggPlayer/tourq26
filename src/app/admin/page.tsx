@@ -38,27 +38,48 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{ background: "var(--brand-gradient)" }}
+        aria-hidden
+      />
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-xl border border-border/50 bg-muted/50 p-8 shadow-xl"
+        className="card-flat w-full max-w-sm p-8"
       >
-        <h1 className="text-xl font-semibold text-foreground">Admin login</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Enter your password to continue.</p>
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block h-2.5 w-2.5 rounded-full"
+            style={{ background: "var(--brand-gradient)" }}
+            aria-hidden
+          />
+          <p className="mono-eyebrow text-muted-foreground">TORQ ADMIN</p>
+        </div>
+        <h1 className="display-md mt-3 text-foreground">Sign in to continue.</h1>
+        <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+          Enter the admin password to manage content, SEO, and feature flags.
+        </p>
+        <label className="mono-label mt-7 block text-muted-foreground" htmlFor="admin-password">
+          PASSWORD
+        </label>
         <input
+          id="admin-password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          className="mt-6 w-full rounded-lg border border-border bg-surface/50 px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          placeholder="••••••••"
+          className="text-input mt-2"
           autoFocus
           required
         />
-        {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
+        {error ? (
+          <p className="mt-3 text-[13px] text-[color:var(--app-destructive)]">{error}</p>
+        ) : null}
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 w-full rounded-lg bg-primary py-3 font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
+          className="btn-base btn-primary mt-5 w-full"
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>

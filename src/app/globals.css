@@ -1,119 +1,99 @@
 @import "tailwindcss";
-@plugin "tailwindcss-animate";
 
 /*
- * Design system — single source of truth
- * --------------------------------------
- * - Colors & fonts: `html` / `html.dark` base dark palette; `html.light` for light (see next-themes + system default).
- * - Tailwind maps them via `@theme inline` → use utilities: `bg-background`, `text-foreground`,
- *   `text-muted-foreground`, `border-border`, `bg-surface`, `bg-surface-elevated`, `text-primary`,
- *   `bg-primary`, `text-success`, `text-destructive`, `text-destructive-foreground`, `bg-accent`, `text-accent-foreground`,
- *   `ring-border`, etc. Avoid raw slate/red/emerald utility classes in components; brand is amber primary + violet accent.
- * - Theme switch: `src/components/theme/` (next-themes). Font: `data-font-family` brand | system.
- * - Hub-specific vars (`--hub-*`) stay for interview UI; prefer `border-border` / `text-primary` where possible.
+ * Design system — SINGLE SOURCE OF TRUTH (see DESIGN.md)
+ * --------------------------------------------------------------------------
+ * Together AI-inspired alternating-band system. Light-only — the marketing
+ * surface uses canvas-dark bands for hero / research / CTA on top of a white
+ * canvas; there is no global dark mode toggle.
+ *   • Two-face type: display sans (Inter, weight 500, tight tracking) for
+ *     narrative/headlines/body; uppercase mono (JetBrains Mono, 500, positive
+ *     tracking) for every eyebrow, button label, table-header.
+ *   • Two surface modes: `canvas-dark` (#010120) bands for hero / research /
+ *     CTA, alternating with white bands for product / pricing / editorial.
+ *     No in-between greys.
+ *   • One black pill carries every primary CTA. Mint + white pills appear
+ *     only inside the hero. A 3-stop brand gradient (orange→magenta→
+ *     periwinkle) is the entire decorative system.
+ *   • Cards are lightly-rounded (4px), hairline-bordered, never shadowed.
+ *
+ * Components consume tokens through the semantic Tailwind utilities exposed
+ * via `@theme inline` (`bg-background`, `text-foreground`, `border-hairline`,
+ * `font-display`, `font-mono`, etc.) or via raw `var(--…)` for brand-fixed
+ * surfaces such as `--brand-canvas-dark` / `--brand-mint`.
  */
-@custom-variant dark (&:where(.dark, .dark *));
 
 /* -------------------------------------------------------------------------- */
-/* Semantic design tokens (see --app-* on `html` / `html.light`)              */
+/* Brand tokens                                                               */
 /* -------------------------------------------------------------------------- */
-
 :root {
-  --font-body-stack: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display-stack: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --shadow-card: 0 32px 64px -24px rgb(0 0 0 / 0.45);
-  --shadow-cta: 0 16px 40px -12px rgb(245 158 11 / 0.42);
+  /* Type stacks — Inter (display sans) + JetBrains Mono (uppercase mono caps) */
+  --font-body-stack: var(--font-inter), "Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-display-stack: var(--font-inter), "Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono-stack: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, SF Mono, Menlo, monospace;
+
+  /* Radius scale (DESIGN.md → rounded) */
+  --radius-none: 0px;
+  --radius-xs: 3.25px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Brand palette — invariant across themes */
+  --brand-orange: #fc4c02;
+  --brand-magenta: #ef2cc1;
+  --brand-periwinkle: #bdbbff;
+  --brand-mint: #c8f6f9;
+  --brand-canvas-dark: #010120;
+  --brand-surface-dark-soft: #313641;
+  --brand-hairline-on-dark: #26263a;
+
+  /* Brand gradient — used as the single decorative chrome */
+  --brand-gradient: linear-gradient(
+    100deg,
+    var(--brand-orange) 0%,
+    var(--brand-magenta) 48%,
+    var(--brand-periwinkle) 100%
+  );
 }
 
-html[data-font-family="system"] {
-  --font-body-stack: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-display-stack: ui-sans-serif, system-ui, sans-serif;
-}
-
-/* Dark palette — base tokens on `html` (before class: inline script + next-themes set `light` | `dark` from system or storage) */
+/* -------------------------------------------------------------------------- */
+/* Light palette — the only palette                                           */
+/* -------------------------------------------------------------------------- */
 html {
-  color-scheme: dark;
-  --app-bg: #07090e;
-  --app-fg: #f1f5f9;
-  --app-muted: #1e293b;
-  --app-muted-fg: #94a3b8;
-  --app-border: #1e293b;
-  --app-surface: #0f1319;
-  --app-surface-elevated: #161c26;
-  /* Brand primary: amber — reads as energy / “torque”; pairs with violet accent */
-  --app-primary: #f59e0b;
-  --app-primary-hover: #fbbf24;
-  --app-primary-fg: #0c0a09;
-  --app-primary-muted: rgb(245 158 11 / 0.14);
-  --app-accent: #a78bfa;
-  --app-accent-fg: #fafafa;
-  --app-accent-muted: rgb(167 139 250 / 0.12);
-  --app-ring: #fbbf24;
-  --app-destructive: #f87171;
-  --app-destructive-fg: #fafafa;
-  --app-success: #34d399;
-  --app-glass-bg: rgb(15 19 25 / 0.7);
-  --app-glass-border: rgb(255 255 255 / 0.06);
-  --app-gradient-mesh-a: rgb(245 158 11 / 0.18);
-  --app-gradient-mesh-b: rgb(139 92 246 / 0.09);
-  --app-gradient-mesh-c: rgb(245 158 11 / 0.06);
-  --app-hero-a: rgb(245 158 11 / 0.2);
-  --app-hero-b: rgb(139 92 246 / 0.1);
-  --app-hero-c: rgb(245 158 11 / 0.07);
-  --app-card-hover-ring: rgb(245 158 11 / 0.14);
-  --app-stat-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 48%, #a78bfa 100%);
-  --app-theme-color: #07090e;
-  --app-whatsapp: #25d366;
-  --app-whatsapp-foreground: #ffffff;
-  --app-code-bg: #020617;
-  --app-code-fg: #e2e8f0;
-  --background: var(--app-bg);
-  --foreground: var(--app-fg);
-  --surface: var(--app-surface);
-  --primary: var(--app-primary);
-  --primary-muted: var(--app-primary-muted);
-  --muted: var(--app-muted-fg);
-}
-
-html.light {
   color-scheme: light;
-  --app-bg: #fafafa;
-  --app-fg: #0f172a;
-  --app-muted: #e2e8f0;
-  --app-muted-fg: #64748b;
-  --app-border: #e2e8f0;
-  --app-surface: #f1f5f9;
+  --app-bg: #ffffff;
+  --app-fg: #000000; /* ink */
+  --app-muted: #ebebeb; /* hairline rail */
+  --app-muted-fg: #959494; /* body / secondary */
+  --app-border: #ebebeb; /* hairline */
+  --app-hairline: #ebebeb;
+  --app-surface: #ffffff;
   --app-surface-elevated: #ffffff;
-  --app-primary: #d97706;
-  --app-primary-hover: #b45309;
-  --app-primary-fg: #fffbeb;
-  --app-primary-muted: rgb(217 119 6 / 0.12);
-  --app-accent: #7c3aed;
-  --app-accent-fg: #fafafa;
-  --app-accent-muted: rgb(124 58 237 / 0.12);
-  --app-ring: #d97706;
+
+  --app-primary: #000000; /* ink black CTA pill */
+  --app-primary-hover: #1a1a1a;
+  --app-primary-fg: #ffffff;
+  --app-primary-muted: rgba(0, 0, 0, 0.06);
+
+  --app-accent: var(--brand-mint);
+  --app-accent-fg: #000000;
+  --app-accent-muted: rgba(200, 246, 249, 0.45);
+
+  --app-ring: rgba(0, 0, 0, 0.45);
   --app-destructive: #dc2626;
-  --app-destructive-fg: #fafafa;
+  --app-destructive-fg: #ffffff;
   --app-success: #059669;
-  --app-glass-bg: rgb(255 255 255 / 0.72);
-  --app-glass-border: rgb(15 23 42 / 0.08);
-  --app-gradient-mesh-a: rgb(217 119 6 / 0.13);
-  --app-gradient-mesh-b: rgb(124 58 237 / 0.08);
-  --app-gradient-mesh-c: rgb(217 119 6 / 0.05);
-  --app-hero-a: rgb(217 119 6 / 0.14);
-  --app-hero-b: rgb(124 58 237 / 0.08);
-  --app-hero-c: rgb(217 119 6 / 0.05);
-  --app-card-hover-ring: rgb(217 119 6 / 0.14);
-  --app-stat-gradient: linear-gradient(135deg, #b45309 0%, #d97706 45%, #7c3aed 100%);
-  --app-theme-color: #fafafa;
+  --app-glass-bg: rgba(255, 255, 255, 0.85);
+  --app-glass-border: rgba(0, 0, 0, 0.06);
   --app-whatsapp: #25d366;
   --app-whatsapp-foreground: #ffffff;
-  --app-code-bg: #f1f5f9;
-  --app-code-fg: #0f172a;
+  --app-code-bg: #f5f5f5;
+  --app-code-fg: #000000;
+  --app-wordmark: #ebebeb;
+
   --background: var(--app-bg);
   --foreground: var(--app-fg);
   --surface: var(--app-surface);
@@ -122,12 +102,17 @@ html.light {
   --muted: var(--app-muted-fg);
 }
 
+/* -------------------------------------------------------------------------- */
+/* Tailwind theme bindings                                                    */
+/* -------------------------------------------------------------------------- */
 @theme inline {
+  /* Semantic colors */
   --color-background: var(--app-bg);
   --color-foreground: var(--app-fg);
   --color-muted: var(--app-muted);
   --color-muted-foreground: var(--app-muted-fg);
   --color-border: var(--app-border);
+  --color-hairline: var(--app-hairline);
   --color-surface: var(--app-surface);
   --color-surface-elevated: var(--app-surface-elevated);
   --color-primary: var(--app-primary);
@@ -143,16 +128,25 @@ html.light {
   --color-success: var(--app-success);
   --color-whatsapp: var(--app-whatsapp);
   --color-whatsapp-foreground: var(--app-whatsapp-foreground);
+
+  /* Typography */
   --font-sans: var(--font-body-stack);
   --font-display: var(--font-display-stack);
+  --font-mono: var(--font-mono-stack);
+
+  /* Radii */
+  --radius-none: var(--radius-none);
+  --radius-xs: var(--radius-xs);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
-  --shadow-card: var(--shadow-card);
-  --shadow-cta: var(--shadow-cta);
+  --radius-full: var(--radius-full);
 }
 
+/* -------------------------------------------------------------------------- */
+/* Base                                                                       */
+/* -------------------------------------------------------------------------- */
 html {
   scroll-behavior: smooth;
 }
@@ -161,149 +155,422 @@ body {
   background-color: var(--app-bg);
   color: var(--app-fg);
   font-family: var(--font-body-stack);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Accessible focus — uses theme ring */
 a:focus-visible,
 button:focus-visible,
-select:focus-visible {
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
   outline: 2px solid var(--app-ring);
   outline-offset: 2px;
 }
 
-/* Section backgrounds */
-.gradient-mesh {
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, var(--app-gradient-mesh-a), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, var(--app-gradient-mesh-b), transparent),
-    radial-gradient(ellipse 50% 30% at 0% 50%, var(--app-gradient-mesh-c), transparent);
+/* -------------------------------------------------------------------------- */
+/* Display sans — letterforms / tracking per DESIGN.md typography             */
+/* -------------------------------------------------------------------------- */
+.font-display {
+  font-family: var(--font-display-stack);
+  letter-spacing: -0.02em; /* baseline compressed feel; per-size overrides below */
+  font-weight: 500;
 }
 
-.hero-section {
-  background:
-    radial-gradient(ellipse 100% 70% at 50% -15%, var(--app-hero-a), transparent 50%),
-    radial-gradient(ellipse 70% 50% at 100% 15%, var(--app-hero-b), transparent 45%),
-    radial-gradient(ellipse 60% 40% at 0% 55%, var(--app-hero-c), transparent 40%);
+.display-xxl,
+.display-xl,
+.display-lg,
+.display-md,
+.display-sm {
+  font-family: var(--font-display-stack);
+  font-weight: 500;
+}
+.display-xxl {
+  font-size: clamp(40px, 7vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.display-xl {
+  font-size: clamp(32px, 4.5vw, 40px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.display-lg {
+  font-size: clamp(24px, 3.2vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.display-md {
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.display-sm {
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
-/* Glass panel */
-.glass-panel {
-  background: var(--app-glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--app-glass-border);
+/* -------------------------------------------------------------------------- */
+/* Mono caps — eyebrow + button label face                                    */
+/* -------------------------------------------------------------------------- */
+.mono-eyebrow {
+  font-family: var(--font-mono-stack);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.05em;
 }
 
-/* Card hover */
-.card-hover {
-  transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.35s ease, border-color 0.3s ease;
-}
-.card-hover:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-card), 0 0 0 1px var(--app-card-hover-ring);
-}
-
-/* Primary CTA */
-.btn-primary {
-  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease;
-}
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-cta);
+.mono-label {
+  font-family: var(--font-mono-stack);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.005em;
 }
 
-.stat-number {
-  font-feature-settings: "tnum";
-  background: var(--app-stat-gradient);
+.mono-button {
+  font-family: var(--font-mono-stack);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Surface bands — the brand's rhythm device                                  */
+/* -------------------------------------------------------------------------- */
+.band-dark {
+  background-color: var(--brand-canvas-dark);
+  color: #ffffff;
+}
+.band-dark a {
+  color: #ffffff;
+}
+
+.band-light {
+  background-color: var(--app-bg);
+  color: var(--app-fg);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Brand gradient utilities                                                   */
+/* -------------------------------------------------------------------------- */
+.brand-gradient-text {
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
-/* Animations */
+/* The signature hero ribbon — drawn as layered translucent stripes */
+.brand-ribbon {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+.brand-ribbon::before,
+.brand-ribbon::after {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  background: var(--brand-gradient);
+  filter: blur(60px);
+  opacity: 0.85;
+  transform: skewY(-12deg);
+}
+.brand-ribbon::after {
+  inset: 20% -10% -10% -10%;
+  transform: skewY(8deg) translateY(20%);
+  opacity: 0.55;
+  background: linear-gradient(
+    100deg,
+    rgba(189, 187, 255, 0.9) 0%,
+    rgba(239, 44, 193, 0.65) 50%,
+    rgba(252, 76, 2, 0.6) 100%
+  );
+}
+.brand-ribbon > .ribbon-inner {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 35% at 30% 30%, rgba(252, 76, 2, 0.55), transparent 70%),
+    radial-gradient(ellipse 45% 30% at 70% 60%, rgba(239, 44, 193, 0.5), transparent 70%),
+    radial-gradient(ellipse 55% 40% at 50% 85%, rgba(189, 187, 255, 0.55), transparent 70%);
+  mix-blend-mode: screen;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Buttons (DESIGN.md → button-primary, secondary-mint, secondary-white,      */
+/* ghost-on-dark, outline)                                                    */
+/* -------------------------------------------------------------------------- */
+.btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono-stack);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+  line-height: 1;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    transform 0.18s ease;
+  white-space: nowrap;
+}
+.btn-base:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--app-primary);
+  color: var(--app-primary-fg);
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--app-primary-hover);
+}
+
+.btn-mint {
+  background-color: var(--brand-mint);
+  color: #000000;
+}
+.btn-mint:hover:not(:disabled) {
+  background-color: #b6eef2;
+}
+
+.btn-white {
+  background-color: #ffffff;
+  color: #000000;
+}
+.btn-white:hover:not(:disabled) {
+  background-color: #f5f5f5;
+}
+
+.btn-ghost-on-dark {
+  background-color: var(--brand-surface-dark-soft);
+  color: #ffffff;
+}
+.btn-ghost-on-dark:hover:not(:disabled) {
+  background-color: #3f4452;
+}
+
+.btn-outline {
+  background-color: var(--app-bg);
+  color: var(--app-fg);
+  border-color: var(--app-hairline);
+  border-radius: var(--radius-xs);
+}
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--app-fg);
+}
+
+/* On-dark outline override — for placing outline buttons inside band-dark */
+.band-dark .btn-outline {
+  background-color: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.band-dark .btn-outline:hover:not(:disabled) {
+  border-color: #ffffff;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Cards (DESIGN.md → article-card, research-card, testimonial-card, stat)   */
+/* -------------------------------------------------------------------------- */
+.card-flat {
+  background-color: var(--app-surface);
+  color: var(--app-fg);
+  border: 1px solid var(--app-hairline);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+}
+.band-dark .card-flat,
+.card-flat-on-dark {
+  background-color: var(--brand-canvas-dark);
+  color: #ffffff;
+  border: 1px solid var(--brand-hairline-on-dark);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+}
+
+.card-hover {
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.card-hover:hover {
+  border-color: var(--app-fg);
+  transform: translateY(-2px);
+}
+.band-dark .card-hover:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Inputs                                                                     */
+/* -------------------------------------------------------------------------- */
+.text-input {
+  width: 100%;
+  background-color: var(--app-bg);
+  color: var(--app-fg);
+  border: 1px solid var(--app-hairline);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 16px;
+  line-height: 1.3;
+  font-family: var(--font-body-stack);
+  transition: border-color 0.18s ease;
+}
+.text-input:focus {
+  border-color: var(--app-fg);
+  outline: none;
+}
+.text-input::placeholder {
+  color: var(--app-muted-fg);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Wordmark banner (the giant "torq.studio" terminal mark)                   */
+/* -------------------------------------------------------------------------- */
+.wordmark-banner {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-display-stack);
+  font-weight: 500;
+  font-size: clamp(80px, 22vw, 320px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--app-wordmark);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Glass nav surface                                                          */
+/* -------------------------------------------------------------------------- */
+.glass-panel {
+  background: var(--app-glass-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--app-glass-border);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hero ambient background (used by hero-band-dark)                           */
+/* -------------------------------------------------------------------------- */
+.hero-band {
+  background-color: var(--brand-canvas-dark);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+.hero-band::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10% 30% 30%;
+  background: var(--brand-gradient);
+  filter: blur(120px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Stat number (used inside stat tiles + KPI rows)                            */
+/* -------------------------------------------------------------------------- */
+.stat-number {
+  font-feature-settings: "tnum";
+  font-family: var(--font-display-stack);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Animations                                                                 */
+/* -------------------------------------------------------------------------- */
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 @keyframes scale-in {
   from {
     opacity: 0;
-    transform: scale(0.96);
+    transform: scale(0.98);
   }
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
-@keyframes float {
+@keyframes ribbon-drift {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translate3d(-2%, 2%, 0) rotate(2deg);
   }
 }
 
 .animate-fade-up {
-  animation: fade-up 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
-}
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
+  animation: fade-up 0.55s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 .animate-scale-in {
-  animation: scale-in 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
+  animation: scale-in 0.45s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.animate-ribbon {
+  animation: ribbon-drift 16s ease-in-out infinite;
 }
 
 .animate-delay-1 {
-  animation-delay: 0.1s;
+  animation-delay: 0.08s;
 }
 .animate-delay-2 {
-  animation-delay: 0.2s;
+  animation-delay: 0.16s;
 }
 .animate-delay-3 {
-  animation-delay: 0.3s;
+  animation-delay: 0.24s;
 }
 .animate-delay-4 {
-  animation-delay: 0.4s;
+  animation-delay: 0.32s;
 }
 .animate-delay-5 {
-  animation-delay: 0.5s;
+  animation-delay: 0.4s;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
-  .animate-fade-in,
   .animate-scale-in,
-  .animate-float {
+  .animate-ribbon {
     animation: none;
   }
   .card-hover:hover {
     transform: none;
   }
-  .btn-primary:hover {
-    transform: none;
-  }
 }
 
-/* Hub Q&A — scoped hub theme (unchanged behaviour) */
+/* -------------------------------------------------------------------------- */
+/* Hub Q&A — scoped hub theme (kept to avoid regressing interview UI)         */
+/* -------------------------------------------------------------------------- */
 #hub-root[data-hub-theme="dark"] .hub-qa-inline-code {
   background-color: rgba(244, 63, 94, 0.22);
   color: #fecdd3;
@@ -326,18 +593,18 @@ select:focus-visible {
 }
 
 .hub-btn-primary {
-  background-color: var(--hub-primary, #d97706);
-  color: var(--hub-primary-foreground, #fffbeb);
+  background-color: var(--hub-primary, #000000);
+  color: var(--hub-primary-foreground, #ffffff);
   transition: background-color 0.15s ease, transform 0.2s ease;
 }
 .hub-btn-primary:hover {
-  background-color: var(--hub-primary-hover, #fbbf24);
+  background-color: var(--hub-primary-hover, #1a1a1a);
 }
 .hub-text-accent {
-  color: var(--hub-primary, #d97706);
+  color: var(--hub-primary, #000000);
 }
 .hub-text-accent:hover {
-  color: var(--hub-primary-hover, #f59e0b);
+  color: var(--hub-primary-hover, #1a1a1a);
 }
 
 #hub-root[data-hub-theme="dark"] .hub-hero-highlight {
@@ -389,7 +656,9 @@ select:focus-visible {
   color: #6b21a8;
 }
 
-/* Admin Quill — driven by app tokens + admin fallbacks */
+/* -------------------------------------------------------------------------- */
+/* Admin Quill — driven by app tokens + admin fallbacks                      */
+/* -------------------------------------------------------------------------- */
 .admin-quill-editor .ql-toolbar.ql-snow {
   border-color: var(--app-border);
   background: color-mix(in srgb, var(--app-surface) 92%, transparent);
@@ -485,8 +754,8 @@ select:focus-visible {
 .blog-article h1 {
   font-family: var(--font-display-stack);
   font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.25;
+  font-weight: 500;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--app-fg);
   margin-top: 2.75rem;
@@ -496,8 +765,8 @@ select:focus-visible {
 .blog-article h2 {
   font-family: var(--font-display-stack);
   font-size: 1.375rem;
-  font-weight: 600;
-  line-height: 1.3;
+  font-weight: 500;
+  line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--app-fg);
   margin-top: 2.5rem;
@@ -507,27 +776,26 @@ select:focus-visible {
 .blog-article h3 {
   font-family: var(--font-display-stack);
   font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.35;
+  font-weight: 500;
+  line-height: 1.3;
   color: var(--app-fg);
   margin-top: 2rem;
   margin-bottom: 0.5rem;
   scroll-margin-top: 6rem;
 }
 .blog-article a {
-  color: var(--app-primary);
+  color: var(--app-fg);
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--app-primary) 45%, transparent);
+  text-decoration-color: var(--app-hairline);
   text-underline-offset: 3px;
-  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  transition: text-decoration-color 0.15s ease;
 }
 .blog-article a:hover {
-  color: var(--app-primary-hover);
-  text-decoration-color: color-mix(in srgb, var(--app-primary-hover) 55%, transparent);
+  text-decoration-color: var(--app-fg);
 }
 .blog-article strong {
   color: var(--app-fg);
-  font-weight: 600;
+  font-weight: 500;
 }
 .blog-article em {
   font-style: italic;
@@ -548,22 +816,22 @@ select:focus-visible {
   padding-left: 0.25rem;
 }
 .blog-article li::marker {
-  color: color-mix(in srgb, var(--app-primary) 65%, var(--app-muted-fg));
+  color: var(--app-muted-fg);
 }
 .blog-article blockquote {
   margin: 1.5rem 0;
   padding: 0.75rem 0 0.75rem 1.15rem;
-  border-left: 3px solid color-mix(in srgb, var(--app-primary) 55%, var(--app-border));
+  border-left: 3px solid var(--app-fg);
   font-style: italic;
-  color: color-mix(in srgb, var(--app-muted-fg) 88%, var(--app-fg));
-  background: color-mix(in srgb, var(--app-surface) 65%, transparent);
-  border-radius: 0 0.5rem 0.5rem 0;
+  color: var(--app-fg);
+  background: transparent;
+  border-radius: 0;
 }
 .blog-article pre {
   margin: 1.25rem 0;
   padding: 1rem 1.15rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid color-mix(in srgb, var(--app-border) 80%, transparent);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--app-hairline);
   background: var(--app-surface);
   font-size: 0.9em;
   line-height: 1.65;
@@ -572,10 +840,10 @@ select:focus-visible {
 }
 .blog-article code {
   font-size: 0.88em;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono-stack);
   padding: 0.15em 0.4em;
-  border-radius: 0.3rem;
-  background: color-mix(in srgb, var(--app-muted) 85%, transparent);
+  border-radius: 0.25rem;
+  background: var(--app-muted);
   color: var(--app-fg);
 }
 .blog-article pre code {

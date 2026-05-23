@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/auth";
 import { readContactSubmissions } from "@/lib/content";
+import { AdminPageHeader } from "../AdminPageHeader";
 
 function formatDate(iso: string) {
   try {
@@ -21,37 +22,39 @@ export default async function AdminContactPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-foreground">Contact submissions</h1>
-      <p className="mt-1 text-muted-foreground">
-        Form submissions from the contact page. Newest first.
-      </p>
+      <AdminPageHeader
+        crumbs={[
+          { label: "Admin", href: "/admin/dashboard" },
+          { label: "Contact" },
+        ]}
+        title="Contact submissions"
+        description="Form submissions from the contact page. Newest first."
+      />
+
       {submissions.length === 0 ? (
         <p className="mt-8 text-muted-foreground">No submissions yet.</p>
       ) : (
-        <div className="mt-6 space-y-4">
+        <div className="mt-8 space-y-4">
           {submissions.map((s) => (
-            <div
-              key={s.id}
-              className="rounded-xl border border-border/50 bg-muted/30 p-5"
-            >
+            <article key={s.id} className="card-flat">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="font-semibold text-foreground">{s.name}</div>
-                <time className="text-xs text-muted-foreground" dateTime={s.createdAt}>
-                  {formatDate(s.createdAt)}
+                <h2 className="font-medium text-foreground">{s.name}</h2>
+                <time className="mono-label text-muted-foreground" dateTime={s.createdAt}>
+                  {formatDate(s.createdAt).toUpperCase()}
                 </time>
               </div>
-              <div className="mt-1 text-sm text-primary">
-                <a href={`mailto:${s.email}`} className="hover:underline">
+              <p className="mt-1 text-[14px]">
+                <a href={`mailto:${s.email}`} className="text-foreground underline underline-offset-2">
                   {s.email}
                 </a>
-              </div>
-              {s.company && (
-                <div className="mt-1 text-sm text-muted-foreground">{s.company}</div>
-              )}
-              <p className="mt-3 whitespace-pre-wrap text-sm text-foreground/90">
+              </p>
+              {s.company ? (
+                <p className="mt-1 text-[13px] text-muted-foreground">{s.company}</p>
+              ) : null}
+              <p className="mt-4 whitespace-pre-wrap text-[14px] leading-relaxed text-foreground/90">
                 {s.message}
               </p>
-            </div>
+            </article>
           ))}
         </div>
       )}

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import MarketingHeader from "@/components/MarketingHeader";
 import { requireMarketingFeature } from "@/lib/require-marketing-feature";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
-import { readBlogPosts } from "@/lib/content";
+import { publishedBlogPosts, readBlogPosts } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd } from "@/lib/seo";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
-import { sortBlogPostsByDateDesc } from "@/lib/blog-display";
 import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function BlogPage() {
   await requireMarketingFeature("marketing_blog", "marketing_blog");
   const [rawPosts, siteUrl] = await Promise.all([readBlogPosts(), getSiteUrl()]);
-  const posts = sortBlogPostsByDateDesc(rawPosts);
+  const posts = publishedBlogPosts(rawPosts);
   const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
     { name: "Home", path: "/" },
     { name: "Blog", path: "/blog" },
@@ -43,62 +43,79 @@ export default async function BlogPage() {
       <JsonLd data={breadcrumbLd} />
       <MarketingHeader />
       <main>
-        <section className="hero-section relative overflow-hidden border-b border-border/40">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_50%_at_50%_-30%,var(--app-primary-muted),transparent)] opacity-90" aria-hidden />
-          <div className="relative mx-auto max-w-4xl px-4 pt-36 pb-16 text-center sm:px-6 lg:px-8 lg:pt-40 lg:pb-20">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Insights</p>
-            <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-[3.25rem]">
-              Ideas for building better products
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Practical guides on shipping, procurement, security, and working with remote engineering teams—written for
-              founders, PMs, and technical leaders.
-            </p>
-            {posts.length > 0 ? (
-              <p className="mt-6 text-sm text-muted-foreground/90">
-                <span className="font-medium text-foreground/90">{posts.length}</span> articles
+        {/* Hero — dark band */}
+        <section className="hero-band">
+          <div className="relative z-10 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-10 px-4 pt-32 pb-20 sm:px-6 sm:pt-36 sm:pb-24 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:pt-40 lg:pb-[80px]">
+            <div className="lg:col-span-8">
+              <p className="mono-eyebrow text-white/55">INSIGHTS · GUIDES</p>
+              <h1 className="display-xxl mt-5 text-white">
+                Ideas for building better products.
+              </h1>
+              <p className="mt-6 max-w-2xl text-[17px] leading-[1.5] text-white/70">
+                Practical guides on shipping, procurement, security, and working with remote
+                engineering teams — written for founders, PMs, and technical leaders.
               </p>
-            ) : null}
+            </div>
+            <div className="flex flex-col items-start justify-end gap-3 lg:col-span-4 lg:items-end">
+              {posts.length > 0 ? (
+                <p className="mono-label text-white/65">
+                  <span className="text-white">{posts.length}</span> articles published
+                </p>
+              ) : null}
+              <Link href="/contact" className="btn-base btn-ghost-on-dark">
+                Suggest a topic
+              </Link>
+            </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-          {posts.length === 0 ? (
-            <p className="text-center text-muted-foreground">New articles are on the way. Check back soon.</p>
-          ) : (
-            <>
-              {featured ? (
-                <div className="mb-14 lg:mb-16">
-                  <BlogPostCard post={featured} variant="featured" />
-                </div>
-              ) : null}
-              {rest.length > 0 ? (
-                <>
-                  <div className="mb-8 flex items-end justify-between gap-4 border-b border-border/40 pb-4">
-                    <h2 className="font-display text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-                      More articles
-                    </h2>
+        {/* Posts list */}
+        <section className="band-light border-t border-hairline">
+          <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+            {posts.length === 0 ? (
+              <p className="text-center text-muted-foreground">
+                New articles are on the way. Check back soon.
+              </p>
+            ) : (
+              <>
+                {featured ? (
+                  <div className="mb-12 lg:mb-16">
+                    <p className="mono-eyebrow text-muted-foreground">LATEST</p>
+                    <div className="mt-4">
+                      <BlogPostCard post={featured} variant="featured" />
+                    </div>
                   </div>
-                  <ul className="grid gap-6 sm:grid-cols-2 lg:gap-8">
-                    {rest.map((post) => (
-                      <li key={post.slug}>
-                        <BlogPostCard post={post} variant="compact" />
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : null}
-            </>
-          )}
+                ) : null}
+                {rest.length > 0 ? (
+                  <>
+                    <div className="mb-6 flex items-end justify-between gap-4 border-b border-hairline pb-4">
+                      <p className="mono-eyebrow text-muted-foreground">MORE ARTICLES</p>
+                      <p className="mono-label text-muted-foreground">
+                        {rest.length} ITEMS
+                      </p>
+                    </div>
+                    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {rest.map((post) => (
+                        <li key={post.slug}>
+                          <BlogPostCard post={post} variant="compact" />
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+              </>
+            )}
+          </div>
         </section>
 
         <SupportingProseSection
           id="blog-editorial"
-          heading="Who these articles are for"
+          eyebrow="EDITORIAL"
+          heading="Who these articles are written for."
           paragraphs={[
             "Our blog is written for founders, product managers, and engineering leaders who need clear language about delivery risk: fixed-price versus phased work, outsourcing security, mobile partner selection, and when to ship an MVP versus a broader release.",
-            "Posts are grounded in how senior engineers actually scope, test, and hand over systems—not generic marketing claims. We link to services and case studies when you want deeper detail, but each article should stand alone as a practical reference.",
-            "New guides are added as we see recurring questions from clients and prospects. Subscribe to updates by bookmarking the blog or following Torq Studio on social channels listed in the site footer.",
+            "Posts are grounded in how senior engineers actually scope, test, and hand over systems — not generic marketing claims. We link to services and case studies when you want deeper detail, but each article should stand alone as a practical reference.",
+            "New guides are added as we see recurring questions from clients and prospects. Subscribe to updates by bookmarking the blog or following Torq Studio on the social channels listed in the site footer.",
           ]}
         />
       </main>

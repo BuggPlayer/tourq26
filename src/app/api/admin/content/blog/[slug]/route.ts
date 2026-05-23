@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
 import { readBlogPosts, writeBlogPosts, type BlogPost } from "@/lib/content";
+import { normaliseBlogInput, slugify } from "@/lib/blog-server";
 
 export async function GET(
   _request: NextRequest,
@@ -23,24 +24,20 @@ export async function PUT(
   const ok = await requireAdmin();
   if (!ok) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { slug } = await params;
-  const body = (await request.json()) as Partial<BlogPost>;
+
   const posts = await readBlogPosts();
   const index = posts.findIndex((p) => p.slug === slug);
   if (index === -1) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  const updated: BlogPost = {
-    ...posts[index],
-    ...body,
-    slug: body.slug ?? posts[index].slug,
-    title: body.title ?? posts[index].title,
-    description: body.description ?? posts[index].description,
-    date: body.date ?? posts[index].date,
-    readTime: body.readTime ?? posts[index].readTime,
-    body: body.body ?? posts[index].body,
-    authorName:
-      typeof body.authorName === "string"
-        ? body.authorName.trim() || undefined
-        : posts[index].authorName,
-  };
+
+  const raw = (await request.json()) as Record<string, unknown>;
+  const candidate = normaliseBlogInput(raw, posts[index]);
+  const nextSlug = candidate.slug || slugify(candidate.title) || posts[index].slug;
+
+  if (nextSlug !== slug && posts.some((p) => p.slug === nextSlug)) {
+    return NextResponse.json({ error: "Slug already exists" }, { status: 400 });
+  }
+
+  const updated: BlogPost = { ...candidate, slug: nextSlug };
   posts[index] = updated;
   await writeBlogPosts(posts);
   revalidatePath("/blog");

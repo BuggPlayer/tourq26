@@ -1,193 +1,615 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { BlogPost } from "@/lib/content";
+import Link from "next/link";
+import type { BlogPost, BlogStatus } from "@/lib/content";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { BlogEditorInsights } from "@/components/admin/BlogEditorInsights";
 import { BlogPostPreview } from "@/components/admin/BlogPostPreview";
+import { SerpPreview } from "@/components/admin/SerpPreview";
+import { SocialPreview } from "@/components/admin/SocialPreview";
+import { TagInput } from "@/components/admin/TagInput";
 
-type Props = { post?: BlogPost };
+type Props = {
+  post?: BlogPost;
+  siteUrl: string;
+  siteName: string;
+};
 
-type Tab = "write" | "preview" | "score";
+type Tab = "write" | "preview" | "seo";
 
-export function BlogPostForm({ post }: Props) {
+function slugify(value: string) {
+  return (value || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['"`]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+function stripHtml(html: string) {
+  if (typeof document === "undefined") {
+    return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  }
+  const d = document.createElement("div");
+  d.innerHTML = html;
+  return (d.textContent || d.innerText || "").replace(/\s+/g, " ").trim();
+}
+
+function deriveReadTime(html: string) {
+  const words = stripHtml(html).split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.round(words / 220))} min read`;
+}
+
+function readLocalDraft(key: string): Partial<BlogPost> | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as Partial<BlogPost>) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function BlogPostForm({ post, siteUrl, siteName }: Props) {
   const router = useRouter();
+  const isNew = !post;
+  const draftKey = `torq.admin.blog.draft.${post?.slug ?? "new"}`;
+  const savedDraft = isNew ? readLocalDraft(draftKey) : null;
+
   const [tab, setTab] = useState<Tab>("write");
-  const [slug, setSlug] = useState(post?.slug ?? "");
-  const [title, setTitle] = useState(post?.title ?? "");
-  const [description, setDescription] = useState(post?.description ?? "");
+  const [slug, setSlug] = useState(post?.slug ?? savedDraft?.slug ?? "");
+  const [slugTouched, setSlugTouched] = useState(!isNew || !!savedDraft?.slug);
+  const [title, setTitle] = useState(post?.title ?? savedDraft?.title ?? "");
+  const [seoTitle, setSeoTitle] = useState(post?.seoTitle ?? savedDraft?.seoTitle ?? "");
+  const [description, setDescription] = useState(
+    post?.description ?? savedDraft?.description ?? "",
+  );
+  const [excerpt, setExcerpt] = useState(post?.excerpt ?? savedDraft?.excerpt ?? "");
   const [date, setDate] = useState(post?.date ?? new Date().toISOString().slice(0, 10));
   const [readTime, setReadTime] = useState(post?.readTime ?? "5 min read");
+  const [readTimeTouched, setReadTimeTouched] = useState(!isNew);
   const [authorName, setAuthorName] = useState(post?.authorName ?? "");
-  const [body, setBody] = useState(post?.body ?? "");
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSaving(true);
-    const url = post
-      ? `/api/admin/content/blog/${encodeURIComponent(post.slug)}`
-      : "/api/admin/content/blog";
-    const method = post ? "PUT" : "POST";
-    const payload = post
-      ? { slug, title, description, date, readTime, body, authorName: authorName.trim() }
-      : {
-          slug: slug || undefined,
-          title,
-          description,
-          date,
-          readTime,
-          body,
-          authorName: authorName.trim() || undefined,
-        };
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json().catch(() => ({}));
-    setSaving(false);
-    if (!res.ok) {
-      setError(data.error || "Save failed");
-      return;
-    }
-    router.push("/admin/blog");
-    router.refresh();
-  };
-
-  const tabBtn = (id: Tab, label: string) => (
-    <button
-      key={id}
-      type="button"
-      onClick={() => setTab(id)}
-      className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-        tab === id
-          ? "bg-primary text-foreground"
-          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-      }`}
-    >
-      {label}
-    </button>
+  const [body, setBody] = useState(post?.body ?? savedDraft?.body ?? "");
+  const [status, setStatus] = useState<BlogStatus>(post?.status ?? "draft");
+  const [coverImage, setCoverImage] = useState(post?.coverImage ?? savedDraft?.coverImage ?? "");
+  const [tags, setTags] = useState<string[]>(post?.tags ?? savedDraft?.tags ?? []);
+  const [focusKeyword, setFocusKeyword] = useState(
+    post?.focusKeyword ?? savedDraft?.focusKeyword ?? "",
   );
 
+  const [saving, setSaving] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"draft" | "publish" | "save" | null>(null);
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const effectiveSlug = slugTouched ? slug : slugify(title);
+  const effectiveReadTime = readTimeTouched ? readTime : deriveReadTime(body);
+
+  // Draft autosave to localStorage (new posts only)
+  const skipFirstAutosave = useRef(true);
+  useEffect(() => {
+    if (!isNew || typeof window === "undefined") return;
+    if (skipFirstAutosave.current) {
+      skipFirstAutosave.current = false;
+      return;
+    }
+    const payload = {
+      title,
+      description,
+      excerpt,
+      seoTitle,
+      body,
+      slug: effectiveSlug,
+      tags,
+      coverImage,
+      focusKeyword,
+    };
+    try {
+      localStorage.setItem(draftKey, JSON.stringify(payload));
+    } catch {
+      /* noop */
+    }
+  }, [
+    isNew,
+    title,
+    description,
+    excerpt,
+    seoTitle,
+    body,
+    effectiveSlug,
+    tags,
+    coverImage,
+    focusKeyword,
+    draftKey,
+  ]);
+
+  const submit = useCallback(
+    async (nextStatus: BlogStatus) => {
+      setError("");
+      setSuccessMsg("");
+      setSaving(true);
+      setPendingAction(isNew ? (nextStatus === "draft" ? "draft" : "publish") : "save");
+      const url = post
+        ? `/api/admin/content/blog/${encodeURIComponent(post.slug)}`
+        : "/api/admin/content/blog";
+      const method = post ? "PUT" : "POST";
+      const payload = {
+        slug: effectiveSlug || undefined,
+        title,
+        seoTitle: seoTitle.trim() || undefined,
+        description,
+        excerpt: excerpt.trim() || undefined,
+        date,
+        readTime: effectiveReadTime,
+        body,
+        authorName: authorName.trim() || undefined,
+        status: nextStatus,
+        coverImage: coverImage.trim() || undefined,
+        tags,
+        focusKeyword: focusKeyword.trim() || undefined,
+      };
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      setSaving(false);
+      setPendingAction(null);
+      if (!res.ok) {
+        setError(data.error || "Save failed");
+        return;
+      }
+      setStatus(nextStatus);
+      try {
+        localStorage.removeItem(draftKey);
+      } catch {
+        /* noop */
+      }
+      if (isNew && data?.slug) {
+        router.push(`/admin/blog/${encodeURIComponent(data.slug)}/edit`);
+        router.refresh();
+      } else {
+        setSuccessMsg(
+          nextStatus === "published"
+            ? "Saved and published."
+            : "Draft saved.",
+        );
+        router.refresh();
+      }
+    },
+    [
+      isNew,
+      post,
+      effectiveSlug,
+      title,
+      seoTitle,
+      description,
+      excerpt,
+      date,
+      effectiveReadTime,
+      body,
+      authorName,
+      coverImage,
+      tags,
+      focusKeyword,
+      draftKey,
+      router,
+    ],
+  );
+
+  const wordCount = useMemo(() => stripHtml(body).split(/\s+/).filter(Boolean).length, [body]);
+
   return (
-    <form onSubmit={handleSubmit} className="mt-6 max-w-4xl space-y-4">
-      <div className="flex flex-wrap gap-2 border-b border-border pb-4">
-        {tabBtn("write", "Write")}
-        {tabBtn("preview", "Preview")}
-        {tabBtn("score", "Content score")}
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void submit(status);
+      }}
+    >
+      {/* Sticky publish bar */}
+      <div className="sticky top-0 z-20 -mx-5 mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-background/95 px-5 py-3 backdrop-blur lg:-mx-8 lg:px-8">
+        <div className="flex min-w-0 items-center gap-3">
+          <Link
+            href="/admin/blog"
+            className="mono-button text-muted-foreground transition-colors hover:text-foreground"
+          >
+            ← BLOG
+          </Link>
+          <span className="hidden text-muted-foreground sm:inline">|</span>
+          <p className="hidden truncate text-[14px] font-medium text-foreground sm:block">
+            {title || (isNew ? "New post" : post?.title)}
+          </p>
+          <StatusPill status={status} />
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {!isNew && post ? (
+            <Link
+              href={`/blog/${post.slug}`}
+              target="_blank"
+              className="btn-base btn-outline"
+            >
+              View
+            </Link>
+          ) : null}
+          <button
+            type="button"
+            disabled={saving}
+            onClick={() => submit("draft")}
+            className="btn-base btn-outline"
+          >
+            {saving && pendingAction === "draft" ? "Saving…" : "Save draft"}
+          </button>
+          <button
+            type="button"
+            disabled={saving}
+            onClick={() => submit("published")}
+            className="btn-base btn-primary"
+          >
+            {saving && pendingAction === "publish"
+              ? "Publishing…"
+              : status === "published"
+                ? "Update"
+                : "Publish"}
+          </button>
+        </div>
       </div>
 
-      {tab === "write" && (
-        <>
-          <div>
-            <label className="block text-sm font-medium text-foreground/90">Title</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
-            />
+      {error ? (
+        <p className="mb-4 rounded-md border border-[color:var(--app-destructive)] bg-[color:rgba(220,38,38,0.06)] px-3 py-2 text-[13px] text-[color:var(--app-destructive)]">
+          {error}
+        </p>
+      ) : null}
+      {successMsg ? (
+        <p className="mb-4 rounded-md border border-[color:var(--app-success)] bg-[color:rgba(5,150,105,0.06)] px-3 py-2 text-[13px] text-[color:var(--app-success)]">
+          {successMsg}
+        </p>
+      ) : null}
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+        {/* Editor column */}
+        <div className="min-w-0 space-y-5">
+          <div className="flex items-center gap-1 rounded-md border border-border bg-muted/40 p-1">
+            {(["write", "preview", "seo"] as Tab[]).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTab(t)}
+                className={`mono-button rounded-sm px-3 py-1.5 transition-colors ${
+                  tab === t
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {t.toUpperCase()}
+              </button>
+            ))}
+            <span className="ml-auto mr-2 mono-label text-muted-foreground">
+              {wordCount.toLocaleString()} WORDS · {effectiveReadTime.toUpperCase()}
+            </span>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-foreground/90">Slug</label>
-            <input
-              type="text"
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              placeholder="auto from title"
-              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground placeholder:text-muted-foreground"
+
+          {tab === "write" ? (
+            <div className="space-y-5">
+              <Field
+                label="Title"
+                hint="The on-page H1. 50–60 chars works best in search."
+                charCount={title.length}
+                softMax={65}
+              >
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  className="text-input text-[18px] font-medium"
+                  placeholder="Write a title that names the outcome…"
+                />
+              </Field>
+
+              <Field
+                label="Description (meta)"
+                hint="Shown in Google & social cards. 120–160 chars is ideal."
+                charCount={description.length}
+                softMax={160}
+              >
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={2}
+                  className="text-input"
+                  placeholder="Promise the reader something concrete and unique."
+                />
+              </Field>
+
+              <Field
+                label="Body"
+                hint="Rich text: H2–H3, lists, blockquote, code, links. Don't add another H1."
+              >
+                <div className="mt-1">
+                  <RichTextEditor
+                    value={body}
+                    onChange={setBody}
+                    placeholder="Open with the takeaway. Use H2/H3 for sections."
+                    minHeight="28rem"
+                  />
+                </div>
+              </Field>
+            </div>
+          ) : null}
+
+          {tab === "preview" ? (
+            <BlogPostPreview
+              title={title}
+              description={description}
+              date={date}
+              readTime={effectiveReadTime}
+              authorName={authorName.trim()}
+              bodyHtml={body}
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-foreground/90">Description (meta)</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={2}
-              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-foreground/90">Date</label>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
+          ) : null}
+
+          {tab === "seo" ? (
+            <div className="space-y-5">
+              <SerpPreview
+                siteUrl={siteUrl}
+                slug={effectiveSlug}
+                title={(seoTitle.trim() || title) + (siteName ? ` | ${siteName}` : "")}
+                description={description}
+              />
+              <SocialPreview
+                siteUrl={siteUrl}
+                slug={effectiveSlug}
+                title={seoTitle.trim() || title}
+                description={description}
+                coverImage={coverImage.trim() || undefined}
+                siteName={siteName}
+              />
+              <BlogEditorInsights
+                title={title}
+                description={description}
+                bodyHtml={body}
+                focusKeyword={focusKeyword}
+                slug={effectiveSlug}
+                hasCoverImage={!!coverImage.trim()}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground/90">Read time</label>
-              <input
-                type="text"
-                value={readTime}
-                onChange={(e) => setReadTime(e.target.value)}
-                placeholder="5 min read"
-                className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground"
+          ) : null}
+        </div>
+
+        {/* Sidebar */}
+        <aside className="space-y-5">
+          <Card title="PUBLISH">
+            <Row label="Status" value={status === "published" ? "Published" : "Draft"} />
+            <Row
+              label="Date"
+              control={
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="text-input w-auto px-2 py-1 text-[13px]"
+                />
+              }
+            />
+            <Row
+              label="Read time"
+              control={
+                <input
+                  type="text"
+                  value={readTime}
+                  onChange={(e) => {
+                    setReadTime(e.target.value);
+                    setReadTimeTouched(true);
+                  }}
+                  placeholder="auto"
+                  className="text-input w-28 px-2 py-1 text-[13px]"
+                />
+              }
+            />
+            {post?.dateUpdated ? (
+              <Row
+                label="Last updated"
+                value={new Date(post.dateUpdated).toLocaleString()}
               />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-foreground/90">
-              Author name (optional, for SEO)
+            ) : null}
+            <Row label="Word count" value={wordCount.toLocaleString()} />
+          </Card>
+
+          <Card title="URL">
+            <label className="mono-label block text-muted-foreground" htmlFor="slug-input">
+              SLUG
             </label>
             <input
+              id="slug-input"
               type="text"
-              value={authorName}
-              onChange={(e) => setAuthorName(e.target.value)}
-              placeholder="Defaults to site name if empty"
-              className="mt-1 w-full rounded-lg border border-border bg-surface/50 px-4 py-2 text-foreground placeholder:text-muted-foreground"
+              value={slug}
+              onChange={(e) => {
+                setSlug(e.target.value);
+                setSlugTouched(true);
+              }}
+              placeholder="auto-generated from title"
+              className="text-input mt-1.5 text-[13px]"
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-foreground/90">Body</label>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              React Quill: H1–H3, lists, indent, blockquote, code blocks, links, alignment. Prefer one H1 per
-              post (the page title is already an H1) — use H2/H3 for sections when possible.
-            </p>
-            <div className="mt-1">
-              <RichTextEditor
-                value={body}
-                onChange={setBody}
-                placeholder="Write your post…"
-                minHeight="22rem"
+            {effectiveSlug ? (
+              <p className="mono-label mt-2 truncate text-muted-foreground">
+                /BLOG/{effectiveSlug.toUpperCase()}
+              </p>
+            ) : null}
+          </Card>
+
+          <Card title="SEO">
+            <SidebarField label="SEO TITLE">
+              <input
+                type="text"
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+                placeholder="Defaults to title"
+                className="text-input text-[13px]"
               />
-            </div>
-          </div>
-        </>
-      )}
+              <p className="mono-label mt-1 text-muted-foreground">
+                {seoTitle.length || title.length} / 60 CHARS
+              </p>
+            </SidebarField>
+            <SidebarField label="EXCERPT (CARDS)">
+              <textarea
+                value={excerpt}
+                onChange={(e) => setExcerpt(e.target.value)}
+                rows={2}
+                placeholder="Defaults to description"
+                className="text-input text-[13px]"
+              />
+            </SidebarField>
+            <SidebarField label="FOCUS KEYWORD">
+              <input
+                type="text"
+                value={focusKeyword}
+                onChange={(e) => setFocusKeyword(e.target.value)}
+                placeholder="e.g. mvp vs full product"
+                className="text-input text-[13px]"
+              />
+              <p className="mono-label mt-1 text-muted-foreground">
+                USED FOR CONTENT-SCORE CHECKS ONLY
+              </p>
+            </SidebarField>
+            <SidebarField label="TAGS">
+              <TagInput value={tags} onChange={setTags} />
+            </SidebarField>
+            <SidebarField label="COVER IMAGE URL">
+              <input
+                type="url"
+                value={coverImage}
+                onChange={(e) => setCoverImage(e.target.value)}
+                placeholder="https://…/cover.jpg"
+                className="text-input text-[13px]"
+              />
+              {coverImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={coverImage}
+                  alt=""
+                  className="mt-2 aspect-[1200/630] w-full rounded-[var(--radius-sm)] border border-border object-cover"
+                />
+              ) : null}
+            </SidebarField>
+          </Card>
 
-      {tab === "preview" && (
-        <div className="rounded-xl border border-border bg-background/50 p-4">
-          <BlogPostPreview
-            title={title}
-            description={description}
-            date={date}
-            readTime={readTime}
-            authorName={authorName.trim()}
-            bodyHtml={body}
-          />
-        </div>
-      )}
-
-      {tab === "score" && (
-        <BlogEditorInsights title={title} description={description} bodyHtml={body} />
-      )}
-
-      {error && <p className="text-sm text-destructive">{error}</p>}
-      <button
-        type="submit"
-        disabled={saving}
-        className="rounded-lg bg-primary px-6 py-2 font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
-      >
-        {saving ? "Saving…" : post ? "Update post" : "Create post"}
-      </button>
+          <Card title="AUTHOR">
+            <SidebarField label="DISPLAY NAME">
+              <input
+                type="text"
+                value={authorName}
+                onChange={(e) => setAuthorName(e.target.value)}
+                placeholder={`Defaults to ${siteName}`}
+                className="text-input text-[13px]"
+              />
+              <p className="mono-label mt-1 text-muted-foreground">
+                USED IN ARTICLE SCHEMA + AUTHOR BYLINE
+              </p>
+            </SidebarField>
+          </Card>
+        </aside>
+      </div>
     </form>
+  );
+}
+
+function Field({
+  label,
+  hint,
+  charCount,
+  softMax,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  charCount?: number;
+  softMax?: number;
+  children: React.ReactNode;
+}) {
+  const over = typeof charCount === "number" && typeof softMax === "number" && charCount > softMax;
+  return (
+    <div>
+      <div className="flex items-baseline justify-between gap-3">
+        <label className="mono-label text-muted-foreground">{label.toUpperCase()}</label>
+        {typeof charCount === "number" && typeof softMax === "number" ? (
+          <span
+            className={`mono-label tabular-nums ${
+              over ? "text-[color:var(--app-destructive)]" : "text-muted-foreground"
+            }`}
+          >
+            {charCount} / ~{softMax}
+          </span>
+        ) : null}
+      </div>
+      <div className="mt-1.5">{children}</div>
+      {hint ? <p className="mt-1.5 text-[12.5px] text-muted-foreground">{hint}</p> : null}
+    </div>
+  );
+}
+
+function Card({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="card-flat p-4">
+      <p className="mono-eyebrow text-muted-foreground">{title}</p>
+      <div className="mt-3 space-y-3">{children}</div>
+    </section>
+  );
+}
+
+function Row({
+  label,
+  value,
+  control,
+}: {
+  label: string;
+  value?: string | number;
+  control?: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="mono-label text-muted-foreground">{label.toUpperCase()}</span>
+      {control ? control : <span className="text-[13px] text-foreground">{value}</span>}
+    </div>
+  );
+}
+
+function SidebarField({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <p className="mono-label text-muted-foreground">{label}</p>
+      <div className="mt-1.5">{children}</div>
+    </div>
+  );
+}
+
+function StatusPill({ status }: { status: BlogStatus }) {
+  const isPub = status === "published";
+  return (
+    <span
+      className={`mono-label inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 ${
+        isPub
+          ? "bg-[color:var(--brand-mint)] text-[color:var(--app-fg)]"
+          : "bg-muted text-muted-foreground"
+      }`}
+    >
+      <span
+        aria-hidden
+        className={`inline-block h-1.5 w-1.5 rounded-full ${
+          isPub ? "bg-[color:var(--app-success)]" : "bg-[color:var(--app-muted-fg)]"
+        }`}
+      />
+      {isPub ? "LIVE" : "DRAFT"}
+    </span>
   );
 }

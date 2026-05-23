@@ -36,7 +36,7 @@ export function SeedKvButton({ className }: { className?: string }) {
         {loading ? "Seeding…" : "Seed from files → KV (one-time)"}
       </button>
       {message && (
-        <p className={`mt-2 text-sm ${message.startsWith("Seeded") ? "text-green-400" : "text-amber-400"}`}>
+        <p className={`mt-2 text-sm ${message.startsWith("Seeded") ? "text-[color:var(--app-success)]" : "text-[color:var(--app-destructive)]"}`}>
           {message}
         </p>
       )}

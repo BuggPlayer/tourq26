@@ -143,7 +143,7 @@ export function TestimonialsEditor({ initialItems }: { initialItems: Testimonial
         type="button"
         onClick={save}
         disabled={saving}
-        className="rounded-lg bg-primary px-6 py-2 font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
+        className="btn-base btn-primary"
       >
         {saving ? "Saving…" : "Save all testimonials"}
       </button>

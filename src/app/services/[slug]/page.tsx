@@ -5,7 +5,7 @@ import MarketingHeader from "@/components/MarketingHeader";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { getServicePage, servicePages } from "@/data/services-content";
-import { readBlogPosts, readSiteContent } from "@/lib/content";
+import { publishedBlogPosts, readBlogPosts, readSiteContent } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 import { breadcrumbListJsonLd, faqPageJsonLd, webPageJsonLd } from "@/lib/seo";
 import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
@@ -47,9 +47,10 @@ export default async function ServiceDetailPage({
   if (!page) notFound();
 
   const [siteUrl, allPosts] = await Promise.all([getSiteUrl(), readBlogPosts()]);
+  const visiblePosts = publishedBlogPosts(allPosts);
 
   const relatedPosts = (page.relatedBlogSlugs ?? [])
-    .map((s) => allPosts.find((p) => p.slug === s))
+    .map((s) => visiblePosts.find((p) => p.slug === s))
     .filter((p): p is NonNullable<typeof p> => p != null);
 
   const faqLd = faqPageJsonLd(page.faqs);
@@ -72,88 +73,154 @@ export default async function ServiceDetailPage({
       <JsonLd data={webLd} />
       <MarketingHeader />
       <main>
-        <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
-          <Link
-            href="/services"
-            className="text-sm text-muted-foreground hover:text-primary"
-          >
-            ← All services
-          </Link>
-          <header className="mt-6">
-            <h1 className="font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">{page.h1}</h1>
-            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">{page.intro}</p>
-          </header>
+        {/* Hero band — dark */}
+        <section className="hero-band">
+          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 pt-32 pb-16 sm:px-6 sm:pt-36 sm:pb-20 lg:px-8 lg:pt-40 lg:pb-[80px]">
+            <Link
+              href="/services"
+              className="mono-button inline-flex items-center gap-1 text-white/65 transition-colors hover:text-white"
+            >
+              ← ALL SERVICES
+            </Link>
+            <p className="mono-eyebrow mt-8 text-white/55">
+              SERVICE · {page.slug.replace(/-/g, " ").toUpperCase()}
+            </p>
+            <h1 className="display-xxl mt-5 max-w-[20ch] text-white">{page.h1}</h1>
+            <p className="mt-6 max-w-2xl text-[17px] leading-[1.5] text-white/70">
+              {page.intro}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href="/contact" className="btn-base btn-white">
+                Book a consultation
+              </Link>
+              <Link href="/case-studies" className="btn-base btn-ghost-on-dark">
+                See case studies
+              </Link>
+            </div>
+          </div>
+        </section>
 
-          {page.sections.map((section) => (
-            <section key={section.heading} className="mt-12">
-              <h2 className="font-display text-xl font-semibold text-foreground sm:text-2xl">{section.heading}</h2>
-              <div
-                className="prose prose-invert mt-4 max-w-none [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_strong]:text-foreground/95"
-                dangerouslySetInnerHTML={{ __html: section.body }}
-              />
-            </section>
-          ))}
+        {/* Editorial body */}
+        <section className="band-light border-t border-hairline">
+          <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+            <article className="grid gap-12 lg:grid-cols-12">
+              <aside className="lg:col-span-4">
+                <p className="mono-eyebrow text-muted-foreground">SECTION INDEX</p>
+                <ol className="mt-4 space-y-3 text-[14px] text-muted-foreground">
+                  {page.sections.map((s, i) => (
+                    <li key={s.heading} className="flex gap-3">
+                      <span className="mono-label text-foreground/70">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span>{s.heading}</span>
+                    </li>
+                  ))}
+                </ol>
+              </aside>
 
-          <section className="mt-16 border-t border-border/40 pt-12">
-            <h2 className="font-display text-xl font-semibold text-foreground sm:text-2xl">
-              Frequently asked questions
-            </h2>
-            <ul className="mt-6 space-y-8">
-              {page.faqs.map((f) => (
-                <li key={f.question}>
-                  <h3 className="text-base font-semibold text-foreground">{f.question}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{f.answer}</p>
-                </li>
-              ))}
-            </ul>
-          </section>
+              <div className="lg:col-span-8 lg:max-w-[680px]">
+                {page.sections.map((section, i) => (
+                  <section
+                    key={section.heading}
+                    className={i === 0 ? "" : "mt-12 border-t border-hairline pt-12"}
+                  >
+                    <p className="mono-eyebrow text-muted-foreground">
+                      {String(i + 1).padStart(2, "0")} · SECTION
+                    </p>
+                    <h2 className="display-lg mt-4 text-foreground">{section.heading}</h2>
+                    <div
+                      className="blog-article mt-5 max-w-none"
+                      dangerouslySetInnerHTML={{ __html: section.body }}
+                    />
+                  </section>
+                ))}
+              </div>
+            </article>
+          </div>
+        </section>
 
-          {relatedPosts.length > 0 && (
-            <section className="mt-14 border-t border-border/40 pt-10">
-              <h2 className="font-display text-lg font-semibold text-foreground">Related reading</h2>
-              <ul className="mt-4 space-y-3">
+        {/* FAQ */}
+        <section className="band-light border-t border-hairline">
+          <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+            <div className="grid gap-10 lg:grid-cols-12">
+              <div className="lg:col-span-4">
+                <p className="mono-eyebrow text-muted-foreground">FAQ</p>
+                <h2 className="display-xl mt-4 text-foreground">
+                  Questions buyers ask before kickoff.
+                </h2>
+              </div>
+              <ul className="space-y-8 lg:col-span-8 lg:max-w-[680px]">
+                {page.faqs.map((f) => (
+                  <li key={f.question} className="border-t border-hairline pt-6 first:border-t-0 first:pt-0">
+                    <h3 className="display-sm text-foreground">{f.question}</h3>
+                    <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+                      {f.answer}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {relatedPosts.length > 0 && (
+          <section className="band-light border-t border-hairline">
+            <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+              <p className="mono-eyebrow text-muted-foreground">RELATED READING</p>
+              <h2 className="display-md mt-4 text-foreground">
+                Long-form essays on the same problem space.
+              </h2>
+              <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedPosts.map((post) =>
                   post ? (
                     <li key={post.slug}>
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="text-sm font-medium text-primary hover:underline"
-                      >
-                        {post.title}
+                      <Link href={`/blog/${post.slug}`} className="card-flat card-hover group flex h-full flex-col">
+                        <p className="mono-eyebrow text-muted-foreground">ARTICLE</p>
+                        <h3 className="display-sm mt-4 text-foreground">{post.title}</h3>
+                        <p className="mt-3 flex-1 text-[14px] leading-relaxed text-muted-foreground">
+                          {post.description}
+                        </p>
+                        <span className="mono-button mt-5 inline-flex items-center gap-1 border-t border-hairline pt-4 text-foreground transition-transform group-hover:translate-x-0.5">
+                          READ →
+                        </span>
                       </Link>
-                      <p className="mt-1 text-xs text-muted-foreground">{post.description}</p>
                     </li>
-                  ) : null
+                  ) : null,
                 )}
               </ul>
-            </section>
-          )}
+            </div>
+          </section>
+        )}
 
-          <SupportingProseSection
-            id="service-next-step"
-            className="mt-14"
-            heading={`Next steps for ${page.title}`}
-            paragraphs={[
-              `The sections above summarise how Torq Studio approaches ${page.title.toLowerCase()} engagements: scope, delivery habits, and common questions from clients. Every organisation has different compliance, team capacity, and timeline pressure—we use discovery to align on those before locking a long-term commitment.`,
-              "Browse related reading from the blog when you want deeper essays on estimation, outsourcing security, or launch strategy. When you are ready to talk specifics, the consultation link below is the fastest path to a senior engineer who can respond with honest fit and sequencing.",
-            ]}
-          />
+        <SupportingProseSection
+          id="service-next-step"
+          eyebrow="NEXT STEPS"
+          heading={`Where ${page.title.toLowerCase()} engagements start.`}
+          paragraphs={[
+            `The sections above summarise how Torq Studio approaches ${page.title.toLowerCase()} engagements: scope, delivery habits, and common questions from clients. Every organisation has different compliance, team capacity, and timeline pressure — we use discovery to align on those before locking a long-term commitment.`,
+            "Browse related reading from the blog when you want deeper essays on estimation, outsourcing security, or launch strategy. When you are ready to talk specifics, the consultation link below is the fastest path to a senior engineer who can respond with honest fit and sequencing.",
+          ]}
+        />
 
-          <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <Link
-              href="/contact"
-              className="inline-flex justify-center rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
-            >
-              Book a free consultation
-            </Link>
-            <Link
-              href="/case-studies"
-              className="text-center text-sm text-muted-foreground hover:text-primary sm:text-right"
-            >
-              See case studies →
-            </Link>
+        {/* Closing CTA — dark band */}
+        <section className="hero-band border-t border-[var(--brand-hairline-on-dark)]">
+          <div className="relative z-10 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:py-[80px]">
+            <div className="lg:col-span-7">
+              <p className="mono-eyebrow text-white/55">START THE CONVERSATION</p>
+              <h2 className="display-xl mt-4 text-white">
+                Ready to scope a {page.title.toLowerCase()} engagement?
+              </h2>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
+              <Link href="/contact" className="btn-base btn-white">
+                Book a free consultation
+              </Link>
+              <Link href="/case-studies" className="btn-base btn-ghost-on-dark">
+                See case studies →
+              </Link>
+            </div>
           </div>
-        </article>
+        </section>
       </main>
       <Footer />
     </div>

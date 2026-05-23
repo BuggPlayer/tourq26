@@ -3,13 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { SiteContent } from "@/lib/content";
+import { SerpPreview } from "@/components/admin/SerpPreview";
 
 function CharHint({ value, softMax, label }: { value: string; softMax: number; label: string }) {
   const n = value.length;
   const over = n > softMax;
   return (
-    <span className={`text-xs tabular-nums ${over ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"}`}>
-      {label}: {n} / ~{softMax}
+    <span
+      className={`mono-label tabular-nums ${
+        over ? "text-[color:var(--app-destructive)]" : "text-muted-foreground"
+      }`}
+    >
+      {label.toUpperCase()}: {n} / ~{softMax}
     </span>
   );
 }
@@ -46,7 +51,14 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
 
   return (
     <form onSubmit={(e) => { e.preventDefault(); void save(); }} className="mt-8 max-w-2xl space-y-10">
-      <section className="space-y-4 rounded-xl border border-border/60 bg-muted/20 p-5">
+      <SerpPreview
+        siteUrl={data.siteUrl}
+        slug=""
+        title={data.defaultTitle}
+        description={data.defaultDescription}
+      />
+
+      <section className="card-flat space-y-4">
         <h2 className="font-display text-base font-semibold text-foreground">Site identity & URL</h2>
         <p className="text-sm text-muted-foreground">
           Canonical base URL and brand name used in metadata, JSON-LD, and templates.
@@ -74,8 +86,8 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
         </div>
       </section>
 
-      <section className="space-y-4 rounded-xl border border-border/60 bg-muted/20 p-5">
-        <h2 className="font-display text-base font-semibold text-foreground">Default page meta (home & fallbacks)</h2>
+      <section className="card-flat space-y-4">
+        <h2 className="display-sm text-foreground">Default page meta (home & fallbacks)</h2>
         <p className="text-sm text-muted-foreground">
           Used by the root layout for the homepage and as site-wide defaults. Aim for ~50–60 characters in the title and
           ~140–160 in the description for search snippets.
@@ -122,8 +134,8 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
         </div>
       </section>
 
-      <section className="space-y-4 rounded-xl border border-border/60 bg-muted/20 p-5">
-        <h2 className="font-display text-base font-semibold text-foreground">Open Graph (Facebook, LinkedIn, etc.)</h2>
+      <section className="card-flat space-y-4">
+        <h2 className="display-sm text-foreground">Open Graph (Facebook, LinkedIn, etc.)</h2>
         <p className="text-sm text-muted-foreground">Shown when links are shared; can match defaults or be customized.</p>
         <div>
           <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -151,8 +163,8 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
         </div>
       </section>
 
-      <section className="space-y-4 rounded-xl border border-border/60 bg-muted/20 p-5">
-        <h2 className="font-display text-base font-semibold text-foreground">X (Twitter) Card</h2>
+      <section className="card-flat space-y-4">
+        <h2 className="display-sm text-foreground">X (Twitter) Card</h2>
         <p className="text-sm text-muted-foreground">
           Twitter/X uses these when set; they default in code from site content for the root layout.
         </p>
@@ -194,8 +206,8 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
         </div>
       </section>
 
-      <section className="space-y-4 rounded-xl border border-border/60 bg-muted/20 p-5">
-        <h2 className="font-display text-base font-semibold text-foreground">Keywords & social URLs</h2>
+      <section className="card-flat space-y-4">
+        <h2 className="display-sm text-foreground">Keywords & social URLs</h2>
         <div>
           <label className="block text-sm font-medium text-foreground/90">Keywords (one per line or comma-separated)</label>
           <textarea
@@ -238,11 +250,7 @@ export function SiteForm({ initialData }: { initialData: SiteContent }) {
 
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
       {success ? <p className="text-sm text-success">Saved. Metadata will update on the next page load.</p> : null}
-      <button
-        type="submit"
-        disabled={saving}
-        className="rounded-lg bg-primary px-6 py-2.5 font-medium text-primary-foreground hover:bg-primary-hover disabled:opacity-50"
-      >
+      <button type="submit" disabled={saving} className="btn-base btn-primary">
         {saving ? "Saving…" : "Save site & SEO"}
       </button>
     </form>

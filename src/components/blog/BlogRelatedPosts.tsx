@@ -7,43 +7,56 @@ type Props = {
   title?: string;
 };
 
-export function BlogRelatedPosts({
-  posts,
-  title = "Keep reading",
-}: Props) {
+/**
+ * Related posts (DESIGN.md → article-card grid).
+ * Sits below the long-form article body; flat hairline cards with mono
+ * eyebrows and a uniform "READ →" affordance.
+ */
+export function BlogRelatedPosts({ posts, title = "Keep reading" }: Props) {
   if (posts.length === 0) return null;
 
   return (
-    <section className="mt-16 border-t border-border/60 pt-12" aria-labelledby="related-posts-heading">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <h2
-          id="related-posts-heading"
-          className="font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl"
-        >
-          {title}
-        </h2>
+    <section
+      className="mt-16 border-t border-hairline pt-12"
+      aria-labelledby="related-posts-heading"
+    >
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="mono-eyebrow text-muted-foreground">RELATED ARTICLES</p>
+          <h2
+            id="related-posts-heading"
+            className="display-md mt-3 text-foreground"
+          >
+            {title}
+          </h2>
+        </div>
         <Link
           href="/blog"
-          className="text-sm font-medium text-primary hover:text-primary-hover hover:underline underline-offset-4"
+          className="mono-button text-foreground hover:underline"
         >
-          View all articles
+          VIEW ALL ARTICLES →
         </Link>
       </div>
-      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <li key={post.slug}>
             <Link
               href={`/blog/${post.slug}`}
-              className="group flex h-full flex-col rounded-xl border border-border/50 bg-surface/40 p-5 transition-colors hover:border-primary/30 hover:bg-surface/70"
+              className="card-flat card-hover group flex h-full flex-col"
             >
-              <time className="text-xs font-medium uppercase tracking-wide text-muted-foreground" dateTime={post.date}>
-                {formatBlogDate(post.date)}
+              <time
+                className="mono-label text-muted-foreground"
+                dateTime={post.date}
+              >
+                {formatBlogDate(post.date).toUpperCase()}
               </time>
-              <p className="mt-2 font-display text-base font-semibold leading-snug text-foreground group-hover:text-primary">
-                {post.title}
+              <p className="display-sm mt-4 text-foreground">{post.title}</p>
+              <p className="mt-3 line-clamp-3 flex-1 text-[14px] leading-relaxed text-muted-foreground">
+                {post.description}
               </p>
-              <p className="mt-2 line-clamp-2 flex-1 text-sm text-muted-foreground">{post.description}</p>
-              <span className="mt-4 text-sm font-medium text-primary">Read →</span>
+              <span className="mono-button mt-5 inline-flex items-center gap-1 border-t border-hairline pt-4 text-foreground transition-transform group-hover:translate-x-0.5">
+                READ →
+              </span>
             </Link>
           </li>
         ))}

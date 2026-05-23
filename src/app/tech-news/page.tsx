@@ -96,99 +96,134 @@ export default async function TechNewsPage() {
       <JsonLd data={collectionLd} />
       <MarketingHeader />
       <main>
-        <section className="gradient-mesh relative border-b border-border/50 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-medium uppercase tracking-widest text-primary">
-              Technology briefing
-            </p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-foreground sm:text-5xl">
-              Tech news
-            </h1>
-            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-              Signal over noise: what matters for builders, product teams, and leaders shipping software. Full articles
-              open on dedicated URLs for sharing and SEO.
-            </p>
-          </div>
-        </section>
-
-        <section
-          aria-labelledby="featured-heading"
-          className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8"
-        >
-          <h2 id="featured-heading" className="sr-only">
-            Featured story
-          </h2>
-          <Link
-            href={`/tech-news/${featured.slug}`}
-            className="card-hover block overflow-hidden rounded-2xl border border-border/60 bg-surface shadow-[0_0_0_1px_rgba(255,255,255,0.03)] transition-colors hover:border-primary/30"
-          >
-            <div className="grid gap-0 lg:grid-cols-5">
-              <div className="relative min-h-[220px] bg-gradient-to-br from-primary/30 via-surface to-background lg:col-span-2">
-                <div className="absolute inset-0 flex items-center justify-center p-8">
-                  <span className="font-display text-6xl font-bold text-foreground/10">01</span>
-                </div>
-              </div>
-              <div className="p-8 lg:col-span-3">
-                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                  <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-primary">
-                    {featured.category}
-                  </span>
-                  <time dateTime={featured.datePublished}>{formatDate(featured.datePublished)}</time>
-                  <span aria-hidden>·</span>
-                  <span>{featured.readingTimeMinutes} min read</span>
-                </div>
-                <h3 className="mt-4 font-display text-2xl font-bold leading-snug text-foreground sm:text-3xl">
-                  {featured.title}
-                </h3>
-                <p className="mt-2 text-primary/90 font-medium">{featured.dek}</p>
-                <p className="mt-4 text-muted-foreground leading-relaxed">{featured.excerpt}</p>
-                <span className="mt-4 inline-block text-sm font-medium text-primary">
-                  Read full article →
-                </span>
-              </div>
+        {/* Hero band — dark */}
+        <section className="hero-band">
+          <div className="relative z-10 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-10 px-4 pt-32 pb-20 sm:px-6 sm:pt-36 sm:pb-24 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:pt-40 lg:pb-[80px]">
+            <div className="lg:col-span-8">
+              <p className="mono-eyebrow text-white/55">TECHNOLOGY BRIEFING</p>
+              <h1 className="display-xxl mt-5 text-white">Tech news.</h1>
+              <p className="mt-6 max-w-2xl text-[17px] leading-[1.5] text-white/70">
+                Signal over noise: what matters for builders, product teams, and leaders
+                shipping software. Full articles open on dedicated URLs for sharing
+                and SEO.
+              </p>
             </div>
-          </Link>
-        </section>
-
-        <section
-          aria-labelledby="latest-heading"
-          className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 lg:px-8"
-        >
-          <div className="mb-10 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 id="latest-heading" className="font-display text-2xl font-bold text-foreground sm:text-3xl">
-                Latest
-              </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Each headline links to a full article page with canonical URL and structured data.
+            <div className="flex flex-col items-start justify-end gap-3 lg:col-span-4 lg:items-end">
+              <p className="mono-label text-white/55">
+                UPDATED REGULARLY · OPEN ACCESS
               </p>
             </div>
           </div>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.map((item) => (
-              <li key={item.slug}>
-                <Link
-                  href={`/tech-news/${item.slug}`}
-                  className="card-hover flex h-full flex-col rounded-2xl border border-border/50 bg-surface p-6 transition-colors hover:border-primary/30"
-                >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    <span className="font-semibold text-primary">{item.category}</span>
-                    <span aria-hidden>·</span>
-                    <time dateTime={item.datePublished}>{formatDate(item.datePublished)}</time>
-                  </div>
-                  <h3 className="mt-3 font-display text-lg font-semibold leading-snug text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-primary/90">{item.dek}</p>
-                  <p className="mt-3 flex-1 text-sm text-muted-foreground leading-relaxed">
-                    {item.excerpt}
-                  </p>
-                  <p className="mt-4 text-xs text-muted-foreground">{item.readingTimeMinutes} min read</p>
-                  <span className="mt-3 text-sm font-medium text-primary">Read article →</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        </section>
+
+        {/* Featured */}
+        <section
+          aria-labelledby="featured-heading"
+          className="band-light border-t border-hairline"
+        >
+          <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+            <p className="mono-eyebrow text-muted-foreground">FEATURED</p>
+            <h2 id="featured-heading" className="sr-only">
+              Featured story
+            </h2>
+            <Link
+              href={`/tech-news/${featured.slug}`}
+              className="card-flat card-hover group mt-4 grid gap-0 overflow-hidden p-0 lg:grid-cols-5"
+            >
+              <div className="relative min-h-[220px] border-b border-hairline lg:col-span-2 lg:border-b-0 lg:border-r">
+                <div className="brand-ribbon absolute inset-0 rounded-none">
+                  <div className="ribbon-inner" aria-hidden />
+                </div>
+              </div>
+              <div className="flex flex-col p-8 lg:col-span-3 lg:p-10">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="mono-eyebrow inline-flex bg-foreground/95 px-2 py-1.5 text-background">
+                    {featured.category.toUpperCase()}
+                  </span>
+                  <time dateTime={featured.datePublished} className="mono-label text-muted-foreground">
+                    {formatDate(featured.datePublished).toUpperCase()}
+                  </time>
+                  <span className="mono-label text-muted-foreground/60" aria-hidden>
+                    ·
+                  </span>
+                  <span className="mono-label text-muted-foreground">
+                    {featured.readingTimeMinutes} MIN READ
+                  </span>
+                </div>
+                <h3 className="display-lg mt-5 text-foreground">{featured.title}</h3>
+                <p className="mt-3 text-[16px] leading-[1.5] text-foreground/85">
+                  {featured.dek}
+                </p>
+                <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+                  {featured.excerpt}
+                </p>
+                <span className="mono-button mt-6 inline-flex items-center gap-1 text-foreground transition-transform group-hover:translate-x-0.5">
+                  READ FULL ARTICLE →
+                </span>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* Latest */}
+        <section
+          aria-labelledby="latest-heading"
+          className="band-light border-t border-hairline"
+        >
+          <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+            <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="mono-eyebrow text-muted-foreground">LATEST</p>
+                <h2 id="latest-heading" className="display-md mt-4 text-foreground">
+                  Briefings, in order.
+                </h2>
+                <p className="mt-2 text-[14px] text-muted-foreground">
+                  Each headline links to a full article page with canonical URL and
+                  structured data.
+                </p>
+              </div>
+            </div>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {rest.map((item) => (
+                <li key={item.slug}>
+                  <Link
+                    href={`/tech-news/${item.slug}`}
+                    className="card-flat card-hover group flex h-full flex-col"
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="mono-eyebrow text-foreground">
+                        {item.category.toUpperCase()}
+                      </span>
+                      <span className="mono-label text-muted-foreground/60" aria-hidden>
+                        ·
+                      </span>
+                      <time
+                        dateTime={item.datePublished}
+                        className="mono-label text-muted-foreground"
+                      >
+                        {formatDate(item.datePublished).toUpperCase()}
+                      </time>
+                    </div>
+                    <h3 className="display-md mt-5 text-foreground">{item.title}</h3>
+                    <p className="mt-3 text-[15px] leading-[1.45] text-foreground/85">
+                      {item.dek}
+                    </p>
+                    <p className="mt-3 flex-1 text-[14px] leading-relaxed text-muted-foreground">
+                      {item.excerpt}
+                    </p>
+                    <div className="mt-5 flex items-center justify-between border-t border-hairline pt-4">
+                      <span className="mono-label text-muted-foreground">
+                        {item.readingTimeMinutes} MIN READ
+                      </span>
+                      <span className="mono-button text-foreground transition-transform group-hover:translate-x-0.5">
+                        READ →
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
       </main>
       <Footer />

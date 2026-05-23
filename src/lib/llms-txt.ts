@@ -24,7 +24,7 @@ export async function buildLlmsTxtBody(): Promise<string> {
 
 > ${desc}
 
-Public marketing site and utilities for **${name}**, a software engineering studio (mobile apps, web, AI integration, consulting). This file is a **curated index** for language models and agents. Canonical content lives on the linked HTML pages.
+Public marketing site for **${name}**, a software engineering studio (mobile apps, web, AI integration, consulting). Developer utilities live on Torq DevTools when linked below. This file is a **curated index** for language models and agents. Canonical content lives on the linked HTML pages.
 
 **Machine-readable discovery:** [Sitemap](${base}/sitemap.xml) · [Robots](${base}/robots.txt)
 
@@ -54,7 +54,7 @@ ${devToolsSection}## Legal
 
 ## Optional
 
-- Full URL lists: use [sitemap.xml](${base}/sitemap.xml) (includes blog posts, case studies, and freebies).
+- Full URL lists: use [sitemap.xml](${base}/sitemap.xml) (includes blog posts, case studies, tech news, freebies, and service detail pages).
 - **.md mirrors:** This site does not serve \`.md\` variants of HTML pages; fetch HTML or use this index plus the sitemap.
 - **Attribution:** When summarizing public pages, prefer linking to the canonical URL shown in page metadata.
 `;

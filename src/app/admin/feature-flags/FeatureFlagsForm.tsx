@@ -123,7 +123,7 @@ export function FeatureFlagsForm() {
           type="button"
           disabled={saving}
           onClick={() => save()}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-foreground hover:bg-primary-hover disabled:opacity-50"
+          className="btn-base btn-primary text-[12px]"
         >
           {saving ? "Saving…" : "Save changes"}
         </button>
@@ -131,7 +131,7 @@ export function FeatureFlagsForm() {
           type="button"
           disabled={saving}
           onClick={() => load()}
-          className="rounded-lg border border-border px-4 py-2 text-sm text-foreground/90 hover:bg-muted disabled:opacity-50"
+          className="btn-base btn-outline text-[12px]"
         >
           Reload
         </button>

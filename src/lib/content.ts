@@ -2,18 +2,42 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { FEATURE_FLAGS_KV_KEY } from "@/lib/feature-flags-constants";
 
+export type BlogStatus = "draft" | "published";
+
 export type BlogPost = {
   slug: string;
   title: string;
   /** Shorter `<title>` / social title when `title` is long for on-page H1 */
   seoTitle?: string;
+  /** Meta description (also used as default excerpt + social snippet) */
   description: string;
+  /** Optional short excerpt for cards / RSS when description is too SEO-flavoured */
+  excerpt?: string;
   date: string;
+  /** Auto-stamped on every save (ISO). Powers `dateModified` JSON-LD. */
+  dateUpdated?: string;
   readTime: string;
   body: string;
   /** Optional author display name for E-E-A-T / Article schema */
   authorName?: string;
+  /** Draft posts are hidden from public listing, JSON-LD, and sitemap. */
+  status?: BlogStatus;
+  /** Public cover image URL (used as OG image + card visual when set). */
+  coverImage?: string;
+  /** Topic tags — also serialised into `keywords` + `articleSection`. */
+  tags?: string[];
+  /** Primary keyword used for content-score signals (not rendered). */
+  focusKeyword?: string;
+  /** Auto-computed word count of the sanitized body. */
+  wordCount?: number;
 };
+
+/** Posts visible to the public — filters drafts and sorts newest first. */
+export function publishedBlogPosts(posts: BlogPost[]): BlogPost[] {
+  return [...posts]
+    .filter((p) => (p.status ?? "published") === "published")
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+}
 
 export type Testimonial = {
   id: string;

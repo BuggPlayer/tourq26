@@ -90,87 +90,134 @@ export default async function CaseStudyDetailPage({
       <JsonLd data={breadcrumbLd} />
       <MarketingHeader />
       <main>
-        <article className="mx-auto max-w-3xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
-          <Link
-            href="/case-studies"
-            className="text-sm text-muted-foreground hover:text-primary"
-          >
-            ← All case studies
-          </Link>
-          <div className="relative mt-6 overflow-hidden rounded-2xl border border-border/50 bg-surface ring-1 ring-foreground/5">
-            <div className="relative aspect-[2/1] w-full min-h-[200px] sm:min-h-[260px]">
+        {/* Hero band — dark */}
+        <section className="hero-band">
+          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 pt-32 pb-16 sm:px-6 sm:pt-36 sm:pb-20 lg:px-8 lg:pt-40 lg:pb-[80px]">
+            <Link
+              href="/case-studies"
+              className="mono-button inline-flex items-center gap-1 text-white/65 transition-colors hover:text-white"
+            >
+              ← ALL CASE STUDIES
+            </Link>
+            <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-12">
+              <div className="lg:col-span-7">
+                <p className="mono-eyebrow text-white/55">
+                  {study.industry.toUpperCase()} · {study.client.toUpperCase()}
+                </p>
+                <h1 className="display-xxl mt-5 text-white">{study.title}</h1>
+                <p className="mt-6 max-w-2xl text-[17px] leading-[1.5] text-white/70">
+                  {study.description}
+                </p>
+                <div className="mt-6 flex flex-wrap items-center gap-4">
+                  <time className="mono-label text-white/65" dateTime={study.date}>
+                    {formatDate(study.date).toUpperCase()}
+                  </time>
+                  <span className="mono-label text-white/45" aria-hidden>·</span>
+                  <span className="mono-label text-white/65">
+                    {study.readTime.toUpperCase()}
+                  </span>
+                </div>
+              </div>
+              <aside className="card-flat-on-dark flex flex-col gap-4 self-start lg:col-span-5">
+                <div>
+                  <p className="mono-eyebrow text-white/55">CHALLENGE</p>
+                  <p className="mt-2 text-[15px] leading-[1.55] text-white/80">
+                    {study.challenge}
+                  </p>
+                </div>
+                <div className="border-t border-white/10 pt-4">
+                  <p className="mono-eyebrow text-white/55">OUTCOME</p>
+                  <p className="mt-2 text-[15px] leading-[1.55] text-white">
+                    {study.outcome}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2 border-t border-white/10 pt-4">
+                  {study.services.map((s) => (
+                    <span
+                      key={s}
+                      className="mono-label rounded-[var(--radius-xs)] border border-white/15 px-2 py-1 text-white/75"
+                    >
+                      {s.toUpperCase()}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between border-t border-white/10 pt-4">
+                  <span className="stat-number text-[28px] leading-none text-white">
+                    {study.metric}
+                  </span>
+                  <span className="mono-label text-white/55">
+                    {study.metricLabel.toUpperCase()}
+                  </span>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* Cover image */}
+        <section className="band-light border-t border-hairline">
+          <div className="mx-auto w-full max-w-[1280px] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+            <figure className="relative aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-sm)] border border-hairline">
               <Image
                 src={study.coverImage}
                 alt={study.coverAlt}
                 fill
                 priority
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 720px"
+                sizes="(max-width: 1280px) 100vw, 1280px"
               />
-              <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"
-                aria-hidden
+            </figure>
+          </div>
+        </section>
+
+        {/* Body */}
+        <section className="band-light border-t border-hairline">
+          <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+            <div className="grid gap-12 lg:grid-cols-12">
+              <aside className="lg:col-span-4">
+                <p className="mono-eyebrow text-muted-foreground">CASE STUDY</p>
+                <h2 className="display-sm mt-3 text-foreground">{study.title}</h2>
+                <p className="mt-4 text-[14px] text-muted-foreground">
+                  Filed under {study.industry.toLowerCase()} · {study.readTime}.
+                </p>
+              </aside>
+              <article
+                className="blog-article max-w-none lg:col-span-8 lg:max-w-[680px]"
+                dangerouslySetInnerHTML={{ __html: study.body }}
               />
             </div>
           </div>
-          <header className="mt-8">
-            <p className="text-xs font-medium uppercase tracking-wider text-primary">
-              {study.industry} · {study.client}
-            </p>
-            <time className="mt-2 block text-sm text-muted-foreground" dateTime={study.date}>
-              {formatDate(study.date)} · {study.readTime}
-            </time>
-            <h1 className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
-              {study.title}
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">{study.description}</p>
-            <div className="mt-6 rounded-xl border border-border/40 bg-surface p-5">
-              <p className="text-sm font-semibold text-foreground">Challenge</p>
-              <p className="mt-1 text-sm text-muted-foreground">{study.challenge}</p>
-              <p className="mt-4 text-sm font-semibold text-primary">Outcome</p>
-              <p className="mt-1 text-sm text-foreground">{study.outcome}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {study.services.map((s) => (
-                  <span
-                    key={s}
-                    className="rounded-full bg-primary-muted px-3 py-1 text-xs font-medium text-primary"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
+        </section>
+
+        <SupportingProseSection
+          id="case-study-related-help"
+          eyebrow="PLANNING SOMETHING SIMILAR"
+          heading="Reuse the pattern — not the timeline."
+          paragraphs={[
+            `This overview reflects delivery patterns we use with teams in ${study.industry.toLowerCase()} and adjacent sectors — balancing speed, risk, and maintainability. Names and figures are adjusted where needed, but the engineering and collaboration lessons are representative of how we work.`,
+            "If you are comparing partners for mobile, web, AI, or API work, start with the relevant service page for scope models and FAQs, then use the contact form to share constraints. We will suggest a proportionate next step rather than a one-size-fits-all proposal.",
+          ]}
+        />
+
+        {/* Closing CTA — dark band */}
+        <section className="hero-band border-t border-[var(--brand-hairline-on-dark)]">
+          <div className="relative z-10 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:py-[80px]">
+            <div className="lg:col-span-7">
+              <p className="mono-eyebrow text-white/55">DISCUSS A SIMILAR PROJECT</p>
+              <h2 className="display-xl mt-4 text-white">
+                Take this pattern further with our team.
+              </h2>
             </div>
-          </header>
-          <div
-            className="prose prose-invert mt-10 max-w-none [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-10 [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-1 [&_strong]:text-foreground/95"
-            dangerouslySetInnerHTML={{ __html: study.body }}
-          />
-
-          <SupportingProseSection
-            id="case-study-related-help"
-            className="mt-12"
-            heading="Planning something similar?"
-            paragraphs={[
-              `This overview reflects delivery patterns we use with teams in ${study.industry.toLowerCase()} and adjacent sectors—balancing speed, risk, and maintainability. Names and figures are adjusted where needed, but the engineering and collaboration lessons are representative of how we work.`,
-              "If you are comparing partners for mobile, web, AI, or API work, start with the relevant service page for scope models and FAQs, then use the contact form to share constraints. We will suggest a proportionate next step rather than a one-size-fits-all proposal.",
-            ]}
-          />
-
-          <div className="mt-14 flex flex-col gap-4 border-t border-border/40 pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <Link
-              href="/contact"
-              className="inline-flex justify-center rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
-            >
-              Discuss a similar project
-            </Link>
-            <Link
-              href="/services"
-              className="text-center text-sm text-muted-foreground hover:text-primary sm:text-right"
-            >
-              Explore services →
-            </Link>
+            <div className="flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
+              <Link href="/contact" className="btn-base btn-white">
+                Talk to an engineer
+              </Link>
+              <Link href="/services" className="btn-base btn-ghost-on-dark">
+                Explore services →
+              </Link>
+            </div>
           </div>
-        </article>
+        </section>
       </main>
       <Footer />
     </div>

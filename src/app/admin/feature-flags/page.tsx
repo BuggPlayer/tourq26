@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/auth";
 import { FeatureFlagsForm } from "./FeatureFlagsForm";
+import { AdminPageHeader } from "../AdminPageHeader";
 
 export default async function AdminFeatureFlagsPage() {
   const ok = await isAdmin();
@@ -8,10 +9,14 @@ export default async function AdminFeatureFlagsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-foreground">Feature flags</h1>
-      <p className="mt-1 text-muted-foreground">
-        Control marketing sections and maintenance without redeploying (unless an env override is set).
-      </p>
+      <AdminPageHeader
+        crumbs={[
+          { label: "Admin", href: "/admin/dashboard" },
+          { label: "Feature flags" },
+        ]}
+        title="Feature flags"
+        description="Control marketing sections and maintenance without redeploying (unless an env override is set)."
+      />
       <div className="mt-8">
         <FeatureFlagsForm />
       </div>

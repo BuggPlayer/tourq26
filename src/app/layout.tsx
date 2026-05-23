@@ -1,34 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Outfit } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { readSiteContent } from "@/lib/content";
-import { ConsentAndAnalytics } from "@/components/consent/ConsentAndAnalytics";
-import { ConsentDefaultScript } from "@/components/consent/ConsentDefaultScript";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import { ThemeShell } from "@/components/theme/ThemeShell";
 import { isFeatureEnabled } from "@/lib/feature-flags";
-import { SITE_THEME_STORAGE_KEY } from "@/lib/theme-storage";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+// Display sans — closest open-source match to the brand's custom "The Future"
+// face (DESIGN.md → typography). Inter at 400/500 with negative tracking is
+// the canonical substitute.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+// Uppercase mono — substitute for PP Neue Montreal Mono.
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#07090e" },
-  ],
+  themeColor: "#ffffff",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -89,11 +88,6 @@ export default async function RootLayout({
   ]);
   const siteUrl = site.siteUrl.replace(/\/$/, "");
 
-  const showConsentAndTracking = Boolean(
-    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() ||
-      process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID?.trim(),
-  );
-
   const organizationJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -115,17 +109,8 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Before paint: match next-themes + defaultTheme=&quot;system&quot; to avoid wrong-theme flash */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var k=${JSON.stringify(SITE_THEME_STORAGE_KEY)};var t=localStorage.getItem(k);var d=document.documentElement;if(t==='light'||t==='dark'){d.classList.add(t);}else{if(window.matchMedia('(prefers-color-scheme: light)').matches)d.classList.add('light');else d.classList.add('dark');}}catch(e){}})();`,
-          }}
-        />
-        {showConsentAndTracking ? <ConsentDefaultScript /> : null}
-      </head>
-      <body className={`${dmSans.variable} ${outfit.variable} font-sans antialiased`}>
+    <html lang="en">
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -134,11 +119,8 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        <ThemeShell>
-          {children}
-          {showWhatsApp ? <FloatingWhatsApp /> : null}
-          {showConsentAndTracking ? <ConsentAndAnalytics /> : null}
-        </ThemeShell>
+        {children}
+        {showWhatsApp ? <FloatingWhatsApp /> : null}
       </body>
     </html>
   );

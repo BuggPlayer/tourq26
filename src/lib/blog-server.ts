@@ -1,0 +1,87 @@
+import type { BlogPost, BlogStatus } from "@/lib/content";
+
+const STATUSES = new Set<BlogStatus>(["draft", "published"]);
+
+/** Strip HTML to plain text and count words. */
+export function countWords(html: string | undefined): number {
+  if (!html) return 0;
+  const plain = String(html)
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[a-z]+;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!plain) return 0;
+  return plain.split(" ").filter(Boolean).length;
+}
+
+/** Words → "N min read" using a 220 wpm baseline. */
+export function readTimeFromWordCount(words: number): string {
+  const minutes = Math.max(1, Math.round(words / 220));
+  return `${minutes} min read`;
+}
+
+/** URL-safe slug. Preserves only `[a-z0-9-]`, collapses hyphens. */
+export function slugify(value: string): string {
+  return (value || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['"`]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+/** Sanitises the incoming JSON body to a strict `BlogPost` shape (server side). */
+export function normaliseBlogInput(
+  raw: Record<string, unknown>,
+  prev?: BlogPost,
+): Omit<BlogPost, "slug"> & { slug: string | undefined } {
+  const str = (v: unknown, fallback = ""): string =>
+    typeof v === "string" ? v : fallback;
+  const optStr = (v: unknown): string | undefined => {
+    if (typeof v !== "string") return undefined;
+    const t = v.trim();
+    return t.length > 0 ? t : undefined;
+  };
+  const tags = Array.isArray(raw.tags)
+    ? Array.from(
+        new Set(
+          (raw.tags as unknown[])
+            .filter((t): t is string => typeof t === "string")
+            .map((t) => t.trim())
+            .filter(Boolean),
+        ),
+      ).slice(0, 12)
+    : prev?.tags;
+  const statusRaw = typeof raw.status === "string" ? raw.status : prev?.status;
+  const status: BlogStatus = STATUSES.has(statusRaw as BlogStatus)
+    ? (statusRaw as BlogStatus)
+    : "published";
+
+  const body = str(raw.body, prev?.body ?? "");
+  const wordCount = countWords(body);
+  const readTime =
+    optStr(raw.readTime) ?? (wordCount > 0 ? readTimeFromWordCount(wordCount) : prev?.readTime ?? "5 min read");
+
+  return {
+    slug:
+      typeof raw.slug === "string" && raw.slug.trim()
+        ? slugify(raw.slug)
+        : prev?.slug,
+    title: str(raw.title, prev?.title ?? "Untitled"),
+    seoTitle: optStr(raw.seoTitle) ?? prev?.seoTitle,
+    description: str(raw.description, prev?.description ?? ""),
+    excerpt: optStr(raw.excerpt) ?? prev?.excerpt,
+    date: str(raw.date, prev?.date ?? new Date().toISOString().slice(0, 10)),
+    dateUpdated: new Date().toISOString(),
+    readTime,
+    body,
+    authorName: optStr(raw.authorName) ?? prev?.authorName,
+    status,
+    coverImage: optStr(raw.coverImage) ?? prev?.coverImage,
+    tags,
+    focusKeyword: optStr(raw.focusKeyword) ?? prev?.focusKeyword,
+    wordCount,
+  };
+}

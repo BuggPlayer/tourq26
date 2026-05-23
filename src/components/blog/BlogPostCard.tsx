@@ -8,51 +8,82 @@ type Props = {
   variant?: "featured" | "compact";
 };
 
+/**
+ * Blog post card (DESIGN.md → article-card).
+ * Two flavours: a featured 2-col hero card (cover/gradient ribbon side panel,
+ * editorial body) and a compact 1-col list card. Both share the same
+ * flat-cornered, hairline-bordered chrome.
+ */
 export function BlogPostCard({ post, variant = "compact" }: Props) {
+  const summary = post.excerpt?.trim() || post.description;
   const meta = (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-      <time dateTime={post.date}>{formatBlogDate(post.date)}</time>
-      <span className="text-muted-foreground/40" aria-hidden>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <time dateTime={post.date} className="mono-label text-muted-foreground">
+        {formatBlogDate(post.date).toUpperCase()}
+      </time>
+      <span className="mono-label text-muted-foreground/60" aria-hidden>
         ·
       </span>
-      <span>{post.readTime}</span>
+      <span className="mono-label text-muted-foreground">
+        {post.readTime.toUpperCase()}
+      </span>
     </div>
   );
+
+  const tagChips =
+    post.tags && post.tags.length > 0 ? (
+      <ul className="mt-4 flex flex-wrap gap-1.5">
+        {post.tags.slice(0, 3).map((t) => (
+          <li
+            key={t}
+            className="mono-label rounded-full bg-muted px-2 py-0.5 text-muted-foreground"
+          >
+            {t.toUpperCase()}
+          </li>
+        ))}
+      </ul>
+    ) : null;
 
   if (variant === "featured") {
     return (
       <article>
         <Link
           href={`/blog/${post.slug}`}
-          className="group relative flex flex-col overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-surface-elevated/90 via-surface/80 to-surface/40 shadow-[0_1px_0_0_rgb(255_255_255/0.04)_inset] transition-all duration-300 hover:border-primary/35 hover:shadow-[var(--shadow-card)] md:flex-row md:min-h-[280px]"
+          className="card-flat card-hover group flex flex-col overflow-hidden p-0 md:flex-row md:min-h-[280px]"
         >
           <div
-            className="relative min-h-[140px] shrink-0 border-b border-border/40 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent md:w-[38%] md:border-b-0 md:border-r md:border-border/40"
+            className="relative min-h-[160px] shrink-0 border-b border-hairline md:w-[38%] md:border-b-0 md:border-r"
             aria-hidden
           >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_30%_20%,var(--app-primary-muted),transparent)] opacity-90" />
-            <div className="absolute bottom-6 left-6 right-6 md:bottom-8 md:left-8">
-              <span className="inline-flex rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-                Latest
+            {post.coverImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={post.coverImage}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <div className="brand-ribbon absolute inset-0 rounded-none">
+                <div className="ribbon-inner" />
+              </div>
+            )}
+            <div className="absolute bottom-5 left-5 right-5 md:bottom-7 md:left-7">
+              <span className="mono-eyebrow inline-flex bg-white px-2 py-1.5 text-foreground">
+                FEATURED
               </span>
             </div>
           </div>
-          <div className="flex flex-1 flex-col justify-center p-8 md:p-10 lg:pl-12">
+          <div className="flex flex-1 flex-col justify-center p-8 md:p-10 lg:p-12">
             {meta}
-            <h2 className="mt-4 font-display text-2xl font-bold leading-[1.15] tracking-tight text-foreground transition-colors group-hover:text-primary md:text-3xl lg:text-[2rem]">
+            <h2 className="display-lg mt-4 text-foreground transition-opacity group-hover:opacity-80">
               {post.title}
             </h2>
-            <p className="mt-4 line-clamp-3 text-base leading-relaxed text-muted-foreground md:line-clamp-4 md:text-lg">
-              {post.description}
+            <p className="mt-4 line-clamp-3 text-[16px] leading-relaxed text-muted-foreground md:line-clamp-4">
+              {summary}
             </p>
-            <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-              Read article
-              <span
-                className="transition-transform duration-200 group-hover:translate-x-1"
-                aria-hidden
-              >
-                →
-              </span>
+            {tagChips}
+            <span className="mono-button mt-6 inline-flex items-center gap-2 text-foreground transition-transform group-hover:translate-x-1">
+              READ ARTICLE →
             </span>
           </div>
         </Link>
@@ -64,21 +95,29 @@ export function BlogPostCard({ post, variant = "compact" }: Props) {
     <article>
       <Link
         href={`/blog/${post.slug}`}
-        className="group flex h-full flex-col rounded-2xl border border-border/50 bg-surface/50 p-6 transition-all duration-200 hover:border-primary/25 hover:bg-surface-elevated/60 hover:shadow-md sm:p-7"
+        className="card-flat card-hover group flex h-full flex-col overflow-hidden p-0"
       >
-        {meta}
-        <h2 className="mt-3 font-display text-lg font-semibold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-xl">
-          {post.title}
-        </h2>
-        <p className="mt-2 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-          {post.description}
-        </p>
-        <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary/90 group-hover:text-primary">
-          Continue reading
-          <span className="transition-transform group-hover:translate-x-0.5" aria-hidden>
-            →
+        {post.coverImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={post.coverImage}
+            alt=""
+            className="aspect-[1200/630] w-full border-b border-hairline object-cover"
+          />
+        ) : null}
+        <div className="flex flex-1 flex-col p-6">
+          {meta}
+          <h2 className="display-md mt-4 text-foreground transition-opacity group-hover:opacity-80">
+            {post.title}
+          </h2>
+          <p className="mt-3 line-clamp-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">
+            {summary}
+          </p>
+          {tagChips}
+          <span className="mono-button mt-5 inline-flex items-center gap-1.5 border-t border-hairline pt-4 text-foreground transition-transform group-hover:translate-x-0.5">
+            CONTINUE READING →
           </span>
-        </span>
+        </div>
       </Link>
     </article>
   );

@@ -19,8 +19,15 @@ export function blogPostingJsonLd(params: {
   title: string;
   description: string;
   datePublished: string;
+  dateModified?: string;
   siteName: string;
   authorName?: string;
+  /** Public cover image URL (preferred) or path under siteUrl. */
+  image?: string;
+  /** Topic tags — serialised to `keywords` + `articleSection`. */
+  keywords?: string[];
+  /** Word count of the article body. */
+  wordCount?: number;
 }) {
   const url = `${params.siteUrl}/blog/${params.slug}`;
   const author =
@@ -28,22 +35,43 @@ export function blogPostingJsonLd(params: {
       ? { "@type": "Person" as const, name: params.authorName.trim() }
       : { "@type": "Organization" as const, name: params.siteName, url: params.siteUrl };
 
-  return {
+  const resolvedImage =
+    params.image && params.image.trim()
+      ? params.image.startsWith("http")
+        ? params.image
+        : `${params.siteUrl}${params.image.startsWith("/") ? "" : "/"}${params.image}`
+      : `${params.siteUrl}/blog/${params.slug}/opengraph-image`;
+
+  const ld: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: params.title,
     description: params.description,
     datePublished: params.datePublished,
-    dateModified: params.datePublished,
+    dateModified: params.dateModified ?? params.datePublished,
     author,
     publisher: {
       "@type": "Organization",
       name: params.siteName,
       url: params.siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${params.siteUrl}/opengraph-image`,
+      },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
+    image: resolvedImage,
+    inLanguage: "en-US",
   };
+  if (params.keywords && params.keywords.length > 0) {
+    ld.keywords = params.keywords.join(", ");
+    ld.articleSection = params.keywords[0];
+  }
+  if (typeof params.wordCount === "number" && params.wordCount > 0) {
+    ld.wordCount = params.wordCount;
+  }
+  return ld;
 }
 
 export function webPageJsonLd(params: {

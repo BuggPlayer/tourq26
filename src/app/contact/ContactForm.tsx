@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+/**
+ * Marketing contact form (DESIGN.md → text-input + button-primary).
+ * Flat, hairline-bordered inputs; primary black/white CTA at the bottom.
+ */
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -25,89 +29,127 @@ export default function ContactForm() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         setStatus("error");
-        setErrorMessage(typeof data.error === "string" ? data.error : "Something went wrong. Please try again or email hello@torqstudio.com.");
+        setErrorMessage(
+          typeof data.error === "string"
+            ? data.error
+            : "Something went wrong. Please try again or email hello@torqstudio.com.",
+        );
         return;
       }
       setStatus("sent");
       setFormData({ name: "", email: "", company: "", message: "" });
     } catch {
       setStatus("error");
-      setErrorMessage("Something went wrong. Please try again or email hello@torqstudio.com.");
+      setErrorMessage(
+        "Something went wrong. Please try again or email hello@torqstudio.com.",
+      );
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-foreground">
-          Name <span className="text-muted-foreground">*</span>
-        </label>
-        <input
+    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Field
           id="name"
-          type="text"
+          label="Name"
           required
           value={formData.name}
-          onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+          onChange={(v) => setFormData((p) => ({ ...p, name: v }))}
           placeholder="Your name"
         />
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-foreground">
-          Email <span className="text-muted-foreground">*</span>
-        </label>
-        <input
+        <Field
           id="email"
-          type="email"
+          label="Email"
           required
+          type="email"
           value={formData.email}
-          onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+          onChange={(v) => setFormData((p) => ({ ...p, email: v }))}
           placeholder="you@company.com"
         />
       </div>
+      <Field
+        id="company"
+        label="Company"
+        value={formData.company}
+        onChange={(v) => setFormData((p) => ({ ...p, company: v }))}
+        placeholder="Your company (optional)"
+      />
       <div>
-        <label htmlFor="company" className="block text-sm font-medium text-foreground">
-          Company
-        </label>
-        <input
-          id="company"
-          type="text"
-          value={formData.company}
-          onChange={(e) => setFormData((p) => ({ ...p, company: e.target.value }))}
-          className="mt-2 w-full rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-          placeholder="Your company (optional)"
-        />
-      </div>
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-foreground">
-          Message <span className="text-muted-foreground">*</span>
+        <label htmlFor="message" className="mono-label block text-muted-foreground">
+          MESSAGE <span className="text-foreground">*</span>
         </label>
         <textarea
           id="message"
           required
-          rows={5}
+          rows={6}
           value={formData.message}
           onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
-          className="mt-2 w-full resize-y rounded-xl border border-border/60 bg-surface px-4 py-3.5 text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-          placeholder="Tell us about your project, timeline, and what you need..."
+          className="text-input mt-2 min-h-[180px] resize-y"
+          placeholder="Tell us about your project, timeline, and what you need…"
         />
       </div>
       {status === "sent" && (
-        <p className="text-sm text-primary">
-          Thanks! We’ve received your message and will get back to you soon.
+        <p className="card-flat text-[15px] leading-[1.5] text-foreground">
+          Thanks — we&apos;ve received your message and will get back to you within 24
+          hours.
         </p>
       )}
       {status === "error" && (
-        <p className="text-sm text-destructive">{errorMessage}</p>
+        <p
+          className="text-[14px] text-[color:var(--app-destructive)]"
+          role="alert"
+        >
+          {errorMessage}
+        </p>
       )}
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        className="btn-primary w-full rounded-full bg-primary py-4 text-base font-semibold text-primary-foreground disabled:opacity-60 sm:w-auto sm:px-10"
-      >
-        {status === "sending" ? "Sending…" : "Send message"}
-      </button>
+      <div className="flex flex-wrap items-center gap-3 border-t border-hairline pt-6">
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="btn-base btn-primary"
+        >
+          {status === "sending" ? "Sending…" : "Send message"}
+        </button>
+        <span className="mono-label text-muted-foreground">
+          NO COMMITMENT · 24 HOUR REPLY
+        </span>
+      </div>
     </form>
+  );
+}
+
+function Field({
+  id,
+  label,
+  type = "text",
+  required = false,
+  value,
+  onChange,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="mono-label block text-muted-foreground">
+        {label.toUpperCase()}
+        {required ? <span className="ml-1 text-foreground">*</span> : null}
+      </label>
+      <input
+        id={id}
+        type={type}
+        required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="text-input mt-2"
+        placeholder={placeholder}
+      />
+    </div>
   );
 }

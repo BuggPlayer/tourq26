@@ -1,139 +1,127 @@
 import Image from "next/image";
 import Link from "next/link";
-import { sitePhotos } from "@/data/site-photos";
+
+/**
+ * Services section (DESIGN.md → article-card grid + data-table row treatment).
+ * Light band with a 4-up grid of flat hairline cards. Each row leads with a
+ * mono category label, then a display-md card title and a body summary —
+ * matching the brand's article-card and research-card chrome.
+ */
 
 const services: {
   slug: string;
   title: string;
   description: string;
   result: string;
+  category: string;
   icon: string;
 }[] = [
   {
     slug: "mobile-app-development",
-    title: "Mobile Apps",
-    description: "Native & cross-platform—iOS, Android, React Native. Built for performance and scale.",
+    title: "Mobile applications",
+    description:
+      "Native and cross-platform iOS / Android / React Native. Store submission, push, offline, analytics, release trains.",
     result: "Faster launch, lower cost",
+    category: "MOBILE",
     icon: "/images/icons/mobile.svg",
   },
   {
     slug: "web-development",
-    title: "Web & APIs",
-    description: "Fast, scalable sites and platforms. Landing pages to full-stack products.",
+    title: "Web platforms & APIs",
+    description:
+      "Marketing sites, customer portals, internal tools, partner APIs. Performance, accessibility, SEO where it matters.",
     result: "Convert and scale",
+    category: "WEB / API",
     icon: "/images/icons/web.svg",
   },
   {
     slug: "ai-solutions",
-    title: "AI Solutions",
-    description: "Automation, chatbots, data insights. Streamline operations and delight users.",
-    result: "Efficiency & better CX",
+    title: "Grounded AI workflows",
+    description:
+      "Retrieval, tool-use, evals, and human review — not chatbot demos. We add AI only where the workflow improves.",
+    result: "Workflow lift, measurable",
+    category: "AI",
     icon: "/images/icons/ai.svg",
   },
   {
     slug: "remote-it",
-    title: "Remote IT",
-    description: "Dedicated devs and teams that slot in. Scale capacity without hiring delays.",
+    title: "Embedded remote engineering",
+    description:
+      "Dedicated engineers and small squads that work inside your repos, rituals, and incident channels.",
     result: "Elastic capacity",
+    category: "REMOTE IT",
     icon: "/images/icons/team.svg",
   },
   {
     slug: "technical-consulting",
-    title: "Consulting",
-    description: "Architecture, code reviews, estimates, and leadership—directly from senior engineers.",
+    title: "Architecture & advisory",
+    description:
+      "Code reviews, estimates, vendor diligence, and architecture reviews — written outputs, not slideware.",
     result: "Clarity before code",
+    category: "CONSULTING",
     icon: "/images/icons/web.svg",
   },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="relative border-t border-border/40 bg-surface py-20 sm:py-24 lg:py-28 overflow-hidden">
-      <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-72 opacity-20 xl:opacity-25" aria-hidden>
-        <Image
-          src="/images/section-services.svg"
-          alt="Abstract illustration representing software services, APIs, and product delivery"
-          width={400}
-          height={280}
-          className="h-auto w-full"
-          unoptimized
-        />
-      </div>
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto">
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">
-            What we do
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
-            Services that deliver
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Based in Mumbai—React Native + Node, fixed-price MVPs, and consulting with India / EU / MENA overlap.
-          </p>
-          <Link
-            href="/services"
-            className="mt-4 inline-block text-sm font-semibold text-primary hover:underline"
-          >
-            Full service overviews & FAQs →
-          </Link>
-        </div>
-
-        <div className="relative mt-12 overflow-hidden rounded-2xl border border-border/50 bg-surface shadow-xl ring-1 ring-foreground/5 sm:mt-14">
-          <div className="relative aspect-[21/9] min-h-[160px] sm:min-h-[220px]">
-            <Image
-              src={sitePhotos.servicesBanner.src}
-              alt={sitePhotos.servicesBanner.alt}
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 1152px) 100vw, 1152px"
-            />
-            <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent"
-              aria-hidden
-            />
-            <p className="absolute bottom-4 left-4 right-4 max-w-md text-sm font-medium text-foreground drop-shadow-md sm:bottom-6 sm:left-8 sm:text-base">
-              From discovery to production—same senior engineers throughout.
-            </p>
+    <section id="services" className="band-light border-t border-hairline">
+      <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+        <header className="grid gap-6 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <p className="mono-eyebrow text-muted-foreground">THE TORQ STUDIO PLATFORM</p>
+            <h2 className="display-xl mt-4 text-foreground">
+              Services that ship — not roadmaps in PDF.
+            </h2>
           </div>
-        </div>
-
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 xl:grid-cols-5">
-          {services.map((service) => (
-            <div
-              key={service.title}
-              className="card-hover group flex flex-col rounded-2xl border border-border/40 bg-surface-elevated p-6"
+          <div className="flex flex-col justify-end gap-3 lg:col-span-5">
+            <p className="text-[16px] leading-[1.4] text-muted-foreground">
+              Senior engineers across mobile, web, APIs, and AI. Pick a discipline below
+              for delivery patterns, engagement shapes, and FAQs founders ask.
+            </p>
+            <Link
+              href="/services"
+              className="mono-button inline-flex items-center gap-1 text-foreground hover:underline"
             >
-              <span
-                className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/15 text-primary transition-transform duration-300 group-hover:scale-110"
-                aria-hidden
-              >
-                <Image
-                  src={service.icon}
-                  alt={`${service.title} icon`}
-                  width={28}
-                  height={28}
-                  className="opacity-90"
-                  unoptimized
-                />
-              </span>
-              <h3 className="mt-4 font-display text-lg font-semibold text-foreground">
-                {service.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground flex-1">
-                {service.description}
-              </p>
-              <p className="mt-4 border-t border-border/40 pt-4 text-xs font-semibold uppercase tracking-wider text-primary">
-                {service.result}
-              </p>
+              FULL SERVICE OVERVIEWS →
+            </Link>
+          </div>
+        </header>
+
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+          {services.map((service) => (
+            <li key={service.slug}>
               <Link
                 href={`/services/${service.slug}`}
-                className="mt-4 text-sm font-semibold text-foreground/90 hover:text-primary"
+                className="card-flat card-hover group flex h-full flex-col"
               >
-                Learn more →
+                <div className="flex items-center justify-between gap-3">
+                  <p className="mono-eyebrow text-muted-foreground">{service.category}</p>
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] border border-hairline bg-background">
+                    <Image
+                      src={service.icon}
+                      alt=""
+                      width={18}
+                      height={18}
+                      className="opacity-80"
+                      unoptimized
+                    />
+                  </span>
+                </div>
+                <h3 className="display-md mt-5 text-foreground">{service.title}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+                  {service.description}
+                </p>
+                <div className="mt-6 flex items-center justify-between border-t border-hairline pt-4">
+                  <span className="mono-label text-muted-foreground">{service.result}</span>
+                  <span className="mono-button text-foreground transition-transform group-hover:translate-x-0.5">
+                    LEARN MORE →
+                  </span>
+                </div>
               </Link>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

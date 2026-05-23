@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/auth";
 import { readTestimonials } from "@/lib/content";
 import { TestimonialsEditor } from "./TestimonialsEditor";
+import { AdminPageHeader } from "../AdminPageHeader";
 
 export default async function AdminTestimonialsPage() {
   const ok = await isAdmin();
@@ -11,8 +12,14 @@ export default async function AdminTestimonialsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-foreground">Testimonials</h1>
-      <p className="mt-1 text-muted-foreground">Edit testimonials shown on the homepage. Save all at once.</p>
+      <AdminPageHeader
+        crumbs={[
+          { label: "Admin", href: "/admin/dashboard" },
+          { label: "Testimonials" },
+        ]}
+        title="Testimonials"
+        description="Edit testimonials shown on the homepage. Save all at once."
+      />
       <TestimonialsEditor initialItems={items} />
     </div>
   );

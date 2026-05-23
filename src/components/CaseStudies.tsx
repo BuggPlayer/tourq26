@@ -2,77 +2,89 @@ import Image from "next/image";
 import Link from "next/link";
 import { caseStudies } from "@/data/case-studies";
 
+/**
+ * Case studies section (DESIGN.md → article-card).
+ * Light band hosting the brand's canonical article card: 16:9 image at top,
+ * mono eyebrow tag, display-md title, body summary, mono caption byline.
+ */
+
 export default function CaseStudies() {
   return (
     <section
       id="case-studies"
-      className="relative border-t border-border/40 bg-surface py-20 sm:py-24 lg:py-28"
+      className="band-light border-t border-hairline"
+      aria-labelledby="case-studies-heading"
     >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto">
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">
-            Proof in practice
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
-            Results we’ve delivered
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Real projects, real outcomes. Read the full write-ups on our case studies hub.
-          </p>
-          <Link
-            href="/case-studies"
-            className="mt-5 inline-block text-sm font-semibold text-primary hover:underline"
-          >
-            View all case studies →
-          </Link>
-        </div>
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {caseStudies.map((study) => (
-            <article
-              key={study.slug}
-              className="card-hover group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-surface-elevated"
+      <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+        <header className="grid gap-6 lg:grid-cols-12">
+          <div className="lg:col-span-8">
+            <p className="mono-eyebrow text-muted-foreground">PROOF IN PRACTICE</p>
+            <h2 id="case-studies-heading" className="display-xl mt-4 text-foreground">
+              Outcomes from real engagements.
+            </h2>
+          </div>
+          <div className="flex flex-col justify-end gap-3 lg:col-span-4">
+            <p className="text-[16px] leading-[1.5] text-muted-foreground">
+              Each write-up covers context, constraints, what we shipped, and what we
+              changed about the system after launch.
+            </p>
+            <Link
+              href="/case-studies"
+              className="mono-button inline-flex items-center gap-1 text-foreground hover:underline"
             >
-              <div className="relative h-44 overflow-hidden transition-transform duration-300 group-hover:scale-[1.02] sm:h-48">
-                <Image
-                  src={study.coverImage}
-                  alt={study.coverAlt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-elevated via-transparent to-transparent"
-                  aria-hidden
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-6 sm:p-7">
-                <p className="text-xs font-medium uppercase tracking-wider text-primary">
-                  {study.industry}
-                </p>
-                <h3 className="mt-2 font-display text-lg font-semibold text-foreground sm:text-xl">
-                  {study.title}
-                </h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{study.challenge}</p>
-                <p className="mt-4 text-sm font-medium text-foreground">
-                  <span className="text-primary">Result: </span>
-                  {study.outcome}
-                </p>
-                <div className="mt-5 flex items-center gap-2">
-                  <span className="stat-number rounded-full px-4 py-2 text-sm font-bold bg-primary-muted">
-                    {study.metric}
-                  </span>
-                  <span className="text-xs text-muted-foreground">{study.metricLabel}</span>
-                </div>
+              ALL CASE STUDIES →
+            </Link>
+          </div>
+        </header>
+
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+          {caseStudies.map((study) => (
+            <li key={study.slug}>
+              <article className="card-flat card-hover group flex h-full flex-col p-0 overflow-hidden">
                 <Link
                   href={`/case-studies/${study.slug}`}
-                  className="mt-6 text-sm font-semibold text-primary hover:underline"
+                  className="flex h-full flex-col"
                 >
-                  Read case study →
+                  <div className="relative aspect-[16/9] overflow-hidden border-b border-hairline">
+                    <Image
+                      src={study.coverImage}
+                      alt={study.coverAlt}
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-[1.02]"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col p-6 sm:p-7">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="mono-eyebrow text-muted-foreground">
+                        {study.industry.toUpperCase()}
+                      </p>
+                      <span className="mono-label text-muted-foreground">
+                        {study.metricLabel.toUpperCase()}
+                      </span>
+                    </div>
+                    <h3 className="display-md mt-5 text-foreground">{study.title}</h3>
+                    <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+                      {study.challenge}
+                    </p>
+                    <p className="mt-5 text-[15px] leading-relaxed text-foreground">
+                      <span className="mono-label text-muted-foreground">RESULT · </span>
+                      {study.outcome}
+                    </p>
+                    <div className="mt-6 flex items-center justify-between border-t border-hairline pt-4">
+                      <span className="stat-number text-[28px] leading-none text-foreground">
+                        {study.metric}
+                      </span>
+                      <span className="mono-button text-foreground transition-transform group-hover:translate-x-0.5">
+                        READ CASE STUDY →
+                      </span>
+                    </div>
+                  </div>
                 </Link>
-              </div>
-            </article>
+              </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

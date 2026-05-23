@@ -5,7 +5,7 @@ import MarketingHeader from "@/components/MarketingHeader";
 import { requireMarketingFeature } from "@/lib/require-marketing-feature";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
-import { readBlogPosts, readSiteContent } from "@/lib/content";
+import { publishedBlogPosts, readBlogPosts, readSiteContent } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 import { sanitizeBlogHtml } from "@/lib/blog-sanitize";
 import { blogPostingJsonLd, breadcrumbListJsonLd } from "@/lib/seo";
@@ -14,12 +14,11 @@ import {
   authorInitials,
   blogPostsExcluding,
   formatBlogDate,
-  sortBlogPostsByDateDesc,
 } from "@/lib/blog-display";
 import { SupportingProseSection } from "@/components/marketing/SupportingProseSection";
 
 export async function generateStaticParams() {
-  const posts = await readBlogPosts();
+  const posts = publishedBlogPosts(await readBlogPosts());
   return posts.map((p) => ({ slug: p.slug }));
 }
 
@@ -32,31 +31,34 @@ export async function generateMetadata({
   const [posts, site] = await Promise.all([readBlogPosts(), readSiteContent()]);
   const post = posts.find((p) => p.slug === slug);
   if (!post) return { title: "Post not found", robots: { index: false, follow: false } };
+  const isDraft = (post.status ?? "published") === "draft";
   const metaTitle = post.seoTitle?.trim() || post.title;
   const baseUrl = site.siteUrl.replace(/\/$/, "");
-  const ogImage = `/blog/${post.slug}/opengraph-image`;
+  const ogImage = post.coverImage?.trim() || `/blog/${post.slug}/opengraph-image`;
   return {
     title: metaTitle,
     description: post.description,
     alternates: { canonical: `${baseUrl}/blog/${post.slug}` },
     openGraph: {
-      title: `${metaTitle} | Torq Studio Blog`,
+      title: `${metaTitle} | ${site.siteName} Blog`,
       description: post.description,
       url: `${baseUrl}/blog/${post.slug}`,
       type: "article",
       publishedTime: post.date,
+      ...(post.dateUpdated ? { modifiedTime: post.dateUpdated } : {}),
+      ...(post.tags && post.tags.length > 0 ? { tags: post.tags } : {}),
       images: [{ url: ogImage, width: 1200, height: 630, alt: metaTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${metaTitle} | Torq Studio Blog`,
+      title: `${metaTitle} | ${site.siteName} Blog`,
       description: post.description,
       images: [ogImage],
       ...(site.twitterSite
         ? { site: `@${site.twitterSite}`, creator: `@${site.twitterSite}` }
         : {}),
     },
-    robots: { index: true, follow: true },
+    robots: isDraft ? { index: false, follow: false } : { index: true, follow: true },
   };
 }
 
@@ -72,12 +74,12 @@ export default async function BlogPostPage({
     readSiteContent(),
     getSiteUrl(),
   ]);
-  const sorted = sortBlogPostsByDateDesc(posts);
-  const post = sorted.find((p) => p.slug === slug);
+  const visible = publishedBlogPosts(posts);
+  const post = visible.find((p) => p.slug === slug);
   if (!post) notFound();
 
   const authorLabel = post.authorName?.trim() || site.siteName;
-  const related = blogPostsExcluding(sorted, post.slug, 3);
+  const related = blogPostsExcluding(visible, post.slug, 3);
 
   const articleLd = blogPostingJsonLd({
     siteUrl,
@@ -85,8 +87,12 @@ export default async function BlogPostPage({
     title: post.title,
     description: post.description,
     datePublished: post.date,
+    dateModified: post.dateUpdated,
     siteName: site.siteName,
     authorName: post.authorName,
+    image: post.coverImage,
+    keywords: post.tags,
+    wordCount: post.wordCount,
   });
   const breadcrumbLd = breadcrumbListJsonLd(siteUrl, [
     { name: "Home", path: "/" },
@@ -101,87 +107,141 @@ export default async function BlogPostPage({
       <MarketingHeader />
       <main>
         <article>
-          <header className="relative border-b border-border/40 bg-gradient-to-b from-surface/90 via-background to-background">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_-10%,var(--app-primary-muted),transparent)] opacity-80" aria-hidden />
-            <div className="relative mx-auto max-w-3xl px-4 pt-28 pb-12 sm:px-6 sm:pt-32 lg:px-8 lg:pb-16">
-              <nav aria-label="Breadcrumb" className="text-sm">
-                <ol className="flex flex-wrap items-center gap-2 text-muted-foreground">
+          {/* Hero band — dark */}
+          <header className="hero-band">
+            <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 pt-32 pb-16 sm:px-6 sm:pt-36 sm:pb-20 lg:px-8 lg:pt-40 lg:pb-[80px]">
+              <nav aria-label="Breadcrumb">
+                <ol className="mono-label flex flex-wrap items-center gap-2 text-white/55">
                   <li>
-                    <Link href="/" className="transition-colors hover:text-foreground">
-                      Home
+                    <Link href="/" className="transition-colors hover:text-white">
+                      HOME
                     </Link>
                   </li>
-                  <li aria-hidden className="text-muted-foreground/50">
-                    /
-                  </li>
+                  <li aria-hidden>/</li>
                   <li>
-                    <Link href="/blog" className="transition-colors hover:text-foreground">
-                      Blog
+                    <Link href="/blog" className="transition-colors hover:text-white">
+                      BLOG
                     </Link>
                   </li>
                 </ol>
               </nav>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                <time dateTime={post.date}>{formatBlogDate(post.date)}</time>
-                <span className="text-muted-foreground/45" aria-hidden>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <time
+                  dateTime={post.date}
+                  className="mono-label text-white/65"
+                >
+                  {formatBlogDate(post.date).toUpperCase()}
+                </time>
+                <span className="mono-label text-white/40" aria-hidden>
                   ·
                 </span>
-                <span>{post.readTime}</span>
+                <span className="mono-label text-white/65">
+                  {post.readTime.toUpperCase()}
+                </span>
               </div>
 
-              <h1 className="mt-4 font-display text-3xl font-bold leading-[1.12] tracking-tight text-foreground sm:text-4xl lg:text-[2.65rem] lg:leading-[1.1]">
+              <h1 className="display-xxl mt-5 max-w-[20ch] text-white">
                 {post.title}
               </h1>
+              <p className="mt-6 max-w-2xl text-[17px] leading-[1.5] text-white/70">
+                {post.description}
+              </p>
+              {post.tags && post.tags.length > 0 ? (
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {post.tags.map((t) => (
+                    <li
+                      key={t}
+                      className="mono-label rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-white/80"
+                    >
+                      {t.toUpperCase()}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
 
-              <p className="mt-6 text-lg leading-relaxed text-muted-foreground sm:text-xl">{post.description}</p>
-
-              <div className="mt-8 flex items-center gap-4 border-t border-border/30 pt-8">
+              <div className="mt-10 flex items-center gap-4 border-t border-[var(--brand-hairline-on-dark)] pt-8">
                 <div
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border/50 bg-primary/10 font-display text-sm font-bold text-primary"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-white/15 bg-white/5 font-display text-[14px] font-medium text-white"
                   aria-hidden
                 >
                   {authorInitials(authorLabel)}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">{authorLabel}</p>
-                  <p className="text-sm text-muted-foreground">Author</p>
+                  <p className="text-[15px] font-medium text-white">{authorLabel}</p>
+                  <p className="mono-label text-white/55">AUTHOR</p>
                 </div>
               </div>
             </div>
           </header>
 
-          <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-            <div
-              className="blog-article mx-auto"
-              dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.body || "") }}
-            />
+          {post.coverImage ? (
+            <section className="band-light border-t border-hairline">
+              <div className="mx-auto w-full max-w-[1280px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="aspect-[1200/630] w-full rounded-[var(--radius-sm)] border border-hairline object-cover"
+                />
+              </div>
+            </section>
+          ) : null}
 
-            <SupportingProseSection
-              id="blog-torq-context"
-              className="mt-12"
-              heading="About Torq Studio"
-              paragraphs={[
-                "Torq Studio helps product and engineering organisations ship mobile apps, web platforms, APIs, and AI-assisted workflows with senior ownership end to end. We combine hands-on delivery with advisory work when you need estimates, architecture review, or vendor diligence before committing to a build.",
-                "If this article raised questions about your own roadmap—procurement, security, team shape, or launch strategy—you can explore our services overview, read anonymised case studies, or start with a free consultation. We reply to thoughtful enquiries within one business day.",
-              ]}
-            />
+          {/* Body — light band, blog-article prose */}
+          <section className={`band-light ${post.coverImage ? "" : "border-t border-hairline"}`}>
+            <div className="mx-auto w-full max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-[80px]">
+              <div className="grid gap-12 lg:grid-cols-12">
+                <aside className="lg:col-span-4">
+                  <p className="mono-eyebrow text-muted-foreground">ARTICLE</p>
+                  <h2 className="display-sm mt-3 text-foreground">{post.title}</h2>
+                  <p className="mt-3 text-[14px] text-muted-foreground">
+                    {post.readTime} · published {formatBlogDate(post.date)}
+                    {post.dateUpdated && post.dateUpdated.slice(0, 10) !== post.date
+                      ? ` · updated ${formatBlogDate(post.dateUpdated)}`
+                      : "."}
+                  </p>
+                </aside>
+                <div
+                  className="blog-article max-w-none lg:col-span-8 lg:max-w-[680px]"
+                  dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.body || "") }}
+                />
+              </div>
 
-            <BlogRelatedPosts posts={related} />
+              <SupportingProseSection
+                id="blog-torq-context"
+                eyebrow="ABOUT TORQ STUDIO"
+                className="border-x-0 mt-16"
+                heading="Engineering partner for product teams."
+                paragraphs={[
+                  "Torq Studio helps product and engineering organisations ship mobile apps, web platforms, APIs, and AI-assisted workflows with senior ownership end to end. We combine hands-on delivery with advisory work when you need estimates, architecture review, or vendor diligence before committing to a build.",
+                  "If this article raised questions about your own roadmap — procurement, security, team shape, or launch strategy — you can explore our services overview, read anonymised case studies, or start with a free consultation. We reply to thoughtful enquiries within one business day.",
+                ]}
+              />
 
-            <div className="mt-14 rounded-2xl border border-border/50 bg-surface/50 p-8 text-center sm:p-10">
-              <p className="font-display text-lg font-semibold text-foreground sm:text-xl">Planning a product or a team?</p>
-              <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-                Share what you&apos;re building—we&apos;ll help you scope the right next step.
-              </p>
-              <Link
-                href="/contact"
-                className="mt-8 inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
-              >
-                Get in touch
-              </Link>
+              <BlogRelatedPosts posts={related} />
             </div>
-          </div>
+          </section>
+
+          {/* Closing CTA — dark band */}
+          <section className="hero-band border-t border-[var(--brand-hairline-on-dark)]">
+            <div className="relative z-10 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:py-[80px]">
+              <div className="lg:col-span-7">
+                <p className="mono-eyebrow text-white/55">PLANNING A PRODUCT OR A TEAM?</p>
+                <h2 className="display-xl mt-4 text-white">
+                  Share what you&apos;re building — we&apos;ll scope the right next step.
+                </h2>
+              </div>
+              <div className="flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
+                <Link href="/contact" className="btn-base btn-white">
+                  Get in touch
+                </Link>
+                <Link href="/services" className="btn-base btn-ghost-on-dark">
+                  Explore services →
+                </Link>
+              </div>
+            </div>
+          </section>
         </article>
       </main>
       <Footer />
